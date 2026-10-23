@@ -23,6 +23,7 @@ from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
 from .development_boundary import candidate_boundary_evidence, validate_assumed_error_radius
+from .development_identity_metrics import identity_factors, marker_binding_matches
 from .development_ownership import DevelopmentOwnershipEvidence
 from .development_recorder_view import DevelopmentRecorderView
 from .development_view import DevelopmentViewVeto
@@ -207,6 +208,23 @@ class DevelopmentMapTimeline:
             frame[top:bottom, left:right], time_sec, self.profile["minimap_self_marker"],
             ownership_eligible=eligible,
         )
+        binding = self.profile.get("development_marker_binding")
+        if binding is not None:
+            valid_binding = None
+            if eligible:
+                valid_binding = (appearance.reason != "invalid_reference_profile"
+                    and marker_binding_matches(
+                        binding, source_id=source_id, source_sha256=source_sha256,
+                        recorder_agent_id=recorder_view.get("recorder_agent_id"),
+                        reference_fingerprint=self.marker.reference_fingerprint))
+                if not valid_binding:
+                    self.marker.reset()
+                    self._break()
+                    eligible = False
+                    appearance = MarkerPosition("unknown", "source_marker_binding_mismatch")
+            recorder_view["marker_reference_binding_valid"] = valid_binding
+        if self.profile.get("development_identity_assessment") is True:
+            recorder_view["identity_factors"] = identity_factors(ownership_evidence, recorder_view)
         reference_evidence = self.inspector.inspect(
             frame[top:bottom, left:right], self.profile["minimap_self_marker"],
         ) if self.inspector is not None else None

@@ -119,6 +119,7 @@ const boundary=s.region_candidate_evidence;
 const evidence=s.ownership_evidence;const reviewed=s.position_review;
 const recorder=s.recorder_view_evidence;const viewReview=s.view_review;
 const alias=recorder?.actor_alias_evidence;
+const factors=recorder?.identity_factors;
 const reviewedBoundary=reviewed?.reference_polygon_review;
 const matches=s.marker_reference_evidence?.matches||[];
 const selfMatches=matches.filter(m=>m.reference_category==='self_reference_appearance').length;
@@ -139,6 +140,9 @@ $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'な
 `${recorder?.recorder_agent_id??'UNKNOWN'} / 現在の表示候補 `+
 `${recorder?.visible_agent_candidate??'UNKNOWN'}（アカウント所有は未確定）\n`+
 `明示名の対応: ${alias?.alias_association??'未測定'} / ${alias?.slot_kind??'未観測'}\n`+
+`共有一人称HUDの観測: ${factors?.shared_first_person_hud_observed??'未分解'} / `+
+`資格付き本人視点: ${factors?.qualified_live_recorder_view??false}\n`+
+`本人確定に不足する根拠: ${factors?.missing_evidence?.join(', ')??'未測定'}\n`+
 `人間が確認した現在視点: ${viewReview?.human_view_role??'未確認'}（この観測のみ）\n`+
 `この観測のマーカー確認: ${reviewed?.human_reviewed_role??'未確認'} / ROI中心との差 `+
 `${reviewed?.roi_center_difference_px?.toFixed(2)??'未測定'} px / 近似Map参照との差 `+
@@ -180,6 +184,15 @@ Object.entries(R.motion_observation_spans_sec).map(([k,v])=>
 `（自動本人所有の資格は未成立）\n`+
 `人間確認の生存視点にある位置: `+
 `${R.recorder_view_support?.human_self_live_position_observations??0}点 `+
-`（表示した観測だけ。観測間の所有・経路は保証しません）`;
+`（表示した観測だけ。観測間の所有・経路は保証しません）\n`+
+`人間ラベル別の候補: `+Object.entries(R.identity_outcomes?.groups||{}).map(([role,g])=>
+`${role} ${g.observations}点 / agent対応${g.agent_support} / `+
+`視点支持${g.view_support_candidate} / 非生存の位置候補${g.non_live_position_candidate??0}`
+).join(' ; ')+`\n静止確認点の揺れ: `+(R.stationary_review_comparisons||[]).map(r=>
+`確認${r.reviewed_observations}点・欠測${r.missing_positions}点 / `+r.runs.map(run=>
+run.spread_measured?`${run.position_observations}点、`+
+`直径${run.diameter_reference_px.toFixed(2)}px `+
+`RMS ${run.rms_about_mean_reference_px.toFixed(2)}px`:'単点のため未測定').join(' ; ')
+).join(' ; ')+`（絶対誤差・連続静止の保証ではありません）`;
 image.onload=draw;image.src=D.reference;draw();
 </script></html>'''

@@ -54,6 +54,9 @@ class DevelopmentRecorderView:
         if (not isinstance(frame, np.ndarray) or frame.dtype != np.uint8 or frame.ndim != 3
                 or frame.shape[2] != 3 or min(frame.shape[:2]) <= 0
                 or not isinstance(spec, dict) or spec.get("mode") != "agent_binding_v1"
+                or not isinstance(spec.get("glyph_feature_mode", "gray_v1"), str)
+                or spec.get("glyph_feature_mode", "gray_v1") not in {
+                    "gray_v1", "positive_contrast_v1"}
                 or spec.get("frame_size_px") != [frame.shape[1], frame.shape[0]]):
             return result
         binding = spec.get("binding")
@@ -112,7 +115,7 @@ class DevelopmentRecorderView:
                     measurement = self._matchers[index].inspect(frame, {
                         "mode": "spectator_switch_v1", "roi": slot,
                         "reference_frame_size_px": list(size), "template_path": path,
-                    })
+                    }, feature_mode=spec.get("glyph_feature_mode", "gray_v1"))
                     index += 1
                     hashes.append(measurement["reference_sha256"])
                     if measurement["status"] == "unavailable":

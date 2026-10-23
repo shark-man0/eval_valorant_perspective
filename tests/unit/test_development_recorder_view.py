@@ -79,6 +79,18 @@ def test_same_signature_for_two_agents_is_unknown_even_with_recorder_binding(age
     assert result['ownership'] == 'UNKNOWN'
 
 
+def test_glyph_feature_mode_changes_fingerprint_without_promoting_owner(agent_case):
+    frame, spec = agent_case
+    engine = DevelopmentRecorderView()
+    before = inspect(frame, spec, engine)
+    spec['glyph_feature_mode'] = 'positive_contrast_v1'
+    after = inspect(frame, spec, engine)
+    assert after['reference_fingerprint'] != before['reference_fingerprint']
+    assert after['ownership'] == 'UNKNOWN'
+    spec['glyph_feature_mode'] = []
+    assert inspect(frame, spec, engine)['status'] == 'unavailable'
+
+
 @pytest.mark.parametrize('mutation', ['overlap', 'empty', 'wrong_size', 'binding_missing'])
 def test_malformed_authoring_fails_closed(agent_case, mutation):
     frame, spec = agent_case

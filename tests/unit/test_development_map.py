@@ -624,6 +624,12 @@ def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tm
     for row in packet['reviews'][:2]:
         packet['view_reviews'].append({**row, 'status': 'human_confirmed',
             'role': 'SELF_LIVE', 'label_origin': 'source_frame_view_review'})
+    packet['stationary_reviews'] = [{
+        'status': 'human_confirmed', 'label_origin': 'source_stationary_sample_review',
+        'not_used_for_fitting': True, 'sample_scope': 'listed_observations_only',
+        'observation_indices': [0, 1],
+        'prediction_sha256': [r['prediction_sha256'] for r in packet['reviews'][:2]],
+        'frame_sha256': [r['frame_sha256'] for r in packet['reviews'][:2]]}]
     reviews_path = tmp_path/'reviews.json'
     reviews_path.write_text(json.dumps(packet), encoding='utf-8')
     source = tmp_path/'private/variant_observations_PRIVATE.json'
@@ -631,6 +637,8 @@ def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tm
     reviewed = apply_reviews(source, reviews_path, tmp_path/'reviewed')
     assert len(reviewed['comparisons']) == 1
     assert len(reviewed['view_comparisons']) == 2
+    assert reviewed['stationary_comparisons'][0]['runs'][0]['diameter_reference_px'] == 0
+    assert reviewed['stationary_comparisons'][0]['missing_positions'] == 0
     assert reviewed['comparisons'][0]['reference_polygon_review'][
         'joint_annotation_error_bound'] is None
     assert reviewed['trajectory']['recorder_view_support'][
@@ -639,12 +647,65 @@ def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tm
         'reviewed_position_observations'] == 1
     assert source.read_bytes() == frozen_bytes
     assert reviewed['qualification_or_error_bound_established'] is False
+    packet['stationary_reviews'][0]['observation_indices'] = [1, 0]
+    reviews_path.write_text(json.dumps(packet), encoding='utf-8')
+    with pytest.raises(ValueError, match='ordered unique'):
+        apply_reviews(source, reviews_path, tmp_path/'bad_stationary')
+    packet['stationary_reviews'][0]['observation_indices'] = [0, 1]
+    reviews_path.write_text(json.dumps(packet), encoding='utf-8')
     with pytest.raises(ValueError, match='fresh private directory'):
         apply_reviews(source, reviews_path, tmp_path/'reviewed')
     manifest['observations'][1]['pts_tick'] = 999
     path.write_text(json.dumps(manifest), encoding='utf-8')
     with pytest.raises(ValueError, match='tick/time'):
         build(path, tmp_path/'invalid')
+
+
+def test_cross_source_marker_authoring_cannot_supply_candidate(bind_case):
+    _, _, frame, profile, _ = bind_case
+    profile['development_marker_binding'] = {
+        'source_id': 'other-source', 'source_sha256': 'a'*64,
+        'recorder_agent_id': 'another-agent', 'reference_fingerprint': 'b'*64,
+        'review_sha256': 'c'*64}
+    result = DevelopmentMapTimeline(profile).observe(
+        frame, 0, 0, view={'primary_state': 'live_first_person',
+                           'values': {'player_specific_hud_valid': True}},
+        evidence_kind='source_review', source_id='synthetic', acquisition_id='a',
+        source_sha256='a'*64)
+    assert result['appearance']['reason'] == 'source_marker_binding_mismatch'
+    assert result['map_position_norm'] is None
+    assert result['formal_self_position_fact'] is None
+
+
+def test_purchase_probe_cuts_pipeline_path_without_formal_event(bind_case, tmp_path):
+    _, _, minimap, profile, _ = bind_case
+    frame = np.zeros((427, 600, 3), np.uint8)
+    frame[:, :455] = minimap
+    profile['rois']['minimap'] = [0, 0, 455/600, 1]
+    glyph = np.random.default_rng(125).integers(0, 256, (19, 31, 3), np.uint8)
+    path = tmp_path/'purchase.png'
+    assert cv2.imwrite(str(path), glyph)
+    profile['development_ownership_evidence'] = {
+        'mode': 'screen_context_v1', 'frame_size_px': [600, 427],
+        'slot_review': 'source_reviewed_not_qualified', 'probes': [{
+            'claim': 'purchase_phase', 'roi': [460/600, .1, 1, .3],
+            'template_path': str(path)}]}
+    pipeline = DevelopmentMapTimeline(profile)
+    kwargs = {'view': {'primary_state': 'live_first_person',
+                       'values': {'player_specific_hud_valid': True}, 'state_flags': []},
+              'evidence_kind': 'source_review', 'source_id': 'synthetic', 'acquisition_id': 'a'}
+    first = pipeline.observe(frame, 0, 0, **kwargs)
+    assert first['map_position_norm'] is not None
+    frame[60:79, 500:531] = glyph
+    purchase = pipeline.observe(frame, .2, 1, **kwargs)
+    assert purchase['ownership_evidence']['view_candidate'] == 'purchase_context'
+    assert purchase['map_position_norm'] is None
+    assert purchase['development_events'] == []
+    assert purchase['formal_self_position_fact'] is None
+    frame[60:79, 500:531] = 0
+    resumed = pipeline.observe(frame, .4, 2, **kwargs)
+    assert resumed['map_position_norm'] is not None
+    assert resumed['map_segment'] != first['map_segment']
 
 
 @pytest.mark.parametrize('bad_frame', [3, 2])

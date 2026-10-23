@@ -12,6 +12,7 @@ import math
 from collections import Counter
 from typing import Any, TypeGuard
 
+from .development_identity_metrics import summarize_reviewed_identity
 from .development_position_review import observation_fingerprint
 
 
@@ -248,6 +249,8 @@ def analyze_candidate_path(
             name: sum(e["observed_span_sec"] for e in edges if e["motion"] == name)
             for name in ("moving_candidate", "low_displacement_candidate", "indeterminate")},
         "position_unknown_observations": sum(s["point_norm"] is None for s in samples),
+        **({"identity_outcomes": summarize_reviewed_identity(records)} if any(
+            r.get("recorder_view_evidence", {}).get("identity_factors") for r in records) else {}),
         "limitations": ["No interpolation; chords are not observed routes between samples.",
                         "Observation spans do not prove uninterrupted Zone occupancy.",
                         "UNKNOWN ownership; no tactical judgement or Production events.",

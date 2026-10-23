@@ -57,6 +57,20 @@ def test_death_report_is_overlay_not_recorder_death(screen_case):
     assert 'death' not in result or result['death'] is None
 
 
+def test_purchase_presence_blocks_live_path_without_assigning_owner(screen_case):
+    frame, spec, _ = screen_case
+    spec['probes'][0].update(claim='purchase_phase', feature_mode='gray_v1')
+    result = inspect(frame, spec)
+    assert result['view_candidate'] == 'purchase_context'
+    assert result['block_position_candidate'] is True
+    assert result['actor_candidate'] == result['ownership'] == 'UNKNOWN'
+    assert result['positive_recorder_ownership_evidence'] is False
+    frame[:] = 0
+    missing = inspect(frame, spec)
+    assert missing['view_candidate'] == 'UNKNOWN'
+    assert missing['positive_recorder_ownership_evidence'] is False
+
+
 def test_undetected_pattern_is_unknown_not_proof_of_self(screen_case):
     frame, spec, _ = screen_case
     frame[:] = 0

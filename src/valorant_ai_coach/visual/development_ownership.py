@@ -23,6 +23,7 @@ from .development_view import DevelopmentViewVeto
 _CLAIMS = {
     "spectator_controls": "spectator_ui", "death_report": "report_overlay",
     "menu_overlay": "menu_ui", "first_person_hud": "shared_first_person_hud",
+    "purchase_phase": "purchase_ui",
 }
 
 
@@ -85,7 +86,7 @@ class DevelopmentOwnershipEvidence:
             result = matcher.inspect(frame, {
                 "mode": "spectator_switch_v1", "roi": probe["roi"],
                 "reference_frame_size_px": size, "template_path": probe.get("template_path"),
-            })
+            }, feature_mode=probe.get("feature_mode", "gray_v1"))
             cues.append({
                 "claim": probe["claim"], "family": _CLAIMS[probe["claim"]],
                 "status": "unavailable" if result["status"] == "unavailable" else
@@ -116,12 +117,15 @@ class DevelopmentOwnershipEvidence:
             reasons.append("configured_screen_probe_unavailable")
         spectator = "spectator_controls" in present or icon["panel_present"] is True
         overlay = bool(present & {"death_report", "menu_overlay"})
+        purchase = "purchase_phase" in present
         if spectator:
             reasons.append("spectator_context_candidate")
         if "death_report" in present:
             reasons.append("death_report_is_not_current_actor_or_death_identity")
         if "first_person_hud" in present:
             reasons.append("first_person_hud_shared_by_self_and_spectator")
+        if purchase:
+            reasons.append("purchase_phase_does_not_identify_current_actor")
         families = sorted({c["family"] for c in cues if c["status"] == "present"})
         if icon["panel_present"] is True:
             families = sorted(set(families) | {"spectator_ui"})
@@ -131,9 +135,10 @@ class DevelopmentOwnershipEvidence:
         return {
             **envelope, "status": "unavailable" if unavailable else "observed",
             "frame_pixel_sha256": hashlib.sha256(frame.tobytes()).hexdigest(),
-            "block_position_candidate": unavailable or spectator or overlay,
+            "block_position_candidate": unavailable or spectator or overlay or purchase,
             "view_candidate": "spectator_context" if spectator else "overlay_context"
-                              if overlay else "first_person_hud_context"
+                              if overlay else "purchase_context" if purchase else
+                              "first_person_hud_context"
                               if "first_person_hud" in present else "UNKNOWN",
             "actor_candidate": "non_recorder_view_candidate" if spectator else "UNKNOWN",
             "observed_cues": cues, "spectator_slot": icon, "reasons": reasons,

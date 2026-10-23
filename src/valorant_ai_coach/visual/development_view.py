@@ -25,7 +25,9 @@ class DevelopmentViewVeto:
         self._key: str | None = None
         self._template: NDArray[Any] | None = None
 
-    def inspect(self, frame: NDArray[Any], spec: Any) -> dict[str, Any]:
+    def inspect(
+        self, frame: NDArray[Any], spec: Any, *, feature_mode: str = "gray_v1",
+    ) -> dict[str, Any]:
         result: dict[str, Any] = {
             "qualification": "development_only", "ownership": "UNKNOWN",
             "status": "disabled", "veto": False, "similarity": None,
@@ -34,6 +36,9 @@ class DevelopmentViewVeto:
         if spec is None:
             return result
         result.update(status="unavailable", veto=True)
+        if (not isinstance(feature_mode, str)
+                or feature_mode not in {"gray_v1", "positive_contrast_v1"}):
+            return result
         if (not isinstance(frame, np.ndarray) or frame.ndim != 3 or frame.shape[2] != 3
                 or frame.dtype != np.uint8 or min(frame.shape[:2]) <= 0):
             return result
@@ -64,19 +69,38 @@ class DevelopmentViewVeto:
             return result
         key = hashlib.sha256(content).hexdigest()
         result["reference_sha256"] = key
-        if self._key != key:
+        cache_key = key + ":" + feature_mode
+        if self._key != cache_key:
             self._key, self._template = None, None
             template = cv2.imdecode(np.frombuffer(content, np.uint8), cv2.IMREAD_GRAYSCALE)
             if template is None or float(template.std()) < 12:
                 return result
-            self._template, self._key = template, key
+            if feature_mode == "positive_contrast_v1":
+                template = _positive_contrast(template)
+                if float(template.std()) < 1:
+                    return result
+            self._template, self._key = template, cache_key
         assert self._template is not None
         left, top, right, bottom = bounds
         crop = cv2.cvtColor(frame[top:bottom, left:right], cv2.COLOR_BGR2GRAY)
         crop = cv2.resize(crop, (ar-al, ab-at), interpolation=cv2.INTER_AREA)
+        if feature_mode == "positive_contrast_v1":
+            crop = _positive_contrast(crop)
         scores = cv2.matchTemplate(crop, self._template, cv2.TM_CCOEFF_NORMED)
         score = float(np.max(np.clip(np.nan_to_num(
             scores, nan=-1, posinf=-1, neginf=-1), -1, 1)))
         result.update(similarity=score, veto=score >= .90,
                       status="spectator_ui" if score >= .90 else "not_detected")
         return result
+
+
+def _positive_contrast(gray: NDArray[Any]) -> NDArray[Any]:
+    """Keep locally bright strokes, suppress broad background lighting.
+
+    Opt-in development feature, not an ownership or semantic-text detector.
+    The fixed same-pixel kernels assume the reviewed reference frame geometry.
+    """
+    pixels = gray.astype(np.float32)
+    strokes = np.maximum(pixels - cv2.GaussianBlur(pixels, (0, 0), 3), 0)
+    result: NDArray[Any] = cv2.GaussianBlur(strokes, (3, 3), .6)
+    return result

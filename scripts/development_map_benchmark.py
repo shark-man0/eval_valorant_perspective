@@ -19,6 +19,7 @@ from typing import Any
 import cv2
 
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
+from valorant_ai_coach.visual.development_identity_metrics import compare_stationary_review
 from valorant_ai_coach.visual.development_map import DevelopmentMapTimeline
 from valorant_ai_coach.visual.development_path_viewer import write_candidate_path_html
 from valorant_ai_coach.visual.development_position_review import (
@@ -193,6 +194,9 @@ def apply_reviews(observations: Path, reviews_path: Path, output: Path) -> dict[
     responses = json.loads(reviews_path.read_text(encoding="utf-8"))
     reviews = responses.get("reviews", [])
     view_reviews = responses.get("view_reviews", [])
+    stationary_reviews = responses.get("stationary_reviews", [])
+    if not isinstance(stationary_reviews, list) or len(stationary_reviews) > len(records):
+        raise ValueError("Stationary review count must be bounded by acquired observations")
     if not isinstance(view_reviews, list) or len(view_reviews) > len(records):
         raise ValueError("View review count must be bounded by acquired observations")
     definition = development_registry(records[0]["map_id"]).load(records[0]["map_id"])
@@ -249,6 +253,23 @@ def apply_reviews(observations: Path, reviews_path: Path, output: Path) -> dict[
         raise ValueError("Saved reference geometry changed or mixed")
     trajectory = analyze_candidate_path(
         records, reference_size_px=(bbox[2]-bbox[0], bbox[3]-bbox[1]))
+    stationary_comparisons = []
+    stationary_seen: set[int] = set()
+    for review in stationary_reviews:
+        indices = review.get("observation_indices")
+        if (not isinstance(indices, list) or not 1 <= len(indices) <= 200
+                or any(not isinstance(i, int) or isinstance(i, bool)
+                       or not 0 <= i < len(records) for i in indices)
+                or indices != sorted(set(indices))):
+            raise ValueError("Stationary review needs ordered unique acquired indices")
+        if stationary_seen.intersection(indices):
+            raise ValueError("Stationary review indices overlap")
+        stationary_seen.update(indices)
+        stationary_comparisons.append(compare_stationary_review(
+            [records[i] for i in indices], review,
+            reference_size_px=(bbox[2]-bbox[0], bbox[3]-bbox[1])))
+    if stationary_comparisons:
+        trajectory["stationary_review_comparisons"] = stationary_comparisons
     previews: list[bytes | None] = []
     for record in records:
         path = Path(record["acquired_frame_path"])
@@ -266,6 +287,7 @@ def apply_reviews(observations: Path, reviews_path: Path, output: Path) -> dict[
     result = {"qualification": "development_only", "ownership": "UNKNOWN",
               "comparisons": compared,
               "view_comparisons": [r["view_review"] for r in records if r.get("view_review")],
+              "stationary_comparisons": stationary_comparisons,
               "records": records, "trajectory": trajectory,
               "source_predictions_sha256": _sha(observations),
               "reviews_file_sha256": _sha(reviews_path),
