@@ -189,10 +189,11 @@ Object.entries(R.motion_observation_spans_sec).map(([k,v])=>
 `${role} ${g.observations}点 / agent対応${g.agent_support} / `+
 `未確定の視点対応${g.view_support_candidate} / 非生存の位置候補${g.non_live_position_candidate??0}`
 ).join(' ; ')+`\n静止確認点の揺れ: `+((R.stationary_review_comparisons||[]).map(r=>
-`確認${r.reviewed_observations}点・欠測${r.missing_positions}点 / `+r.runs.map(run=>
+`確認${r.reviewed_observations}点・欠測${r.missing_positions}点 / `+(r.runs.map(run=>
 run.spread_measured?`${run.position_observations}点、`+
 `直径${run.diameter_reference_px.toFixed(2)}px `+
 `RMS ${run.rms_about_mean_reference_px.toFixed(2)}px`:'単点のため未測定').join(' ; ')
+||'位置欠測のため揺れ未測定')
 ).join(' ; ')||'未確認・未測定')+`（絶対誤差・連続静止の保証ではありません）`;
 image.onload=draw;image.src=D.reference;draw();
 </script></html>'''

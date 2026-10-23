@@ -87,6 +87,8 @@ def analyze_candidate_path(
                     "SPECTATOR", "DEATH", "SELF_PURCHASE", "PURCHASE"}
                 or review.get("human_reviewed_role") in {"NONSELF", "SPECTATOR", "DEATH"}):
             reason = "independent_context_or_review_blocks_candidate"
+        elif view_review.get("human_view_role") == "SELF_PHASE_UNKNOWN":
+            reason = "human_recorder_phase_unresolved"
         elif record.get("ownership", {}).get("view_eligible") is not True:
             reason = "view_not_self_eligible"
         elif (record.get("calibration", {}).get("status") != "ok"

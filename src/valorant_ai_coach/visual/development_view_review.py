@@ -30,7 +30,8 @@ def compare_view_review(
             or review.get("frame_sha256") != frame_sha256
             or review.get("prediction_sha256") != observation_fingerprint(record)
             or review.get("role") not in {
-                "SELF_LIVE", "SELF_PURCHASE", "PURCHASE", "SPECTATOR", "DEATH", "UNKNOWN"}):
+                "SELF_LIVE", "SELF_PURCHASE", "SELF_PHASE_UNKNOWN", "PURCHASE",
+                "SPECTATOR", "DEATH", "UNKNOWN"}):
         raise ValueError("Exact independent human frame-view review required")
     return {
         "qualification": "development_only", "ownership": "UNKNOWN",

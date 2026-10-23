@@ -61,6 +61,16 @@ def test_reviewed_non_live_context_breaks_path(role):
     assert result['samples'][1]['point_norm'] is None
 
 
+def test_recorder_review_without_phase_does_not_connect_a_live_path():
+    records = [observation(i) for i in range(3)]
+    records[1]['view_review'] = reviewed_view(records[1], 'SELF_PHASE_UNKNOWN')
+    result = analyze_candidate_path(records, reference_size_px=(1000, 1000))
+    assert not result['edges'] and len(result['segments']) == 2
+    assert result['samples'][1]['break_reason'] == 'human_recorder_phase_unresolved'
+    assert result['recorder_view_support']['human_self_live_position_observations'] == 0
+    assert records[1]['map_position_norm'] is not None  # The frozen candidate survives.
+
+
 class FakeText:
     def __init__(self, text):
         self.text = text

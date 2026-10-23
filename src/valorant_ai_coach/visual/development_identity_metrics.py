@@ -80,7 +80,8 @@ def summarize_reviewed_identity(records: list[dict[str, Any]]) -> dict[str, Any]
             or not isinstance(review.get("frame_sha256"), str)
             or re.fullmatch(r"[0-9a-f]{64}", review["frame_sha256"]) is None
             or review.get("human_view_role") not in {
-                "SELF_LIVE", "SELF_PURCHASE", "PURCHASE", "SPECTATOR", "DEATH", "UNKNOWN"}
+                "SELF_LIVE", "SELF_PURCHASE", "SELF_PHASE_UNKNOWN", "PURCHASE",
+                "SPECTATOR", "DEATH", "UNKNOWN"}
         ):
             raise ValueError("Exact frozen frame-view review required")
         role = review.get("human_view_role", "UNREVIEWED")

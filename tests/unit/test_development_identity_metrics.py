@@ -105,6 +105,25 @@ def test_stationary_spread_preserves_misses_breaks_and_unknown_ownership():
     assert len(changed_report['runs']) == 3
 
 
+def test_reviewed_recorder_without_phase_is_neither_live_success_nor_non_live_rejection():
+    record = row(1)
+    label(record, 'SELF_PHASE_UNKNOWN')
+    group = summarize_reviewed_identity([record])['groups']['SELF_PHASE_UNKNOWN']
+    assert group['observations'] == group['map_position_candidates'] == 1
+    assert 'reviewed_self_live_support_candidate' not in group
+    assert 'confirmed_non_live_context_rejection' not in group
+    assert record['ownership']['identity'] == 'UNKNOWN'
+
+
+def test_entirely_missing_stationary_sample_set_has_no_zero_spread_measurement():
+    records = [row(i, None) for i in range(3)]
+    report = compare_stationary_review(
+        records, stationary_review(records), reference_size_px=(100, 100))
+    assert report['reviewed_observations'] == report['missing_positions'] == 3
+    assert report['runs'] == []
+    assert report['absolute_position_accuracy'] == 'unmeasured'
+
+
 def test_missing_reference_and_marker_authoring_are_not_correct_context_rejections():
     record = row(0, None)
     record['ownership_evidence'].update(status='unavailable', block_position_candidate=True)

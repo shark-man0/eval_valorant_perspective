@@ -41,7 +41,12 @@ Neither correlated probes nor human labels automatically promote ownership.
 
 `summarize_reviewed_identity(records)` checks each optional `view_review` against
 the frozen prediction and acquired frame hash. It reports separate groups for
-SELF_LIVE, SELF_PURCHASE, PURCHASE, DEATH, SPECTATOR, UNKNOWN and unreviewed frames.
+SELF_LIVE, SELF_PURCHASE, SELF_PHASE_UNKNOWN, PURCHASE, DEATH, SPECTATOR, UNKNOWN
+and unreviewed frames. SELF_PHASE_UNKNOWN preserves a human-confirmed recorder
+view when the sampled frame's live/purchase phase was not independently specified.
+It earns neither live-self support nor non-live rejection credit. It breaks the
+reviewed candidate path without erasing the frozen position candidate; a model's
+purchase-banner prediction must not supply the missing human phase label.
 It distinguishes:
 
 - agent correspondence and eligible-view support candidates;
