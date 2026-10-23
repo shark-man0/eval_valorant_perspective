@@ -127,7 +127,7 @@ const controlMatches=matches.filter(m=>m.reference_category==='nonself_control_a
 $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'なし'}\n`+
 `外観一致スコア: ${s.appearance_similarity?.toFixed(3)??'未測定'} `+
 `/ 校正スコア: ${s.calibration_score?.toFixed(3)??'未測定'}（確率ではありません）\n`+
-`途切れ・不明理由: ${s.break_reason||s.appearance_reason}\n`+
+`途切れ・不明理由: ${s.break_reason??'なし'} / 画像照合: ${s.appearance_reason}\n`+
 `運動の候補: ${edge?motionName[edge.motion]:'UNKNOWN'}\n`+
 `隣接観測の変位: ${edge?edge.chord_reference_px.toFixed(2)+' px':'未測定'}\n`+
 `本人参照の外観一致: ${selfMatches} / 非本人参照の外観一致: ${controlMatches}\n`+
@@ -187,12 +187,12 @@ Object.entries(R.motion_observation_spans_sec).map(([k,v])=>
 `（表示した観測だけ。観測間の所有・経路は保証しません）\n`+
 `人間ラベル別の候補: `+Object.entries(R.identity_outcomes?.groups||{}).map(([role,g])=>
 `${role} ${g.observations}点 / agent対応${g.agent_support} / `+
-`視点支持${g.view_support_candidate} / 非生存の位置候補${g.non_live_position_candidate??0}`
-).join(' ; ')+`\n静止確認点の揺れ: `+(R.stationary_review_comparisons||[]).map(r=>
+`未確定の視点対応${g.view_support_candidate} / 非生存の位置候補${g.non_live_position_candidate??0}`
+).join(' ; ')+`\n静止確認点の揺れ: `+((R.stationary_review_comparisons||[]).map(r=>
 `確認${r.reviewed_observations}点・欠測${r.missing_positions}点 / `+r.runs.map(run=>
 run.spread_measured?`${run.position_observations}点、`+
 `直径${run.diameter_reference_px.toFixed(2)}px `+
 `RMS ${run.rms_about_mean_reference_px.toFixed(2)}px`:'単点のため未測定').join(' ; ')
-).join(' ; ')+`（絶対誤差・連続静止の保証ではありません）`;
+).join(' ; ')||'未確認・未測定')+`（絶対誤差・連続静止の保証ではありません）`;
 image.onload=draw;image.src=D.reference;draw();
 </script></html>'''
