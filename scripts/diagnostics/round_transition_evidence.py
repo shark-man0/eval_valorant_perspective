@@ -19,8 +19,10 @@ from typing import Any
 
 from scripts.diagnostics.analyze_personal_candidates import development_sources
 from scripts.diagnostics.diagnose_result_text import accepted_result
+from scripts.diagnostics.hud_scope_structure import component_support
 from scripts.diagnostics.register_private_sources import write_private
 from scripts.e2e.run_dataset_case import sha256_file
+from scripts.temporal_gt.contract import canonical_hash
 from scripts.temporal_gt.review_session import append_exposure
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.hud.models import accept_hud_value
@@ -105,6 +107,13 @@ def _witness(f: dict[str, Any]) -> dict[str, Any]:
                               "encoded_sha256", "pixel_sha256")}
 
 
+def _geometry(f: dict[str, Any], role: str) -> bool:
+    # Global geometry is never rewritten; Round-only component evidence is an
+    # explicit, source/profile-bound alternative for this particular ROI.
+    local = component_support(f, role)
+    return f['geometry_consistent'] is True or local
+
+
 def _bracket(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     return {"lower_tick": a["tick"], "upper_tick": b["tick"],
             "time_base": b["time_base"], "epoch": b["epoch"],
@@ -167,6 +176,7 @@ def _segments(
                 if not isinstance(f[key], dict):
                     raise ValueError("reader evidence mapping required")
             _visual(f)
+            component_support(f, 'score')
             sources.add((f["source_id"], f["source_sha256"], base))
             groups[f["epoch"]].append(f)
         except (KeyError, TypeError, ZeroDivisionError) as exc:
@@ -176,6 +186,10 @@ def _segments(
     segments, gaps = [], []
     for frames in groups.values():
         frames = sorted(frames, key=lambda f: f["tick"])
+        bindings = {canonical_hash(f['component_geometry']['bindings']) for f in frames
+                    if f.get('component_geometry') is not None}
+        if len(bindings) > 1:
+            raise ValueError('component profile changed within acquisition')
         segment: list[dict[str, Any]] = []
         for f in frames:
             if segment:
@@ -222,7 +236,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
         start -= 1
     window = segment[start:end]
     raw_support = [f for f in window if _word(f)]
-    support = [f for f in raw_support if f["geometry_consistent"]
+    support = [f for f in raw_support if _geometry(f, 'result') and _geometry(f, 'score')
                and _score(f) == _score(a if f["tick"] < b["tick"] else b)]
     unknown_word_scores = [f for f in raw_support if _score(f) is None]
     words = sorted({word for f in raw_support if (word := _word(f)) is not None})
@@ -238,7 +252,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
         reasons.append("insufficient_result_support")
     if unknown_word_scores and len(support) < 2:
         reasons.append("result_score_unknown")
-    if not a["geometry_consistent"] or not b["geometry_consistent"]:
+    if not _geometry(a, 'score') or not _geometry(b, 'score'):
         reasons.append("score_geometry_unknown")
     # Score flicker must not become an End merely because Result is nearby.
     stable_before = index >= 2 and _score(segment[index - 2]) == _score(a)
@@ -327,7 +341,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
             "result_support_witnesses": [_witness(f) for f in support],
             "raw_result_witnesses": [_witness(f) for f in raw_support],
             "geometry_rejected_word_observations": sum(
-                not f["geometry_consistent"] for f in raw_support),
+                not (_geometry(f, 'result') and _geometry(f, 'score')) for f in raw_support),
             "unknown_score_word_observations": [
                 {**_witness(f), "status": "UNKNOWN", "reason": "result_score_unknown"}
                 for f in unknown_word_scores],

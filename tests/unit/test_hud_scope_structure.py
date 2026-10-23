@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import pytest
 
-from scripts.diagnostics.hud_scope_structure import top_scope
+from scripts.diagnostics.hud_scope_structure import outline_mask, top_scope
 
 
 def reference():
@@ -48,3 +48,23 @@ def test_generic_line_or_missing_mask_is_not_reference_identity():
     template[:] = 0
     cv2.line(template, (1, 30), (598, 30), 255, 2)
     assert top_scope(template, np.full_like(template, 255), template)['status'] == 'UNKNOWN'
+
+
+def test_frozen_long_outline_remains_supported_when_short_glyphs_change():
+    template, mask = reference()
+    for x in [0, 200, 400]:
+        cv2.putText(template, '8', (x + 95, 32), cv2.FONT_HERSHEY_SIMPLEX, .5, 255, 1)
+    selected = outline_mask(template, mask)
+    observed = template.copy()
+    for x in [0, 200, 400]:
+        observed[19:34, x + 90:x + 120] = 0
+    assert top_scope(template, selected, observed)['status'] == 'TOP_STRUCTURE_SUPPORTED'
+    assert not np.array_equal(selected, mask)
+    assert np.array_equal(selected, outline_mask(template, mask))
+
+
+def test_outline_mask_cannot_make_missing_reference_or_clutter_valid():
+    template, mask = reference()
+    selected = outline_mask(template, mask)
+    assert top_scope(template, selected, np.zeros_like(template))['status'] == 'UNKNOWN'
+    assert not outline_mask(np.zeros_like(template), mask).any()

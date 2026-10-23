@@ -9,6 +9,7 @@ from typing import Any
 
 from scripts.diagnostics.round_transition_evidence import (
     _bracket,
+    _geometry,
     _score,
     _segments,
     _timer,
@@ -59,7 +60,7 @@ def review_scores(packet: dict[str, Any], response: dict[str, Any]) -> dict[str,
 
 
 def _upper(f: dict[str, Any]) -> bool:
-    return f["geometry_consistent"] is True
+    return _geometry(f, 'score') and _geometry(f, 'timer')
 
 
 def _human_score(f: dict[str, Any]) -> tuple[int, int] | None:

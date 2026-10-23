@@ -58,6 +58,37 @@ or feed Lifecycle promotion. Real development samples show that it also rejects
 many previously supported frames. It is a triage diagnostic only; it is not a
 replacement Matcher, Profile, ownership check or production calibration policy.
 
+## Opt-in Round component recognition
+
+`outline_mask` selects long straight reference strokes with fixed Hough
+parameters (length 6% of reference width, vote threshold 4%, gap 0.5%, five-pixel
+band intersected with the frozen mask). It never uses the observed image or
+predicted Score/Result to choose the reference pixels. This removes dynamic
+glyph interiors from the structure comparison while keeping the existing
+three-tile, 32-edge and 0.90 acceptance conditions.
+
+The new `component_geometry` producer checks actual native BGR pixel hashes,
+the reference-set fingerprint, profile/layout/bank identities and reference
+resolution. It reruns the existing Result title-region selector and verifies
+the selected crop hash before supporting the Result ROI. Score, Timer and
+Result receive separate support flags. A supported top outline alone cannot
+authorize a Result region or supply an unread OCR value.
+The reader-profile digest must bind the effective configuration, including
+explicit preprocessing overrides and asset fingerprints, not just its parent
+configuration file. Reader outputs are also hashed into each frame receipt.
+
+The offline Round transition/lifecycle assemblers may opt in through the
+explicit `component_geometry` receipt. They validate its frame/epoch hashes,
+asset bindings, digest, tile evidence and role consistency. Profile changes
+inside an acquisition are rejected. The legacy `scope_diagnostic` field cannot
+opt in. Existing global-only evidence retains its original behavior; its
+`geometry_consistent` flag is never rewritten. Component support does not
+authorize player ownership, full HUD geometry, internal event timing or any
+Production End/Start. The current-frame readers, confidence thresholds, native
+continuity, Score persistence, word-direction and multiple-evidence gates still
+apply. Receipts are reproducible diagnostic provenance, not signed GT or
+qualification; the caller must retain the actual source and frozen assets.
+
 For each change freeze sources, sample-selection policy, reference/profile and
 input hashes before comparison. Report the four existing lifecycle regressions
 on identical observations separately from newly acquired samples. New fixed-grid
