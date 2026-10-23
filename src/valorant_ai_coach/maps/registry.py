@@ -70,10 +70,11 @@ class MapRegistry:
     _MAX_COVERAGE_GAP = 0.12
     _MAX_CLIPPED_OVERLAP = 0.005
 
-    def __init__(self, root: Path | None = None) -> None:
+    def __init__(self, root: Path | None = None, *, schema_root: Path | None = None) -> None:
         self.root = self._bundle_root(root)
+        schemas = schema_root if schema_root is not None else self.root / "schemas"
         self.schemas = {
-            key: self._read_object(self.root / "schemas" / filename)
+            key: self._read_object(schemas / filename)
             for key, filename in self._SCHEMA_FILES.items()
         }
         self._validators: dict[str, Draft202012Validator] = {}

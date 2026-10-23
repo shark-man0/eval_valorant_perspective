@@ -1,0 +1,13 @@
+{
+  "version": "3.0",
+  "map_id": "haven",
+  "vocabulary_status": "Public anchors only; active labels empty until boundariesverified",
+  "location_label_policy": {
+    "stable_duration_sec": 0.45,
+    "exact_match_base_confidence": 0.96,
+    "fuzzy_match_min": 0.9,
+    "confidence_rule": "min(recognition_confidence, record.confidence_cap)",
+    "on_unknown": "fall back to polygon resolver; never invent a callout"
+  },
+  "records": {}
+}
