@@ -610,7 +610,7 @@ def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tm
     result = build(path, tmp_path/'private')
     assert result['summary']['baseline']['map_candidates'] == 3
     assert result['summary']['variant']['formal_outputs'] == 0
-    packet = json.loads((tmp_path/'private/review_packet_PRIVATE.json').read_text())
+    packet = json.loads((tmp_path/'private/review_packet_PRIVATE.json').read_text(encoding='utf-8'))
     assert packet['prediction_positions_prefilled'] is False
     assert len(packet['reviews']) == 3
     assert all(r['status'] == 'pending' and r['center_roi_px'] is None for r in packet['reviews'])
