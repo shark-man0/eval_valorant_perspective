@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "mask_id": "haven_b_plant_core_qa_v1",
+  "map_id": "haven",
+  "purpose": "QA restricted to eroded B shaded plant core, not entiremap",
+  "authoring_basis": "Independent erosion of source texture gold region by 4px, not generated from zone polygon union. Whole visible-floor raster stored separately.",
+  "reference_asset": "assets/haven_reference.png",
+  "reference_sha256": "20b4a0868b6866d4a95d2d72c07a44aa342ffb3f98047f6fba5958790e3ab4c2",
+  "polygon_norm": [
+    [
+      0.43771827706635624,
+      0.5679916317991632
+    ],
+    [
+      0.43771827706635624,
+      0.6589958158995816
+    ],
+    [
+      0.5518044237485448,
+      0.6589958158995816
+    ],
+    [
+      0.5518044237485448,
+      0.5679916317991632
+    ]
+  ],
+  "limits": {
+    "not_official_geometry": true,
+    "not_for_los": true,
+    "not_for_gameplay_event_generation": true
+  }
+}
