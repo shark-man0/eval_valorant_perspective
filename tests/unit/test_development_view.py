@@ -36,3 +36,19 @@ def test_bad_config_is_unavailable_and_fail_closed():
                          'reference_frame_size_px': [99999, 99999]}]:
         result = DevelopmentViewVeto().inspect(frame, spec)
         assert result['veto'] is True and result['status'] == 'unavailable'
+
+
+def test_subpixel_authoring_roi_fails_closed_instead_of_asserting():
+    frame = np.zeros((160, 320, 3), np.uint8)
+    spec = {'mode': 'spectator_switch_v1', 'reference_frame_size_px': [64, 64],
+            'roi': [0, 0, .005, .005]}
+    result = DevelopmentViewVeto().inspect(frame, spec)
+    assert result['veto'] is True and result['status'] == 'unavailable'
+
+
+def test_invalid_frames_fail_closed_when_veto_configured():
+    spec = {'mode': 'spectator_switch_v1'}
+    for frame in [np.zeros((0, 0, 3), np.uint8), np.zeros((160, 320), np.uint8),
+                  np.zeros((160, 320, 4), np.uint8), np.zeros((160, 320, 3), np.float32)]:
+        result = DevelopmentViewVeto().inspect(frame, spec)
+        assert result['veto'] is True and result['status'] == 'unavailable'

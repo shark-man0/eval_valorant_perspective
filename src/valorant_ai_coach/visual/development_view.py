@@ -34,6 +34,9 @@ class DevelopmentViewVeto:
         if spec is None:
             return result
         result.update(status="unavailable", veto=True)
+        if (not isinstance(frame, np.ndarray) or frame.ndim != 3 or frame.shape[2] != 3
+                or frame.dtype != np.uint8 or min(frame.shape[:2]) <= 0):
+            return result
         if not isinstance(spec, dict) or spec.get("mode") != "spectator_switch_v1":
             return result
         bounds = normalized_roi_bounds(spec.get("roi"), frame.shape[1], frame.shape[0])
@@ -43,7 +46,8 @@ class DevelopmentViewVeto:
                        for v in size)):
             return result
         author_bounds = normalized_roi_bounds(spec.get("roi"), *size)
-        assert author_bounds is not None
+        if author_bounds is None:
+            return result
         al, at, ar, ab = author_bounds
         if (ar-al)*(ab-at) > 250_000:
             return result
