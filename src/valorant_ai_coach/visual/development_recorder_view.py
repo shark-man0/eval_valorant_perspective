@@ -139,6 +139,7 @@ class DevelopmentRecorderView:
             "block_position_candidate": (matched and not same) or alias["block_position_candidate"],
             "actor_alias_evidence": alias,
             "reference_fingerprint": fingerprint,
+            "recorder_agent_id": binding["recorder_agent_id"],
             "binding_review_sha256": binding["review_sha256"],
             "anchor_frame_sha256": binding["anchor_frame_sha256"],
             "evidence_family": "current_ability_glyphs", "independent_of_minimap_pixels": True,

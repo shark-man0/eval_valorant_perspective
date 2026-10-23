@@ -118,6 +118,8 @@ const edge=R.edges.find(e=>e.to_index===index);
 const boundary=s.region_candidate_evidence;
 const evidence=s.ownership_evidence;const reviewed=s.position_review;
 const recorder=s.recorder_view_evidence;const viewReview=s.view_review;
+const alias=recorder?.actor_alias_evidence;
+const reviewedBoundary=reviewed?.reference_polygon_review;
 const matches=s.marker_reference_evidence?.matches||[];
 const selfMatches=matches.filter(m=>m.reference_category==='self_reference_appearance').length;
 const controlMatches=matches.filter(m=>m.reference_category==='nonself_control_appearance').length;
@@ -133,12 +135,19 @@ $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'な
 `${boundary?.assumed_error_radius_reference_px??'未指定'} px（精度保証ではありません）\n`+
 `独立画面の根拠候補: ${evidence?.view_candidate??'未測定'} `+
 `/ ${evidence?.reasons?.join(', ')??'なし'}\n`+
-`録画者agentとの対応: ${recorder?.association??'未測定'} / 現在の表示候補 `+
+`録画者agentとの対応: ${recorder?.association??'未測定'} / 登録agent `+
+`${recorder?.recorder_agent_id??'UNKNOWN'} / 現在の表示候補 `+
 `${recorder?.visible_agent_candidate??'UNKNOWN'}（アカウント所有は未確定）\n`+
+`明示名の対応: ${alias?.alias_association??'未測定'} / ${alias?.slot_kind??'未観測'}\n`+
 `人間が確認した現在視点: ${viewReview?.human_view_role??'未確認'}（この観測のみ）\n`+
 `この観測のマーカー確認: ${reviewed?.human_reviewed_role??'未確認'} / ROI中心との差 `+
 `${reviewed?.roi_center_difference_px?.toFixed(2)??'未測定'} px / 近似Map参照との差 `+
-`${reviewed?.map_affine_reference_difference_px?.toFixed(2)??'未測定'} px（他の点へ適用しません）`;
+`${reviewed?.map_affine_reference_difference_px?.toFixed(2)??'未測定'} px`+
+`（他の点へ適用しません）\n`+
+`確認点の登録Polygon一致: ${reviewedBoundary?.membership_agrees??'未測定'} / `+
+`注釈1座標の微小変動による境界変化: `+
+`${reviewedBoundary?.membership_changes_under_single_coordinate_perturbation??'未測定'}`+
+`（変化なしでも誤差保証にはなりません）`;
 document.querySelectorAll('tr[data-segment]').forEach(tr=>tr.classList.toggle('active',Number(tr.dataset.segment)===s.segment));}
 function stop(){clearTimeout(timer);timer=null;$('play').textContent='再生'}
 function step(){if(index+1>=S.length||context(S[index+1])!==context(S[index])){stop();return}
