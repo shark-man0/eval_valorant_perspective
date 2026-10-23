@@ -125,6 +125,57 @@ def test_next_clock_observations_must_be_temporally_consistent():
     assert c["status"] == "UNKNOWN" and "next_clock_contradiction" in c["reasons"]
 
 
+def test_transient_clock_prefix_is_retained_before_later_consistent_witnesses():
+    rows = chain()
+    rows[40]["timer"]["value"] = "2:25"
+    rows[41]["timer"]["value"] = "1:39"
+    later = frame(42, score=(2, 4), timer="1:39")
+    later["time_base"] = "1/1"
+    rows.append(later)
+    c = lifecycle(rows)["chains"][0]
+    assert c["status"] == "DEVELOPMENT_LIFECYCLE_CANDIDATE"
+    assert c["next_clock_reset_bracket"]["upper_tick"] == 41
+    assert c["rejected_clock_prefixes"][0]["witnesses"][0]["tick"] == 40
+    assert c["rejected_clock_prefixes"][0]["status"] == "UNKNOWN"
+    assert rows[40]["timer"]["value"] == "2:25"
+
+
+def test_later_clock_support_cannot_cross_acquisition_boundary():
+    rows = chain()
+    rows[40]["timer"]["value"] = "2:25"
+    rows[41]["timer"]["value"] = "1:39"
+    later = frame(42, score=(2, 4), timer="1:39", epoch="other")
+    later["time_base"] = "1/1"
+    rows.append(later)
+    c = lifecycle(rows)["chains"][0]
+    assert c["status"] == "UNKNOWN"
+
+
+def test_purchase_reappearance_cannot_create_reversed_next_clock_bracket():
+    rows = chain()
+    rows[41]["timer"]["value"] = "0:00"
+    rows[41]["buy_phase"] = True
+    for t in [42, 43]:
+        f = frame(t, score=(2, 4), timer="1:39")
+        f["time_base"] = "1/1"
+        rows.append(f)
+    c = lifecycle(rows)["chains"][0]
+    b = c["next_clock_reset_bracket"]
+    assert b["lower_tick"] == 41 and b["upper_tick"] == 42
+    assert c["rejected_clock_prefixes"][0]["reason"] == "preparation_reappeared"
+
+
+def test_unconfirmed_clock_before_long_observation_hole_is_retained_unknown():
+    rows = chain()
+    rows[41]["timer"]["value"] = None
+    f = frame(42, score=(2, 4), timer="1:38")
+    f["time_base"] = "1/1"
+    rows.append(f)
+    c = lifecycle(rows)["chains"][0]
+    assert c["status"] == "UNKNOWN"
+    assert c["rejected_clock_prefixes"][0]["reason"] == "clock_support_gap"
+
+
 def test_clock_reset_far_from_last_countdown_is_not_a_boundary():
     rows = chain()
     for f in rows[38:40]:

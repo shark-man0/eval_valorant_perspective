@@ -203,3 +203,25 @@ acquisitions remain incomplete. Acquisition-local upper-HUD support was tested
 privately but did not improve this lifecycle and was not adopted. Menu occlusion
 and dynamic top-HUD changes therefore still produce UNKNOWN geometry. No
 Production Matcher/Profile, threshold, Canonical GT or ownership rule changed.
+
+## Transient next-clock displays and bounded Timer proposals
+
+The lifecycle assembler now retains a contradictory initial clock prefix as an
+UNKNOWN episode instead of stopping at the first pair of readable values. A
+later pair may support a new display hypothesis only when it satisfies the same
+Score, geometry, timing, one-second repetition and native-segment conditions.
+The rejected prefix, its original values, hashes and contradiction bracket stay
+in `rejected_clock_prefixes`. This does not repair the values, identify an OCR
+error, or backdate onset into the prefix. Without later consistent observations,
+the lifecycle remains UNKNOWN. Reappearing preparation clears the pending active
+clock hypothesis; it must never produce a reversed countdown/reset bracket.
+
+The existing relative `title_region` proposal was compared privately on the outer
+Timer ROI, retaining strict glyph/punctuation/0.90 confidence/0.04 margin guards.
+It recovered some points but regressed on another DEVELOPMENT recording and did
+not improve lifecycle recovery. It was not adopted. Whole-ROI foreground removal
+also regressed and was discarded. Current readers and Profiles remain unchanged.
+Non-colon displays stay unread; no assumed minute/second value is substituted.
+Keep acquisition improvements, temporal integration changes and rejected reader
+experiments separate in reporting. An extra readable point is not independently
+verified digit accuracy or a completed lifecycle.

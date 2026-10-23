@@ -122,10 +122,20 @@ def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
         if _timer_conflicts(buy):
             reasons.append("purchase_clock_contradiction")
         active: list[dict[str, Any]] = []
+        rejected_clocks: list[dict[str, Any]] = []
         reset = None
         if repeated_buy:
             first_buy = buy[0]
             for f in tail:
+                if (active and _upper(f) and _score(f) == score
+                        and (f.get("buy_phase") is True
+                             or (clock := _timer(f)) is not None and clock <= 45)):
+                    rejected_clocks.append({"status": "UNKNOWN",
+                                            "reason": "preparation_reappeared",
+                                            "witnesses": [_witness(a) for a in active],
+                                            "display_values": [_timer(a) for a in active],
+                                            "contradiction": _bracket(active[-1], f)})
+                    active = []
                 if (f["tick"] <= first_buy["tick"] or not _upper(f) or _score(f) != score
                         or f.get("buy_phase") is True
                         or (clock := _timer(f)) is None or clock < 60):
@@ -143,12 +153,25 @@ def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
                     continue
                 if active and f["tick"] - active[-1]["tick"] > (
                         Fraction(1) / Fraction(f["time_base"])):
+                    rejected_clocks.append({"status": "UNKNOWN",
+                                            "reason": "clock_support_gap",
+                                            "witnesses": [_witness(a) for a in active],
+                                            "display_values": [_timer(a) for a in active],
+                                            "contradiction": _bracket(active[-1], f)})
+                    active = []
+                if active and _timer_conflicts([active[-1], f]):
+                    rejected_clocks.append({"status": "UNKNOWN",
+                                            "reason": "inconsistent_clock_prefix",
+                                            "witnesses": [_witness(a) for a in active],
+                                            "display_values": [_timer(a) for a in active],
+                                            "contradiction": _bracket(active[-1], f)})
                     active = []
                 active.append(f)
                 if len(_repeated(active)):
                     reset = _bracket(last, active[0])
                     break
-            if _timer_conflicts(active):
+            if reset is None and any(p["reason"] == "inconsistent_clock_prefix"
+                                     for p in rejected_clocks):
                 reasons.append("next_clock_contradiction")
             if reset is None:
                 reasons.append("next_active_clock_not_observed")
@@ -162,6 +185,7 @@ def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
                        "buy_witnesses": [_witness(f) for f in buy],
                        "next_clock_reset_bracket": reset,
                        "next_clock_witnesses": [_witness(f) for f in active],
+                       "rejected_clock_prefixes": rejected_clocks,
                        "unread_score_witnesses": [_witness(f) for f in tail if _score(f) is None],
                        "human_score_conflicts": [_witness(f) for f in conflicts],
                        "human_score_observations": [f["human_score_observation"]
