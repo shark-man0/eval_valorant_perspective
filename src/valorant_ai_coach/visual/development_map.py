@@ -23,6 +23,7 @@ from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
 from .development_boundary import candidate_boundary_evidence, validate_assumed_error_radius
+from .development_ownership import DevelopmentOwnershipEvidence
 from .development_view import DevelopmentViewVeto
 from .map_pipeline import MapTimeline
 from .self_marker import MarkerPosition, MarkerReferenceInspector, SelfMarkerTracker
@@ -58,6 +59,7 @@ class DevelopmentMapTimeline:
         self._context: tuple[Any, ...] | None = None
         self.marker = SelfMarkerTracker()
         self.view_veto = DevelopmentViewVeto()
+        self.ownership_evidence = DevelopmentOwnershipEvidence()
         self.inspector = MarkerReferenceInspector() if inspect_reference_appearances else None
         self.previous: tuple[float, tuple[float, float], int | None] | None = None
         self.next_segment = 0
@@ -140,10 +142,17 @@ class DevelopmentMapTimeline:
             self.reset()
             raise ValueError("Map selection changed or became unknown; create a new timeline")
         self.timeline.options = options
-        context_key = (
+        ownership_evidence = self.ownership_evidence.inspect(
+            frame, self.profile.get("development_ownership_evidence"), minimap_roi=roi,
+            source_id=source_id, acquisition_id=acquisition_id, time_sec=time_sec,
+            frame_index=frame_index,
+        )
+        context_key: tuple[Any, ...] = (
             source_id, acquisition_id, frame.shape, bounds,
             json.dumps(self.profile, sort_keys=True), json.dumps(definition.data, sort_keys=True),
         )
+        if ownership_evidence["status"] != "disabled":
+            context_key += (ownership_evidence["reference_fingerprint"],)
         if context_key != self._context:
             self._break()
             self.marker.reset()
@@ -153,11 +162,16 @@ class DevelopmentMapTimeline:
         view_veto = self.view_veto.inspect(frame, self.profile.get("development_view_veto"))
         eligible = (
             not view_veto["veto"]
+            and not ownership_evidence["block_position_candidate"]
             and view.get("primary_state") == "live_first_person"
             and view.get("values", {}).get("player_specific_hud_valid") is True
             and not set(view.get("state_flags", [])) & {
                 "visual_transition", "buy_phase_banner", "round_end_banner",
             }
+        )
+        ownership_evidence["declared_view_conflict"] = (
+            view.get("primary_state") == "live_first_person"
+            and ownership_evidence["block_position_candidate"]
         )
         appearance = self.marker.observe(
             frame[top:bottom, left:right], time_sec, self.profile["minimap_self_marker"],
@@ -271,6 +285,7 @@ class DevelopmentMapTimeline:
             "appearance": appearance.to_dict(),
             "marker_reference_evidence": reference_evidence,
             "development_view_veto": view_veto,
+            "ownership_evidence": ownership_evidence,
             "ownership": {"identity": "UNKNOWN", "view_eligible": eligible,
                           "observed_view": view.get("primary_state", "unknown"),
                           "view_evidence_kind": evidence_kind,
