@@ -16,11 +16,11 @@ from valorant_ai_coach.hud.templates import SubregionReader
 
 def test_recovery_is_explicit_and_preserves_profile_crop_and_assets(tmp_path):
     path = score_profile(tmp_path)
-    spec = json.loads(path.read_text())
+    spec = json.loads(path.read_text(encoding="utf-8"))
     bounds = [0.2, 0.1, 0.6, 0.9]
     for role in ("ally_score", "enemy_score"):
         spec["readers"][role]["subregion_norm"] = bounds
-    path.write_text(json.dumps(spec))
+    path.write_text(json.dumps(spec), encoding="utf-8")
     before = path.read_bytes()
     default, old = score_readers(path, foreground="white200_rowcontrast_v1")
     recovered, new = score_readers(
