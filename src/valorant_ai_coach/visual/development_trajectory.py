@@ -12,6 +12,8 @@ import math
 from collections import Counter
 from typing import Any, TypeGuard
 
+from .development_position_review import observation_fingerprint
+
 
 def _number(value: Any) -> TypeGuard[int | float]:
     return (isinstance(value, (int, float)) and not isinstance(value, bool)
@@ -59,8 +61,20 @@ def analyze_candidate_path(
             raise ValueError("Source, acquisition, context and geometry identity required")
         context = tuple(record[key] for key in keys)
         point: Any = record.get("map_position_norm")
+        evidence = record.get("ownership_evidence") or {}
+        review = record.get("position_review") or {}
+        if review and (
+            review.get("qualification") != "development_only"
+            or review.get("ownership") != "UNKNOWN"
+            or review.get("sample_scope") != "this_observation_only"
+            or review.get("prediction_sha256") != observation_fingerprint(record)
+        ):
+            raise ValueError("Coordinate review must match this frozen prediction")
         reason = None
-        if record.get("ownership", {}).get("view_eligible") is not True:
+        if (evidence.get("block_position_candidate") is True
+                or review.get("human_reviewed_role") in {"NONSELF", "SPECTATOR", "DEATH"}):
+            reason = "independent_context_or_review_blocks_candidate"
+        elif record.get("ownership", {}).get("view_eligible") is not True:
             reason = "view_not_self_eligible"
         elif (record.get("calibration", {}).get("status") != "ok"
               or not isinstance(record.get("map_segment"), int)):
@@ -88,6 +102,7 @@ def analyze_candidate_path(
             "calibration_score": record.get("calibration", {}).get("confidence"),
             "observed_view": record.get("ownership", {}).get("observed_view", "unknown"),
             "marker_reference_evidence": record.get("marker_reference_evidence"),
+            "ownership_evidence": evidence or None, "position_review": review or None,
             "ownership": "UNKNOWN", "qualification": "development_only",
         }
         region = record.get("development_region_candidate") or {}
@@ -186,6 +201,19 @@ def analyze_candidate_path(
         "zone_observation_spans_sec": dict(zone_spans),
         "region_candidate_observation_spans_sec": dict(region_spans),
         "region_interior_spans_under_assumption_sec": dict(interior_spans),
+        "coordinate_review_coverage": {
+            "reviewed_position_observations": sum(
+                s["point_norm"] is not None and bool(s["position_review"]) for s in samples),
+            "unreviewed_position_observations": sum(
+                s["point_norm"] is not None and not s["position_review"] for s in samples),
+            "both_endpoints_reviewed_span_sec": sum(e["observed_span_sec"] for e in edges
+                if samples[e["from_index"]]["position_review"]
+                and samples[e["to_index"]]["position_review"]),
+            "unreviewed_endpoint_span_sec": sum(e["observed_span_sec"] for e in edges
+                if not samples[e["from_index"]]["position_review"]
+                or not samples[e["to_index"]]["position_review"]),
+            "transferable_coordinate_accuracy_bound": "unmeasured",
+        },
         "motion_observation_spans_sec": {
             name: sum(e["observed_span_sec"] for e in edges if e["motion"] == name)
             for name in ("moving_candidate", "low_displacement_candidate", "indeterminate")},

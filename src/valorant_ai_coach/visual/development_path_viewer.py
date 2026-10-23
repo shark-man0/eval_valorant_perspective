@@ -112,10 +112,11 @@ $('status').textContent=`${s.source_id} / ${s.acquisition_id} `+
 if(D.frames[index]){$('source').src=D.frames[index];$('source').hidden=false}
 else{$('source').removeAttribute('src');$('source').hidden=true}
 $('frameStatus').textContent=D.frames[index]?
-'同時刻の入力画像。R=本人参照の外観一致、N=非本人参照の外観一致。所有者は全件UNKNOWN。':
+'同時刻の入力画像。参照との外観一致数は下欄に表示します。所有者は全件UNKNOWN。':
 'この観測には入力画像が付属していません';
 const edge=R.edges.find(e=>e.to_index===index);
 const boundary=s.region_candidate_evidence;
+const evidence=s.ownership_evidence;const reviewed=s.position_review;
 const matches=s.marker_reference_evidence?.matches||[];
 const selfMatches=matches.filter(m=>m.reference_category==='self_reference_appearance').length;
 const controlMatches=matches.filter(m=>m.reference_category==='nonself_control_appearance').length;
@@ -128,7 +129,12 @@ $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'な
 `本人参照の外観一致: ${selfMatches} / 非本人参照の外観一致: ${controlMatches}\n`+
 `候補領域の境界: ${boundary?.boundary_assessment??'未測定'} / 境界まで `+
 `${boundary?.boundary_clearance_reference_px?.toFixed(2)??'未測定'} px / 仮定誤差半径 `+
-`${boundary?.assumed_error_radius_reference_px??'未指定'} px（精度保証ではありません）`;
+`${boundary?.assumed_error_radius_reference_px??'未指定'} px（精度保証ではありません）\n`+
+`独立画面の根拠候補: ${evidence?.view_candidate??'未測定'} `+
+`/ ${evidence?.reasons?.join(', ')??'なし'}\n`+
+`この観測の人間確認: ${reviewed?.human_reviewed_role??'未確認'} / ROI中心との差 `+
+`${reviewed?.roi_center_difference_px?.toFixed(2)??'未測定'} px / 近似Map参照との差 `+
+`${reviewed?.map_affine_reference_difference_px?.toFixed(2)??'未測定'} px（他の点へ適用しません）`;
 document.querySelectorAll('tr[data-segment]').forEach(tr=>tr.classList.toggle('active',Number(tr.dataset.segment)===s.segment));}
 function stop(){clearTimeout(timer);timer=null;$('play').textContent='再生'}
 function step(){if(index+1>=S.length||context(S[index+1])!==context(S[index])){stop();return}
@@ -151,6 +157,9 @@ Object.entries(R.motion_observation_spans_sec).map(([k,v])=>
 `${motionName[k]} ${v.toFixed(3)} s`).join(' / ')+
 `\n運動の判定窓: ${R.parameters.quiet_window_sec}s / 誤差の仮定: `+
 `${R.parameters.position_uncertainty_px}px（感度分析用、精度保証ではありません）\n`+
-`Zone変更が観測された区間: ${R.zone_change_brackets.length}`;
+`Zone変更が観測された区間: ${R.zone_change_brackets.length}\n`+
+`座標比較済み: ${R.coordinate_review_coverage?.reviewed_position_observations??0}点 / `+
+`未確認: ${R.coordinate_review_coverage?.unreviewed_position_observations??0}点 `+
+`（全経路の座標精度は未測定）`;
 image.onload=draw;image.src=D.reference;draw();
 </script></html>'''

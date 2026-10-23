@@ -544,3 +544,95 @@ def test_haven_fixed_outline_roundtrip_and_wrong_map_rejection():
         assert actual == pytest.approx(((x-x0)/(x1-x0), (y-y0)/(y1-y0)), abs=.008)
     wrong = calibrator.analyze(frame, [0, 0, 1, 1], bind_development_registry().load('bind'))
     assert wrong.status != 'ok'
+
+
+def test_independent_context_contradiction_and_reference_change_break_path(bind_case, tmp_path):
+    _, _, frame, profile, _ = bind_case
+    glyph = frame[30:55, 100:261].copy()
+    path = tmp_path/'context.png'
+    cv2.imwrite(str(path), glyph)
+    # Use a resized synthetic full frame so a reviewed slot can be disjoint from the map.
+    full = np.zeros((854, 455, 3), np.uint8)
+    full[:427] = frame
+    full[600:625, 100:261] = glyph
+    profile['rois']['minimap'] = [0, 0, 1, .5]
+    profile['development_ownership_evidence'] = {
+        'mode': 'screen_context_v1', 'frame_size_px': [455, 854],
+        'slot_review': 'source_reviewed_not_qualified', 'probes': [{
+            'claim': 'first_person_hud', 'template_path': str(path),
+            'roi': [90/455, 590/854, 270/455, 635/854]}]}
+    pipeline = DevelopmentMapTimeline(profile)
+    view = {'primary_state': 'live_first_person', 'values': {'player_specific_hud_valid': True}}
+
+    def observe(t):
+        return pipeline.observe(full, t, round(t*5), view=view, evidence_kind='source_review',
+                                source_id='synthetic', acquisition_id='same')
+
+    before = observe(0)
+    assert before['map_position_norm'] is not None
+    assert before['ownership']['identity'] == 'UNKNOWN'
+    cv2.imwrite(str(path), np.random.default_rng(89).integers(0, 256, glyph.shape, np.uint8))
+    after = observe(.2)
+    assert after['map_segment'] != before['map_segment']
+    assert after['context_sha256'] != before['context_sha256']
+    cv2.imwrite(str(path), glyph)
+    profile['development_ownership_evidence']['probes'][0]['claim'] = 'death_report'
+    blocked = observe(.4)
+    assert blocked['ownership_evidence']['declared_view_conflict'] is True
+    assert blocked['map_position_norm'] is None
+    assert blocked['development_events'] == []
+    assert blocked['formal_self_position_fact'] is None
+
+
+def test_reusable_benchmark_freezes_inputs_and_blind_review_packet(bind_case, tmp_path):
+    import hashlib
+
+    from scripts.development_map_benchmark import build
+
+    _, _, frame, profile, _ = bind_case
+    image = tmp_path/'frame.png'
+    cv2.imwrite(str(image), frame)
+    profile_path = tmp_path/'profile.json'
+    profile_path.write_text(json.dumps(profile), encoding='utf-8')
+    manifest = {'source_split': 'DEVELOPMENT', 'exposure': 'DEVELOPMENT',
+                'qualification': 'development_only', 'source_id': 'synthetic',
+                'acquisition_id': 'native-window', 'native_time_base': '1/5',
+                'baseline_profile_path': str(profile_path),
+                'variant_profile_path': str(profile_path),
+                'view_evidence_kind': 'source_review', 'observations': [{
+                    'image_path': str(image),
+                    'image_sha256': hashlib.sha256(image.read_bytes()).hexdigest(),
+                    'pts_tick': i, 'time_sec': i*.2, 'frame_index': i,
+                    'view': {'primary_state': 'live_first_person',
+                             'values': {'player_specific_hud_valid': True}}} for i in range(3)]}
+    path = tmp_path/'manifest.json'
+    path.write_text(json.dumps(manifest), encoding='utf-8')
+    result = build(path, tmp_path/'private')
+    assert result['summary']['baseline']['map_candidates'] == 3
+    assert result['summary']['variant']['formal_outputs'] == 0
+    packet = json.loads((tmp_path/'private/review_packet_PRIVATE.json').read_text())
+    assert packet['prediction_positions_prefilled'] is False
+    assert len(packet['reviews']) == 3
+    assert all(r['status'] == 'pending' and r['center_roi_px'] is None for r in packet['reviews'])
+    from scripts.development_map_benchmark import apply_reviews
+
+    packet['reviews'][0].update(
+        status='human_confirmed', role='SELF', source_tolerance_px=2, reference_tolerance_px=2,
+        center_roi_px=[200, 200], landmark_roi_px=[[10, 10], [400, 10], [10, 400]],
+        landmark_reference_px=[[0, 0], [1024, 0], [0, 1024]])
+    reviews_path = tmp_path/'reviews.json'
+    reviews_path.write_text(json.dumps(packet), encoding='utf-8')
+    source = tmp_path/'private/variant_observations_PRIVATE.json'
+    frozen_bytes = source.read_bytes()
+    reviewed = apply_reviews(source, reviews_path, tmp_path/'reviewed')
+    assert len(reviewed['comparisons']) == 1
+    assert reviewed['trajectory']['coordinate_review_coverage'][
+        'reviewed_position_observations'] == 1
+    assert source.read_bytes() == frozen_bytes
+    assert reviewed['qualification_or_error_bound_established'] is False
+    with pytest.raises(ValueError, match='fresh private directory'):
+        apply_reviews(source, reviews_path, tmp_path/'reviewed')
+    manifest['observations'][1]['pts_tick'] = 999
+    path.write_text(json.dumps(manifest), encoding='utf-8')
+    with pytest.raises(ValueError, match='tick/time'):
+        build(path, tmp_path/'invalid')

@@ -150,3 +150,37 @@ def test_region_spans_under_assumption_require_both_endpoints_and_same_radius():
     assert result['region_candidate_observation_spans_sec'] == {'A': pytest.approx(.8)}
     assert result['region_interior_spans_under_assumption_sec'] == {'A': pytest.approx(.2)}
     assert result['formal_self_position_fact'] is None
+
+
+def test_independent_veto_or_review_cannot_be_overridden_by_declared_live():
+    from valorant_ai_coach.visual.development_position_review import observation_fingerprint
+
+    a, b = observation(0), observation(1)
+    b['ownership_evidence'] = {'block_position_candidate': True}
+    assert analyze([a, b])['edges'] == []
+    b.pop('ownership_evidence')
+    b['position_review'] = {'qualification': 'development_only', 'ownership': 'UNKNOWN',
+                            'sample_scope': 'this_observation_only',
+                            'human_reviewed_role': 'SPECTATOR',
+                            'prediction_sha256': observation_fingerprint(b)}
+    assert analyze([a, b])['edges'] == []
+    b['frame_index'] = 20
+    with pytest.raises(ValueError, match='frozen prediction'):
+        analyze([a, b])
+
+
+def test_few_reviewed_points_do_not_establish_an_error_bound_for_path():
+    from valorant_ai_coach.visual.development_position_review import observation_fingerprint
+
+    records = [observation(i) for i in range(5)]
+    for record in [records[0], records[1]]:
+        record['position_review'] = {
+            'qualification': 'development_only', 'ownership': 'UNKNOWN',
+            'sample_scope': 'this_observation_only', 'human_reviewed_role': 'SELF',
+            'prediction_sha256': observation_fingerprint(record)}
+    coverage = analyze(records)['coordinate_review_coverage']
+    assert coverage['reviewed_position_observations'] == 2
+    assert coverage['unreviewed_position_observations'] == 3
+    assert coverage['both_endpoints_reviewed_span_sec'] == pytest.approx(.2)
+    assert coverage['unreviewed_endpoint_span_sec'] == pytest.approx(.6)
+    assert coverage['transferable_coordinate_accuracy_bound'] == 'unmeasured'
