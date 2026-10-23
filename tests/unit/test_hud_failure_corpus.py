@@ -65,7 +65,8 @@ def test_source_gate_rejects_before_indexing_or_exposure(tmp_path, monkeypatch, 
         rows[-1]['source_sha256'] = 'b' * 64
     p = tmp_path / 'input.json'
     p.write_text(json.dumps({'source_id': source['video_id'],
-                             'source_sha256': source['source_sha256'], 'rows': rows}))
+                             'source_sha256': source['source_sha256'], 'rows': rows}),
+                 encoding='utf-8')
     output = tmp_path / 'output.json'
     with pytest.raises(ValueError, match='DEVELOPMENT'):
         build(tmp_path, [p], output)
@@ -76,10 +77,10 @@ def test_existing_output_is_not_overwritten(tmp_path, monkeypatch):
     import scripts.diagnostics.hud_failure_corpus as module
     monkeypatch.setattr(module, '_check_output_privacy', lambda _: None)
     p = tmp_path / 'output.json'
-    p.write_text('original')
+    p.write_text('original', encoding='utf-8')
     with pytest.raises(ValueError, match='new private output'):
         build(tmp_path, [], p)
-    assert p.read_text() == 'original'
+    assert p.read_text(encoding='utf-8') == 'original'
 
 
 def test_review_queue_is_bounded_deduplicated_and_fair_across_sources():
@@ -112,7 +113,8 @@ def test_successful_build_preserves_native_input_and_records_each_source(tmp_pat
     monkeypatch.setattr(module, 'append_exposure', lambda *a, **k: calls.append(k['source_id']))
     p = tmp_path / 'input.json'
     p.write_text(json.dumps({'source_id': source['video_id'],
-                             'source_sha256': source['source_sha256'], 'rows': rows}))
+                             'source_sha256': source['source_sha256'], 'rows': rows}),
+                 encoding='utf-8')
     before = p.read_bytes()
     report = build(tmp_path, [p], tmp_path/'output.json')
     assert p.read_bytes() == before and calls == [source['video_id']]
