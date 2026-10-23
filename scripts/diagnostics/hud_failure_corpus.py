@@ -170,5 +170,68 @@ def main() -> None:
     build(args.review_session, args.input, args.output)
 
 
-if __name__ == '__main__':
+
+
+def review_natural_windows(packet: dict[str, Any], response: dict[str, Any],
+                           reports: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """Literal human review of fixed windows, separate End/Start denominators.
+
+    Caller verifies media/packet source hashes and binds each diagnostic report
+    to the acquired interval. Unreviewed/UNKNOWN/positive windows never enter a
+    negative denominator; supported hypotheses and unresolved candidates differ.
+    """
+    if (packet.get('kind') != 'DEVELOPMENT_fixed_time_natural_windows_NOT_GT'
+            or response.get('packet_sha256') != canonical_hash(packet)
+            or response.get('origin') != 'human'
+            or not isinstance(response.get('reviewer'),str)
+            or not response['reviewer'].strip()
+            or response.get('predictions_consulted') is not False):
+        raise ValueError('bound fixed-window human response required')
+    cases, answers = packet['cases'], response['cases']
+    ids = {c['id'] for c in cases}
+    if (len(ids)!=len(cases) or len(answers)!=len(cases)
+            or {a['id'] for a in answers}!=ids or set(reports)!=ids):
+        raise ValueError('exact unique natural review cases and reports required')
+    outcomes=[]
+    for a in answers:
+        if (type(a.get('reviewed')) is not bool
+                or a.get('end') not in ('YES','NO','UNKNOWN')
+                or a.get('start') not in ('YES','NO','UNKNOWN')
+                or not isinstance(a.get('states'),list)
+                or len(set(a['states']))!=len(a['states'])
+                or not set(a['states']) <= {'PLAY','BUY','DEATH_SPECTATOR','MENU',
+                                           'HUD_CHANGE','UNKNOWN'}
+                or not isinstance(a.get('notes',''),str) or len(a.get('notes',''))>400
+                or not a['reviewed'] and (a['end']!='UNKNOWN' or a['start']!='UNKNOWN'
+                                        or a['states'] or a.get('notes'))):
+            raise ValueError('explicit natural-window answers required')
+        report=reports[a['id']]
+        ends=report['end_report']['candidates']
+        supported_end=sum(c['status']=='DEVELOPMENT_TRANSITION_CANDIDATE' for c in ends)
+        clocks=report['purchase_next_clock_observations']
+        starts=sum(c['status']=='DEVELOPMENT_PURCHASE_CLOCK_CANDIDATE'
+                   and c['next_clock_reset_bracket'] is not None for c in clocks)
+        outcomes.append({**a,'end_negative':a['reviewed'] and a['end']=='NO',
+                         'start_negative':a['reviewed'] and a['start']=='NO',
+                         'supported_end_hypotheses':supported_end,
+                         'unknown_end_candidates':sum(c['status']=='UNKNOWN' for c in ends),
+                         'next_clock_hypotheses':starts,
+                         'unknown_purchase_clock_candidates':sum(
+                             c['status']=='UNKNOWN' for c in clocks),
+                         'start_detector_scope':('purchase-to-clock display hypotheses; '
+                                                 'internal Round Start unverified')})
+    return {'kind':'DEVELOPMENT_natural_window_review_NOT_qualification',
+            'response_sha256':canonical_hash(response),'outcomes':outcomes,
+            'reviewed_windows':sum(a['reviewed'] for a in answers),
+            'end_negative_denominator':sum(a['end_negative'] for a in outcomes),
+            'start_negative_denominator':sum(a['start_negative'] for a in outcomes),
+            'false_end_hypotheses':sum(a['supported_end_hypotheses'] for a in outcomes
+                                       if a['end_negative']),
+            'false_next_clock_hypotheses':sum(a['next_clock_hypotheses'] for a in outcomes
+                                              if a['start_negative']),
+            'unreviewed_is_negative':False,'formal_events':[],'approved_gt':False,
+            'qualification_created':False}
+
+
+if __name__ == "__main__":
     main()

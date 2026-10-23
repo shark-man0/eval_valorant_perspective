@@ -238,3 +238,41 @@ def test_full_source_identity_and_duplicate_pts_still_rejected():
     rows[-1]["source_sha256"] = "e" * 64
     with pytest.raises(ValueError, match="one source"):
         lifecycle(rows)
+
+def test_purchase_next_clock_is_observable_without_an_end_in_window():
+    rows = chain()[9:]
+    r = lifecycle(rows)
+    assert r["chains"] == []
+    c = r["purchase_next_clock_observations"][0]
+    assert c["status"] == "DEVELOPMENT_PURCHASE_CLOCK_CANDIDATE"
+    assert c["next_clock_reset_bracket"]["lower_tick"] == 39
+    assert c["internal_Start_tick"] is None and c["formal_events"] == []
+
+
+@pytest.mark.parametrize("fault", ["epoch", "gap", "decimal", "geometry", "score"])
+def test_standalone_purchase_clock_cannot_join_invalid_evidence(fault):
+    rows = chain()[9:]
+    for f in rows:
+        if f["tick"] >= 40:
+            if fault == "epoch":
+                f["epoch"] = "new"
+            if fault == "decimal":
+                f["timer"] = {
+                    "value": "99.99",
+                    "confidence": 0.99,
+                    "sources": ["offline_timer_seconds_hundredths_v1"],
+                }
+            if fault == "geometry":
+                f["geometry_consistent"] = False
+            if fault == "score":
+                f["ally_score"]["value"] = "3"
+    if fault == "gap":
+        rows = [f for f in rows if f["tick"] != 39]
+    if fault == "gap":
+        # A missing frame before the reset breaks the source segment, even if
+        # an older preparation observation has a numerically plausible clock.
+        rows = [f for f in rows if f["tick"] != 37]
+    assert not any(
+        c["status"] == "DEVELOPMENT_PURCHASE_CLOCK_CANDIDATE"
+        for c in lifecycle(rows)["purchase_next_clock_observations"]
+    )

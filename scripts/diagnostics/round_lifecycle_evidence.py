@@ -85,6 +85,109 @@ def _repeated(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if (b["tick"] - a["tick"]) * Fraction(b["time_base"]) <= 1]
 
 
+
+def _purchase_clock(tail: list[dict[str, Any]], score: tuple[int, ...]) -> dict[str, Any]:
+    """Existing Buy/next-clock rules, also usable without a preceding End."""
+    reasons: list[str] = []
+    buy = [f for f in tail if f.get("buy_phase") is True and _upper(f)
+           and _score(f) == score and (clock := _timer(f)) is not None
+           and 0 <= clock <= 45 and _word(f) is None]
+    repeated_buy = _repeated(buy)
+    if not repeated_buy:
+        reasons.append("purchase_not_observed")
+    if _timer_conflicts(buy):
+        reasons.append("purchase_clock_contradiction")
+    active: list[dict[str, Any]] = []
+    rejected_clocks: list[dict[str, Any]] = []
+    reset = None
+    if repeated_buy:
+        first_buy = buy[0]
+        for f in tail:
+            if (active and _upper(f) and _score(f) == score
+                    and (f.get("buy_phase") is True
+                         or (clock := _timer(f)) is not None and clock <= 45)):
+                rejected_clocks.append({"status": "UNKNOWN",
+                                        "reason": "preparation_reappeared",
+                                        "witnesses": [_witness(a) for a in active],
+                                        "display_values": [_timer(a) for a in active],
+                                        "contradiction": _bracket(active[-1], f)})
+                active = []
+            if (f["tick"] <= first_buy["tick"] or not _upper(f) or _score(f) != score
+                    or f.get("buy_phase") is True
+                    or (clock := _timer(f)) is None or clock < 60):
+                continue
+            previous = [b for b in tail if first_buy["tick"] <= b["tick"] < f["tick"]
+                        and _upper(b) and _score(b) == score
+                        and (value := _timer(b)) is not None and 0 <= value <= 45]
+            if not previous:
+                continue
+            last = previous[-1]
+            elapsed = (f["tick"] - last["tick"]) * Fraction(f["time_base"])
+            # Existing timer quantization is a display interval. A reset far
+            # from the last countdown is context only, not a start bracket.
+            if abs(elapsed - _timer(last)) > 2:
+                continue
+            if active and f["tick"] - active[-1]["tick"] > (
+                    Fraction(1) / Fraction(f["time_base"])):
+                rejected_clocks.append({"status": "UNKNOWN",
+                                        "reason": "clock_support_gap",
+                                        "witnesses": [_witness(a) for a in active],
+                                        "display_values": [_timer(a) for a in active],
+                                        "contradiction": _bracket(active[-1], f)})
+                active = []
+            if active and _timer_conflicts([active[-1], f]):
+                rejected_clocks.append({"status": "UNKNOWN",
+                                        "reason": "inconsistent_clock_prefix",
+                                        "witnesses": [_witness(a) for a in active],
+                                        "display_values": [_timer(a) for a in active],
+                                        "contradiction": _bracket(active[-1], f)})
+                active = []
+            active.append(f)
+            if len(_repeated(active)):
+                reset = _bracket(last, active[0])
+                break
+        if reset is None and any(p["reason"] == "inconsistent_clock_prefix"
+                                 for p in rejected_clocks):
+            reasons.append("next_clock_contradiction")
+        if reset is None:
+            reasons.append("next_active_clock_not_observed")
+    return {'reasons': reasons,
+            'buy_support_interval': _bracket(buy[0], repeated_buy[0]) if repeated_buy else None,
+            'buy_witnesses': [_witness(f) for f in buy],
+            'next_clock_reset_bracket': reset,
+            'next_clock_witnesses': [_witness(f) for f in active],
+            'rejected_clock_prefixes': rejected_clocks}
+
+
+def _purchase_windows(segments: list[list[dict[str, Any]]]) -> list[dict[str, Any]]:
+    observations = []
+    for segment in segments:
+        score = None
+        run: list[dict[str, Any]] = []
+        runs = []
+        for frame in segment:
+            value = _score(frame)
+            if value is not None and score is not None and value != score:
+                runs.append((score, run))
+                run = []
+            if value is not None:
+                score = value
+            run.append(frame)
+        if score is not None:
+            runs.append((score, run))
+        for pair, frames in runs:
+            view = _purchase_clock(frames, pair)
+            if not view['buy_witnesses']:
+                continue
+            observations.append({**view,
+                'status': 'UNKNOWN' if view['reasons'] else 'DEVELOPMENT_PURCHASE_CLOCK_CANDIDATE',
+                'score': pair, 'first_frame': _witness(frames[0]),
+                'last_frame': _witness(frames[-1]), 'End_association_required': False,
+                'start_semantic_status': 'UNVERIFIED', 'internal_Start_tick': None,
+                'formal_events': []})
+    return observations
+
+
 def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
     """Associate only within fully recorded native segments, retaining holes.
 
@@ -114,79 +217,15 @@ def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
                      and _score(f) is not None and _human_score(f) != _score(f)]
         if conflicts:
             reasons.append("human_score_disagrees_with_reader")
-        buy = [f for f in tail if f.get("buy_phase") is True and _upper(f)
-               and _score(f) == score and (clock := _timer(f)) is not None
-               and 0 <= clock <= 45 and _word(f) is None]
-        repeated_buy = _repeated(buy)
-        if not repeated_buy:
-            reasons.append("purchase_not_observed")
-        if _timer_conflicts(buy):
-            reasons.append("purchase_clock_contradiction")
-        active: list[dict[str, Any]] = []
-        rejected_clocks: list[dict[str, Any]] = []
-        reset = None
-        if repeated_buy:
-            first_buy = buy[0]
-            for f in tail:
-                if (active and _upper(f) and _score(f) == score
-                        and (f.get("buy_phase") is True
-                             or (clock := _timer(f)) is not None and clock <= 45)):
-                    rejected_clocks.append({"status": "UNKNOWN",
-                                            "reason": "preparation_reappeared",
-                                            "witnesses": [_witness(a) for a in active],
-                                            "display_values": [_timer(a) for a in active],
-                                            "contradiction": _bracket(active[-1], f)})
-                    active = []
-                if (f["tick"] <= first_buy["tick"] or not _upper(f) or _score(f) != score
-                        or f.get("buy_phase") is True
-                        or (clock := _timer(f)) is None or clock < 60):
-                    continue
-                previous = [b for b in tail if first_buy["tick"] <= b["tick"] < f["tick"]
-                            and _upper(b) and _score(b) == score
-                            and (value := _timer(b)) is not None and 0 <= value <= 45]
-                if not previous:
-                    continue
-                last = previous[-1]
-                elapsed = (f["tick"] - last["tick"]) * Fraction(f["time_base"])
-                # Existing timer quantization is a display interval. A reset far
-                # from the last countdown is context only, not a start bracket.
-                if abs(elapsed - _timer(last)) > 2:
-                    continue
-                if active and f["tick"] - active[-1]["tick"] > (
-                        Fraction(1) / Fraction(f["time_base"])):
-                    rejected_clocks.append({"status": "UNKNOWN",
-                                            "reason": "clock_support_gap",
-                                            "witnesses": [_witness(a) for a in active],
-                                            "display_values": [_timer(a) for a in active],
-                                            "contradiction": _bracket(active[-1], f)})
-                    active = []
-                if active and _timer_conflicts([active[-1], f]):
-                    rejected_clocks.append({"status": "UNKNOWN",
-                                            "reason": "inconsistent_clock_prefix",
-                                            "witnesses": [_witness(a) for a in active],
-                                            "display_values": [_timer(a) for a in active],
-                                            "contradiction": _bracket(active[-1], f)})
-                    active = []
-                active.append(f)
-                if len(_repeated(active)):
-                    reset = _bracket(last, active[0])
-                    break
-            if reset is None and any(p["reason"] == "inconsistent_clock_prefix"
-                                     for p in rejected_clocks):
-                reasons.append("next_clock_contradiction")
-            if reset is None:
-                reasons.append("next_active_clock_not_observed")
+        purchase = _purchase_clock(tail, score)
+        reasons.extend(purchase['reasons'])
+        reset = purchase['next_clock_reset_bracket']
         if score_stopped and reset is None:
             reasons.append("score_changed_before_next_start")
         chains.append({"end_candidate_id": end["candidate_id"],
                        "status": "UNKNOWN" if reasons else "DEVELOPMENT_LIFECYCLE_CANDIDATE",
                        "reasons": sorted(set(reasons)), "end": end,
-                       "buy_support_interval": _bracket(buy[0], repeated_buy[0])
-                       if repeated_buy else None,
-                       "buy_witnesses": [_witness(f) for f in buy],
-                       "next_clock_reset_bracket": reset,
-                       "next_clock_witnesses": [_witness(f) for f in active],
-                       "rejected_clock_prefixes": rejected_clocks,
+                       **{key: value for key, value in purchase.items() if key != 'reasons'},
                        "unread_score_witnesses": [_witness(f) for f in tail if _score(f) is None],
                        "human_score_conflicts": [_witness(f) for f in conflicts],
                        "human_score_observations": [f["human_score_observation"]
@@ -198,6 +237,7 @@ def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
                        "source_continuity": "UNVERIFIED", "formal_events": []})
     return {"kind": "offline_Round_lifecycle_evidence_NOT_GT", "chains": chains,
             "source_gaps": gaps, "end_report": end_report,
+            "purchase_next_clock_observations": _purchase_windows(segments),
             "cross_epoch_association": False, "formal_events": [],
             "qualification_created": False, "approved_gt": False}
 

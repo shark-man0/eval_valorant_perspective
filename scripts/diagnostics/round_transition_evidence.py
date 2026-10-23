@@ -102,6 +102,36 @@ def _word(f: dict[str, Any]) -> str | None:
     return accepted_result(f["result"].get("value"), f["result"].get("confidence", 0))
 
 
+def _end_timer(f: dict[str, Any]) -> tuple[Fraction, Fraction, str] | None:
+    """Literal display and quantization; decimals never feed Buy/Start logic."""
+    if not _geometry(f, 'timer'):
+        return None
+    colon = _timer(f)
+    if colon is not None:
+        return Fraction(colon), Fraction(1), 'MINUTES_SECONDS'
+    text = _text(f['timer'])
+    sources = f['timer'].get('sources', [])
+    if (text is not None and re.fullmatch(r'[0-9]{2}\.[0-9]{2}', text)
+            and isinstance(sources, (list,tuple))
+            and 'offline_timer_seconds_hundredths_v1' in sources):
+        return Fraction(text), Fraction(1, 100), 'SECONDS_HUNDREDTHS'
+    return None
+
+
+def _end_timer_diagnostics(frames: list[dict[str, Any]]) -> dict[str, Any]:
+    reads = [(f, v) for f in frames if (v := _end_timer(f)) is not None]
+    conflicts, changes = [], []
+    for (a, before), (b, after) in zip(reads, reads[1:], strict=False):
+        if before[2] != after[2]:
+            changes.append({**_bracket(a,b), 'before_format': before[2],
+                            'after_format': after[2]})
+            continue
+        elapsed = (b['tick']-a['tick'])*Fraction(b['time_base'])
+        if not 0 <= before[0]-after[0] <= elapsed+max(before[1],after[1]):
+            conflicts.append(_bracket(a,b))
+    return {'reads': reads, 'conflicts': conflicts, 'changes': changes}
+
+
 def _witness(f: dict[str, Any]) -> dict[str, Any]:
     return {k: f[k] for k in ("source_id", "source_sha256", "tick", "time_base", "epoch",
                               "encoded_sha256", "pixel_sha256")}
@@ -302,16 +332,31 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
     # its direction nor a clock reset alone proves an End or a next Round.
     timer_end = max(last, segment[min(index + 1, len(segment) - 1)]["tick"])
     after_frames = [f for f in window if b["tick"] <= f["tick"] <= timer_end]
-    timers = [f for f in after_frames if _timer(f) is not None]
-    timer_conflicts = _timer_conflicts(after_frames) + _timer_conflicts(
-        [f for f in window if first_tick <= f["tick"] < b["tick"]])
+    after_timers = _end_timer_diagnostics(after_frames)
+    pre_timers = _end_timer_diagnostics(
+        [f for f in window if first_tick <= f['tick'] < b['tick']])
+    timers = after_timers['reads']
+    timer_conflicts = after_timers['conflicts'] + pre_timers['conflicts']
     before_timer, after_timer = _timer(a), _timer(b)
     if before_timer is not None and after_timer is not None and after_timer > before_timer:
         timer_conflicts.append(_bracket(a, b))
         reasons.append("timer_reset_at_score_boundary")
+    before_display, after_display = _end_timer(a), _end_timer(b)
+    if (before_display is not None and after_display is not None
+            and before_display[2] != after_display[2]):
+        after_timers['changes'].append({**_bracket(a,b),
+                                       'before_format': before_display[2],
+                                       'after_format': after_display[2]})
+    if (before_display is not None and after_display is not None
+            and before_display[2] == after_display[2] == 'SECONDS_HUNDREDTHS'
+            and after_display[0] > before_display[0]):
+        timer_conflicts.append(_bracket(a,b))
+        reasons.append('timer_reset_at_score_boundary')
+    repeated_format = any(sum(v[2] == fmt for _,v in timers) >= 2
+                          for fmt in ('MINUTES_SECONDS','SECONDS_HUNDREDTHS'))
     if timer_conflicts:
         reasons.append("timer_contradiction")
-    elif len(timers) < 2:
+    elif not repeated_format:
         reasons.append("timer_unknown")
     score_boundary = _bracket(a, b)
     first = raw_support[0] if raw_support else None
@@ -347,8 +392,13 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
                 for f in unknown_word_scores],
             "first_word_bracket": bracket,
             "timer_status": "CONTRADICTORY" if timer_conflicts else (
-                "CONSISTENT" if len(timers) >= 2 else "UNKNOWN"),
+                "CONSISTENT" if repeated_format else "UNKNOWN"),
             "timer_conflicts": timer_conflicts, "timer_observation_count": len(timers),
+            "timer_observation_formats": sorted({v[2] for _, v in timers}),
+            "timer_format_changes": after_timers['changes'] + pre_timers['changes'],
+            "timer_display_observations": [
+                {**_witness(f), 'display': _text(f['timer']), 'format': v[2],
+                 'quantization_seconds': str(v[1])} for f,v in timers],
             "complete_display_status": "UNVERIFIED", "internal_End_tick": None,
             "physical_event_id": None, "source_continuity": "UNVERIFIED",
             "acquisitions": [{"epoch": b["epoch"], "score_boundary": score_boundary,
