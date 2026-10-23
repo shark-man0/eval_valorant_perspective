@@ -135,8 +135,8 @@ The 70 Map points form seven segments (one single-point segment), with six
 multi-point spans totalling 12.6 seconds and a longest span of 5.4 seconds.
 Named A plant observation spans total 0.4 seconds. Separate candidate-region
 spans total 1.2 seconds in the A plant patch and 3.2 seconds in the B Window
-interior. There are 24 polygon-candidate observations, including 18 coarse
-B Window candidates; named Zone count remains 3. There are no actual accepted
+interior. There are 24 polygon-candidate observations, including 17 new coarse
+B Window candidates and one pre-existing coarse A plant candidate; named Zone count remains 3. There are no actual accepted
 Zone-change brackets in these clips; synthetic adjacent-Zone tests exercise that
 path. The motion sensitivity check at 7/14/21px yields moving-candidate spans
 5.2/1.8/0.0 seconds and low-displacement spans 2.8/6.6/8.4 seconds. This variation
