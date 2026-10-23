@@ -136,9 +136,18 @@ def review_queue(corpora: list[dict[str, Any]], *, budget: int = 24) -> list[dic
                                             'frame': occurrence['frame'],
                                             'path': occurrence['path'],
                                             'human_label': 'UNKNOWN'})
-    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    by_channel: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(
+        lambda: defaultdict(list))
     for key, value in sorted(strata.items()):
-        grouped[key[0]].append(value)
+        channel = by_channel[key[0]][key[1]]
+        if not any(c['case_id'] == value['case_id'] for c in channel):
+            channel.append(value)
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for source, channels in sorted(by_channel.items()):
+        for depth in range(max(map(len, channels.values()))):
+            for _, channel in sorted(channels.items()):
+                if depth < len(channel):
+                    grouped[source].append(channel[depth])
     queue: list[dict[str, Any]] = []
     seen: set[str] = set()
     while any(grouped.values()) and len(queue) < budget:

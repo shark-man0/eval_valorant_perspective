@@ -96,6 +96,10 @@ def test_review_queue_is_bounded_deduplicated_and_fair_across_sources():
     assert len(queue) == len({c['case_id'] for c in queue}) == 4
     assert [c['source_id'] for c in queue] == ['dev', 'second', 'dev', 'second']
     assert all(c['human_label'] == 'UNKNOWN' for c in queue)
+    full = review_queue([first, second], budget=12)
+    roles = {'geometry', 'ally_score', 'enemy_score', 'timer', 'result', 'purchase'}
+    for source in ['dev', 'second']:
+        assert {c['role'] for c in full if c['source_id'] == source} == roles
 
 
 def test_successful_build_preserves_native_input_and_records_each_source(tmp_path, monkeypatch):
