@@ -94,3 +94,24 @@ def test_repeated_frame_is_not_another_independent_episode():
     result = assess_marker_attribution(sample(), prediction(), review('SELF'))
     with pytest.raises(ValueError):
         summarize_marker_attribution([result, result])
+
+
+def test_other_icon_is_visible_in_the_exclusive_denominator():
+    result = assess_marker_attribution(sample(), prediction(), review('OTHER'))
+    summary = summarize_marker_attribution([result])
+    assert summary['other_position_candidates'] == 1
+    assert summary['self_position_candidates'] == 0
+    assert summary['unknown_candidate_role'] == 0
+    assert summary['outcome_counts'] == {'OTHER_CANDIDATE': 1}
+
+
+def test_context_rejection_of_reviewed_live_view_is_not_a_correct_rejection():
+    p = prediction()
+    p.update(center_frame_px=None, explicit_context_rejection=True)
+    r = review('SELF')
+    r['view_state'] = 'SELF_LIVE'
+    summary = summarize_marker_attribution([assess_marker_attribution(sample(), p, r)])
+    assert summary['self_live_context_rejections'] == 1
+    assert summary['confirmed_non_live_rejections'] == 0
+    assert summary['unknown_candidate_role'] == 0
+    assert summary['outcome_counts'] == {'EXPLICIT_REJECTION': 1}

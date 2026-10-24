@@ -102,6 +102,7 @@ def assess_marker_attribution(
         "explicit_context_rejection": prediction["explicit_context_rejection"],
         "confirmed_non_live_rejection": False, "review_sha256": None,
         "purpose": "evaluation", "independent_episode_id": None,
+        "human_view_state": "UNREVIEWED",
         "position_error_px": None, "map_position_error": None, "zone_error": None,
         "formal_outputs": 0,
     }
@@ -131,6 +132,7 @@ def assess_marker_attribution(
             hits.append(marker)
     result.update(review_sha256=_digest(review), purpose=review["purpose"],
                   independent_episode_id=review.get("independent_episode_id"),
+                  human_view_state=review["view_state"],
                   outcome="UNKNOWN", candidate_role="UNKNOWN")
     if point is None:
         result["outcome"] = ("EXPLICIT_REJECTION" if prediction["explicit_context_rejection"]
@@ -150,6 +152,7 @@ def summarize_marker_attribution(results: list[dict[str, Any]]) -> dict[str, Any
     seen = set()
     methods = set()
     counts: Counter[str] = Counter()
+    outcomes: Counter[str] = Counter()
     episodes = set()
     episode_outcomes: dict[tuple[str, str, str], set[str]] = {}
     for result in results:
@@ -168,6 +171,10 @@ def summarize_marker_attribution(results: list[dict[str, Any]]) -> dict[str, Any
             counts["fitting_observations"] += 1
             continue
         counts["evaluation_observations"] += 1
+        outcome = result["outcome"]
+        if outcome == "REVIEWED_CANDIDATE":
+            outcome = result["candidate_role"]+"_CANDIDATE"
+        outcomes[outcome] += 1
         counts["human_unreviewed"] += result["outcome"] == "HUMAN_UNREVIEWED"
         counts["candidate_not_detected"] += (not result["candidate_present"]
                                               and not result["explicit_context_rejection"])
@@ -176,7 +183,12 @@ def summarize_marker_attribution(results: list[dict[str, Any]]) -> dict[str, Any
         counts["self_position_candidates"] += result["candidate_role"] == "SELF"
         counts["teammate_candidates_if_used_as_self"] += result["candidate_role"] == "TEAMMATE"
         counts["spectated_candidates_if_used_as_self"] += result["candidate_role"] == "SPECTATED"
-        counts["unknown_candidate_role"] += result["candidate_role"] == "UNKNOWN"
+        counts["other_position_candidates"] += result["candidate_role"] == "OTHER"
+        counts["unknown_candidate_role"] += (result["candidate_present"]
+                                               and result["candidate_role"] == "UNKNOWN")
+        counts["human_self_live_observations"] += result.get("human_view_state") == "SELF_LIVE"
+        counts["self_live_context_rejections"] += (result.get("human_view_state") == "SELF_LIVE"
+                                                    and result["explicit_context_rejection"])
         episode = result["independent_episode_id"]
         if episode is None or result["review_sha256"] is None:
             counts["observations_without_episode_review"] += 1
@@ -190,7 +202,10 @@ def summarize_marker_attribution(results: list[dict[str, Any]]) -> dict[str, Any
             "human_unreviewed", "candidate_not_detected", "explicit_context_rejections",
             "confirmed_non_live_rejections", "self_position_candidates",
             "teammate_candidates_if_used_as_self", "spectated_candidates_if_used_as_self",
-            "unknown_candidate_role", "observations_without_episode_review")},
+            "other_position_candidates", "unknown_candidate_role",
+            "human_self_live_observations", "self_live_context_rejections",
+            "observations_without_episode_review")},
+        "outcome_counts": dict(outcomes),
         "ownership_unknown": len(results), "formal_misattributions": 0,
         "independent_episodes_reviewed": len(episodes),
         "episodes_with_teammate_candidate": sum("TEAMMATE" in roles

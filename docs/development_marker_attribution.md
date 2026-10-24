@@ -27,6 +27,11 @@ counts require explicit human episode IDs. Source count, acquisition epochs and
 frame count do not establish independent physical episodes. Map/Zone error stays
 unmeasured unless a separate coordinate/geometry review supplies it.
 
+Exclusive `outcome_counts` include OTHER icons. `unknown_candidate_role` counts
+only an existing candidate whose role is unknown; missing candidates and context
+rejections have their own counts. Rejection of a human-reviewed SELF_LIVE image
+is reported separately and never credited as a correct non-live rejection.
+
 The fixed private failure reproduced a cross-recording role reversal: one library's
 positive portrait selected a teammate, while the actual recorder portrait matched
 another library's negative control. Both were returned with UNKNOWN ownership.
@@ -50,6 +55,39 @@ arms. These are retrieval changes, not measured correctness improvements. The
 one reviewed teammate example is rejected, but it was already exposed for triage
 and reference authoring. Other lost/retained targets are unreviewed, so this
 experimental veto is not selected as a new global default.
+
+An additional paired900 pre-existing Native observations reproduced baseline
+output exactly and reduced Map candidates157 to1. Across the2,230 observations,
+raw Map candidates300 became71. These are unassigned appearances; most have no
+independent role annotation and are not verified recorder paths.
+
+The content-blind review selected20 Native images from ten DEVELOPMENT sources
+before predictions. Human labels were used for scoring only:15 live self views,
+four spectator views and one purchase view;15 SELF marker annotations,61 TEAMMATE
+and two OTHER annotations. These are image-local labels, not continuous episodes.
+
+| Fixed20 observations | Existing pool | Optional annulus veto |
+|---|---:|---:|
+| Selected candidate matching a SELF annotation | 0 | 0 |
+| Selected TEAMMATE candidate if interpreted as self | 1 | 0 |
+| Selected OTHER icon | 1 | 0 |
+| No candidate, excluding explicit context blocks | 8 | 10 |
+| Explicit context blocks | 10 | 10 |
+| Blocks confirmed non-live | 4 | 4 |
+| Blocks on human-reviewed live self views | 6 | 6 |
+| Unreviewed / ownership UNKNOWN | 0 / 20 | 0 / 20 |
+
+Thus the veto removes two reviewed wrong targets on this small sample, but
+recovers no recorder positions and does not repair the six context conflicts.
+No independent physical episode IDs were supplied, so episode-level precision
+and population misattribution rates remain unmeasured. Matching uses the form's
+fixed2-native-pixel annotation tolerance, not an empirical error guarantee. New
+Map-coordinate/Zone error is unmeasured without independent Map landmarks.
+
+Three pre-existing coordinate controls were also retained: one inconsistent pool
+candidate was withheld, one correct center was retained and one observation was
+missing in both arms. This is a known DEVELOPMENT control, not a new qualification.
+The ordinary legacy paths and previously checked Portable paths remain unchanged.
 
 ## Version-compatible projections
 
