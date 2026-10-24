@@ -12,6 +12,7 @@ from scripts.diagnostics.hud_scope_structure import (
     reference_fingerprint,
 )
 from scripts.diagnostics.result_title_region import title_region
+from scripts.diagnostics.round_lifecycle_evidence import lifecycle
 from scripts.temporal_gt.contract import canonical_hash
 from tests.hud_evidence_fixtures import chain
 from tests.unit.test_hud_scope_structure import reference
@@ -47,6 +48,17 @@ def bound_rows():
     return rows, image, layout, refs, bindings
 
 
+def test_round_components_allow_development_chain_without_rewriting_global_or_owner():
+    rows, *_ = bound_rows()
+    without = deepcopy(rows)
+    for f in without:
+        del f['component_geometry']
+    assert lifecycle(without)['chains'][0]['status'] == 'UNKNOWN'
+    r = lifecycle(rows)
+    assert r['chains'][0]['status'] == 'DEVELOPMENT_LIFECYCLE_CANDIDATE'
+    assert all(f['geometry_consistent'] is False for f in rows)
+    assert all(f['component_geometry']['ownership_authorized'] is False for f in rows)
+    assert r['formal_events'] == [] and not r['qualification_created']
 
 
 @pytest.mark.parametrize('fault', [
@@ -81,6 +93,12 @@ def test_modified_receipts_cannot_support_any_component(fault):
         component_support(f,'score')
 
 
+def test_component_profile_change_within_one_epoch_is_rejected():
+    rows, image, layout, refs, bindings = bound_rows()
+    other={**bindings,'layout_sha256':'b'*64}
+    rows[4]['component_geometry']=component_geometry(rows[4],image,layout,refs,other)
+    with pytest.raises(ValueError,match='profile changed'):
+        lifecycle(rows)
 
 
 def test_blank_result_pixels_or_wrong_reference_do_not_authorize_result():
@@ -95,6 +113,13 @@ def test_blank_result_pixels_or_wrong_reference_do_not_authorize_result():
         component_geometry(f,blank,layout,[(refs[0][0],np.zeros_like(refs[0][1]))],bindings)
 
 
+def test_components_do_not_repair_native_gap_or_duplicate_pts():
+    rows, *_ = bound_rows()
+    gap = deepcopy(rows)
+    gap.pop(2)
+    assert all(c['status']=='UNKNOWN' for c in lifecycle(gap)['chains'])
+    with pytest.raises(ValueError,match='duplicate'):
+        lifecycle(rows+[deepcopy(rows[0])])
 
 
 def test_joint_component_receipt_keeps_original_source_profile_and_no_full_hud_authority():

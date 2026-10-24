@@ -12,7 +12,8 @@ from scripts.diagnostics.phase_structure_evidence import (
     bind_phase,
     phase_supported,
 )
-from tests.hud_evidence_fixtures import frame
+from scripts.diagnostics.round_lifecycle_evidence import lifecycle
+from tests.hud_evidence_fixtures import chain, frame
 from valorant_ai_coach.hud.semantic_text import SemanticTextReference
 
 
@@ -129,6 +130,18 @@ def test_receipt_cannot_cross_frame_or_acquisition_and_never_sets_absence():
         phase_supported(changed)
 
 
+def test_structural_purchase_keeps_score_timer_continuity_guards():
+    rows = chain()
+    for f in rows:
+        if f["buy_phase"]:
+            f["phase_structure"] = receipt(f)
+            f["buy_phase"] = None
+    assert lifecycle(rows)["chains"][0]["status"] == "DEVELOPMENT_LIFECYCLE_CANDIDATE"
+    for f in rows[10:]:
+        f["epoch"] = "new"
+    # Receipts cannot be silently replayed across epochs.
+    with pytest.raises(ValueError):
+        lifecycle(rows)
 
 
 def test_different_resolution_is_unknown_instead_of_a_valid_group_receipt():
@@ -139,3 +152,10 @@ def test_different_resolution_is_unknown_instead_of_a_valid_group_receipt():
     f["phase_structure"] = bind_phase(f, image, [0, 0, 388, 63], model, "b" * 64)
     assert f["phase_structure"]["reason"] == "shape_mismatch"
     assert phase_supported(f) is False
+
+
+def test_sparse_discovery_without_native_pts_cannot_enter_lifecycle():
+    f = frame(1)
+    f.update(tick=None, time_base=None)
+    with pytest.raises(ValueError):
+        lifecycle([f])
