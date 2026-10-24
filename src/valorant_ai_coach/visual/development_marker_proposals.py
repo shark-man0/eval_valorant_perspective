@@ -35,6 +35,8 @@ class DevelopmentMarkerProposals:
     def __init__(self, map_id: str) -> None:
         registry = development_registry(map_id)
         self.definition = registry.load(map_id)
+        if registry.registry["maps"][map_id]["production"]:
+            raise ValueError("Proposal geometry requires a non-Production map")
         provenance = json.loads((registry.root / "provenance.json").read_text(encoding="utf-8"))
         self.calibrator = OutlineMinimapCalibrator(
             expected_reference_sha256=provenance["reference_sha256"])

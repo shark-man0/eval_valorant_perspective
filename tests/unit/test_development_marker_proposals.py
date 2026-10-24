@@ -105,3 +105,26 @@ def test_floor_rejects_geometry_without_erasing_observed_appearance(tmp_path, mo
     assert len(result['proposals']) == 2
     assert all(p['geometry_reason'] == 'outside_visible_floor' for p in result['proposals'])
     assert all(p['geometry_only_map_position_norm'] is None for p in result['proposals'])
+
+
+def test_mid_observation_reference_change_discards_the_whole_result(tmp_path, monkeypatch):
+    frame, options, path = case(tmp_path)
+    engine = DevelopmentMarkerProposals('bind')
+
+    def changed(*args, **kwargs):
+        path.write_bytes(b'changed during calibration')
+        return CalibrationResult('calibration_required', 0., None, 'synthetic', ())
+
+    monkeypatch.setattr(engine.calibrator, 'analyze', changed)
+    with pytest.raises(ValueError, match='Reference changed'):
+        engine.observe(frame, **options)
+
+
+def test_production_registry_entry_cannot_be_used(monkeypatch):
+    from valorant_ai_coach.visual import development_marker_proposals as module
+
+    registry = module.development_registry('bind')
+    registry.registry['maps']['bind']['production'] = True
+    monkeypatch.setattr(module, 'development_registry', lambda _: registry)
+    with pytest.raises(ValueError, match='non-Production'):
+        DevelopmentMarkerProposals('bind')
