@@ -15,8 +15,8 @@ from scripts.diagnostics.hud_scope_structure import (
 from scripts.diagnostics.result_title_region import title_region
 from scripts.diagnostics.round_lifecycle_evidence import lifecycle
 from scripts.temporal_gt.contract import canonical_hash
+from tests.hud_evidence_fixtures import chain
 from tests.unit.test_hud_scope_structure import reference
-from tests.unit.test_round_lifecycle_evidence import chain
 from valorant_ai_coach.hud.layout import HudLayout, NormalizedRoi
 
 

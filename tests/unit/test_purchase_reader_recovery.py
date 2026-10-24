@@ -5,9 +5,8 @@ import json
 import numpy as np
 import pytest
 
-from scripts.diagnostics.round_transition_evidence import score_readers
-from scripts.diagnostics.score_border_background import RejectedScoreBackgroundReader
-from tests.unit.test_round_transition_evidence import score_profile
+from scripts.diagnostics.score_border_background import RejectedScoreBackgroundReader, score_readers
+from tests.hud_evidence_fixtures import score_profile
 from tests.unit.test_score_glyphs import render
 from tests.unit.test_timer_glyphs import _templates
 from valorant_ai_coach.hud.score_glyphs import StrictScoreGlyphReader

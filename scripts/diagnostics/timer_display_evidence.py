@@ -17,6 +17,31 @@ from valorant_ai_coach.hud.score_glyphs import StrictScoreGlyphReader
 from valorant_ai_coach.hud.timer_glyphs import ImageU8, StrictTimerGlyphReader
 
 
+def _complete_colon_band(mask: ImageU8) -> ImageU8 | None:
+    """Keep all foreground on one complete digit baseline across the full ROI.
+
+    Only context above/below intact, aligned glyph components can be excluded.
+    Extra punctuation/edge fragments on their baseline remain for the existing
+    strict parser to reject. No column is selected, digit repaired or punctuation
+    synthesized. Padding lies outside the measured band, never within glyphs.
+    """
+    count, _, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    parts = [tuple(map(int, row[:4])) for row in stats[1:count]]
+    height = max((b[3] for b in parts), default=0)
+    digits = [b for b in parts if b[3] >= .5*height]
+    if len(digits) not in (3, 4) or min(b[3] for b in digits) < .8*height:
+        return None
+    centres = [y+h/2 for _, y, _, h in digits]
+    if max(centres)-min(centres) > .15*height:
+        return None
+    h, w = mask.shape
+    if any(x == 0 or y == 0 or x+ww == w or y+hh == h for x, y, ww, hh in digits):
+        return None
+    top, bottom = min(b[1] for b in digits), max(b[1]+b[3] for b in digits)
+    return np.asarray(cv2.copyMakeBorder(mask[top:bottom, :], 1, 1, 1, 1,
+                                         cv2.BORDER_CONSTANT, value=0), dtype=np.uint8)
+
+
 class TimerDisplayReader:
     """Preserve strict colon reads; recognize only explicit four-digit dot lines.
 
@@ -136,7 +161,8 @@ class ProfileTimerDisplayReader:
         strict = baseline.reader if isinstance(baseline, SubregionReader) else baseline
         if not isinstance(strict, StrictTimerGlyphReader):
             raise ValueError('configured strict Timer reader required')
-        if foreground_preprocessing not in (None, 'native_white200_rowcontrast_v1'):
+        if foreground_preprocessing not in (None, 'native_white200_rowcontrast_v1',
+                                             'native_white200_rowcontrast_band_v2'):
             raise ValueError('unsupported offline Timer foreground preprocessing')
         self.baseline = baseline
         self.literal = TimerDisplayReader(strict, decimal_reader=decimal_reader)
@@ -174,4 +200,11 @@ class ProfileTimerDisplayReader:
                     return ReaderResult(recovered.value, recovered.confidence,
                                         (*recovered.sources,
                                          'offline_timer_native_rowcontrast_v1'))
+                if self.foreground_preprocessing == 'native_white200_rowcontrast_band_v2':
+                    band = _complete_colon_band(mask)
+                    if band is not None:
+                        recovered = self.literal.reader.read(image, band)
+                        if recovered.value is not None:
+                            return ReaderResult(recovered.value, recovered.confidence,
+                                (*recovered.sources, 'offline_timer_complete_colon_band_v2'))
         return observed

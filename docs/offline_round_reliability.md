@@ -258,3 +258,38 @@ improve the fixed comparison remain private experiment records. Map and common
 registry code are outside these units; future consumers can use the existing
 source/native-PTS/timebase/acquisition/hash witnesses without turning candidate
 Round IDs into authoritative gameplay events.
+## Complete colon bands and sampling misses (offline only)
+
+The explicit `native_white200_rowcontrast_band_v2` Timer option preserves all
+successful configured observations and the existing native-background recovery.
+Only after rejection can it isolate the vertical extent of three or four intact,
+aligned digit components. Every foreground fragment on that baseline is retained
+across the complete configured inner ROI width. Source-border glyphs, extra
+punctuation, missing colon dots, ambiguous glyphs and competitor failures still
+reject through the unchanged strict parser (.90 confidence, .04 class margin).
+Padding lies outside the measured band; no observed digit or separator is filled.
+
+On the same 73 DEVELOPMENT inputs, the previous implementation produced 27 End,
+24 complete Lifecycle and 10 UNKNOWN hypotheses. The explicit option produces
+27, 25 and 9 respectively, over the same 34 deduplicated Score-boundary groups.
+Next-clock display groups increase from 32 to 33. These are unqualified display
+candidates: the additional complete chain has no new independent human label.
+Previously supported End/Lifecycle groups and confirmed natural controls are
+preserved; End and Start false candidates remain 0/11 each.
+
+The fixed inputs still detect only 1/2 human-positive Start windows. In the missed
+window, background fragments obscure the two sparse purchase-clock reads. A
+separately planned one-second dense Native acquisition recovers a complete
+purchase/clock candidate with the **previous reader as well**. Using that added
+observation changes the reviewed-window result to 2/2; it is sampling coverage,
+not an algorithm accuracy gain. The two originally unresolved Lifecycle cases
+remain unresolved: weak End-side structure/text, and a long HUD observation hole
+before a later readable clock. Neither is joined by guessing or relaxed timing.
+
+Score reader construction now lives with the existing offline background reader;
+the old `round_transition_evidence.score_readers` import remains available.
+Synthetic test data has no observer-module dependency, allowing source binding,
+literal observations, temporal association, Lifecycle, and reference caching to
+be reviewed as dependent layers. Production Profiles/events, canonical GT and
+the 82 historical assertion records remain unchanged. No Full E2E or independent
+qualification result follows from these DEVELOPMENT comparisons.

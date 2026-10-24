@@ -12,7 +12,6 @@ import math
 import re
 from collections import defaultdict
 from collections.abc import Callable
-from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -21,67 +20,18 @@ from scripts.diagnostics.analyze_personal_candidates import development_sources
 from scripts.diagnostics.diagnose_result_text import accepted_result
 from scripts.diagnostics.hud_scope_structure import component_support
 from scripts.diagnostics.register_private_sources import write_private
-from scripts.diagnostics.score_border_background import RejectedScoreBackgroundReader
+from scripts.diagnostics.score_border_background import score_readers as score_readers
 from scripts.e2e.run_dataset_case import sha256_file
 from scripts.temporal_gt.contract import canonical_hash
 from scripts.temporal_gt.review_session import append_exposure
 from valorant_ai_coach.hud.calibrate_temporal import _check_output_privacy
 from valorant_ai_coach.hud.models import accept_hud_value
 from valorant_ai_coach.hud.round_lifecycle import accepted_score_pair
-from valorant_ai_coach.hud.score_glyphs import StrictScoreGlyphReader
-from valorant_ai_coach.hud.templates import HudTemplateProfile, SubregionReader
 
 # Frozen offline association horizon, not a matcher threshold or GT tolerance.
 ASSOCIATION_SECONDS = 6
 
 
-def score_readers(
-    path: Path, *, foreground: str | None = None, background_fallback: bool = False,
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Preflight existing readers; any alternate mode must be explicit and bound.
-
-    An unsupported historical experiment name never silently aliases a supported
-    one. The parent bytes, templates, confidence and class margin stay unchanged.
-    """
-    if type(background_fallback) is not bool:
-        raise ValueError('explicit boolean Score background option required')
-    profile_bytes = path.read_bytes()
-    parent_sha256 = hashlib.sha256(profile_bytes).hexdigest()
-    raw = json.loads(profile_bytes)
-    candidate = deepcopy(raw)
-    roles = ("ally_score", "enemy_score")
-    assets = {}
-    for role in roles:
-        spec = candidate.get("readers", {}).get(role, {})
-        if spec.get("kind") != "strict_score_glyphs":
-            raise ValueError("explicit strict Score reader required")
-        if foreground is not None:
-            spec["foreground_preprocessing"] = foreground
-    profile = HudTemplateProfile(path, candidate)
-    all_readers = profile.build_readers()
-    selected: dict[str, Any] = {}
-    for role in roles:
-        reader = all_readers.get(role)
-        inner = reader.reader if isinstance(reader, SubregionReader) else reader
-        if not isinstance(inner, StrictScoreGlyphReader):
-            raise ValueError("Score reader unavailable: " + "; ".join(profile.reader_diagnostics))
-        if background_fallback:
-            alternative = RejectedScoreBackgroundReader(inner)
-            selected[role] = (SubregionReader(alternative, reader.bounds)
-                              if isinstance(reader, SubregionReader) else alternative)
-        else:
-            selected[role] = reader
-        for name in candidate["readers"][role]["templates"].values():
-            asset = profile.resolve_asset(name)
-            assets[str(asset)] = sha256_file(asset)
-    if sha256_file(path) != parent_sha256:
-        raise ValueError("parent profile changed during reader preflight")
-    binding: dict[str, Any] = {"parent_profile_sha256": parent_sha256,
-                      "explicit_foreground": foreground, "asset_sha256": assets,
-                      "production_changed": False, "formal_events": []}
-    if background_fallback:
-        binding['rejected_native_background'] = True
-    return selected, binding
 
 
 def _text(read: dict[str, Any]) -> str | None:

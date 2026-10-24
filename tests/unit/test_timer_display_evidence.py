@@ -9,8 +9,7 @@ import pytest
 from scripts.diagnostics.round_lifecycle_evidence import lifecycle
 from scripts.diagnostics.round_transition_evidence import integrate
 from scripts.diagnostics.timer_display_evidence import TimerDisplayReader
-from tests.unit.test_round_lifecycle_evidence import chain
-from tests.unit.test_round_transition_evidence import transition
+from tests.hud_evidence_fixtures import chain, transition
 from tests.unit.test_timer_glyphs import _render_timer, _templates
 from valorant_ai_coach.hud.readers import ReaderResult
 from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader
@@ -262,3 +261,43 @@ def test_native_timer_foreground_uses_the_profile_inner_roi_and_keeps_outer_pixe
     assert observed.value == '1:20'
     assert parent.bounds == bounds
     np.testing.assert_array_equal(outer,original)
+
+
+def test_complete_colon_band_keeps_glyphs_but_excludes_outside_baseline_noise():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    image = cv2.copyMakeBorder(_render_timer('1:20'),8,8,8,8,
+                               cv2.BORDER_CONSTANT,value=0)
+    image[image.shape[0]-3,60] = 255  # Background below every complete digit.
+    before = image.copy()
+    strict = StrictTimerGlyphReader(_templates(),comparison_preprocessing='gaussian3x3_v1')
+    old = ProfileTimerDisplayReader(
+        strict,foreground_preprocessing='native_white200_rowcontrast_v1')
+    assert old.read(image,image).value is None
+    new = ProfileTimerDisplayReader(
+        strict,foreground_preprocessing='native_white200_rowcontrast_band_v2')
+    result = new.read(image,image)
+    assert result.value == '1:20' and result.confidence >= .90
+    assert 'offline_timer_complete_colon_band_v2' in result.sources
+    np.testing.assert_array_equal(image,before)
+
+
+@pytest.mark.parametrize('fault',['dot','double_colon','missing_colon','clip'])
+def test_colon_band_cannot_remove_same_baseline_fragments_or_repair_clipping(fault):
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    image = _render_timer('1:20',extra='' if fault=='clip' else fault,
+                          clip_left=fault=='clip')
+    strict = StrictTimerGlyphReader(_templates(),comparison_preprocessing='gaussian3x3_v1')
+    new = ProfileTimerDisplayReader(
+        strict,foreground_preprocessing='native_white200_rowcontrast_band_v2')
+    assert new.read(image,image).value is None
+
+
+def test_colon_band_preserves_existing_success_and_unchanged_strict_competitors():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    strict = StrictTimerGlyphReader(_templates(),comparison_preprocessing='gaussian3x3_v1')
+    new = ProfileTimerDisplayReader(
+        strict,foreground_preprocessing='native_white200_rowcontrast_band_v2')
+    image = _render_timer('1:20')
+    assert new.read(image,image) == strict.read(image,image)
+    assert strict.THRESHOLD == .90 and strict.CLASS_MARGIN == .04
+    assert set(strict.templates) == set('0123456789')

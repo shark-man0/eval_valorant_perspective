@@ -13,8 +13,7 @@ from scripts.diagnostics.phase_structure_evidence import (
     phase_supported,
 )
 from scripts.diagnostics.round_lifecycle_evidence import lifecycle
-from tests.unit.test_round_lifecycle_evidence import chain
-from tests.unit.test_round_transition_evidence import frame
+from tests.hud_evidence_fixtures import chain, frame
 from valorant_ai_coach.hud.semantic_text import SemanticTextReference
 
 

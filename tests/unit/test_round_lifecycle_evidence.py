@@ -5,21 +5,8 @@ import pytest
 
 from scripts.diagnostics.round_lifecycle_evidence import lifecycle, review_scores
 from scripts.temporal_gt.contract import canonical_hash
-from tests.unit.test_round_transition_evidence import frame, transition
-
-
-def chain():
-    rows = transition()
-    rows += [frame(t, score=(2, 4), timer=None) for t in range(6, 42)]
-    for tick, timer, buy in [(9, "0:00", False), (10, "0:30", True),
-                             (11, "0:29", True), (38, "0:02", True),
-                             (39, "0:01", True), (40, "1:40", False),
-                             (41, "1:39", False)]:
-        rows[tick]["timer"]["value"] = timer
-        rows[tick]["buy_phase"] = buy
-    for f in rows:
-        f["time_base"] = "1/1"
-    return rows
+from tests.hud_evidence_fixtures import chain as chain
+from tests.unit.test_round_transition_evidence import frame
 
 
 def test_end_buy_start_output_is_display_diagnostic_and_input_unchanged():
