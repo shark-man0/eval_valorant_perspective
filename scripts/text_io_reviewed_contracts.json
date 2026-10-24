@@ -415,6 +415,13 @@
       "expression": "json.dumps( review, sort_keys=True, allow_nan=False).encode()",
       "category": "Python既定UTF-8",
       "reason": "Verified json.dumps returns built-in str; default str.encode is UTF-8 regardless of Windows locale. This byte representation binds private frozen Map observations/reviews to SHA-256; Ruff UP012 discourages a redundant explicit utf-8 argument."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/development_annulus_pool.py",
+      "operation": "encode",
+      "expression": "(\"appearance_pool_annulus_v1:\"+fingerprint).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str concatenation of a policy prefix and SHA-256 hex fingerprint. Default str.encode is UTF-8 regardless of Windows locale; this classification changes no bytes, recognition logic or broad audit rules."
     }
   ]
 }
