@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "selection_policy": {
+    "priority": [
+      "explicit_user_selection",
+      "trusted_map_label",
+      "minimap_template_match",
+      "unresolved"
+    ],
+    "manual_fallback_required": true,
+    "on_unresolved": "request/require map selection before zone-dependent analysis; do not guess map_id",
+    "map_template_match_min_confidence": 0.9
+  },
+  "minimap_policy": {
+    "mvp_required_profile": "fixed orientation with full static map mask recoverable",
+    "dynamic_rotation": "unsupported_in_mvp",
+    "keep_player_centered_or_dynamic_crop": "unsupported_in_mvp unless full static map transform can still be recovered",
+    "zoom_or_hud_scale_change": "attempt calibration; on failure set calibration_required",
+    "calibration_required_conditions": [
+      "static mask alignment below threshold",
+      "dynamic orientation detected",
+      "persistent crop/zoom mismatch",
+      "unknown map geometry version"
+    ]
+  },
+  "maps": {
+    "corrode": {
+      "map_file": "config/maps/corrode_map_v3.json",
+      "callout_registry_file": "config/maps/corrode_callout_registry_v3.json",
+      "peek_registry_file": "config/maps/corrode_peek_exposure_registry_v2.json",
+      "coverage_mask_file": "config/maps/corrode_operational_mask_v1.json",
+      "geometry_version": "corrode_public_shaded_footprints_ccw270_2026-10-24_v1",
+      "reference_asset": "assets/corrode_reference.png",
+      "reference_sha256": "c6ffcf7e8c8b73781d08bc562594690fdfd7c6dbd35dbfd15fbc1be145096959",
+      "production": false
+    }
+  },
+  "test_fixtures": {}
+}

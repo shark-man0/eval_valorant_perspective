@@ -50,17 +50,27 @@ class DevelopmentRecorderView:
         }
         if spec is None:
             return result
+        unbound = isinstance(spec, dict) and spec.get("mode") == "agent_appearance_v1"
         result.update(status="unavailable", block_position_candidate=True)
+        if unbound:
+            # An unavailable visible-agent vocabulary cannot veto independently
+            # observed Map appearances or masquerade as a recorder association.
+            result["block_position_candidate"] = False
         if (not isinstance(frame, np.ndarray) or frame.dtype != np.uint8 or frame.ndim != 3
                 or frame.shape[2] != 3 or min(frame.shape[:2]) <= 0
-                or not isinstance(spec, dict) or spec.get("mode") != "agent_binding_v1"
+                or not isinstance(spec, dict) or spec.get("mode") not in (
+                    "agent_binding_v1", "agent_appearance_v1")
                 or not isinstance(spec.get("glyph_feature_mode", "gray_v1"), str)
                 or spec.get("glyph_feature_mode", "gray_v1") not in {
                     "gray_v1", "positive_contrast_v1"}
                 or spec.get("frame_size_px") != [frame.shape[1], frame.shape[0]]):
             return result
         binding = spec.get("binding")
-        if (not isinstance(binding, dict) or not _sha(source_sha256)
+        if unbound and ("binding" in spec or not _sha(source_sha256)
+                        or not isinstance(source_id, str) or not source_id
+                        or not isinstance(acquisition_id, str) or not acquisition_id):
+            return result
+        if not unbound and (not isinstance(binding, dict) or not _sha(source_sha256)
                 or binding.get("source_sha256") != source_sha256
                 or binding.get("source_id") != source_id
                 or not isinstance(source_id, str) or not source_id
@@ -75,6 +85,9 @@ class DevelopmentRecorderView:
                 or not isinstance(binding.get("recorder_agent_id"), str)
                 or not binding["recorder_agent_id"]):
             return result
+        if unbound:
+            binding = {}  # No roster fields are supplied or consulted in this mode.
+        assert isinstance(binding, dict)
         size = frame.shape[1], frame.shape[0]
         minimap = normalized_roi_bounds(minimap_roi, *size)
         slots, references = spec.get("slots"), spec.get("agents")
@@ -100,9 +113,9 @@ class DevelopmentRecorderView:
                     or any(not isinstance(p, list) or not 1 <= len(p) <= 3 for p in paths)):
                 return result
             names.append(agent["agent_id"])
-        if binding["recorder_agent_id"] not in names:
+        if not unbound and binding["recorder_agent_id"] not in names:
             return result
-        alias = self.alias.inspect(
+        alias = {} if unbound else self.alias.inspect(
             frame, spec.get("actor_alias"), minimap_roi=minimap_roi,
             recorder_alias=binding.get("recorder_alias"),
         )
@@ -129,11 +142,22 @@ class DevelopmentRecorderView:
         first, runner = scores[:2]
         matched = first["score"] >= .90 and first["score"]-runner["score"] >= .12
         candidate = first["agent_id"] if matched else None
-        same = candidate == binding["recorder_agent_id"]
+        same = not unbound and candidate == binding["recorder_agent_id"]
         fingerprint = hashlib.sha256(json.dumps(
             {"spec": spec, "reference_sha256": hashes,
              "alias_activation_sha256": alias.get("activation_reference_sha256")},
             sort_keys=True).encode("utf-8")).hexdigest()
+        if unbound:
+            return {
+                **result, "status": "observed", "scores": scores,
+                "visible_agent_candidate": candidate, "association": "UNKNOWN",
+                "positive_agent_association": False, "reference_fingerprint": fingerprint,
+                "evidence_family": "current_ability_glyphs",
+                "independent_of_minimap_pixels": True, "source_binding_status": "unavailable",
+                "reasons": ["unbound_visible_agent_appearance_only",
+                            "recorder_and_camera_identity_unavailable",
+                            "agent_glyphs_do_not_establish_view_state"],
+            }
         return {
             **result, "status": "observed", "scores": scores,
             "association": "recorder_agent_supported" if same else

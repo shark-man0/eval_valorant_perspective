@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "mask_id": "lotus_shaded_core_qa_v1",
+  "map_id": "lotus",
+  "purpose": "QA of one eroded public shaded footprint only",
+  "authoring_basis": "Independent erosion of source texture gold region by 4px, not generated from zone polygon union. Whole visible-floor raster stored separately.",
+  "reference_asset": "assets/lotus_reference.png",
+  "reference_sha256": "53e0d94f24ba7a8c5dac21f34d6af564d59af247701b5a2aa787f60c86a026f6",
+  "polygon_norm": [
+    [
+      0.005574136008918618,
+      0.6675031367628608
+    ],
+    [
+      0.005574136008918618,
+      0.8055207026348808
+    ],
+    [
+      0.021181716833890748,
+      0.8055207026348808
+    ],
+    [
+      0.022296544035674472,
+      0.7867001254705144
+    ],
+    [
+      0.046822742474916385,
+      0.7867001254705144
+    ],
+    [
+      0.04793756967670011,
+      0.8055207026348808
+    ],
+    [
+      0.10367892976588629,
+      0.8055207026348808
+    ],
+    [
+      0.10367892976588629,
+      0.7239648682559598
+    ],
+    [
+      0.06465997770345597,
+      0.7239648682559598
+    ],
+    [
+      0.06354515050167224,
+      0.740276035131744
+    ],
+    [
+      0.046822742474916385,
+      0.739021329987453
+    ],
+    [
+      0.046822742474916385,
+      0.6750313676286073
+    ],
+    [
+      0.07023411371237458,
+      0.6737766624843162
+    ],
+    [
+      0.0713489409141583,
+      0.6675031367628608
+    ]
+  ],
+  "limits": {
+    "not_official_geometry": true,
+    "not_for_los": true,
+    "not_for_gameplay_event_generation": true
+  }
+}

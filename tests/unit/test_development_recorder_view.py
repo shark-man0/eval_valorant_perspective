@@ -48,6 +48,32 @@ def test_source_binding_and_current_agent_support_never_assign_self(agent_case):
     assert result['evidence_family'] == 'current_ability_glyphs'
 
 
+def test_unbound_appearance_reports_visible_agent_without_fabricating_a_roster(agent_case):
+    frame, spec = agent_case
+    spec = copy.deepcopy(spec)
+    spec.pop('binding')
+    spec['mode'] = 'agent_appearance_v1'
+    result = inspect(frame, spec)
+    assert result['visible_agent_candidate'] == 'recorder-agent'
+    assert result['association'] == 'UNKNOWN' and result['positive_agent_association'] is False
+    assert result['block_position_candidate'] is False
+    assert result['recorder_identity_qualified'] is False
+    assert 'recorder_agent_id' not in result and 'actor_alias_evidence' not in result
+    assert inspect(frame, spec, source_sha256=None)['status'] == 'unavailable'
+
+
+def test_unbound_mode_cannot_silently_reuse_a_bound_profile_or_vote_on_unknown_glyphs(agent_case):
+    frame, spec = agent_case
+    spec = copy.deepcopy(spec)
+    spec['mode'] = 'agent_appearance_v1'
+    assert inspect(frame, spec)['status'] == 'unavailable'
+    spec.pop('binding')
+    spec['agents'][1]['templates'] = copy.deepcopy(spec['agents'][0]['templates'])
+    result = inspect(frame, spec)
+    assert result['visible_agent_candidate'] is None
+    assert result['positive_agent_association'] is False and result['ownership'] == 'UNKNOWN'
+
+
 def test_different_agent_and_reference_change_break_candidate(agent_case):
     frame, spec = agent_case
     engine = DevelopmentRecorderView()

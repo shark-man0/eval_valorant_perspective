@@ -1,0 +1,282 @@
+{
+  "version": "3.0",
+  "map_id": "lotus",
+  "display_name": "Lotus (development: public shaded footprints)",
+  "geometry_version": "lotus_public_shaded_footprints_ccw180_2026-10-24_v1",
+  "geometry_status": "development_public_texture_partial_regions",
+  "geometry_confidence_cap": 0.9,
+  "observed_client_builds": [],
+  "validity_policy": {
+    "status": "provisional_until_runtime_alignment_passes",
+    "invalidate_when": "reference minimap mask alignment fails persistently or known map geometry changes",
+    "on_invalidate": "calibration_required; do not resolve named zones"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "Public texture lossless CCW180; normalized visible-floor bbox, not ROI/world metres.",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "Fixed authored CCW180",
+    "reference_minimap_roi_px_1920x1080": [
+      0,
+      0,
+      1024,
+      1024
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      71,
+      106,
+      968,
+      903
+    ],
+    "calibration_note": "The 1024x1024 public asset is an authoring canvas, not a 1920x1080 HUD ROI. Runtime uses explicit actual ROI and whole-outline calibration."
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed_map_orientation",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "recalibrate static mask; if stable alignment cannot be recovered -> calibration_required",
+    "runtime_alignment_reference_asset": "assets/lotus_reference.png"
+  },
+  "coverage_mask_file": "config/maps/lotus_operational_mask_v1.json",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "lotus_a_plant",
+      "zone_name": "A public shaded footprint",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.0011148272017837235,
+          0.6624843161856964
+        ],
+        [
+          0.0011148272017837235,
+          0.8105395232120451
+        ],
+        [
+          0.02564102564102564,
+          0.8105395232120451
+        ],
+        [
+          0.026755852842809364,
+          0.7917189460476788
+        ],
+        [
+          0.042363433667781496,
+          0.7917189460476788
+        ],
+        [
+          0.043478260869565216,
+          0.8105395232120451
+        ],
+        [
+          0.10813823857302118,
+          0.8105395232120451
+        ],
+        [
+          0.10813823857302118,
+          0.7189460476787954
+        ],
+        [
+          0.06020066889632107,
+          0.7189460476787954
+        ],
+        [
+          0.06020066889632107,
+          0.7340025094102886
+        ],
+        [
+          0.05128205128205128,
+          0.7340025094102886
+        ],
+        [
+          0.05128205128205128,
+          0.6800501882057717
+        ],
+        [
+          0.07469342251950947,
+          0.6787954830614805
+        ],
+        [
+          0.0758082497212932,
+          0.6624843161856964
+        ]
+      ],
+      "display_group": "A_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "lotus_b_plant",
+      "zone_name": "B public shaded footprint",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.4358974358974359,
+          0.562107904642409
+        ],
+        [
+          0.4358974358974359,
+          0.5859473023839398
+        ],
+        [
+          0.44704570791527315,
+          0.5846925972396487
+        ],
+        [
+          0.5016722408026756,
+          0.5872020075282308
+        ],
+        [
+          0.5016722408026756,
+          0.616060225846926
+        ],
+        [
+          0.5117056856187291,
+          0.617314930991217
+        ],
+        [
+          0.5128205128205128,
+          0.6398996235884568
+        ],
+        [
+          0.5105908584169454,
+          0.644918444165621
+        ],
+        [
+          0.5016722408026756,
+          0.64366373902133
+        ],
+        [
+          0.5016722408026756,
+          0.6587202007528231
+        ],
+        [
+          0.5518394648829431,
+          0.6587202007528231
+        ],
+        [
+          0.5518394648829431,
+          0.6235884567126725
+        ],
+        [
+          0.5830546265328874,
+          0.6223337515683814
+        ],
+        [
+          0.5830546265328874,
+          0.562107904642409
+        ]
+      ],
+      "display_group": "B_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "lotus_c_plant",
+      "zone_name": "C public shaded footprint",
+      "kind": "site",
+      "site_id": "C",
+      "site_affinity": [
+        "C"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.8784838350055741,
+          0.5031367628607277
+        ],
+        [
+          0.8784838350055741,
+          0.5834378920953576
+        ],
+        [
+          0.887402452619844,
+          0.5846925972396487
+        ],
+        [
+          0.8896321070234113,
+          0.5872020075282308
+        ],
+        [
+          0.8896321070234113,
+          0.6223337515683814
+        ],
+        [
+          0.9297658862876255,
+          0.6223337515683814
+        ],
+        [
+          0.9308807134894092,
+          0.5759096612296111
+        ],
+        [
+          0.9966555183946488,
+          0.5759096612296111
+        ],
+        [
+          0.9966555183946488,
+          0.520702634880803
+        ],
+        [
+          0.9308807134894092,
+          0.520702634880803
+        ],
+        [
+          0.9297658862876255,
+          0.5031367628607277
+        ]
+      ],
+      "display_group": "C_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "lotus_a_plant"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "lotus_b_plant"
+      ]
+    },
+    {
+      "site_id": "C",
+      "zone_ids": [
+        "lotus_c_plant"
+      ]
+    }
+  ],
+  "topology_edges": [],
+  "authoring_limits": [
+    "Public shaded footprint exterior only; no whole Site, callout boundary, walkability or topology claim.",
+    "Static lossless authoring rotation; dynamic rotation unsupported.",
+    "Source Map identity is geometric candidate; client build unverified."
+  ]
+}

@@ -74,7 +74,7 @@ class ContrastiveAppearancePool(SelfMarkerTracker):
             fingerprint = hashlib.sha256(json.dumps({
                 "spec": spec, "excluded_source_id": self.excluded_source_id,
                 "members": [m.reference_fingerprint for m in active],
-            }, sort_keys=True, allow_nan=False).encode()).hexdigest()
+            }, sort_keys=True, allow_nan=False).encode("utf-8")).hexdigest()
         except (ValueError, TypeError):
             self._pool_fingerprint = None
             return unknown("invalid_appearance_pool")

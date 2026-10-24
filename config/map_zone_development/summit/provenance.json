@@ -1,0 +1,36 @@
+{
+  "status": "development_only_not_qualification",
+  "metadata_source": "https://valorant-api.com/v1/maps/756da597-416b-c0f2-f47b-afbdf28670bc",
+  "asset_source": "https://media.valorant-api.com/maps/756da597-416b-c0f2-f47b-afbdf28670bc/displayicon.png",
+  "upstream_map_id": "756da597-416b-c0f2-f47b-afbdf28670bc",
+  "public_original_sha256": "e3ceb9a90958953933aa2e0a7821cb42eb80d622700be89c288d933ac855075f",
+  "reference_sha256": "728773485e86e95e6a6917e86695229afa04eb62af65c081742f7a334ad5ee68",
+  "reference_authoring_transform": {
+    "kind": "lossless rotate0CCW",
+    "runtime_dynamic_rotation_supported": false
+  },
+  "visible_floor_asset": "assets/summit_visible_floor.png",
+  "visible_floor_sha256": "ece82c96ec892124b37f227fbde75ccaa098570876fdad3589153d04c2f34603",
+  "bbox_pixels": [
+    39,
+    17,
+    1020,
+    1005
+  ],
+  "plant_region_evidence": "Public gold connected components>1000px assigned one-to-one to published transformed Site anchors, distance<100px; exact shaded exteriors only.",
+  "transformed_site_anchors": {
+    "A": [
+      939.4186239999999,
+      412.944384
+    ],
+    "B": [
+      154.13863168,
+      345.74438399999997
+    ]
+  },
+  "floor_extraction": "alpha>=128,HSV saturation<100,largestconnectedcomponent: visible2Dsupport only",
+  "asset_build": "unknown",
+  "map_identity_review": "not_human_confirmed",
+  "production": false,
+  "orientation_evidence": "Unique static public-asset orientation aligned to pre-existing registered Summit reference; no new recording used to choose rotation."
+}

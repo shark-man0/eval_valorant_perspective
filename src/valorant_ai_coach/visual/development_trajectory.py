@@ -121,6 +121,11 @@ def analyze_candidate_path(
             **({"recorder_view_evidence": recorder_view} if recorder_view else {}),
             **({"view_review": view_review} if view_review else {}),
             "ownership": "UNKNOWN", "qualification": "development_only",
+            **({"time_evidence": record["time_evidence"]} if "time_evidence" in record else {}),
+            **({"position_subject": record["position_subject"],
+                "view_state_qualified": record.get("view_state_qualified", False),
+                "portable_marker_evidence": record.get("portable_marker_evidence")}
+               if "position_subject" in record else {}),
         }
         region = record.get("development_region_candidate") or {}
         region_id = region.get("region_id")
@@ -129,10 +134,15 @@ def analyze_candidate_path(
             region_id = None
         sample["region_candidate_id"] = region_id
         sample["region_candidate_evidence"] = region or None
+        if (sample["point_norm"] is not None
+                and record.get("time_evidence") == "unverified_discovery_offset"):
+            reason = "native_time_unverified"
         if reason is None and previous is not None:
             dt = time - previous["time_sec"]
             previous_record = records[previous["index"]]
-            if context != tuple(previous_record[key] for key in keys):
+            if previous_record.get("time_evidence") == "unverified_discovery_offset":
+                reason = "native_time_unverified"
+            elif context != tuple(previous_record[key] for key in keys):
                 reason = "acquisition_or_geometry_change"
             elif frame <= previous["frame_index"] or not 0 < dt <= max_gap_sec + 1e-9:
                 reason = "time_or_frame_discontinuity"

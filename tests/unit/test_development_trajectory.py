@@ -43,6 +43,19 @@ def test_observed_spans_and_quiet_windows_are_not_formal_facts():
     assert all("type" not in edge and "actor" not in edge for edge in result["edges"])
 
 
+def test_unverified_discovery_positions_remain_visible_without_time_or_path_claims():
+    records = [observation(i) for i in range(4)]
+    records[1]['time_evidence'] = 'unverified_discovery_offset'
+    records[2]['time_evidence'] = 'native'
+    result = analyze(records)
+    assert all(s['point_norm'] is not None for s in result['samples'])
+    assert result['samples'][1]['time_evidence'] == 'unverified_discovery_offset'
+    assert result['samples'][1]['break_reason'] == 'native_time_unverified'
+    assert result['samples'][2]['break_reason'] == 'native_time_unverified'
+    assert [(e['from_index'], e['to_index']) for e in result['edges']] == [(2, 3)]
+    assert result['zone_observation_spans_sec'] == {'A': pytest.approx(.2)}
+
+
 def test_moving_window_uses_reference_pixels_and_no_world_speed():
     result = analyze([observation(i, point=[.1+i*.01, .5]) for i in range(8)])
     edge = result["edges"][-1]
