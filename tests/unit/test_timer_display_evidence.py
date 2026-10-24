@@ -1,11 +1,15 @@
 """Offline display grammar must not turn punctuation or phase into a timer."""
 
+from copy import deepcopy
 
 import cv2
 import numpy as np
 import pytest
 
+from scripts.diagnostics.round_lifecycle_evidence import lifecycle
+from scripts.diagnostics.round_transition_evidence import integrate
 from scripts.diagnostics.timer_display_evidence import TimerDisplayReader
+from tests.hud_evidence_fixtures import chain, transition
 from tests.unit.test_timer_glyphs import _render_timer, _templates
 from valorant_ai_coach.hud.readers import ReaderResult
 from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader
@@ -92,14 +96,83 @@ def test_partial_or_unknown_punctuation_remains_unread(fault):
     assert reader().read(im, im).value is None
 
 
+def test_typed_decimal_can_support_end_but_never_purchase_or_next_clock():
+    rows = transition()
+    for f in rows:
+        f["timer"] = {
+            "value": "29.04",
+            "confidence": 0.96,
+            "sources": ["offline_timer_seconds_hundredths_v1"],
+        }
+    result = integrate(rows)["candidates"][0]
+    assert result["status"] == "DEVELOPMENT_TRANSITION_CANDIDATE"
+    assert result["timer_observation_formats"] == ["SECONDS_HUNDREDTHS"]
+    assert result["internal_End_tick"] is None
+    rows = chain()
+    for f in rows:
+        if f.get("buy_phase"):
+            f["timer"] = {
+                "value": "29.04",
+                "confidence": 0.96,
+                "sources": ["offline_timer_seconds_hundredths_v1"],
+            }
+    assert lifecycle(rows)["chains"][0]["status"] == "UNKNOWN"
 
 
+def test_untyped_decimal_or_unobservable_geometry_cannot_clear_unknown():
+    for typed in [False, True]:
+        rows = transition()
+        for f in rows:
+            f["timer"] = {
+                "value": "29.04",
+                "confidence": 0.96,
+                "sources": ["offline_timer_seconds_hundredths_v1"] if typed else [],
+            }
+            if typed:
+                f["geometry_consistent"] = False
+        assert "timer_unknown" in integrate(rows)["candidates"][0]["reasons"]
 
 
+def test_decimal_increase_and_frozen_to_colon_switch_remain_explicit():
+    rows = transition()
+    for f in rows:
+        f["timer"] = {
+            "value": "29.04",
+            "confidence": 0.96,
+            "sources": ["offline_timer_seconds_hundredths_v1"],
+        }
+    before = deepcopy(rows)
+    rows[5]["timer"]["value"] = "29.06"
+    assert "timer_contradiction" in integrate(rows)["candidates"][0]["reasons"]
+    rows = before
+    rows[5]["timer"] = {"value": "0:06", "confidence": 0.96}
+    c = integrate(rows)["candidates"][0]
+    assert c["timer_format_changes"] and c["formal_events"] == []
 
 
+def test_one_read_per_format_does_not_establish_consistent_timer():
+    rows = transition()
+    for f in rows:
+        f["timer"]["value"] = None
+    rows[3]["timer"] = {
+        "value": "29.04",
+        "confidence": 0.96,
+        "sources": ["offline_timer_seconds_hundredths_v1"],
+    }
+    rows[5]["timer"] = {"value": "0:06", "confidence": 0.96}
+    c = integrate(rows)["candidates"][0]
+    assert c["timer_status"] == "UNKNOWN" and "timer_unknown" in c["reasons"]
 
 
+def test_decimal_reset_across_score_is_a_contradiction():
+    rows = transition()
+    for f in rows:
+        f["timer"] = {
+            "value": "29.04" if f["tick"] < 2 else "30.04",
+            "confidence": 0.96,
+            "sources": ["offline_timer_seconds_hundredths_v1"],
+        }
+    assert "timer_reset_at_score_boundary" in integrate(rows)["candidates"][0]["reasons"]
 
 
 def test_a_geometry_receipt_does_not_make_blank_timer_pixels_readable():
