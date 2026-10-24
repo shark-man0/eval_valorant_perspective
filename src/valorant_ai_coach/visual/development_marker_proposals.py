@@ -67,6 +67,8 @@ class DevelopmentMarkerProposals:
                 or frame.ndim != 3 or frame.shape[2] != 3):
             raise ValueError("Native uint8 BGR frame required")
         bound = freeze_native_sample(sample, frame_size_px=(frame.shape[1], frame.shape[0]))
+        if sample != bound:
+            raise ValueError("Exact frozen native sample required")
         if hashlib.sha256(frame.tobytes()).hexdigest() != bound["native_pixel_sha256"]:
             raise ValueError("Frame pixels do not match native sample")
         bounds = normalized_roi_bounds(minimap_roi, frame.shape[1], frame.shape[0])

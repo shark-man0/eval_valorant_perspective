@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from valorant_ai_coach.maps.calibration import CalibrationResult
+from valorant_ai_coach.visual.development_marker_attribution import freeze_native_sample
 from valorant_ai_coach.visual.development_marker_proposals import DevelopmentMarkerProposals
 
 
@@ -24,6 +25,7 @@ def case(tmp_path):
         'acquired_frame_sha256': 'b' * 64,
         'native_pixel_sha256': hashlib.sha256(frame.tobytes()).hexdigest(),
     }
+    sample = freeze_native_sample(sample, frame_size_px=(160, 140))
     options = {
         'sample': sample, 'minimap_roi': [0., 0., 1., 1.], 'calibration_profile': {},
         'context_eligible': False,
@@ -128,3 +130,13 @@ def test_production_registry_entry_cannot_be_used(monkeypatch):
     monkeypatch.setattr(module, 'development_registry', lambda _: registry)
     with pytest.raises(ValueError, match='non-Production'):
         DevelopmentMarkerProposals('bind')
+
+
+@pytest.mark.parametrize('field,value', [('native_pts_tick', 101),
+                                        ('source_sha256', 'c' * 64),
+                                        ('frame_size_px', [140, 160])])
+def test_claimed_sample_hash_cannot_silently_rebind_metadata(tmp_path, field, value):
+    frame, options, _ = case(tmp_path)
+    options['sample'][field] = value
+    with pytest.raises(ValueError, match='Exact frozen'):
+        DevelopmentMarkerProposals('bind').observe(frame, **options)
