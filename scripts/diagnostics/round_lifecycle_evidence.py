@@ -190,7 +190,8 @@ def _purchase_windows(segments: list[list[dict[str, Any]]]) -> list[dict[str, An
 
 
 def lifecycle(rows: list[dict[str, Any]], *, observed_score_brackets: bool = False,
-              observed_score_persistence: bool = False
+              observed_score_persistence: bool = False,
+              scoped_score_boundaries: bool = False
               ) -> dict[str, Any]:
     """Associate only within fully recorded native segments, retaining holes.
 
@@ -201,7 +202,8 @@ def lifecycle(rows: list[dict[str, Any]], *, observed_score_brackets: bool = Fal
     for f in rows:
         _human_score(f)
     end_report = integrate(rows, observed_score_brackets=observed_score_brackets,
-                           observed_score_persistence=observed_score_persistence)
+                           observed_score_persistence=observed_score_persistence,
+                           scoped_score_boundaries=scoped_score_boundaries)
     chains = []
     for end in end_report["candidates"]:
         boundary = end["score_boundary"]
@@ -254,11 +256,13 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--observed-score-brackets", action="store_true")
     parser.add_argument("--observed-score-persistence", action="store_true")
+    parser.add_argument("--scoped-score-boundaries", action="store_true")
     args = parser.parse_args()
 
     def bound(rows: list[dict[str, Any]]) -> dict[str, Any]:
         report = lifecycle(rows, observed_score_brackets=args.observed_score_brackets,
-                           observed_score_persistence=args.observed_score_persistence)
+                           observed_score_persistence=args.observed_score_persistence,
+                           scoped_score_boundaries=args.scoped_score_boundaries)
         report["lifecycle_implementation_sha256"] = sha256_file(Path(__file__))
         return report
 

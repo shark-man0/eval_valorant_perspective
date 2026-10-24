@@ -168,3 +168,82 @@ extension, never an alternate colon or inferred punctuation. Comparing an
 unwrapped reader on the outer ROI with the configured Profile is a configuration
 comparison, not proof of better OCR accuracy. Preserve that distinction when
 reporting recording-to-recording diagnostics.
+
+## Geometry-supported Score endpoints
+
+`--scoped-score-boundaries` is a separate opt-in policy requiring
+`--observed-score-brackets`. It chooses actual Score reads whose current-frame
+geometry is supported as the endpoints. Intervening native frames are retained,
+including literal reads rejected by geometry, instead of treating those reads
+as observations of a verified HUD position. The maximum bracket remains one
+second. Every intermediate literal still acts as a contradiction barrier: a
+third Score or an old Score reappearing after the new Score leaves the candidate
+UNKNOWN. Result observations inside the bracket also leave ordering UNKNOWN.
+Gaps and acquisition changes remain barriers. No unread value is filled in.
+If no scoped bracket represents a raw transition, its original hypothesis is
+retained as UNKNOWN with `scoped_score_endpoints_unavailable`; it is never
+silently removed or accepted through the legacy rule as a fallback.
+
+The output distinguishes `SCOPED_OBSERVATION_INTERVAL`, truly unread witnesses,
+and `geometry_unverified_score_boundary_witnesses`. A changed endpoint must be
+reported as a different observed display bracket; it is not a more precise
+internal event time. The old policy and its uncertain hypotheses should remain
+in the experiment record for comparison and coverage accounting.
+
+## Bright-background purchase text
+
+`PhaseStructureReference(..., contrast_normalized=True)` is an explicit offline
+alternative with a distinct method and reference binding. Each frozen glyph
+group supplies foreground and negative-space masks. Current pixels must have
+positive mean contrast of at least 12 intensity levels. A monotone affine
+normalization is applied to the reference and observation before the same Canny
+edges and bidirectional one-pixel coverage/precision checks. Every group still
+needs at least 32 edges and the unchanged threshold of at least 0.90.
+
+This corrects a rendering failure where intact low-contrast glyphs lose Canny
+edges against a bright background. It performs no alignment, template fitting,
+text repair or inference of absent displays. Flat, inverted, missing or shifted
+glyph groups remain UNKNOWN. The legacy method defaults unchanged. A caller
+comparing their union must retain each complete receipt and its method, never
+mix successful groups from different methods to synthesize one observation.
+Natural controls and unreviewed intervals keep their separate status.
+
+The offline Result vocabulary also recognizes the literal `PERFECT`. It is not
+rewritten to `WON` or assigned a winning side. A partial spelling or low OCR
+confidence remains rejected. As with other Result words, recognition alone
+cannot emit an End, prove display completion or establish semantic correctness.
+
+## Reusable reference features
+
+`ComponentReferenceCache` precomputes only fixed reference features and spatial
+specificity. It binds the reference fingerprint, Profile identifiers, resolution
+and relevant ROIs, and rejects mismatches. Each new frame is still pixel-hashed
+and every observed tile is measured. No frame state or accepted result is cached.
+`EdgeReference` preserves per-tile border handling and the original two-pixel
+neighbourhood. Only zero-edge margins outside that neighbourhood are excluded
+from distance calculations. Scores and receipts must match the uncached method
+exactly, including rejection cases, before the optimization is adopted.
+
+Measure construction cost, steady-state time and retained array bytes separately.
+Timing structure alone does not establish decoding/OCR or full-match throughput.
+Current-frame validation, source binding and UNKNOWN behavior cannot be removed
+to improve a benchmark.
+
+## Reviewable development integration units
+
+The accumulated HUD branch should be reviewed in dependency order, without
+bundling private assets or production activation:
+
+1. Native evidence contracts, source/Profile binding and rejection regressions.
+2. Offline Result/Timer/Score observation helpers and component geometry.
+3. Explicit purchase-structure and Score association alternatives with tests.
+4. Lifecycle/Timeline projection, deduplication and UNKNOWN coverage.
+5. Reference-only performance optimization with exact-output comparisons.
+
+These are proposed review units, not authorization to merge or qualification
+results. Preserve the current branch and separately review shared-file
+dependencies before splitting PRs. Experimental alternatives that did not
+improve the fixed comparison remain private experiment records. Map and common
+registry code are outside these units; future consumers can use the existing
+source/native-PTS/timebase/acquisition/hash witnesses without turning candidate
+Round IDs into authoritative gameplay events.

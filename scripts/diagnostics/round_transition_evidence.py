@@ -260,7 +260,8 @@ def _segments(
 
 def _candidate(segment: list[dict[str, Any]], index: int,
                before_index: int | None = None, *,
-               observed_persistence: bool = False) -> dict[str, Any]:
+               observed_persistence: bool = False,
+               scoped_score_boundaries: bool = False) -> dict[str, Any]:
     before_index = index - 1 if before_index is None else before_index
     a, b = segment[before_index], segment[index]
     base = Fraction(b["time_base"])
@@ -293,6 +294,18 @@ def _candidate(segment: list[dict[str, Any]], index: int,
     words = sorted({word for f in raw_support if (word := _word(f)) is not None})
     reasons = ["conflicting_score_observation"] if score_conflicts else []
     unread_bracket = segment[before_index + 1:index]
+    if scoped_score_boundaries:
+        # Even literals with unverified geometry remain contradiction barriers.
+        # The two endpoints are actual geometry-supported reads, never filled.
+        changed = False
+        for f in unread_bracket:
+            value = _score(f)
+            if value is None:
+                continue
+            if value not in (_score(a), _score(b)) or changed and value == _score(a):
+                reasons.append('score_order_conflict_inside_bracket')
+                break
+            changed = changed or value == _score(b)
     if any(_word(f) is not None or _visual(f) is not None for f in unread_bracket):
         reasons.append("result_inside_unread_score_bracket")
     if len(words) > 1:
@@ -412,9 +425,17 @@ def _candidate(segment: list[dict[str, Any]], index: int,
             "status": "UNKNOWN" if reasons else "DEVELOPMENT_TRANSITION_CANDIDATE",
             "reasons": reasons, "score_boundary": score_boundary,
             "score_before": _score(a), "score_after": _score(b),
-            "score_boundary_kind": "OBSERVED_INTERVAL_WITH_UNREAD_FRAMES" if unread_bracket
-            else "ADJACENT_NATIVE_OBSERVATIONS",
-            "unread_score_boundary_witnesses": [_witness(f) for f in unread_bracket],
+            "score_boundary_kind": ('SCOPED_OBSERVATION_INTERVAL'
+                                    if scoped_score_boundaries and unread_bracket else
+                                    'OBSERVED_INTERVAL_WITH_UNREAD_FRAMES' if unread_bracket
+                                    else 'ADJACENT_NATIVE_OBSERVATIONS'),
+            "unread_score_boundary_witnesses": [
+                _witness(f) for f in unread_bracket
+                if not scoped_score_boundaries or _score(f) is None],
+            **({'geometry_unverified_score_boundary_witnesses': [
+                _witness(f) for f in unread_bracket
+                if _score(f) is not None and not _geometry(f, 'score')]}
+               if scoped_score_boundaries else {}),
             "score_conflicts": score_conflicts,
             "result_order": ("BOTH_SIDES" if pre_support and post_support else
                              "BEFORE_SCORE" if pre_support else
@@ -453,21 +474,46 @@ def _candidate(segment: list[dict[str, Any]], index: int,
 
 
 def integrate(rows: list[dict[str, Any]], *, observed_score_brackets: bool = False,
-              observed_score_persistence: bool = False
+              observed_score_persistence: bool = False,
+              scoped_score_boundaries: bool = False
               ) -> dict[str, Any]:
     if type(observed_score_brackets) is not bool:
         raise ValueError('explicit observed Score bracket option required')
     if (type(observed_score_persistence) is not bool
             or observed_score_persistence and not observed_score_brackets):
         raise ValueError('explicit bounded Score observation policy required')
+    if (type(scoped_score_boundaries) is not bool
+            or scoped_score_boundaries and not observed_score_brackets):
+        raise ValueError('scoped Score endpoints require bounded observed brackets')
     segments, gaps = _segments(rows)
     candidates: dict[str, dict[str, Any]] = {}
     covered: set[tuple[str, int]] = set()
+    raw_boundaries: list[tuple[list[dict[str, Any]], int, int]] = []
     for segment in segments:
+        if scoped_score_boundaries:
+            # Record only potential endpoints here, without repeating full
+            # validation, Result/Timer integration or receipt hashing.
+            raw_previous = 0
+            for i in range(1, len(segment)):
+                left = raw_previous
+                before, after = _score(segment[left]), _score(segment[i])
+                if after is not None:
+                    raw_previous = i
+                if (before is not None and after is not None
+                        and (segment[i]['tick']-segment[left]['tick'])*Fraction(
+                            segment[i]['time_base']) <= 1
+                        and sorted(y-x for x,y in zip(before,after,strict=True)) == [0,1]):
+                    raw_boundaries.append((segment,left,i))
         previous_read = 0
         for i in range(1, len(segment)):
             left = previous_read if observed_score_brackets else i - 1
             before, after = _score(segment[left]), _score(segment[i])
+            if scoped_score_boundaries:
+                if after is None or not _geometry(segment[i], 'score'):
+                    continue
+                if before is None or not _geometry(segment[left], 'score'):
+                    previous_read = i
+                    continue
             if after is not None:
                 previous_read = i
             if (observed_score_brackets
@@ -479,7 +525,8 @@ def integrate(rows: list[dict[str, Any]], *, observed_score_brackets: bool = Fal
             ) != [0, 1]:
                 continue
             c = _candidate(segment, i, left,
-                           observed_persistence=observed_score_persistence)
+                           observed_persistence=observed_score_persistence,
+                           scoped_score_boundaries=scoped_score_boundaries)
             covered.update((f["epoch"], f["tick"]) for f in c["raw_result_witnesses"])
             if c["candidate_id"] in candidates:
                 existing = candidates[c["candidate_id"]]
@@ -492,6 +539,34 @@ def integrate(rows: list[dict[str, Any]], *, observed_score_brackets: bool = Fal
                 existing["acquisitions"].extend(c["acquisitions"])
             else:
                 candidates[c["candidate_id"]] = c
+    if scoped_score_boundaries:
+        # Requiring trusted endpoints must not make an untrusted transition
+        # disappear from coverage. Retain unmatched legacy hypotheses as
+        # UNKNOWN, never as a fallback acceptance or a fabricated scoped pair.
+        for segment, left, index in raw_boundaries:
+            before_frame, after_frame = segment[left], segment[index]
+            represented = any(
+                c['score_before'] == _score(before_frame)
+                and c['score_after'] == _score(after_frame)
+                and c['score_boundary']['epoch'] == after_frame['epoch']
+                and max(c['score_boundary']['lower_tick'], before_frame['tick'])
+                <= min(c['score_boundary']['upper_tick'], after_frame['tick'])
+                for c in candidates.values())
+            if not represented:
+                raw = _candidate(segment, index, left,
+                                 observed_persistence=observed_score_persistence)
+                raw['status'] = 'UNKNOWN'
+                raw['reasons'] = sorted(set(raw['reasons'] + [
+                    'scoped_score_endpoints_unavailable']))
+                raw['scoped_interval_status'] = 'UNAVAILABLE'
+                retained = candidates.get(raw['candidate_id'])
+                if retained is not None:
+                    retained['status'] = 'UNKNOWN'
+                    retained['reasons'] = sorted(set(retained['reasons']+raw['reasons']))
+                    retained['acquisitions'].extend(raw['acquisitions'])
+                else:
+                    candidates[raw['candidate_id']] = raw
+                covered.update((f['epoch'], f['tick']) for f in raw['raw_result_witnesses'])
     owners: dict[tuple[str, int], set[str]] = defaultdict(set)
     for key, c in candidates.items():
         for f in c["raw_result_witnesses"]:
@@ -515,7 +590,9 @@ def integrate(rows: list[dict[str, Any]], *, observed_score_brackets: bool = Fal
     return {"kind": "offline_Round_transition_evidence_NOT_GT",
             "association_horizon_sec": ASSOCIATION_SECONDS,
             "observation_policy": {"observed_score_brackets": observed_score_brackets,
-                                   "observed_score_persistence": observed_score_persistence},
+                                   "observed_score_persistence": observed_score_persistence,
+                                   **({'scoped_score_boundaries': True}
+                                      if scoped_score_boundaries else {})},
             "candidates": list(candidates.values()), "orphan_result_groups": orphans,
             "source_gaps": gaps, "complete_display_status": "UNVERIFIED",
             "acquisition_epochs": sorted({f["epoch"] for f in rows}),
@@ -555,11 +632,13 @@ def main() -> None:
         parser.add_argument("--" + key, type=Path, required=True)
     parser.add_argument("--observed-score-brackets", action="store_true")
     parser.add_argument("--observed-score-persistence", action="store_true")
+    parser.add_argument("--scoped-score-boundaries", action="store_true")
     args = parser.parse_args()
     report = run(args.review_session, args.input, args.output,
                  integrator=lambda rows: integrate(
                      rows, observed_score_brackets=args.observed_score_brackets,
-                     observed_score_persistence=args.observed_score_persistence))
+                     observed_score_persistence=args.observed_score_persistence,
+                     scoped_score_boundaries=args.scoped_score_boundaries))
     print(json.dumps({"candidates": len(report["candidates"]), "events_emitted": 0}))
 
 

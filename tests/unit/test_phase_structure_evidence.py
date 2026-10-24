@@ -44,6 +44,48 @@ def test_fixed_glyphs_survive_background_change_without_lowering_ncc_threshold()
     assert model.threshold == semantic.threshold == 0.90
 
 
+def test_fixed_contrast_normalization_recovers_washed_out_intact_glyphs():
+    semantic, baseline = reference()
+    washed = (semantic.reference.astype(np.float32)*.10+220).astype(np.uint8)
+    assert baseline.measure(washed)['presence'] is None
+    contrast = PhaseStructureReference(semantic,contrast_normalized=True)
+    measured = contrast.measure(washed)
+    assert measured['presence'] is True
+    assert all(g['coverage'] >= .90 and g['precision'] >= .90
+               and g['positive_contrast'] >= 12 for g in measured['groups'])
+    f = frame(1)
+    image = cv2.cvtColor(washed,cv2.COLOR_GRAY2BGR)
+    f['pixel_sha256'] = hashlib.sha256(image.tobytes()).hexdigest()
+    f['phase_structure'] = bind_phase(f,image,[0,0,390,65],contrast,'b'*64)
+    assert phase_supported(f) and not f['phase_structure']['absence_checked']
+    changed = deepcopy(f)
+    changed['phase_structure']['groups'][0]['positive_contrast'] = 5
+    value = changed['phase_structure']
+    from scripts.temporal_gt.contract import canonical_hash
+    value['evidence_sha256'] = canonical_hash({k:v for k,v in value.items()
+                                               if k!='evidence_sha256'})
+    with pytest.raises(ValueError):
+        phase_supported(changed)
+
+
+@pytest.mark.parametrize('kind',['missing_group','inverted','noise','shift','low_contrast'])
+def test_contrast_normalization_cannot_manufacture_glyphs_or_matching_structure(kind):
+    semantic, _ = reference()
+    model = PhaseStructureReference(semantic,contrast_normalized=True)
+    image = semantic.reference.copy()
+    if kind == 'missing_group':
+        image[:,278:] = 70
+    elif kind == 'inverted':
+        image = 255-image
+    elif kind == 'noise':
+        image = np.random.default_rng(21).integers(0,256,image.shape,dtype=np.uint8)
+    elif kind == 'shift':
+        image = np.roll(image,8,axis=1)
+    else:
+        image = (image.astype(np.float32)*.04+230).astype(np.uint8)
+    assert model.measure(image)['presence'] is None
+
+
 @pytest.mark.parametrize("fault", ["blank", "partial", "invert", "shift", "shape", "noise"])
 def test_unrelated_partial_or_incompatible_pixels_remain_unknown(fault):
     _, model = reference()

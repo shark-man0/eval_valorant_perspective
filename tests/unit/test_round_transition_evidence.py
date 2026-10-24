@@ -31,6 +31,91 @@ def transition():
             frame(5, score=(2, 4), word="THRIFTY")]
 
 
+def scoped_boundary():
+    return [frame(0), frame(1), frame(2,geometry=False),
+            frame(3,score=(2,4),geometry=False), frame(4,score=(2,4)),
+            frame(5,score=(2,4)), frame(6,score=(2,4),word='THRIFTY'),
+            frame(7,score=(2,4)), frame(8,score=(2,4),word='THRIFTY')]
+
+
+def test_scoped_endpoints_are_actual_reads_with_retained_geometry_unknowns():
+    rows = scoped_boundary()
+    original = deepcopy(rows)
+    assert integrate(rows,observed_score_brackets=True)['candidates'][0]['status'] == 'UNKNOWN'
+    r = integrate(rows,observed_score_brackets=True,scoped_score_boundaries=True)
+    c = r['candidates'][0]
+    assert c['status'] == 'DEVELOPMENT_TRANSITION_CANDIDATE'
+    assert [c['score_boundary'][k] for k in ('lower_tick','upper_tick')] == [1,4]
+    assert c['score_boundary_kind'] == 'SCOPED_OBSERVATION_INTERVAL'
+    assert [f['tick'] for f in c['geometry_unverified_score_boundary_witnesses']] == [2,3]
+    assert not c['unread_score_boundary_witnesses']
+    assert c['internal_End_tick'] is None and not r['formal_events']
+    assert rows == original
+
+
+@pytest.mark.parametrize('kind',['different_score','reverse_score','result_inside'])
+def test_untrusted_literals_inside_scoped_boundary_cannot_hide_contradictions(kind):
+    rows = scoped_boundary()
+    if kind == 'different_score':
+        rows[2]['enemy_score']['value'] = '9'
+    elif kind == 'reverse_score':
+        rows[2]['ally_score']['value'] = '2'
+        rows[3]['ally_score']['value'] = '1'
+    else:
+        rows[3]['result']['value'] = 'THRIFTY'
+    c = integrate(rows,observed_score_brackets=True,scoped_score_boundaries=True)['candidates'][0]
+    assert c['status'] == 'UNKNOWN'
+    assert ('result_inside_unread_score_bracket' in c['reasons'] if kind=='result_inside'
+            else 'score_order_conflict_inside_bracket' in c['reasons'])
+
+
+def test_scoped_bracket_does_not_cross_ledger_gaps_epochs_or_maximum_duration():
+    for kind in ('gap','epoch','long'):
+        rows = scoped_boundary()
+        if kind == 'gap':
+            rows.pop(3)
+        elif kind == 'epoch':
+            for f in rows[3:]:
+                f['epoch'] = 'other'
+        else:
+            for f in rows:
+                f['time_base'] = '1'
+        report = integrate(rows,observed_score_brackets=True,scoped_score_boundaries=True)
+        assert not any(c['status']=='DEVELOPMENT_TRANSITION_CANDIDATE'
+                       for c in report['candidates'])
+        assert not any(c['score_boundary_kind']=='SCOPED_OBSERVATION_INTERVAL'
+                       for c in report['candidates'])
+    with pytest.raises(ValueError,match='bounded'):
+        integrate(scoped_boundary(),scoped_score_boundaries=True)
+
+
+def test_unavailable_scoped_geometry_retains_raw_unknown_instead_of_erasing_it():
+    rows = scoped_boundary()
+    for f in rows:
+        f['geometry_consistent'] = False
+    baseline = integrate(rows,observed_score_brackets=True)['candidates']
+    report = integrate(rows,observed_score_brackets=True,scoped_score_boundaries=True)
+    assert len(baseline)==len(report['candidates'])==1
+    c = report['candidates'][0]
+    assert c['status']=='UNKNOWN' and c['score_boundary']==baseline[0]['score_boundary']
+    assert 'scoped_score_endpoints_unavailable' in c['reasons']
+    assert c['scoped_interval_status']=='UNAVAILABLE'
+    assert report['formal_events']==[]
+
+
+def test_retained_unknown_replay_cannot_overwrite_or_fuse_acquisition_evidence():
+    rows = scoped_boundary()
+    other = deepcopy(rows)
+    for f in other:
+        f['epoch'] = 'other'
+        f['geometry_consistent'] = False
+    report = integrate(rows+other,observed_score_brackets=True,scoped_score_boundaries=True)
+    assert all(c['status']=='UNKNOWN' or c['score_boundary']['epoch']=='a'
+               for c in report['candidates'])
+    assert {a['epoch'] for c in report['candidates'] for a in c['acquisitions']} == {'a','other'}
+    assert report['cross_epoch_association'] is False and report['formal_events']==[]
+
+
 def test_native_score_result_timer_association_keeps_hole_and_no_formal_end():
     rows = transition()
     before = deepcopy(rows)

@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 from scripts.diagnostics import diagnose_geometry_edges as experiment
-from scripts.diagnostics.geometry_edge_similarity import measure
+from scripts.diagnostics.geometry_edge_similarity import EdgeReference, measure
 
 
 def structure():
@@ -11,6 +11,33 @@ def structure():
     cv2.rectangle(gray, (20, 20), (140, 80), 170, 3)
     cv2.line(gray, (30, 30), (110, 70), 220, 3)
     return gray, np.full_like(gray, 255)
+
+
+def test_prepared_reference_preserves_exact_scores_and_never_reuses_an_observation():
+    gray, mask = structure()
+    prepared = EdgeReference(gray, mask)
+    images = [gray, 255-gray, np.roll(gray, 1, axis=1), np.zeros_like(gray),
+              np.random.default_rng(42).integers(0, 256, gray.shape, dtype=np.uint8)]
+    expected = [measure(gray, im, mask) for im in images]
+    assert [prepared.measure(im) for im in images] == expected
+    gray[:] = mask[:] = 0
+    assert [prepared.measure(im) for im in images[1:]] == expected[1:]
+
+
+@pytest.mark.parametrize('size',[(8,9),(31,60),(90,200)])
+def test_prepared_edge_margin_crop_preserves_clipping_mask_and_float_scores(size):
+    rng = np.random.default_rng(41)
+    template = rng.integers(0,256,size,dtype=np.uint8)
+    observed = rng.integers(0,256,size,dtype=np.uint8)
+    for kind in ('all','middle','empty'):
+        mask = np.full(size,255,np.uint8)
+        if kind == 'middle':
+            mask[:] = 0
+            mask[2:-2,3:-3] = 255
+        elif kind == 'empty':
+            mask[:] = 0
+        frozen = EdgeReference(template,mask)
+        assert frozen.measure(observed) == measure(template,observed,mask)
 
 
 def test_identical_edges_and_unsigned_contrast_polarity():

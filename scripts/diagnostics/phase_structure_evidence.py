@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import re
 from typing import Any
 
@@ -16,6 +17,19 @@ from valorant_ai_coach.hud.semantic_text import SemanticTextReference
 
 ImageU8 = NDArray[np.uint8]
 METHOD = 'offline_purchase_all_groups_edge_v1'
+CONTRAST_METHOD = 'offline_purchase_all_groups_contrast_edge_v2'
+
+
+def _contrast_image(gray: ImageU8, foreground: NDArray[np.bool_],
+                    background: NDArray[np.bool_]) -> tuple[ImageU8 | None, float]:
+    positive, negative = float(gray[foreground].mean()), float(gray[background].mean())
+    contrast = positive-negative
+    if contrast < 12:
+        return None, contrast
+    # Monotone affine contrast only: no alignment, glyph synthesis or clipping
+    # repair. The means use fixed source-supported glyph/negative-space masks.
+    normalized = np.clip((gray.astype(np.float32)-negative)*(255/contrast), 0, 255)
+    return np.asarray(normalized, dtype=np.uint8), contrast
 
 
 class PhaseStructureReference:
@@ -28,22 +42,34 @@ class PhaseStructureReference:
     glyphs, text extrapolation, phase-disappearance or production hook is used.
     """
 
-    def __init__(self, semantic: SemanticTextReference) -> None:
+    def __init__(self, semantic: SemanticTextReference, *,
+                 contrast_normalized: bool = False) -> None:
+        if type(contrast_normalized) is not bool:
+            raise ValueError('explicit contrast normalization option required')
+        self.method = CONTRAST_METHOD if contrast_normalized else METHOD
         self.reference = semantic.reference.copy()
         self.masks = tuple(m.copy() for m in semantic.masks)
         self.threshold = semantic.threshold
         self.binding = canonical_hash({
             'reference': hashlib.sha256(self.reference.tobytes()).hexdigest(),
             'masks': [hashlib.sha256(m.tobytes()).hexdigest() for m in self.masks],
-            'threshold': self.threshold, 'method': METHOD,
+            'threshold': self.threshold, 'method': self.method,
             'shape': list(self.reference.shape),
         })
         self.parts = []
         kernel = np.ones((3, 3), np.uint8)
         for mask in self.masks:
-            edge = features(self.reference, mask)[0]
             foreground = (self.reference >= 210) & (mask > 0)
             background = (self.reference < 180) & (mask > 0)
+            if min(int(foreground.sum()), int(background.sum())) < 32:
+                raise ValueError('source-supported glyphs and negative space required')
+            pixels = self.reference
+            if contrast_normalized:
+                normalized, _ = _contrast_image(pixels, foreground, background)
+                if normalized is None:
+                    raise ValueError('positive reference contrast required')
+                pixels = normalized
+            edge = features(pixels, mask)[0]
             if min(int(edge.sum()), int(foreground.sum()), int(background.sum())) < 32:
                 raise ValueError('source-supported glyph edges and negative space required')
             self.parts.append((edge, cv2.dilate(edge.astype(np.uint8), kernel) > 0,
@@ -51,7 +77,7 @@ class PhaseStructureReference:
 
     def measure(self, image: ImageU8) -> dict[str, Any]:
         result: dict[str, Any] = {
-            'method': METHOD, 'reference_sha256': self.binding,
+            'method': self.method, 'reference_sha256': self.binding,
             'threshold': self.threshold, 'presence': None, 'groups': [],
             'reference_size': [self.reference.shape[1], self.reference.shape[0]],
             'absence_checked': False, 'production_qualified': False, 'formal_events': [],
@@ -59,13 +85,26 @@ class PhaseStructureReference:
         if (image.dtype != np.uint8 or image.ndim not in (2, 3)
                 or image.ndim == 3 and image.shape[2] != 3):
             return {**result, 'reason': 'invalid_pixels'}
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
+        gray = np.asarray(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                          if image.ndim == 3 else image, dtype=np.uint8)
         if gray.shape != self.reference.shape:
             return {**result, 'reason': 'shape_mismatch'}
         kernel = np.ones((3, 3), np.uint8)
         for mask, (edge, dilated, foreground, background) in zip(
                 self.masks, self.parts, strict=True):
-            observed = features(gray, mask)[0]
+            pixels = gray
+            contrast = None
+            if self.method == CONTRAST_METHOD:
+                normalized, contrast = _contrast_image(gray, foreground, background)
+                if normalized is None:
+                    result['groups'].append({
+                        'reference_edges': int(edge.sum()), 'observed_edges': 0,
+                        'coverage': 0.0, 'precision': 0.0, 'positive_polarity': False,
+                        'positive_contrast': contrast, 'supported': False,
+                    })
+                    continue
+                pixels = normalized
+            observed = features(pixels, mask)[0]
             expanded = cv2.dilate(observed.astype(np.uint8), kernel) > 0
             coverage = float(expanded[edge].mean())
             precision = float(dilated[observed].mean()) if observed.any() else 0.0
@@ -73,6 +112,7 @@ class PhaseStructureReference:
             result['groups'].append({
                 'reference_edges': int(edge.sum()), 'observed_edges': int(observed.sum()),
                 'coverage': coverage, 'precision': precision, 'positive_polarity': polarity,
+                **({'positive_contrast': contrast} if contrast is not None else {}),
                 'supported': bool(observed.sum() >= 32 and polarity
                                   and min(coverage, precision) >= self.threshold),
             })
@@ -106,7 +146,7 @@ def phase_supported(frame: dict[str, Any]) -> bool:
     value = frame.get('phase_structure')
     if value is None:
         return False
-    if (not isinstance(value, dict) or value.get('method') != METHOD
+    if (not isinstance(value, dict) or value.get('method') not in {METHOD, CONTRAST_METHOD}
             or value.get('frame') != {k: frame[k] for k in FRAME_KEYS}
             or value.get('evidence_sha256') != canonical_hash(
                 {k: v for k, v in value.items() if k != 'evidence_sha256'})
@@ -146,6 +186,10 @@ def phase_supported(frame: dict[str, Any]) -> bool:
                     and all(type(g.get(k)) in (int, float)
                             and value['threshold'] <= g[k] <= 1 for k in ('coverage', 'precision'))
                     for g in value['groups'])
+    if value['method'] == CONTRAST_METHOD:
+        supported = supported and all(type(g.get('positive_contrast')) in (int, float)
+                                      and math.isfinite(g['positive_contrast'])
+                                      and g['positive_contrast'] >= 12 for g in value['groups'])
     if value.get('presence') is not (True if supported else None):
         raise ValueError('phase presence contradicts group evidence')
     return supported

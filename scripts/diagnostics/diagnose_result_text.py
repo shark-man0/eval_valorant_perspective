@@ -24,7 +24,7 @@ from valorant_ai_coach.hud.templates import TesseractTextReader
 from valorant_ai_coach.hud.timer_glyphs import ImageU8
 
 VOCABULARY = frozenset({
-    "TEAM ACE", "VICTORY", "DEFEAT", "FLAWLESS", "THRIFTY", "ACE", "WON", "LOST",
+    "TEAM ACE", "VICTORY", "DEFEAT", "FLAWLESS", "PERFECT", "THRIFTY", "ACE", "WON", "LOST",
 })
 REPORT_VOCABULARY = frozenset({"ラウンドが進行中", "アビリティー"})
 
