@@ -35,6 +35,15 @@ class OutlineMinimapCalibrator(MinimapCalibrator):
         self._outline_features: dict[int, tuple[NDArray[Any], float]] = {}
         self._outline_feature_bytes = 0
 
+    def reset_frame_alignment(self) -> None:
+        """Forget the frame transform; retain only content-keyed static work.
+
+        Source/epoch changes cannot carry an alignment across observations.
+        Reference pixels/features depend only on the existing content, geometry
+        and ROI-shape key, which analyze verifies again on every frame.
+        """
+        self._clear_alignment()
+
     def analyze(
         self,
         frame: NDArray[Any],

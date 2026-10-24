@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from typing import Any
 
 import cv2
@@ -22,9 +23,11 @@ from valorant_ai_coach.maps.resolver import ZoneResolver
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
+from .development_appearance_pool import ContrastiveAppearancePool
 from .development_boundary import candidate_boundary_evidence, validate_assumed_error_radius
 from .development_identity_metrics import identity_factors, marker_binding_matches
 from .development_ownership import DevelopmentOwnershipEvidence
+from .development_portrait_bank import PortablePortraitTracker
 from .development_recorder_view import DevelopmentRecorderView
 from .development_view import DevelopmentViewVeto
 from .map_pipeline import MapTimeline
@@ -32,7 +35,7 @@ from .self_marker import MarkerPosition, MarkerReferenceInspector, SelfMarkerTra
 
 
 def development_registry(map_id: str) -> MapRegistry:
-    if map_id not in {"bind", "haven"}:
+    if map_id not in {"bind", "haven", "lotus", "corrode", "summit"}:
         raise ValueError("An explicitly registered development map is required")
     canonical = resource_path("config/map_zone_v3/config/map_registry_v1.json").parents[1]
     root = resource_path(
@@ -46,7 +49,22 @@ def bind_development_registry() -> MapRegistry:
 
 class DevelopmentMapTimeline:
     def __init__(self, profile: dict[str, Any], *, registry: MapRegistry | None = None,
-                 inspect_reference_appearances: bool = False) -> None:
+                 inspect_reference_appearances: bool = False,
+                 marker: SelfMarkerTracker | None = None,
+                 coordinate_scope: str = "legacy_self_eligible") -> None:
+        if (not isinstance(coordinate_scope, str)
+                or coordinate_scope not in {"legacy_self_eligible", "unassigned_visual_candidate"}):
+            raise ValueError("Explicit development coordinate scope required")
+        if (coordinate_scope == "unassigned_visual_candidate"
+                and profile.get("reference_identity_confirmed") is not False):
+            raise ValueError("Unassigned coordinates require explicit unconfirmed identity")
+        marker_spec = profile.get("minimap_self_marker")
+        marker_mode = marker_spec.get("mode") if isinstance(marker_spec, dict) else None
+        if (isinstance(marker_mode, str) and marker_mode in {
+                "portable_portrait_v1", "appearance_pool_v1"}
+                and coordinate_scope != "unassigned_visual_candidate"):
+            raise ValueError("Generic portrait references require unassigned coordinate scope")
+        self.coordinate_scope = coordinate_scope
         self.registry = registry if registry is not None else development_registry(
             profile.get("map_zone", {}).get("manual_map_id", "bind"))
         self.profile = profile
@@ -59,11 +77,17 @@ class DevelopmentMapTimeline:
         self.resolver = ZoneResolver(definition, self.registry.runtime)
         self._candidate_zone: str | None = None
         self._context: tuple[Any, ...] | None = None
-        self.marker = SelfMarkerTracker()
+        providers = {"portable_portrait_v1": PortablePortraitTracker,
+                     "appearance_pool_v1": ContrastiveAppearancePool}
+        provider = providers.get(marker_mode, SelfMarkerTracker) if isinstance(
+            marker_mode, str) else SelfMarkerTracker
+        self.marker = marker if marker is not None else provider()
         self.view_veto = DevelopmentViewVeto()
         self.ownership_evidence = DevelopmentOwnershipEvidence()
         self.recorder_view = DevelopmentRecorderView()
-        self.inspector = MarkerReferenceInspector() if inspect_reference_appearances else None
+        self.inspector = (MarkerReferenceInspector() if inspect_reference_appearances
+                          and not isinstance(self.marker, (
+                              PortablePortraitTracker, ContrastiveAppearancePool)) else None)
         self.previous: tuple[float, tuple[float, float], int | None] | None = None
         self._last_order: tuple[float, int] | None = None
         self.next_segment = 0
@@ -121,6 +145,12 @@ class DevelopmentMapTimeline:
                 or not isinstance(acquisition_id, str) or not acquisition_id):
             self.reset()
             raise ValueError("Explicit source and acquisition identity required")
+        if self.coordinate_scope == "unassigned_visual_candidate" and (
+                not isinstance(source_sha256, str)
+                or re.fullmatch(r"[0-9a-f]{64}", source_sha256) is None
+                or self.profile.get("reference_identity_confirmed") is not False):
+            self.reset()
+            raise ValueError("Unassigned coordinates require source SHA and unconfirmed identity")
         if (not isinstance(frame, np.ndarray) or frame.ndim != 3
                 or frame.shape[2] != 3 or frame.dtype != np.uint8):
             self.reset()
@@ -169,11 +199,15 @@ class DevelopmentMapTimeline:
             context_key += (ownership_evidence["reference_fingerprint"],)
         if recorder_view["status"] != "disabled":
             context_key += (source_sha256, recorder_view["reference_fingerprint"])
+        elif source_sha256 is not None:
+            context_key += ("source_sha256", source_sha256)
+        if self.coordinate_scope == "unassigned_visual_candidate":
+            context_key += (self.coordinate_scope,)
         if context_key != self._context:
             self._break()
             self.marker.reset()
             assert isinstance(self.timeline.calibrator, OutlineMinimapCalibrator)
-            self.timeline.calibrator.clear_reference_cache()
+            self.timeline.calibrator.reset_frame_alignment()
             self._context = context_key
             self._last_order = None
         if self._last_order is not None and (
@@ -183,12 +217,18 @@ class DevelopmentMapTimeline:
             raise ValueError("Source time/frame order must increase within an acquisition")
         self._last_order = time_sec, frame_index
         view_veto = self.view_veto.inspect(frame, self.profile.get("development_view_veto"))
+        unassigned_declaration = (
+            self.coordinate_scope == "unassigned_visual_candidate"
+            and view.get("primary_state") == "unknown"
+            and view.get("values", {}).get("view_state_unqualified") is True
+        )
         eligible = (
             not view_veto["veto"]
             and not ownership_evidence["block_position_candidate"]
             and not recorder_view["block_position_candidate"]
-            and view.get("primary_state") == "live_first_person"
-            and view.get("values", {}).get("player_specific_hud_valid") is True
+            and (unassigned_declaration or (
+                view.get("primary_state") == "live_first_person"
+                and view.get("values", {}).get("player_specific_hud_valid") is True))
             and not set(view.get("state_flags", [])) & {
                 "visual_transition", "buy_phase_banner", "round_end_banner",
             }
@@ -331,9 +371,16 @@ class DevelopmentMapTimeline:
             ).hexdigest(),
             "time_sec": time_sec, "frame_index": frame_index,
             "appearance": appearance.to_dict(),
+            **({"position_subject": "unassigned_visual_candidate",
+                "view_state_qualified": False}
+               if self.coordinate_scope == "unassigned_visual_candidate" else {}),
+            **({"development_appearance_evidence": self.marker.last_evidence}
+               if isinstance(self.marker, (
+                   PortablePortraitTracker, ContrastiveAppearancePool)) else {}),
             "marker_reference_evidence": reference_evidence,
             "development_view_veto": view_veto,
             "ownership_evidence": ownership_evidence,
+            **({"source_sha256": source_sha256} if source_sha256 is not None else {}),
             **({"recorder_view_evidence": recorder_view, "source_sha256": source_sha256}
                if recorder_view["status"] != "disabled" else {}),
             "ownership": {"identity": "UNKNOWN", "view_eligible": eligible,

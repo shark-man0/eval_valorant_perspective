@@ -74,7 +74,9 @@ def build(manifest_path: Path, output: Path) -> dict[str, Any]:
         profile_path = Path(manifest[f"{name}_profile_path"])
         profiles[name] = _sha(profile_path)
         profile = json.loads(profile_path.read_text(encoding="utf-8"))
-        pipeline = DevelopmentMapTimeline(profile, inspect_reference_appearances=True)
+        pipeline = DevelopmentMapTimeline(
+            profile, inspect_reference_appearances=True,
+            coordinate_scope=profile.get("development_coordinate_scope", "legacy_self_eligible"))
         definition = pipeline.timeline.definition
         assert definition is not None and definition.reference_asset is not None
         bbox = definition.data["coordinate_system"]["reference_map_mask_bbox_within_roi_px"]

@@ -105,8 +105,10 @@ S.slice(0,index+1).filter(p=>p.point_norm&&context(p)===context(s)).forEach(p=>{
 ctx.beginPath();ctx.fillStyle=p.segment===s.segment?'#38bdf8':'#64748b';ctx.arc(...xy(p.point_norm),3,0,Math.PI*2);ctx.fill()});
 if(s.point_norm){ctx.beginPath();ctx.setLineDash([]);ctx.strokeStyle='#fbbf24';ctx.lineWidth=3;
 ctx.arc(...xy(s.point_norm),10,0,Math.PI*2);ctx.stroke()}
+const timeLabel=s.time_evidence==='unverified_discovery_offset'?'探索位置（native時刻未検証）':
+s.time_evidence==='native'?'native PTS':'申告されたSource時刻';
 $('status').textContent=`${s.source_id} / ${s.acquisition_id} `+
-`· 原動画 ${s.time_sec.toFixed(3)} s · 観測 ${index+1}/${S.length} `+
+`· ${timeLabel} ${s.time_sec.toFixed(3)} s · 観測 ${index+1}/${S.length} `+
 `· ${s.point_norm?'位置候補':'位置 UNKNOWN'} · Zone ${zoneName(s.zone_id)} `+
 `· 候補領域 ${zoneName(s.region_candidate_id)}`;
 if(D.frames[index]){$('source').src=D.frames[index];$('source').hidden=false}
@@ -125,6 +127,8 @@ const matches=s.marker_reference_evidence?.matches||[];
 const selfMatches=matches.filter(m=>m.reference_category==='self_reference_appearance').length;
 const controlMatches=matches.filter(m=>m.reference_category==='nonself_control_appearance').length;
 $('detail').textContent=`本人所有: UNKNOWN / 経路区間: ${s.segment??'なし'}\n`+
+`位置候補の対象: ${s.position_subject??'本人未確定の従来候補'} `+
+`/ 視点状態の資格: ${s.view_state_qualified??false}\n`+
 `外観一致スコア: ${s.appearance_similarity?.toFixed(3)??'未測定'} `+
 `/ 校正スコア: ${s.calibration_score?.toFixed(3)??'未測定'}（確率ではありません）\n`+
 `途切れ・不明理由: ${s.break_reason??'なし'} / 画像照合: ${s.appearance_reason}\n`+

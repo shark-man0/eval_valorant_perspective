@@ -1,0 +1,202 @@
+{
+  "version": "3.0",
+  "map_id": "corrode",
+  "display_name": "Corrode (development: public shaded footprints)",
+  "geometry_version": "corrode_public_shaded_footprints_ccw270_2026-10-24_v1",
+  "geometry_status": "development_public_texture_partial_regions",
+  "geometry_confidence_cap": 0.9,
+  "observed_client_builds": [],
+  "validity_policy": {
+    "status": "provisional_until_runtime_alignment_passes",
+    "invalidate_when": "reference minimap mask alignment fails persistently or known map geometry changes",
+    "on_invalidate": "calibration_required; do not resolve named zones"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "Public texture lossless CCW270; normalized visible-floor bbox, not ROI/world metres.",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "Fixed authored CCW270",
+    "reference_minimap_roi_px_1920x1080": [
+      0,
+      0,
+      1024,
+      1024
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      81,
+      32,
+      943,
+      1009
+    ],
+    "calibration_note": "The 1024x1024 public asset is an authoring canvas, not a 1920x1080 HUD ROI. Runtime uses explicit actual ROI and whole-outline calibration."
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed_map_orientation",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "recalibrate static mask; if stable alignment cannot be recovered -> calibration_required",
+    "runtime_alignment_reference_asset": "assets/corrode_reference.png"
+  },
+  "coverage_mask_file": "config/maps/corrode_operational_mask_v1.json",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "corrode_a_plant",
+      "zone_name": "A public shaded footprint",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.8062645011600929,
+          0.3428863868986694
+        ],
+        [
+          0.8062645011600929,
+          0.4227226202661208
+        ],
+        [
+          0.9211136890951276,
+          0.4227226202661208
+        ],
+        [
+          0.9211136890951276,
+          0.38689866939611056
+        ],
+        [
+          0.9048723897911833,
+          0.3858751279426817
+        ],
+        [
+          0.9048723897911833,
+          0.3725690890481064
+        ],
+        [
+          0.9211136890951276,
+          0.37154554759467756
+        ],
+        [
+          0.9211136890951276,
+          0.3428863868986694
+        ],
+        [
+          0.8642691415313225,
+          0.3428863868986694
+        ],
+        [
+          0.8631090487238979,
+          0.35823950870010235
+        ],
+        [
+          0.8468677494199536,
+          0.3572159672466735
+        ],
+        [
+          0.8468677494199536,
+          0.3428863868986694
+        ]
+      ],
+      "display_group": "A_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "corrode_b_plant",
+      "zone_name": "B public shaded footprint",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.13805104408352667,
+          0.34390992835209827
+        ],
+        [
+          0.13805104408352667,
+          0.37154554759467756
+        ],
+        [
+          0.154292343387471,
+          0.3725690890481064
+        ],
+        [
+          0.154292343387471,
+          0.40122824974411464
+        ],
+        [
+          0.13805104408352667,
+          0.4022517911975435
+        ],
+        [
+          0.13805104408352667,
+          0.42988741044012285
+        ],
+        [
+          0.2354988399071926,
+          0.43091095189355166
+        ],
+        [
+          0.2354988399071926,
+          0.4165813715455476
+        ],
+        [
+          0.20301624129930396,
+          0.4155578300921187
+        ],
+        [
+          0.20301624129930396,
+          0.35823950870010235
+        ],
+        [
+          0.2354988399071926,
+          0.3572159672466735
+        ],
+        [
+          0.2354988399071926,
+          0.34390992835209827
+        ]
+      ],
+      "display_group": "B_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "corrode_a_plant"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "corrode_b_plant"
+      ]
+    }
+  ],
+  "topology_edges": [],
+  "authoring_limits": [
+    "Public shaded footprint exterior only; no whole Site, callout boundary, walkability or topology claim.",
+    "Static lossless authoring rotation; dynamic rotation unsupported.",
+    "Source Map identity is geometric candidate; client build unverified."
+  ]
+}

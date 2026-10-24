@@ -1,0 +1,39 @@
+{
+  "status": "development_only_not_qualification",
+  "metadata_source": "https://valorant-api.com/v1/maps/2fe4ed3a-450a-948b-6d6b-e89a78e680a9",
+  "asset_source": "https://media.valorant-api.com/maps/2fe4ed3a-450a-948b-6d6b-e89a78e680a9/displayicon.png",
+  "upstream_map_id": "2fe4ed3a-450a-948b-6d6b-e89a78e680a9",
+  "public_original_sha256": "d533af2a6fbc09f12579b2d33438a610d5846db61e56842ad3038087155851c2",
+  "reference_sha256": "53e0d94f24ba7a8c5dac21f34d6af564d59af247701b5a2aa787f60c86a026f6",
+  "reference_authoring_transform": {
+    "kind": "lossless rotate180CCW",
+    "runtime_dynamic_rotation_supported": false
+  },
+  "visible_floor_asset": "assets/lotus_visible_floor.png",
+  "visible_floor_sha256": "d9ff8dcd5e4f7cbb9c973844a6122965b559b114610f6b99c257349ae40bf27e",
+  "bbox_pixels": [
+    71,
+    106,
+    968,
+    903
+  ],
+  "plant_region_evidence": "Public gold connected components>1000px assigned one-to-one to published transformed Site anchors, distance<100px; exact shaded exteriors only.",
+  "transformed_site_anchors": {
+    "A": [
+      147.56678604800004,
+      653.5478156288
+    ],
+    "B": [
+      508.03225524224,
+      552.7242669056
+    ],
+    "C": [
+      871.810569728,
+      575.4790059008
+    ]
+  },
+  "floor_extraction": "alpha>=128,HSV saturation<100,largestconnectedcomponent: visible2Dsupport only",
+  "asset_build": "unknown",
+  "map_identity_review": "not_human_confirmed",
+  "production": false
+}

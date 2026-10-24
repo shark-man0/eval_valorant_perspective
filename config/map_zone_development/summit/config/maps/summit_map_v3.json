@@ -1,0 +1,338 @@
+{
+  "version": "3.0",
+  "map_id": "summit",
+  "display_name": "Summit (development: public shaded footprints)",
+  "geometry_version": "summit_public_shaded_footprints_ccw0_2026-10-24_v1",
+  "geometry_status": "development_public_texture_partial_regions",
+  "geometry_confidence_cap": 0.9,
+  "observed_client_builds": [],
+  "validity_policy": {
+    "status": "provisional_until_runtime_alignment_passes",
+    "invalidate_when": "reference minimap mask alignment fails persistently or known map geometry changes",
+    "on_invalidate": "calibration_required; do not resolve named zones"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "Public texture lossless CCW0; normalized visible-floor bbox, not ROI/world metres.",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "Fixed authored CCW0",
+    "reference_minimap_roi_px_1920x1080": [
+      0,
+      0,
+      1024,
+      1024
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      39,
+      17,
+      1020,
+      1005
+    ],
+    "calibration_note": "The 1024x1024 public asset is an authoring canvas, not a 1920x1080 HUD ROI. Runtime uses explicit actual ROI and whole-outline calibration."
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed_map_orientation",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "recalibrate static mask; if stable alignment cannot be recovered -> calibration_required",
+    "runtime_alignment_reference_asset": "assets/summit_reference.png"
+  },
+  "coverage_mask_file": "config/maps/summit_operational_mask_v1.json",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "summit_a_plant",
+      "zone_name": "A public shaded footprint",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.9337410805300713,
+          0.36639676113360325
+        ],
+        [
+          0.9041794087665648,
+          0.3674089068825911
+        ],
+        [
+          0.9031600407747197,
+          0.4291497975708502
+        ],
+        [
+          0.8613659531090724,
+          0.4291497975708502
+        ],
+        [
+          0.8613659531090724,
+          0.4311740890688259
+        ],
+        [
+          0.8644240570846076,
+          0.43218623481781376
+        ],
+        [
+          0.8654434250764526,
+          0.4848178137651822
+        ],
+        [
+          0.8715596330275229,
+          0.4908906882591093
+        ],
+        [
+          0.9357798165137615,
+          0.4908906882591093
+        ],
+        [
+          0.9520897043832823,
+          0.48582995951417
+        ],
+        [
+          0.9520897043832823,
+          0.48380566801619435
+        ],
+        [
+          0.9551478083588175,
+          0.48279352226720645
+        ],
+        [
+          0.9561671763506626,
+          0.4797570850202429
+        ],
+        [
+          0.9592252803261978,
+          0.4797570850202429
+        ],
+        [
+          0.9622833843017329,
+          0.47368421052631576
+        ],
+        [
+          0.9622833843017329,
+          0.4686234817813765
+        ],
+        [
+          0.9653414882772681,
+          0.46558704453441296
+        ],
+        [
+          0.9653414882772681,
+          0.3977732793522267
+        ],
+        [
+          0.9500509683995922,
+          0.3977732793522267
+        ],
+        [
+          0.9490316004077471,
+          0.38360323886639675
+        ],
+        [
+          0.9347604485219164,
+          0.38360323886639675
+        ]
+      ],
+      "display_group": "A_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "summit_b_plant",
+      "zone_name": "B public shaded footprint",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.04892966360856269,
+          0.24190283400809717
+        ],
+        [
+          0.04892966360856269,
+          0.2611336032388664
+        ],
+        [
+          0.045871559633027525,
+          0.26214574898785425
+        ],
+        [
+          0.045871559633027525,
+          0.26417004048583
+        ],
+        [
+          0.04994903160040775,
+          0.26619433198380565
+        ],
+        [
+          0.04994903160040775,
+          0.2935222672064777
+        ],
+        [
+          0.047910295616717634,
+          0.2965587044534413
+        ],
+        [
+          0.0417940876656473,
+          0.2965587044534413
+        ],
+        [
+          0.0417940876656473,
+          0.30465587044534415
+        ],
+        [
+          0.03363914373088685,
+          0.3066801619433198
+        ],
+        [
+          0.0326197757390418,
+          0.31275303643724695
+        ],
+        [
+          0.017329255861365953,
+          0.31275303643724695
+        ],
+        [
+          0.017329255861365953,
+          0.35020242914979755
+        ],
+        [
+          0.060142711518858305,
+          0.35020242914979755
+        ],
+        [
+          0.060142711518858305,
+          0.3431174089068826
+        ],
+        [
+          0.06320081549439348,
+          0.3410931174089069
+        ],
+        [
+          0.0652395514780836,
+          0.34210526315789475
+        ],
+        [
+          0.06422018348623854,
+          0.3410931174089069
+        ],
+        [
+          0.06625891946992865,
+          0.33805668016194335
+        ],
+        [
+          0.07543323139653414,
+          0.33704453441295545
+        ],
+        [
+          0.07849133537206932,
+          0.3390688259109312
+        ],
+        [
+          0.07849133537206932,
+          0.34210526315789475
+        ],
+        [
+          0.08256880733944955,
+          0.347165991902834
+        ],
+        [
+          0.08256880733944955,
+          0.35020242914979755
+        ],
+        [
+          0.14169215086646278,
+          0.35020242914979755
+        ],
+        [
+          0.14169215086646278,
+          0.31275303643724695
+        ],
+        [
+          0.12538226299694188,
+          0.31275303643724695
+        ],
+        [
+          0.12436289500509684,
+          0.2965587044534413
+        ],
+        [
+          0.17940876656472987,
+          0.29554655870445345
+        ],
+        [
+          0.17940876656472987,
+          0.24190283400809717
+        ],
+        [
+          0.15188583078491336,
+          0.24190283400809717
+        ],
+        [
+          0.15188583078491336,
+          0.25303643724696356
+        ],
+        [
+          0.15086646279306828,
+          0.2560728744939271
+        ],
+        [
+          0.14678899082568808,
+          0.25809716599190285
+        ],
+        [
+          0.13557594291539246,
+          0.25809716599190285
+        ],
+        [
+          0.13353720693170235,
+          0.2560728744939271
+        ],
+        [
+          0.13353720693170235,
+          0.24190283400809717
+        ]
+      ],
+      "display_group": "B_SHADED_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "summit_a_plant"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "summit_b_plant"
+      ]
+    }
+  ],
+  "topology_edges": [],
+  "authoring_limits": [
+    "Public shaded footprint exterior only; no whole Site, callout boundary, walkability or topology claim.",
+    "Static lossless authoring rotation; dynamic rotation unsupported.",
+    "Source Map identity is geometric candidate; client build unverified."
+  ]
+}

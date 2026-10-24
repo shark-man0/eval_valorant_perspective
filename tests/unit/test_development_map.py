@@ -14,6 +14,7 @@ from valorant_ai_coach.visual.development_map import (
     DevelopmentMapTimeline,
     bind_development_registry,
 )
+from valorant_ai_coach.visual.development_portrait_bank import PortablePortraitTracker
 from valorant_ai_coach.visual.self_marker import SelfMarkerTracker
 
 
@@ -66,6 +67,87 @@ def test_registered_public_geometry_is_limited_and_not_default_production(bind_c
     with pytest.raises(MapRegistryError):
         MapRegistry(registry.root)  # Cannot silently activate via ordinary custom-root API.
     assert registry.runtime == MapRegistry().runtime
+
+
+def test_existing_development_profile_entry_point_can_opt_into_portable_portraits(bind_case):
+    _, _, frame, profile, (x, y) = bind_case
+    original = profile['minimap_self_marker']
+    patch = cv2.imread(original['positive_templates'][0])
+    yy, xx = np.indices((17, 17))
+    radius = np.hypot(xx-8, yy-8)
+    patch[(radius >= 6) & (radius <= 9)] = [120, 230, 230]
+    cv2.imwrite(original['positive_templates'][0], patch)
+    frame[y-8:y+9, x-8:x+9] = patch
+    profile['minimap_self_marker'] = {
+        'mode': 'portable_portrait_v1', 'feature_mode': 'gray_shared_v2',
+        'templates': [{'path': path, 'source_id': 'public_or_development_author',
+                       'role': 'portrait_appearance_only'}
+                      for path in original['positive_templates']+original['negative_templates']]}
+    profile['reference_identity_confirmed'] = False
+    pipeline = DevelopmentMapTimeline(profile, coordinate_scope='unassigned_visual_candidate',
+                                      inspect_reference_appearances=True)
+    assert isinstance(pipeline.marker, PortablePortraitTracker)
+    row = pipeline.observe(frame, 1., 1, source_id='source', source_sha256='a'*64,
+        acquisition_id='single-acquisition', evidence_kind='unqualified_hud_observation',
+        view={'primary_state': 'unknown', 'values': {'view_state_unqualified': True}})
+    assert row['position_subject'] == 'unassigned_visual_candidate'
+    assert row['ownership']['identity'] == 'UNKNOWN'
+    assert row['formal_self_position_fact'] is None
+    assert row['map_position_norm'] is not None
+
+
+@pytest.mark.parametrize('spec', [None, [], {'mode': []}])
+def test_invalid_marker_specification_does_not_crash_provider_selection(bind_case, spec):
+    _, _, frame, profile, _ = bind_case
+    profile['minimap_self_marker'] = spec
+    pipeline = DevelopmentMapTimeline(profile)
+    row = pipeline.observe(frame, 1., 1, source_id='source', acquisition_id='one',
+        evidence_kind='source_review', view={'primary_state': 'live_first_person',
+                                            'values': {'player_specific_hud_valid': True}})
+    assert row['appearance']['reason'] == 'invalid_reference_profile'
+    assert row['map_position_norm'] is None and row['formal_self_position_fact'] is None
+
+
+def test_source_digest_is_preserved_and_breaks_path_without_recorder_binding(bind_case):
+    _, _, frame, profile, _ = bind_case
+    timeline = DevelopmentMapTimeline(profile)
+    args = {'view': {'primary_state': 'live_first_person',
+                     'values': {'player_specific_hud_valid': True}},
+            'source_id': 'source', 'acquisition_id': 'same-acquisition',
+            'evidence_kind': 'unqualified_hud_observation'}
+    first = timeline.observe(frame, 0, 0, source_sha256='a'*64, **args)
+    second = timeline.observe(frame, .2, 1, source_sha256='b'*64, **args)
+    assert first.get('source_sha256') == 'a'*64
+    assert second.get('source_sha256') == 'b'*64
+    assert first['context_sha256'] != second['context_sha256']
+    assert first['map_segment'] != second['map_segment']
+    assert second['map_speed_norm_per_sec'] is None
+    assert second['formal_self_position_fact'] is None
+
+
+def test_unassigned_projection_does_not_fabricate_live_view_or_recorder_identity(bind_case):
+    _, _, frame, profile, _ = bind_case
+    profile = copy.deepcopy(profile)
+    profile['reference_identity_confirmed'] = False
+    args = {'view': {'primary_state': 'unknown',
+                     'values': {'view_state_unqualified': True}},
+            'source_id': 'source', 'source_sha256': 'a'*64, 'acquisition_id': 'test',
+            'evidence_kind': 'unqualified_hud_observation'}
+    legacy = DevelopmentMapTimeline(profile).observe(frame, 0, 0, **args)
+    assert legacy['map_position_norm'] is None
+    pipeline = DevelopmentMapTimeline(profile, coordinate_scope='unassigned_visual_candidate')
+    candidate = pipeline.observe(frame, 0, 0, **args)
+    assert candidate['map_position_norm'] is not None
+    assert candidate['position_subject'] == 'unassigned_visual_candidate'
+    assert candidate['ownership']['identity'] == 'UNKNOWN'
+    assert candidate['ownership']['observed_view'] == 'unknown'
+    assert candidate['view_state_qualified'] is False
+    assert candidate['formal_self_position_fact'] is None
+    args['view']['state_flags'] = ['buy_phase_banner']
+    assert pipeline.observe(frame, .2, 1, **args)['map_position_norm'] is None
+    args['source_sha256'] = None
+    with pytest.raises(ValueError, match='source SHA'):
+        pipeline.observe(frame, .4, 2, **args)
 
 
 def test_partial_interiors_are_inside_public_floor_without_claiming_full_callouts(bind_case):
@@ -402,6 +484,26 @@ def test_acquisition_profile_and_roi_changes_reset_paths(bind_case):
     assert changed_roi["development_events"] == []
 
 
+def test_acquisition_reset_preserves_only_immutable_reference_work(bind_case):
+    _, _, frame, profile, _ = bind_case
+    timeline = DevelopmentMapTimeline(profile)
+    args = dict(view={"primary_state": "live_first_person",
+                      "values": {"player_specific_hud_valid": True}},
+                source_id='source', evidence_kind='source_review')
+    first = timeline.observe(frame, 0, 0, acquisition_id='decode1', **args)
+    calibrator = timeline.timeline.calibrator
+    features = dict(calibrator._outline_features)
+    assert features
+    second = timeline.observe(frame, .2, 1, acquisition_id='decode2', **args)
+    assert first['map_position_norm'] == second['map_position_norm']
+    assert first['map_segment'] != second['map_segment']
+    assert second['map_speed_norm_per_sec'] is None
+    assert all(calibrator._outline_features[i][0] is feature[0]
+               for i, feature in features.items())
+    calibrator.reset_frame_alignment()
+    assert calibrator.transform(.5, .5) is None
+
+
 def test_invalid_observation_discards_previous_state(bind_case):
     registry, _, frame, profile, _ = bind_case
     timeline = DevelopmentMapTimeline(profile, registry=registry)
@@ -474,7 +576,7 @@ def test_haven_is_isolated_hashed_and_limited_to_public_shaded_plants():
     with pytest.raises(KeyError):
         MapRegistry().select(manual_map_id='haven')
     with pytest.raises(ValueError):
-        development_registry('lotus')
+        development_registry('unregistered')
     with pytest.raises(MapRegistryError):
         MapRegistry(registry.root)
 

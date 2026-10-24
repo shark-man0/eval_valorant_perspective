@@ -31,6 +31,7 @@ def build(manifest_path: Path, output: Path) -> dict[str, Any]:
     pipeline = DevelopmentMapTimeline(
         profile,
         inspect_reference_appearances=manifest.get("inspect_reference_appearances") is True,
+        coordinate_scope=profile.get("development_coordinate_scope", "legacy_self_eligible"),
     )
     records, frames = [], []
     for observation in observations:
@@ -41,6 +42,7 @@ def build(manifest_path: Path, output: Path) -> dict[str, Any]:
             image, observation["time_sec"], observation["frame_index"],
             view=observation["view"], evidence_kind=manifest["view_evidence_kind"],
             source_id=manifest["source_id"], acquisition_id=manifest["acquisition_id"],
+            source_sha256=manifest.get("source_sha256"),
         )
         records.append(record)
         height, width = image.shape[:2]

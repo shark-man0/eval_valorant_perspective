@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "mask_id": "corrode_shaded_core_qa_v1",
+  "map_id": "corrode",
+  "purpose": "QA of one eroded public shaded footprint only",
+  "authoring_basis": "Independent erosion of source texture gold region by 4px, not generated from zone polygon union. Whole visible-floor raster stored separately.",
+  "reference_asset": "assets/corrode_reference.png",
+  "reference_sha256": "c6ffcf7e8c8b73781d08bc562594690fdfd7c6dbd35dbfd15fbc1be145096959",
+  "polygon_norm": [
+    [
+      0.8109048723897911,
+      0.34698055271238487
+    ],
+    [
+      0.8109048723897911,
+      0.4186284544524053
+    ],
+    [
+      0.9164733178654292,
+      0.4186284544524053
+    ],
+    [
+      0.9164733178654292,
+      0.390992835209826
+    ],
+    [
+      0.9002320185614849,
+      0.38996929375639716
+    ],
+    [
+      0.9002320185614849,
+      0.368474923234391
+    ],
+    [
+      0.9164733178654292,
+      0.36745138178096215
+    ],
+    [
+      0.9164733178654292,
+      0.34698055271238487
+    ],
+    [
+      0.8689095127610209,
+      0.34698055271238487
+    ],
+    [
+      0.8677494199535963,
+      0.3623336745138178
+    ],
+    [
+      0.8433874709976799,
+      0.3623336745138178
+    ],
+    [
+      0.8422273781902552,
+      0.34698055271238487
+    ]
+  ],
+  "limits": {
+    "not_official_geometry": true,
+    "not_for_los": true,
+    "not_for_gameplay_event_generation": true
+  }
+}
