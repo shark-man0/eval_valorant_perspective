@@ -162,12 +162,23 @@ are preserved. Both switches default off; the persistence option requires the
 bounded bracket option. The output records the policy and actual witnesses.
 
 `ProfileTimerDisplayReader` retains the configured strict Timer reader and its
-inner subregion. It returns successful configured readings unchanged. Rejected
+inner subregion. It returns successful configured readings unchanged. By default rejected
 readings can only gain a literal decimal through the existing topology-checked
 extension, never an alternate colon or inferred punctuation. Comparing an
 unwrapped reader on the outer ROI with the configured Profile is a configuration
 comparison, not proof of better OCR accuracy. Preserve that distinction when
 reporting recording-to-recording diagnostics.
+
+An explicit `foreground_preprocessing='native_white200_rowcontrast_v1'` adds a
+rejected-read alternative. It applies the existing white200 foreground and
+12-level row-side background contrast rule to the configured native inner ROI,
+then uses the unchanged strict Timer reader, templates, 0.90 class threshold,
+0.04 competitor margin and literal colon grammar. It never prefers an expected
+clock value and preserves successful configured/decimal readings. This option
+defaults off and is not installed in a production Profile. Include the option
+in the offline reader fingerprint. Compare restoring the configured baseline
+with this alternative separately when older saved observations came from a
+different ROI configuration; neither gain is independently labelled accuracy.
 
 ## Geometry-supported Score endpoints
 

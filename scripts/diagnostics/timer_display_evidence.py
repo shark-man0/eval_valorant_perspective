@@ -123,18 +123,27 @@ class ProfileTimerDisplayReader:
 
     Unwrapping a Profile's SubregionReader and reading its outer layout ROI is
     a different observation method. Successful configured reads are returned
-    unchanged. Only a strictly validated decimal can recover a rejected read;
-    an alternate colon or guessed punctuation cannot replace the Profile.
+    unchanged. By default only a strictly validated decimal can recover a
+    rejected read. The explicit native foreground option reuses the unchanged
+    strict colon parser after observed-background rejection; neither path
+    substitutes punctuation, fills a value or changes a successful Profile read.
     """
 
     def __init__(self, baseline: HudReader[str], *,
-                 decimal_reader: HudReader[str] | None = None) -> None:
+                 decimal_reader: HudReader[str] | None = None,
+                 foreground_preprocessing: str | None = None) -> None:
         from valorant_ai_coach.hud.templates import SubregionReader
         strict = baseline.reader if isinstance(baseline, SubregionReader) else baseline
         if not isinstance(strict, StrictTimerGlyphReader):
             raise ValueError('configured strict Timer reader required')
+        if foreground_preprocessing not in (None, 'native_white200_rowcontrast_v1'):
+            raise ValueError('unsupported offline Timer foreground preprocessing')
         self.baseline = baseline
         self.literal = TimerDisplayReader(strict, decimal_reader=decimal_reader)
+        self.foreground_preprocessing = foreground_preprocessing
+        self.foreground = (None if foreground_preprocessing is None else StrictScoreGlyphReader(
+            strict.templates, comparison_preprocessing='gaussian3x3_v1',
+            foreground_preprocessing='white200_rowcontrast_v1'))
 
     def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[str]:
         observed = self.baseline.read(image, roi)
@@ -143,4 +152,26 @@ class ProfileTimerDisplayReader:
         alternative = self.literal.read(image, roi)
         if alternative.value is not None and '.' in alternative.value:
             return alternative
+        if self.foreground is not None and (
+            isinstance(roi, np.ndarray) and roi.dtype == np.uint8 and roi.size
+            and roi.ndim in (2, 3) and (roi.ndim == 2 or roi.shape[2] == 3)
+        ):
+            from valorant_ai_coach.hud.templates import SubregionReader
+            crop = roi
+            if isinstance(self.baseline, SubregionReader):
+                h, w = roi.shape[:2]
+                a, b, c, d = self.baseline.bounds
+                crop = roi[round(b*h):round(d*h), round(a*w):round(c*w)]
+            if crop.size and min(crop.shape[:2]) >= 2:
+                gray = np.asarray(cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+                                  if crop.ndim == 3 else crop, dtype=np.uint8)
+                # Reuse the existing white200/12-level side-background rule,
+                # explicitly in native pixels before the strict reader's own
+                # doubling. Never alter templates, .90/.04 or colon grammar.
+                mask = self.foreground._foreground_mask(gray)
+                recovered = self.literal.reader.read(image, mask)
+                if recovered.value is not None:
+                    return ReaderResult(recovered.value, recovered.confidence,
+                                        (*recovered.sources,
+                                         'offline_timer_native_rowcontrast_v1'))
         return observed

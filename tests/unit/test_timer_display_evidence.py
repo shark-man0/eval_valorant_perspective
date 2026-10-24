@@ -207,3 +207,58 @@ def test_profile_timer_extension_does_not_convert_an_unobserved_colon():
     strict = StrictTimerGlyphReader(_templates(), comparison_preprocessing='gaussian3x3_v1')
     extended = ProfileTimerDisplayReader(strict, decimal_reader=LiteralOcr('29:04'))
     assert extended.read(decimal(), decimal()).value is None
+
+
+def test_explicit_native_timer_foreground_recovers_background_without_grammar_changes():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    field = cv2.copyMakeBorder(_render_timer('1:20'),8,8,8,8,cv2.BORDER_CONSTANT,value=0)
+    background = np.repeat(np.linspace(120,230,field.shape[0],dtype=np.uint8)[:,None],
+                           field.shape[1],axis=1)
+    image = np.where(field > 0,field,background).astype(np.uint8)
+    original = image.copy()
+    strict = StrictTimerGlyphReader(_templates(),comparison_preprocessing='gaussian3x3_v1')
+    baseline = ProfileTimerDisplayReader(strict)
+    assert baseline.read(image,image).value is None
+    alternative = ProfileTimerDisplayReader(
+        strict,foreground_preprocessing='native_white200_rowcontrast_v1')
+    actual = alternative.read(image,image)
+    assert actual.value == '1:20' and actual.confidence >= .90
+    assert 'offline_timer_native_rowcontrast_v1' in actual.sources
+    assert strict.THRESHOLD == .90 and strict.CLASS_MARGIN == .04
+    np.testing.assert_array_equal(image,original)
+
+
+def test_native_timer_foreground_preserves_success_and_rejects_missing_punctuation():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    strict = StrictTimerGlyphReader(_templates(),comparison_preprocessing='gaussian3x3_v1')
+    alternative = ProfileTimerDisplayReader(
+        strict,foreground_preprocessing='native_white200_rowcontrast_v1')
+    image = _render_timer('1:20')
+    assert alternative.read(image,image) == strict.read(image,image)
+    assert alternative.read(decimal(),decimal()).value is None
+    for value in (0,120,255):
+        blank = np.full_like(image,value)
+        assert alternative.read(blank,blank).value is None
+    with pytest.raises(ValueError,match='foreground'):
+        ProfileTimerDisplayReader(strict,foreground_preprocessing='white199')
+
+
+def test_native_timer_foreground_uses_the_profile_inner_roi_and_keeps_outer_pixels():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    from valorant_ai_coach.hud.templates import SubregionReader
+    field = cv2.copyMakeBorder(_render_timer('1:20'),8,8,8,8,cv2.BORDER_CONSTANT,value=0)
+    bg = np.repeat(np.linspace(120,230,field.shape[0],dtype=np.uint8)[:,None],
+                   field.shape[1],axis=1)
+    field = np.where(field>0,field,bg).astype(np.uint8)
+    h,w = field.shape
+    outer = np.full((h+20,w+40),255,np.uint8)
+    outer[10:10+h,20:20+w] = field
+    original = outer.copy()
+    strict = StrictTimerGlyphReader(_templates(),comparison_preprocessing='gaussian3x3_v1')
+    bounds = (20/(w+40),10/(h+20),(20+w)/(w+40),(10+h)/(h+20))
+    parent = SubregionReader(strict,bounds)
+    observed = ProfileTimerDisplayReader(
+        parent,foreground_preprocessing='native_white200_rowcontrast_v1').read(outer,outer)
+    assert observed.value == '1:20'
+    assert parent.bounds == bounds
+    np.testing.assert_array_equal(outer,original)
