@@ -35,10 +35,21 @@ Neither maximum appearance score nor reusing positive/control semantics can
 establish who owns the camera. The private example was used for reference
 authoring and must not enter an independent evaluation denominator.
 
-An additional annulus veto is being evaluated separately. The existing default
-pool is unchanged. Ring support is an appearance cue, not self ownership; no
-replacement is selected when a texture candidate is rejected. Results from one
-reviewed image are insufficient to make this a cross-recording default.
+`AnnulusValidatedAppearancePool` is a separate opt-in shape veto, configured with
+`appearance_pool_annulus_v1` and explicit `unassigned_visual_candidate` scope.
+It uses the existing Portable tracker's annulus/texture criteria without lowering
+appearance thresholds. The existing default pool is unchanged. Ring support is
+an appearance cue, not self ownership; no replacement is selected when a texture
+candidate is rejected. Results from one reviewed image are insufficient to make
+this a cross-recording default.
+
+On the fixed1,330 observations from ten DEVELOPMENT recordings, the default
+pool's full output reproduced with zero differences. The extra veto reduced ROI
+candidates243 to95 and Map candidates143 to70; calibration stayed580 in both
+arms. These are retrieval changes, not measured correctness improvements. The
+one reviewed teammate example is rejected, but it was already exposed for triage
+and reference authoring. Other lost/retained targets are unreviewed, so this
+experimental veto is not selected as a new global default.
 
 ## Version-compatible projections
 
