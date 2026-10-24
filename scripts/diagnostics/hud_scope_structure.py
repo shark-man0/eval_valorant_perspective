@@ -10,16 +10,117 @@ import cv2
 import numpy as np
 
 from scripts.diagnostics.diagnose_hud_transfer import _specific_structure
-from scripts.diagnostics.geometry_edge_similarity import measure
+from scripts.diagnostics.geometry_edge_similarity import EdgeReference, measure
 from scripts.diagnostics.result_title_region import title_region
 from scripts.temporal_gt.contract import canonical_hash
-from valorant_ai_coach.hud.layout import HudLayout
+from valorant_ai_coach.hud.layout import HudLayout, NormalizedRoi
 from valorant_ai_coach.hud.timer_glyphs import ImageU8
 
 FRAME_KEYS = ('source_id', 'source_sha256', 'tick', 'time_base', 'epoch',
               'encoded_sha256', 'pixel_sha256')
 BINDINGS = ('layout_sha256', 'reader_profile_sha256', 'reference_bank_sha256',
             'references_sha256')
+
+
+class ComponentReferenceCache:
+    """Frozen reference work only; no past frame may authorize a new frame.
+
+    Prepared tile features and specificity gates are bound to the complete
+    reference fingerprint, Profile bindings and relevant layout regions. Each
+    call still hashes the actual pixels and measures every observed tile.
+    """
+
+    def __init__(self, layout: HudLayout, references: list[tuple[ImageU8, ImageU8]],
+                 bindings: dict[str, str]) -> None:
+        if layout.reference_resolution is None or not references:
+            raise ValueError('fixed reference resolution and references required')
+        self._identity = self._key(layout, references, bindings)
+        width, height = layout.reference_resolution
+        x, y, xx, yy = layout.normalized_roi('top_match_bar').pixel_bounds(width, height)
+        self._regions = {name: [a-x, b-y, c-x, d-y] for name in (
+            'ally_score', 'enemy_score', 'round_timer')
+            for a, b, c, d in [layout.normalized_roi(name).pixel_bounds(width, height)]}
+        self._top: list[list[tuple[list[int], EdgeReference]] | None] = []
+        self._joint: list[tuple[str, dict[str, list[tuple[list[int], EdgeReference]]]]
+                          | None] = []
+        for t, m in references:
+            if t.shape != (yy-y, xx-x) or m.shape != t.shape:
+                raise ValueError('reference must match fixed top region')
+            top = None
+            if min(t.shape) >= 8 and _specific_structure(t, m):
+                top = []
+                for i in range(3):
+                    a, b = t.shape[1]*i//3, t.shape[1]*(i+1)//3
+                    top.append(([a, 0, b, t.shape[0]], EdgeReference(t[:, a:b], m[:, a:b])))
+            self._top.append(top)
+            joint = np.zeros_like(m)
+            valid = True
+            for a, b, c, d in self._regions.values():
+                if not (0 <= a < c <= t.shape[1] and 0 <= b < d <= t.shape[0]):
+                    valid = False
+                    break
+                joint[b:d, a:c] = m[b:d, a:c]
+            parts = {}
+            if valid and _specific_structure(t, joint):
+                for name, (a, b, c, d) in self._regions.items():
+                    parts[name] = [(list(box), EdgeReference(
+                                       t[b:d, left:right], m[b:d, left:right]))
+                                   for left, right in ((a, (a+c)//2), ((a+c)//2, c))
+                                   for box in [(left, b, right, d)]]
+                self._joint.append((hashlib.sha256(joint.tobytes()).hexdigest(), parts))
+            else:
+                self._joint.append(None)
+
+    @staticmethod
+    def _key(layout: HudLayout, references: list[tuple[ImageU8, ImageU8]],
+             bindings: dict[str, str]) -> str:
+        return canonical_hash({'references': reference_fingerprint(references),
+                               'bindings': bindings, 'resolution': layout.reference_resolution,
+                               'regions': {name: _roi_values(layout.normalized_roi(name))
+                                           for name in (
+                                   'top_match_bar', 'ally_score', 'enemy_score', 'round_timer')}})
+
+    def scopes(self, observed: ImageU8, layout: HudLayout,
+               references: list[tuple[ImageU8, ImageU8]], bindings: dict[str, str],
+               joint_regions: bool) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        if self._key(layout, references, bindings) != self._identity:
+            raise ValueError('prepared reference/Profile/layout mismatch')
+        gray = cv2.cvtColor(observed, cv2.COLOR_BGR2GRAY)
+        tops: list[dict[str, Any]] = []
+        joints: list[dict[str, Any]] = []
+        def tile(bounds: list[int], ref: EdgeReference) -> dict[str, Any]:
+            a, b, c, d = bounds
+            detail = ref.measure(gray[b:d, a:c])
+            return {**detail, 'bounds': bounds.copy(),
+                    'supported': detail['score'] is not None and detail['score'] >= .90}
+        for top, joint in zip(self._top, self._joint, strict=True):
+            tiles = [] if top is None else [tile(box, ref) for box, ref in top]
+            supported = bool(tiles) and all(t['supported'] for t in tiles)
+            tops.append({'method': 'three_disjoint_top_tiles_v1',
+                         'status': 'TOP_STRUCTURE_SUPPORTED' if supported else 'UNKNOWN',
+                         'tiles': tiles, 'global_geometry_authorized': False,
+                         'semantic_status': 'UNVERIFIED', 'formal_events': [],
+                         'production_qualified': False,
+                         'reason': ('reference_structure_nonspecific' if top is None else
+                                    'all_three_tiles_supported' if supported
+                                    else 'tile_structure_missing')})
+            if joint_regions:
+                if joint is None:
+                    joints.append({'status': 'UNKNOWN', 'reference_specific': False, 'regions': {}})
+                else:
+                    fingerprint, parts = joint
+                    measured: dict[str, Any] = {name: {'bounds': self._regions[name].copy(),
+                                       'tiles': [tile(box, ref) for box, ref in refs]}
+                                for name, refs in parts.items()}
+                    ok = all(t['supported'] for v in measured.values() for t in v['tiles'])
+                    joints.append({'status': 'JOINT_STRUCTURE_SUPPORTED' if ok else 'UNKNOWN',
+                                   'reference_specific': True, 'regions': measured,
+                                   'reference_mask_sha256': fingerprint})
+        return tops, joints
+
+
+def _roi_values(roi: NormalizedRoi) -> list[float]:
+    return [roi.x, roi.y, roi.width, roi.height]
 
 
 def outline_mask(template: ImageU8, mask: ImageU8) -> ImageU8:
@@ -172,7 +273,8 @@ def _result_bounds(frame: dict[str, Any], image_size: list[int]) -> list[int] | 
 
 def component_geometry(frame: dict[str, Any], image: ImageU8, layout: HudLayout,
                        references: list[tuple[ImageU8, ImageU8]],
-                       bindings: dict[str, str], *, joint_regions: bool = False) -> dict[str, Any]:
+                       bindings: dict[str, str], *, joint_regions: bool = False,
+                       reference_cache: ComponentReferenceCache | None = None) -> dict[str, Any]:
     """Bind actual pixels and frozen long-line references to Round ROI support.
 
     References contain precomputed outline masks. No player state/ownership or
@@ -192,7 +294,12 @@ def component_geometry(frame: dict[str, Any], image: ImageU8, layout: HudLayout,
     same_size = tuple(size) == layout.reference_resolution
     top_bounds = layout.normalized_roi('top_match_bar').pixel_bounds(*size)
     x, y, xx, yy = top_bounds
-    scopes = [top_scope(t, m, image[y:yy, x:xx]) for t, m in references] if same_size else []
+    prepared_joint = None
+    if reference_cache is not None and same_size:
+        scopes, prepared_joint = reference_cache.scopes(
+            image[y:yy, x:xx], layout, references, bindings, joint_regions)
+    else:
+        scopes = [top_scope(t, m, image[y:yy, x:xx]) for t, m in references] if same_size else []
     best = max(scopes, key=lambda z: min((v['score'] or 0 for v in z['tiles']), default=0)
                ) if scopes else {'status': 'UNKNOWN', 'tiles': []}
     supported = same_size and best['status'] == 'TOP_STRUCTURE_SUPPORTED'
@@ -202,7 +309,8 @@ def component_geometry(frame: dict[str, Any], image: ImageU8, layout: HudLayout,
         for role in ('ally_score','enemy_score','round_timer'):
             a,b,c,d = layout.normalized_roi(role).pixel_bounds(*size)
             regions[role] = [a-x,b-y,c-x,d-y]
-        proposals = [joint_scope(t,m,image[y:yy,x:xx],regions) for t,m in references]
+        proposals = (prepared_joint if prepared_joint is not None else
+                     [joint_scope(t,m,image[y:yy,x:xx],regions) for t,m in references])
         joint = max(proposals, key=lambda z: min((v['score'] or 0
                     for r in z['regions'].values() for v in r['tiles']), default=0))
     joint_valid = joint['status'] == 'JOINT_STRUCTURE_SUPPORTED'

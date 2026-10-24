@@ -49,6 +49,11 @@ def measure(template: np.ndarray, image: np.ndarray, mask: np.ndarray) -> dict[s
     if template.shape != image.shape:
         raise ValueError("edge comparison does not rescale or align images")
     reference, observed = features(template, mask), features(image, mask)
+    return _measure_features(reference, observed)
+
+
+def _measure_features(reference: tuple[np.ndarray, np.ndarray, np.ndarray],
+                      observed: tuple[np.ndarray, np.ndarray, np.ndarray]) -> dict[str, Any]:
     reference_count, observed_count = int(reference[0].sum()), int(observed[0].sum())
     if reference_count < 32:
         return {"status": "reference_structure_insufficient", "score": None,
@@ -58,3 +63,35 @@ def measure(template: np.ndarray, image: np.ndarray, mask: np.ndarray) -> dict[s
     return {"status": "measured_not_qualified", "score": score,
             "reference_coverage": recall, "observed_coverage": precision,
             "reference_edge_count": reference_count, "observed_edge_count": observed_count}
+
+
+class EdgeReference:
+    """Precompute only frozen reference features; measure each new observation.
+
+    Owns copies of the mask/features, never an observation or recognition result.
+    The same per-tile border treatment and floating-point operations as measure
+    are retained. No resizing, frame cache, score rounding or threshold change.
+    """
+
+    def __init__(self, template: np.ndarray, mask: np.ndarray) -> None:
+        self._mask = mask.copy()
+        edges, real, imaginary = features(template, self._mask)
+        self._features = (edges.copy(), real.copy(), imaginary.copy())
+        for a in (self._mask, *self._features):
+            a.setflags(write=False)
+
+    def measure(self, image: np.ndarray) -> dict[str, Any]:
+        if image.shape != self._mask.shape:
+            raise ValueError("edge comparison does not rescale or align images")
+        observed = features(image, self._mask)
+        # Zero-edge margins cannot contribute to either directional mean.
+        # Preserve a two-pixel halo for the complete unchanged neighbourhood.
+        ys, xs = np.nonzero(self._features[0] | observed[0])
+        if not len(xs):
+            return _measure_features(self._features, observed)
+        a, b = max(0, int(xs.min())-2), max(0, int(ys.min())-2)
+        c, d = min(image.shape[1], int(xs.max())+3), min(image.shape[0], int(ys.max())+3)
+        re, rr, ri = self._features
+        oe, ore, oi = observed
+        return _measure_features((re[b:d,a:c], rr[b:d,a:c], ri[b:d,a:c]),
+                                 (oe[b:d,a:c], ore[b:d,a:c], oi[b:d,a:c]))

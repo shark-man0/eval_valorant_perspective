@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from scripts.diagnostics.hud_scope_structure import (
+    ComponentReferenceCache,
     component_geometry,
     component_support,
     outline_mask,
@@ -141,3 +142,26 @@ def test_joint_component_receipt_keeps_original_source_profile_and_no_full_hud_a
     v['evidence_sha256'] = canonical_hash({k:x for k,x in v.items() if k!='evidence_sha256'})
     with pytest.raises(ValueError):
         component_support(f,'score')
+
+
+def test_prepared_references_preserve_receipts_and_measure_the_current_frame():
+    rows, image, layout, refs, bindings = bound_rows()
+    layout.regions.update({
+        'ally_score': NormalizedRoi(0,0,1/3,90/240),
+        'round_timer': NormalizedRoi(1/3,0,1/3,90/240),
+        'enemy_score': NormalizedRoi(2/3,0,1/3,90/240),
+    })
+    prepared = ComponentReferenceCache(layout, refs, bindings)
+    for joint in (False, True):
+        for im in [image, np.zeros_like(image), np.roll(image, 15, axis=1)]:
+            f = deepcopy(rows[0])
+            f['pixel_sha256'] = hashlib.sha256(im.tobytes()).hexdigest()
+            assert component_geometry(f,im,layout,refs,bindings,joint_regions=joint) == (
+                component_geometry(f,im,layout,refs,bindings,joint_regions=joint,
+                                   reference_cache=prepared))
+    with pytest.raises(ValueError, match='mismatch'):
+        component_geometry(rows[0],image,layout,refs,{**bindings,'layout_sha256':'b'*64},
+                           reference_cache=prepared)
+    layout.regions['round_timer'] = NormalizedRoi(.4,0,.2,90/240)
+    with pytest.raises(ValueError, match='mismatch'):
+        component_geometry(rows[0],image,layout,refs,bindings,reference_cache=prepared)
