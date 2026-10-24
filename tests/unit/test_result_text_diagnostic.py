@@ -22,6 +22,7 @@ def method():
 @pytest.mark.parametrize("text,score,expected", [
     (" TEAM  ACE ", .95, "TEAM ACE"), ("victory", .90, "VICTORY"),
     ("WON", .95, "WON"), (" lost ", .90, "LOST"),
+    ("PERFECT", .90, "PERFECT"), ("PERFEC", .99, None), ("PERFECT", .899, None),
     ("WON", .899, None), ("LOST!", .99, None), ("W0N", .99, None),
     ("YOU WON", .99, None), ("LOST CONNECTION", .99, None),
     ("TEAM ACF", .99, None), ("TEAM ACE!", .99, None), ("TEAM ACE", .899, None),
