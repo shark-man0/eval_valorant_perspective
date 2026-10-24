@@ -23,6 +23,7 @@ from valorant_ai_coach.maps.resolver import ZoneResolver
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
+from .development_annulus_pool import AnnulusValidatedAppearancePool
 from .development_appearance_pool import ContrastiveAppearancePool
 from .development_boundary import candidate_boundary_evidence, validate_assumed_error_radius
 from .development_identity_metrics import identity_factors, marker_binding_matches
@@ -61,7 +62,7 @@ class DevelopmentMapTimeline:
         marker_spec = profile.get("minimap_self_marker")
         marker_mode = marker_spec.get("mode") if isinstance(marker_spec, dict) else None
         if (isinstance(marker_mode, str) and marker_mode in {
-                "portable_portrait_v1", "appearance_pool_v1"}
+                "portable_portrait_v1", "appearance_pool_v1", "appearance_pool_annulus_v1"}
                 and coordinate_scope != "unassigned_visual_candidate"):
             raise ValueError("Generic portrait references require unassigned coordinate scope")
         self.coordinate_scope = coordinate_scope
@@ -78,7 +79,8 @@ class DevelopmentMapTimeline:
         self._candidate_zone: str | None = None
         self._context: tuple[Any, ...] | None = None
         providers = {"portable_portrait_v1": PortablePortraitTracker,
-                     "appearance_pool_v1": ContrastiveAppearancePool}
+                     "appearance_pool_v1": ContrastiveAppearancePool,
+                     "appearance_pool_annulus_v1": AnnulusValidatedAppearancePool}
         provider = providers.get(marker_mode, SelfMarkerTracker) if isinstance(
             marker_mode, str) else SelfMarkerTracker
         self.marker = marker if marker is not None else provider()
