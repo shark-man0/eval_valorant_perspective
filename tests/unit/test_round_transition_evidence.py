@@ -368,3 +368,83 @@ def test_unknown_score_word_is_retained_but_cannot_corroborate_other_words():
     assert c["result_support_ticks"] == [5, 7]
     assert c["unknown_score_word_observations"][0]["tick"] == 6
     assert c["unknown_score_word_observations"][0]["status"] == "UNKNOWN"
+
+
+def test_opt_in_unread_score_interval_preserves_observed_endpoints_and_unknown_frame():
+    rows = transition()
+    rows[2]['ally_score']['value'] = None
+    before = deepcopy(rows)
+    assert integrate(rows)['candidates'] == []
+    c = integrate(rows, observed_score_brackets=True)['candidates'][0]
+    assert c['status'] == 'DEVELOPMENT_TRANSITION_CANDIDATE'
+    assert c['score_boundary_kind'] == 'OBSERVED_INTERVAL_WITH_UNREAD_FRAMES'
+    assert c['score_boundary']['lower_tick'] == 1
+    assert c['score_boundary']['upper_tick'] == 3
+    assert [w['tick'] for w in c['unread_score_boundary_witnesses']] == [2]
+    assert c['internal_End_tick'] is None and rows == before
+
+
+@pytest.mark.parametrize('fault', ['gap', 'epoch', 'too_wide', 'result_inside'])
+def test_unread_score_interval_cannot_hide_native_barrier_or_result_order(fault):
+    rows = transition()
+    rows[2]['ally_score']['value'] = None
+    if fault == 'gap':
+        rows.pop(2)
+    elif fault == 'epoch':
+        for f in rows[3:]:
+            f['epoch'] = 'other'
+    elif fault == 'too_wide':
+        for f in rows:
+            f['time_base'] = '1/1'
+    else:
+        rows[2]['result']['value'] = 'THRIFTY'
+    candidates = integrate(rows, observed_score_brackets=True)['candidates']
+    if fault == 'result_inside':
+        assert candidates[0]['status'] == 'UNKNOWN'
+        assert 'result_inside_unread_score_bracket' in candidates[0]['reasons']
+    else:
+        assert candidates == []
+
+
+def persistence_gap():
+    return [frame(0), frame(1), frame(2, score=None), frame(3),
+            frame(4, score=(2,4), word='THRIFTY'),
+            frame(5, score=(2,4), word='THRIFTY')]
+
+
+def test_observed_persistence_uses_actual_nearest_same_score_witnesses_without_filling():
+    rows = persistence_gap()
+    before = deepcopy(rows)
+    assert integrate(rows,observed_score_brackets=True)['candidates'][0]['status'] == 'UNKNOWN'
+    c = integrate(rows,observed_score_brackets=True,
+                  observed_score_persistence=True)['candidates'][0]
+    assert c['status'] == 'DEVELOPMENT_TRANSITION_CANDIDATE'
+    assert [f['tick'] for f in c['observed_score_persistence_witnesses']['before']] == [1,3]
+    assert rows == before and c['internal_End_tick'] is None
+
+
+@pytest.mark.parametrize('fault', ['conflict','geometry','wide','epoch','gap'])
+def test_persistence_does_not_skip_contradictions_or_unverified_source_support(fault):
+    rows = persistence_gap()
+    if fault == 'conflict':
+        rows[1]['enemy_score']['value'] = '3'
+    elif fault == 'geometry':
+        rows[1]['geometry_consistent'] = False
+    elif fault == 'wide':
+        for f in rows:
+            f['time_base'] = '1/1'
+    elif fault == 'epoch':
+        for f in rows[3:]:
+            f['epoch'] = 'new'
+    else:
+        rows.pop(2)
+    candidates = integrate(rows,observed_score_brackets=True,
+                           observed_score_persistence=True)['candidates']
+    assert not any(c['status']=='DEVELOPMENT_TRANSITION_CANDIDATE' for c in candidates)
+
+
+def test_persistence_recovery_requires_explicit_boolean_bounded_observation_policy():
+    with pytest.raises(ValueError):
+        integrate(persistence_gap(),observed_score_persistence=True)
+    with pytest.raises(ValueError):
+        integrate(persistence_gap(),observed_score_brackets=True,observed_score_persistence=1)

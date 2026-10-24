@@ -101,6 +101,12 @@ def _score(f: dict[str, Any]) -> tuple[int, int] | None:
     return accepted_score_pair({"values": values_by_role})
 
 
+def _buy(frame: dict[str, Any]) -> bool:
+    from scripts.diagnostics.phase_structure_evidence import phase_supported
+    structural = phase_supported(frame)
+    return frame.get("buy_phase") is True or structural
+
+
 def _timer(f: dict[str, Any]) -> int | None:
     text = _text(f["timer"])
     if text is None or re.fullmatch(r"[0-9]{1,2}:[0-5][0-9]", text) is None:
@@ -218,6 +224,7 @@ def _segments(
                     raise ValueError("reader evidence mapping required")
             _visual(f)
             component_support(f, 'score')
+            _buy(f)  # validate explicit purchase receipts even without a candidate
             sources.add((f["source_id"], f["source_sha256"], base))
             groups[f["epoch"]].append(f)
         except (KeyError, TypeError, ZeroDivisionError) as exc:
@@ -251,8 +258,11 @@ def _segments(
     return segments, gaps
 
 
-def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
-    a, b = segment[index - 1:index + 1]
+def _candidate(segment: list[dict[str, Any]], index: int,
+               before_index: int | None = None, *,
+               observed_persistence: bool = False) -> dict[str, Any]:
+    before_index = index - 1 if before_index is None else before_index
+    a, b = segment[before_index], segment[index]
     base = Fraction(b["time_base"])
     # Do not combine evidence from another score transition in the same window.
     end = index + 1
@@ -268,7 +278,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
         end += 1
     # Walk backward only through the same observed pre-change score. Unknown
     # scores and native segment boundaries are barriers, never interpolation.
-    start = index - 1
+    start = before_index
     while start > 0:
         f = segment[start - 1]
         if ((b["tick"] - f["tick"]) * base > ASSOCIATION_SECONDS
@@ -282,6 +292,9 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
     unknown_word_scores = [f for f in raw_support if _score(f) is None]
     words = sorted({word for f in raw_support if (word := _word(f)) is not None})
     reasons = ["conflicting_score_observation"] if score_conflicts else []
+    unread_bracket = segment[before_index + 1:index]
+    if any(_word(f) is not None or _visual(f) is not None for f in unread_bracket):
+        reasons.append("result_inside_unread_score_bracket")
     if len(words) > 1:
         reasons.append("conflicting_result_words")
     before_score, after_score = _score(a), _score(b)
@@ -296,10 +309,27 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
     if not _geometry(a, 'score') or not _geometry(b, 'score'):
         reasons.append("score_geometry_unknown")
     # Score flicker must not become an End merely because Result is nearby.
-    stable_before = index >= 2 and _score(segment[index - 2]) == _score(a)
+    stable_before = before_index >= 1 and _score(segment[before_index - 1]) == _score(a)
     stable_after = index + 1 < len(segment) and _score(segment[index + 1]) == _score(b)
+    persistence_witnesses: dict[str, list[dict[str, Any]]] = {'before': [], 'after': []}
+    if observed_persistence:
+        for role, values, anchor, expected in (
+            ('before', list(reversed(segment[:before_index])), a, _score(a)),
+            ('after', segment[index+1:], b, _score(b)),
+        ):
+            if (stable_before if role == 'before' else stable_after):
+                continue
+            nearest = next((f for f in values if _score(f) is not None), None)
+            if (nearest is not None and _score(nearest) == expected
+                    and abs(nearest['tick']-anchor['tick']) * base <= 1
+                    and _geometry(nearest, 'score') and _geometry(anchor, 'score')):
+                persistence_witnesses[role] = [_witness(nearest), _witness(anchor)]
+                if role == 'before':
+                    stable_before = True
+                else:
+                    stable_after = True
     if not stable_before or not stable_after:
-        reasons.append("score_persistence_unverified")
+        reasons.append('score_persistence_unverified')
     pre_support = [f for f in raw_support if f["tick"] < b["tick"]]
     post_support = [f for f in raw_support if f["tick"] >= b["tick"]]
     # A word already present before Score may be an older residual banner.
@@ -336,7 +366,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
                              and v["state"] in {"PARTIAL", "COMPLETE"}]
     first_tick = min((f["tick"] for f in visible), default=b["tick"])
     last = max((f["tick"] for f in visible), default=b["tick"])
-    if any(f.get("buy_phase") is True for f in window
+    if any(_buy(f) for f in window
            if min(first_tick, a["tick"]) <= f["tick"] <= max(last, b["tick"])):
         reasons.append("preparation_overlaps_result")
     # A legitimate clock change across Score is recorded separately. Neither
@@ -382,6 +412,9 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
             "status": "UNKNOWN" if reasons else "DEVELOPMENT_TRANSITION_CANDIDATE",
             "reasons": reasons, "score_boundary": score_boundary,
             "score_before": _score(a), "score_after": _score(b),
+            "score_boundary_kind": "OBSERVED_INTERVAL_WITH_UNREAD_FRAMES" if unread_bracket
+            else "ADJACENT_NATIVE_OBSERVATIONS",
+            "unread_score_boundary_witnesses": [_witness(f) for f in unread_bracket],
             "score_conflicts": score_conflicts,
             "result_order": ("BOTH_SIDES" if pre_support and post_support else
                              "BEFORE_SCORE" if pre_support else
@@ -391,6 +424,7 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
             "visual_result_observations": visual,
             "partial_display_brackets": partial_brackets,
             "score_persistence": {"before": stable_before, "after": stable_after},
+            "observed_score_persistence_witnesses": persistence_witnesses,
             "score_endpoint_timer_values": [_timer(a), _timer(b)],
             "result_words": words, "result_support_ticks": [f["tick"] for f in support],
             "unread_result_ticks_between_support": unknown_ticks,
@@ -418,18 +452,34 @@ def _candidate(segment: list[dict[str, Any]], index: int) -> dict[str, Any]:
             "formal_events": []}
 
 
-def integrate(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def integrate(rows: list[dict[str, Any]], *, observed_score_brackets: bool = False,
+              observed_score_persistence: bool = False
+              ) -> dict[str, Any]:
+    if type(observed_score_brackets) is not bool:
+        raise ValueError('explicit observed Score bracket option required')
+    if (type(observed_score_persistence) is not bool
+            or observed_score_persistence and not observed_score_brackets):
+        raise ValueError('explicit bounded Score observation policy required')
     segments, gaps = _segments(rows)
     candidates: dict[str, dict[str, Any]] = {}
     covered: set[tuple[str, int]] = set()
     for segment in segments:
+        previous_read = 0
         for i in range(1, len(segment)):
-            before, after = _score(segment[i - 1]), _score(segment[i])
+            left = previous_read if observed_score_brackets else i - 1
+            before, after = _score(segment[left]), _score(segment[i])
+            if after is not None:
+                previous_read = i
+            if (observed_score_brackets
+                    and (segment[i]['tick'] - segment[left]['tick']) * Fraction(
+                        segment[i]['time_base']) > 1):
+                continue
             if before is None or after is None or sorted(
                 y - x for x, y in zip(before, after, strict=True)
             ) != [0, 1]:
                 continue
-            c = _candidate(segment, i)
+            c = _candidate(segment, i, left,
+                           observed_persistence=observed_score_persistence)
             covered.update((f["epoch"], f["tick"]) for f in c["raw_result_witnesses"])
             if c["candidate_id"] in candidates:
                 existing = candidates[c["candidate_id"]]
@@ -464,6 +514,8 @@ def integrate(rows: list[dict[str, Any]]) -> dict[str, Any]:
                for key, frames in orphan_groups.items()]
     return {"kind": "offline_Round_transition_evidence_NOT_GT",
             "association_horizon_sec": ASSOCIATION_SECONDS,
+            "observation_policy": {"observed_score_brackets": observed_score_brackets,
+                                   "observed_score_persistence": observed_score_persistence},
             "candidates": list(candidates.values()), "orphan_result_groups": orphans,
             "source_gaps": gaps, "complete_display_status": "UNVERIFIED",
             "acquisition_epochs": sorted({f["epoch"] for f in rows}),
@@ -501,8 +553,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     for key in ("review-session", "input", "output"):
         parser.add_argument("--" + key, type=Path, required=True)
+    parser.add_argument("--observed-score-brackets", action="store_true")
+    parser.add_argument("--observed-score-persistence", action="store_true")
     args = parser.parse_args()
-    report = run(args.review_session, args.input, args.output)
+    report = run(args.review_session, args.input, args.output,
+                 integrator=lambda rows: integrate(
+                     rows, observed_score_brackets=args.observed_score_brackets,
+                     observed_score_persistence=args.observed_score_persistence))
     print(json.dumps({"candidates": len(report["candidates"]), "events_emitted": 0}))
 
 

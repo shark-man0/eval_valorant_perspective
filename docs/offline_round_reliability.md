@@ -96,3 +96,75 @@ Qualification and formal End/Start publication remain closed. Software suitable
 for later integration is limited to the explicit offline reader, binding checks,
 regression tests and documentation. Production Profile/Matcher changes, reference
 assets, private data and event release require their separate qualification.
+
+## Explicit offline purchase text structure
+
+`PhaseStructureReference` reuses the frozen Profile's source-supported semantic
+text groups at their original position. It measures bidirectional edge coverage
+within a symmetric one-pixel raster neighbourhood. Every group needs at least
+32 observed/reference edges, positive foreground/background polarity, and both
+coverage and precision at the unchanged reference threshold (at least 0.90).
+There is no alignment search, inferred glyph, phase absence or ownership output.
+A missing, inverted, occluded, displaced or differently sized group remains
+UNKNOWN. Background texture can change without requiring pixel NCC to match the
+same texture. Similar contours can still be mistaken for text; this witness is
+an unqualified development alternative, not independent semantic correctness.
+
+`bind_phase` binds the observation to the actual full-frame pixel hash, fixed
+crop, source/PTS/acquisition witness, private Profile and reference fingerprint.
+An explicit `phase_structure` receipt opts the offline lifecycle reader into
+this alternative. The legacy `buy_phase` observation is retained. Score, Timer,
+Result, geometry, continuity and repeated-support rules still apply. A nonmatch
+never proves phase disappearance. Production Profile/Matcher configuration is
+unchanged. Compare the baseline with the alternative on identical pixels,
+including reviewed natural controls; do not count newly read images as new
+physical rounds or as ground truth.
+
+## Development Round Timeline
+
+`round_timeline` projects existing offline lifecycle reports into round candidate
+entries with the original Score/Result/purchase/next-clock brackets, witnesses,
+UNKNOWN reasons and acquisition alternatives. Exact report repeats and
+overlapping Native Score-boundary hypotheses are grouped. Conflicting Score
+hypotheses remain UNKNOWN. A complete chain must already be supported inside
+one acquisition; partial evidence from different epochs is never fused.
+Internal End/Start and physical event identities remain unset. This projection
+is private development data and must not be converted into production events.
+
+Whole-recording sparse discovery can select bounded Native follow-ups. When a
+fast backend provides frame-index/FPS offsets rather than verified Native PTS,
+retain null Native tick/timebase and mark those offsets unverified. Such rows
+must never enter the Native lifecycle integrator or become boundary evidence.
+Only the existing bounded decoder's actual integer PTS, rational timebase,
+frame hashes and acquisition ledger can support a displayed boundary.
+
+## Coupled component geometry and observed Score intervals
+
+The explicit `joint_regions=True` component option uses the existing frozen
+outline references and Profile ROIs. A single reference must pass the existing
+multi-direction spatial specificity check on the union of the two Score regions
+and Timer region, then every one of their six disjoint halves must pass the
+unchanged 0.90 edge floor. References cannot be mixed across parts. This differs
+from accepting individual generic contours. The default three-tile method is
+unchanged; neither option authorizes full HUD geometry or player ownership.
+Result text still needs its independently verified title region.
+
+Both offline CLIs expose `--observed-score-brackets`. With a complete contiguous
+Native ledger, the last literal old Score and first literal new Score can bound
+an interval of at most one second. Unread intervening frames and their hashes
+remain visible; no Score value or internal time is filled in. A Result inside
+that unread interval leaves its ordering UNKNOWN. Gaps and different epochs
+remain barriers. `--observed-score-persistence` additionally permits recovery of
+rejected adjacent-read persistence using the nearest actual same-Score witness
+within one second, with Score geometry supported at both observations. A
+contradictory intervening reading cannot be skipped. Existing successful proofs
+are preserved. Both switches default off; the persistence option requires the
+bounded bracket option. The output records the policy and actual witnesses.
+
+`ProfileTimerDisplayReader` retains the configured strict Timer reader and its
+inner subregion. It returns successful configured readings unchanged. Rejected
+readings can only gain a literal decimal through the existing topology-checked
+extension, never an alternate colon or inferred punctuation. Comparing an
+unwrapped reader on the outer ROI with the configured Profile is a configuration
+comparison, not proof of better OCR accuracy. Preserve that distinction when
+reporting recording-to-recording diagnostics.

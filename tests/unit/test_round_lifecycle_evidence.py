@@ -276,3 +276,48 @@ def test_standalone_purchase_clock_cannot_join_invalid_evidence(fault):
         c["status"] == "DEVELOPMENT_PURCHASE_CLOCK_CANDIDATE"
         for c in lifecycle(rows)["purchase_next_clock_observations"]
     )
+
+
+def test_round_timeline_suppresses_repeat_without_joining_epochs_or_claiming_gt():
+    from scripts.diagnostics.round_lifecycle_evidence import round_timeline
+    report = lifecycle(chain())
+    other = deepcopy(report)
+    other['chains'][0]['end']['score_boundary']['epoch'] = 'other'
+    for side in ['before', 'after']:
+        other['chains'][0]['end']['score_boundary'][side]['epoch'] = 'other'
+    output = round_timeline([report, report, other])
+    assert output['duplicate_reports_suppressed'] == 1
+    assert len(output['round_candidates']) == 1
+    entry = output['round_candidates'][0]
+    assert len(entry['alternatives']) == 2
+    assert entry['evidence_joined_across_acquisitions'] is False
+    assert entry['physical_event_id'] is None and entry['internal_End_tick'] is None
+    assert output['formal_events'] == [] and output['approved_gt'] is False
+
+
+def test_round_timeline_does_not_fuse_two_incomplete_chains():
+    from scripts.diagnostics.round_lifecycle_evidence import round_timeline
+    report = lifecycle(chain())
+    report['chains'][0]['status'] = 'UNKNOWN'
+    other = deepcopy(report)
+    report['chains'][0]['next_clock_reset_bracket'] = None
+    other['chains'][0]['buy_support_interval'] = None
+    result = round_timeline([report, other])['round_candidates'][0]
+    assert result['status'] == 'UNKNOWN'
+
+
+def test_round_timeline_retains_conflicting_score_hypotheses_as_unknown():
+    from scripts.diagnostics.round_lifecycle_evidence import round_timeline
+    report = lifecycle(chain())
+    other = deepcopy(report)
+    other['chains'][0]['end']['score_after'] = [3, 4]
+    result = round_timeline([report, other])['round_candidates'][0]
+    assert result['status'] == 'UNKNOWN' and result['score_conflict'] is True
+
+
+def test_round_timeline_rejects_cross_source_bracket():
+    from scripts.diagnostics.round_lifecycle_evidence import round_timeline
+    report = lifecycle(chain())
+    report['chains'][0]['end']['score_boundary']['after']['source_id'] = 'other'
+    with pytest.raises(ValueError):
+        round_timeline([report])

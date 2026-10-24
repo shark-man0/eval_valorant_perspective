@@ -9,6 +9,7 @@ from typing import Any
 
 from scripts.diagnostics.round_transition_evidence import (
     _bracket,
+    _buy,
     _geometry,
     _score,
     _segments,
@@ -89,7 +90,7 @@ def _repeated(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def _purchase_clock(tail: list[dict[str, Any]], score: tuple[int, ...]) -> dict[str, Any]:
     """Existing Buy/next-clock rules, also usable without a preceding End."""
     reasons: list[str] = []
-    buy = [f for f in tail if f.get("buy_phase") is True and _upper(f)
+    buy = [f for f in tail if _buy(f) and _upper(f)
            and _score(f) == score and (clock := _timer(f)) is not None
            and 0 <= clock <= 45 and _word(f) is None]
     repeated_buy = _repeated(buy)
@@ -104,7 +105,7 @@ def _purchase_clock(tail: list[dict[str, Any]], score: tuple[int, ...]) -> dict[
         first_buy = buy[0]
         for f in tail:
             if (active and _upper(f) and _score(f) == score
-                    and (f.get("buy_phase") is True
+                    and (_buy(f)
                          or (clock := _timer(f)) is not None and clock <= 45)):
                 rejected_clocks.append({"status": "UNKNOWN",
                                         "reason": "preparation_reappeared",
@@ -113,7 +114,7 @@ def _purchase_clock(tail: list[dict[str, Any]], score: tuple[int, ...]) -> dict[
                                         "contradiction": _bracket(active[-1], f)})
                 active = []
             if (f["tick"] <= first_buy["tick"] or not _upper(f) or _score(f) != score
-                    or f.get("buy_phase") is True
+                    or _buy(f)
                     or (clock := _timer(f)) is None or clock < 60):
                 continue
             previous = [b for b in tail if first_buy["tick"] <= b["tick"] < f["tick"]
@@ -188,7 +189,9 @@ def _purchase_windows(segments: list[list[dict[str, Any]]]) -> list[dict[str, An
     return observations
 
 
-def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def lifecycle(rows: list[dict[str, Any]], *, observed_score_brackets: bool = False,
+              observed_score_persistence: bool = False
+              ) -> dict[str, Any]:
     """Associate only within fully recorded native segments, retaining holes.
 
     Clock reset after a supported purchase countdown is a next-active display
@@ -197,7 +200,8 @@ def lifecycle(rows: list[dict[str, Any]]) -> dict[str, Any]:
     segments, gaps = _segments(rows)
     for f in rows:
         _human_score(f)
-    end_report = integrate(rows)
+    end_report = integrate(rows, observed_score_brackets=observed_score_brackets,
+                           observed_score_persistence=observed_score_persistence)
     chains = []
     for end in end_report["candidates"]:
         boundary = end["score_boundary"]
@@ -248,14 +252,108 @@ def main() -> None:
     parser.add_argument("--review-session", type=Path, required=True)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--observed-score-brackets", action="store_true")
+    parser.add_argument("--observed-score-persistence", action="store_true")
     args = parser.parse_args()
 
     def bound(rows: list[dict[str, Any]]) -> dict[str, Any]:
-        report = lifecycle(rows)
+        report = lifecycle(rows, observed_score_brackets=args.observed_score_brackets,
+                           observed_score_persistence=args.observed_score_persistence)
         report["lifecycle_implementation_sha256"] = sha256_file(Path(__file__))
         return report
 
     run(args.review_session, args.input, args.output, integrator=bound)
+
+
+def round_timeline(reports: list[dict[str, Any]]) -> dict[str, Any]:
+    """Project existing offline reports without joining their acquisitions.
+
+    Repeated/overlapping Score-boundary hypotheses share one timeline entry.
+    Evidence alternatives stay separate: a complete chain must have been
+    supported inside one acquisition. No sparse sample becomes a Native bracket,
+    no UNKNOWN interval becomes negative, and no internal event is generated.
+    """
+    entries: list[dict[str, Any]] = []
+    unknown_scopes: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for report in reports:
+        if (report.get('kind') != 'offline_Round_lifecycle_evidence_NOT_GT'
+                or report.get('formal_events') != []
+                or report.get('qualification_created') is not False
+                or report.get('approved_gt') is not False):
+            raise ValueError('offline lifecycle reports required')
+        report_hash = canonical_hash(report)
+        if report_hash in seen:
+            continue
+        seen.add(report_hash)
+        for chain in report['chains']:
+            end = chain['end']
+            if (chain.get('formal_events') != [] or end.get('formal_events', []) != []
+                    or chain.get('internal_End_tick') is not None
+                    or chain.get('internal_Start_tick') is not None):
+                raise ValueError('display candidates cannot contain formal or internal events')
+            bracket = end['score_boundary']
+            for key, witness in [('lower_tick', 'before'), ('upper_tick', 'after')]:
+                if (type(bracket[key]) is not int or bracket[key] != bracket[witness]['tick']
+                        or bracket['epoch'] != bracket[witness]['epoch']
+                        or Fraction(bracket['time_base']) != Fraction(
+                            bracket[witness]['time_base'])):
+                    raise ValueError('bound Native Score bracket required')
+            before, after = bracket['before'], bracket['after']
+            if (before['source_id'] != after['source_id']
+                    or before['source_sha256'] != after['source_sha256']
+                    or bracket['lower_tick'] >= bracket['upper_tick']):
+                raise ValueError('single source and increasing Native bracket required')
+            base = Fraction(bracket['time_base'])
+            entries.append({
+                'source_id': before['source_id'], 'source_sha256': before['source_sha256'],
+                'score_before': end['score_before'], 'score_after': end['score_after'],
+                'interval': (bracket['lower_tick'] * base, bracket['upper_tick'] * base),
+                'alternative': {'report_sha256': report_hash, 'chain': chain},
+            })
+        unknown_scopes.append({'report_sha256': report_hash,
+                               'source_gaps': report['source_gaps'],
+                               'unassociated_results': report['end_report']['orphan_result_groups'],
+                               'purchase_clock': report['purchase_next_clock_observations'],
+                               'unreviewed_is_negative': False})
+    groups: list[list[dict[str, Any]]] = []
+    entries.sort(key=lambda e: (e['source_id'], e['source_sha256'], e['interval']))
+    for entry in entries:
+        matching = [g for g in groups if any(
+            e['source_id'] == entry['source_id']
+            and e['source_sha256'] == entry['source_sha256']
+            and max(e['interval'][0], entry['interval'][0]) <= min(
+                e['interval'][1], entry['interval'][1]) for e in g)]
+        if not matching:
+            groups.append([entry])
+        else:
+            group = matching[0]
+            for other in matching[1:]:
+                group.extend(other)
+                groups.remove(other)
+            group.append(entry)
+    timeline = []
+    for group in groups:
+        score_pairs = {canonical_hash([e['score_before'], e['score_after']]) for e in group}
+        alternatives = [e['alternative'] for e in group]
+        complete = any(a['chain']['status'] == 'DEVELOPMENT_LIFECYCLE_CANDIDATE'
+                       for a in alternatives)
+        conflict = len(score_pairs) > 1
+        identity = {k: group[0][k] for k in ('source_id', 'source_sha256')}
+        identity['intervals'] = sorted({tuple(str(v) for v in e['interval']) for e in group})
+        timeline.append({
+            'round_candidate_id': canonical_hash(identity),
+            'source_id': group[0]['source_id'], 'source_sha256': group[0]['source_sha256'],
+            'status': 'DEVELOPMENT_LIFECYCLE_CANDIDATE' if complete and not conflict else 'UNKNOWN',
+            'score_conflict': conflict, 'alternatives': alternatives,
+            'evidence_joined_across_acquisitions': False,
+            'physical_event_id': None, 'internal_End_tick': None, 'internal_Start_tick': None,
+            'semantic_correctness': 'UNVERIFIED', 'formal_events': [],
+        })
+    return {'kind': 'DEVELOPMENT_Round_Timeline_NOT_GT', 'round_candidates': timeline,
+            'unknown_scopes': unknown_scopes,
+            'duplicate_reports_suppressed': len(reports)-len(seen),
+            'qualified': False, 'formal_events': [], 'approved_gt': False}
 
 
 if __name__ == "__main__":

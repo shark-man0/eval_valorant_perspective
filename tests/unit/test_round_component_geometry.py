@@ -120,3 +120,24 @@ def test_components_do_not_repair_native_gap_or_duplicate_pts():
     assert all(c['status']=='UNKNOWN' for c in lifecycle(gap)['chains'])
     with pytest.raises(ValueError,match='duplicate'):
         lifecycle(rows+[deepcopy(rows[0])])
+
+
+def test_joint_component_receipt_keeps_original_source_profile_and_no_full_hud_authority():
+    rows, image, layout, refs, bindings = bound_rows()
+    layout.regions.update({
+        'ally_score': NormalizedRoi(0,0,1/3,90/240),
+        'round_timer': NormalizedRoi(1/3,0,1/3,90/240),
+        'enemy_score': NormalizedRoi(2/3,0,1/3,90/240),
+    })
+    f = rows[2]
+    f['component_geometry'] = component_geometry(f,image,layout,refs,bindings,joint_regions=True)
+    assert component_support(f,'score')
+    assert f['component_geometry']['method'] == 'frozen_long_outline_joint_regions_v1'
+    assert f['component_geometry']['bindings'] == bindings
+    assert f['geometry_consistent'] is False
+    assert f['component_geometry']['ownership_authorized'] is False
+    v = f['component_geometry']
+    v['joint_scope']['regions']['ally_score']['tiles'][0]['score'] = .89
+    v['evidence_sha256'] = canonical_hash({k:x for k,x in v.items() if k!='evidence_sha256'})
+    with pytest.raises(ValueError):
+        component_support(f,'score')

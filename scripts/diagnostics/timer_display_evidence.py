@@ -116,3 +116,31 @@ class TimerDisplayReader:
                 "comparison_gaussian3x3_v1",
             ),
         )
+
+
+class ProfileTimerDisplayReader:
+    """Keep the configured Timer subregion when adding literal decimal support.
+
+    Unwrapping a Profile's SubregionReader and reading its outer layout ROI is
+    a different observation method. Successful configured reads are returned
+    unchanged. Only a strictly validated decimal can recover a rejected read;
+    an alternate colon or guessed punctuation cannot replace the Profile.
+    """
+
+    def __init__(self, baseline: HudReader[str], *,
+                 decimal_reader: HudReader[str] | None = None) -> None:
+        from valorant_ai_coach.hud.templates import SubregionReader
+        strict = baseline.reader if isinstance(baseline, SubregionReader) else baseline
+        if not isinstance(strict, StrictTimerGlyphReader):
+            raise ValueError('configured strict Timer reader required')
+        self.baseline = baseline
+        self.literal = TimerDisplayReader(strict, decimal_reader=decimal_reader)
+
+    def read(self, image: ImageU8, roi: ImageU8) -> ReaderResult[str]:
+        observed = self.baseline.read(image, roi)
+        if observed.value is not None:
+            return observed
+        alternative = self.literal.read(image, roi)
+        if alternative.value is not None and '.' in alternative.value:
+            return alternative
+        return observed

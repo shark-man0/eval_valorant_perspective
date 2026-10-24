@@ -68,3 +68,19 @@ def test_outline_mask_cannot_make_missing_reference_or_clutter_valid():
     selected = outline_mask(template, mask)
     assert top_scope(template, selected, np.zeros_like(template))['status'] == 'UNKNOWN'
     assert not outline_mask(np.zeros_like(template), mask).any()
+
+
+def test_joint_constellation_needs_every_half_and_specific_whole_reference():
+    from scripts.diagnostics.hud_scope_structure import joint_scope
+    t, m = reference()
+    m = outline_mask(t, m)
+    regions = {'ally_score': [0,0,200,90], 'round_timer': [200,0,400,90],
+               'enemy_score': [400,0,600,90]}
+    assert joint_scope(t,m,t,regions)['status'] == 'JOINT_STRUCTURE_SUPPORTED'
+    for left, right in [(0,100),(200,300),(500,600)]:
+        missing = t.copy()
+        missing[:, left:right] = 0
+        assert joint_scope(t,m,missing,regions)['status'] == 'UNKNOWN'
+    generic = np.zeros_like(t)
+    cv2.line(generic,(0,30),(599,30),255,2)
+    assert joint_scope(generic,np.full_like(m,255),generic,regions)['status'] == 'UNKNOWN'

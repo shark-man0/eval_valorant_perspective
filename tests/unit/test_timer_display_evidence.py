@@ -183,3 +183,27 @@ def test_a_geometry_receipt_does_not_make_blank_timer_pixels_readable():
     assert rows[0]["component_geometry"]["roles"]["timer"]
     empty = np.zeros((85, 125, 3), np.uint8)
     assert reader().read(image, empty).value is None
+
+
+def test_profile_timer_extension_preserves_configured_inner_roi_and_accepted_read():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    from valorant_ai_coach.hud.templates import SubregionReader
+    glyph = _render_timer('1:20')
+    height, width = glyph.shape
+    outer = np.full((height+40, width+40), 110, np.uint8)
+    outer[20:height+20, 20:width+20] = glyph
+    bounds = (20/(width+40), 20/(height+40), (width+20)/(width+40), (height+20)/(height+40))
+    strict = StrictTimerGlyphReader(_templates(), comparison_preprocessing='gaussian3x3_v1')
+    baseline = SubregionReader(strict, bounds)
+    expected = baseline.read(outer, outer)
+    assert expected.value == '1:20'
+    extended = ProfileTimerDisplayReader(baseline, decimal_reader=LiteralOcr())
+    assert extended.baseline is baseline and baseline.bounds == bounds
+    assert extended.read(outer, outer) == expected
+
+
+def test_profile_timer_extension_does_not_convert_an_unobserved_colon():
+    from scripts.diagnostics.timer_display_evidence import ProfileTimerDisplayReader
+    strict = StrictTimerGlyphReader(_templates(), comparison_preprocessing='gaussian3x3_v1')
+    extended = ProfileTimerDisplayReader(strict, decimal_reader=LiteralOcr('29:04'))
+    assert extended.read(decimal(), decimal()).value is None
