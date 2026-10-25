@@ -340,6 +340,56 @@ def verify(batch: Path, trusted_manifest: str, trusted_allocation: str) -> dict[
     return public_summary(manifest)
 
 
+def inspect_existing(batch: Path) -> dict[str, Any]:
+    """Read-only anonymized status; never touch recorded source video bytes."""
+    allocation = read_json(batch / "allocation.json")
+    validate_inventory(allocation)
+    manifest_path = batch / "manifest.json"
+    complete = manifest_path.is_file()
+    if complete:
+        manifest = read_json(manifest_path)
+        validate_inventory(manifest)
+        if any(manifest[key] != allocation[key] for key in (
+            "batch_id", "allocation_rule", "declarations", "prior_inventory_anchors",
+            "contract_anchors", "backup",
+        )) or any(
+            any(row[k] != frozen[k] for k in frozen if k not in {
+                "status", "failure_rule",
+            })
+            for row, frozen in zip(manifest["records"], allocation["records"], strict=True)
+        ):
+            raise ValueError("ALLOCATION_CHANGED")
+    else:
+        manifest = allocation
+    if allocation["allocation_rule"] == ALLOCATION_RULES["development-all"]:
+        path = batch / "exposure_history.json"
+        if sha256_file(path) != allocation["exposure_history_sha256"]:
+            raise ValueError("EXPOSURE_HISTORY_CHANGED")
+        history = read_json(path)
+        if (
+            history.get("kind") != "private_development_all_exposure_initialization"
+            or history.get("prior_exposure_verified") is not False
+            or [event.get("video_id") for event in history.get("events", [])]
+            != [row["video_id"] for row in allocation["records"]]
+        ):
+            raise ValueError("EXPOSURE_HISTORY_CHANGED")
+    summary = public_summary(manifest)
+    return {
+        "schema_version": 1,
+        "kind": "anonymous_existing_batch_status",
+        "state": "finalized" if complete else "incomplete_manual_review",
+        "allocation_mode": summary["allocation_mode"],
+        "reserved_by_split": summary["reserved_by_split"],
+        "exposure_counts": summary["exposure_counts"],
+        "registered": summary["registered"] if complete else None,
+        "failed": summary["failed"] if complete else None,
+        "source_bytes_checked": False,
+        "external_trust_anchors_verified": False,
+        "automatic_reclassification_allowed": False,
+        "recognition_executed": False,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -356,6 +406,8 @@ def main() -> None:
     intake.add_argument("--user-confirmed-unedited", action="store_true")
     intake.add_argument("--ffprobe", default="ffprobe")
     intake.add_argument("--ffmpeg", default="ffmpeg")
+    status = sub.add_parser("inspect-existing")
+    status.add_argument("--batch", type=Path, required=True)
     check = sub.add_parser("verify")
     check.add_argument("--batch", type=Path, required=True)
     check.add_argument("--trusted-manifest-sha256", required=True)
@@ -369,11 +421,13 @@ def main() -> None:
                 unedited=args.user_confirmed_unedited, ffprobe=args.ffprobe, ffmpeg=args.ffmpeg,
                 allocation_mode=args.allocation_mode,
             )
-        else:
+        elif args.command == "verify":
             summary = verify(args.batch, args.trusted_manifest_sha256,
                              args.trusted_allocation_sha256)
+        else:
+            summary = inspect_existing(args.batch)
         print(json.dumps(summary, indent=2))
-        if summary["failed"]:
+        if summary.get("failed"):
             raise SystemExit(2)
     except (OSError, ValueError, jsonschema.ValidationError, subprocess.SubprocessError):
         parser.exit(2, "PRIVATE_SOURCE_INTAKE_REJECTED\n")
