@@ -3,63 +3,241 @@
   "title": "Private source inventory, never an E2E manifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "kind", "created_at_utc", "batch_id", "allocation_rule", "declarations", "prior_inventory_anchors", "contract_anchors", "backup", "records"],
+  "required": [
+    "schema_version",
+    "kind",
+    "created_at_utc",
+    "batch_id",
+    "allocation_rule",
+    "declarations",
+    "prior_inventory_anchors",
+    "contract_anchors",
+    "backup",
+    "records"
+  ],
   "properties": {
-    "schema_version": {"const": 1},
-    "kind": {"const": "private_source_inventory_not_e2e"},
-    "created_at_utc": {"type": "string"},
-    "batch_id": {"type": "string"},
-    "allocation_rule": {"const": "source_sha256_lexical_5_2_2_before_content"},
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "private_source_inventory_not_e2e"
+    },
+    "created_at_utc": {
+      "type": "string"
+    },
+    "batch_id": {
+      "type": "string"
+    },
+    "allocation_rule": {
+      "enum": [
+        "source_sha256_lexical_5_2_2_before_content",
+        "source_sha256_lexical_development_all_before_content"
+      ]
+    },
     "declarations": {
-      "type": "object", "additionalProperties": false,
-      "required": ["unused_and_distinct", "unedited_full_match", "basis"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unused_and_distinct",
+        "unedited_full_match",
+        "basis"
+      ],
       "properties": {
-        "unused_and_distinct": {"type": "boolean"},
-        "unedited_full_match": {"type": "boolean"},
-        "basis": {"const": "explicit_user_attestation"}
+        "unused_and_distinct": {
+          "type": "boolean"
+        },
+        "unedited_full_match": {
+          "type": "boolean"
+        },
+        "basis": {
+          "const": "explicit_user_attestation"
+        }
       }
     },
-    "prior_inventory_anchors": {"type": "array", "items": {"$ref": "#/$defs/anchor"}},
-    "contract_anchors": {"type": "array", "items": {"$ref": "#/$defs/anchor"}},
+    "prior_inventory_anchors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anchor"
+      }
+    },
+    "contract_anchors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anchor"
+      }
+    },
     "backup": {
-      "type": "object", "additionalProperties": false,
-      "required": ["originals_retained", "managed_copy_hash_verified", "separate_failure_domain_backup"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "originals_retained",
+        "managed_copy_hash_verified",
+        "separate_failure_domain_backup"
+      ],
       "properties": {
-        "originals_retained": {"const": true},
-        "managed_copy_hash_verified": {"const": true},
-        "separate_failure_domain_backup": {"const": "pending_operator_action"}
+        "originals_retained": {
+          "const": true
+        },
+        "managed_copy_hash_verified": {
+          "const": true
+        },
+        "separate_failure_domain_backup": {
+          "const": "pending_operator_action"
+        }
       }
     },
     "records": {
-      "type": "array", "minItems": 9, "maxItems": 9,
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
       "items": {
-        "type": "object", "additionalProperties": false,
-        "required": ["original_path", "source_sha256", "video_id", "physical_match_id", "split", "exposure", "status", "failure_rule", "managed_path", "intake_path"],
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "original_path",
+          "source_sha256",
+          "video_id",
+          "physical_match_id",
+          "split",
+          "exposure",
+          "status",
+          "failure_rule",
+          "managed_path",
+          "intake_path"
+        ],
         "properties": {
-          "original_path": {"type": "string", "minLength": 1},
-          "managed_path": {"type": "string", "minLength": 1},
-          "intake_path": {"type": "string", "minLength": 1},
-          "source_sha256": {"$ref": "#/$defs/sha"},
-          "intake_sha256": {"$ref": "#/$defs/sha"},
-          "video_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"},
-          "physical_match_id": {"type": "string", "minLength": 1},
-          "split": {"enum": ["DEVELOPMENT", "QUALIFICATION_CANDIDATE", "FINAL_HOLDOUT_CANDIDATE"]},
-          "exposure": {"enum": ["DEVELOPMENT", "PROSPECTIVE_HELD_OUT", "UNKNOWN_EXPOSURE"]},
-          "status": {"enum": ["pending", "accepted", "rejected"]},
-          "failure_rule": {"enum": [null, "SOURCE_INTEGRITY_OR_METADATA_FAILED"]}
+          "original_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "managed_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "intake_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "intake_sha256": {
+            "$ref": "#/$defs/sha"
+          },
+          "video_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+          },
+          "physical_match_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "split": {
+            "enum": [
+              "DEVELOPMENT",
+              "QUALIFICATION_CANDIDATE",
+              "FINAL_HOLDOUT_CANDIDATE"
+            ]
+          },
+          "exposure": {
+            "enum": [
+              "DEVELOPMENT",
+              "PROSPECTIVE_HELD_OUT",
+              "UNKNOWN_EXPOSURE"
+            ]
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "accepted",
+              "rejected"
+            ]
+          },
+          "failure_rule": {
+            "enum": [
+              null,
+              "SOURCE_INTEGRITY_OR_METADATA_FAILED"
+            ]
+          },
+          "physical_match_verification": {
+            "const": "unverified"
+          }
         },
-        "allOf": [{
-          "if": {"properties": {"status": {"const": "accepted"}}},
-          "then": {"required": ["intake_sha256"], "properties": {"failure_rule": {"type": "null"}}}
-        }]
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "accepted"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "intake_sha256"
+              ],
+              "properties": {
+                "failure_rule": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
       }
+    },
+    "exposure_history_sha256": {
+      "$ref": "#/$defs/sha"
     }
   },
   "$defs": {
-    "sha": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "sha": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "anchor": {
-      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
-      "properties": {"path": {"type": "string"}, "sha256": {"$ref": "#/$defs/sha"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha"
+        }
+      }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "allocation_rule": {
+            "const": "source_sha256_lexical_development_all_before_content"
+          }
+        },
+        "required": [
+          "allocation_rule"
+        ]
+      },
+      "then": {
+        "required": [
+          "exposure_history_sha256"
+        ],
+        "properties": {
+          "records": {
+            "items": {
+              "required": [
+                "physical_match_verification"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }

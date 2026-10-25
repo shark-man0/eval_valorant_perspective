@@ -20,6 +20,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = ROOT / "datasets/private_source_inventory.schema.json"
 SPLITS = ("DEVELOPMENT", "QUALIFICATION_CANDIDATE", "FINAL_HOLDOUT_CANDIDATE")
 EXPOSURES = ("DEVELOPMENT", "PROSPECTIVE_HELD_OUT", "UNKNOWN_EXPOSURE")
+ALLOCATION_RULES = {
+    "legacy-5-2-2": "source_sha256_lexical_5_2_2_before_content",
+    "development-all": "source_sha256_lexical_development_all_before_content",
+}
+ALLOCATION_COUNTS = {"legacy-5-2-2": (5, 2, 2), "development-all": (9, 0, 0)}
 
 
 def write_private(path: Path, value: dict[str, Any]) -> None:
@@ -30,6 +35,23 @@ def write_private(path: Path, value: dict[str, Any]) -> None:
 
 def validate_inventory(value: dict[str, Any]) -> None:
     jsonschema.validate(value, read_json(SCHEMA))
+    mode = next(
+        (name for name, rule in ALLOCATION_RULES.items()
+         if value["allocation_rule"] == rule), None,
+    )
+    if mode is None:
+        raise ValueError("UNKNOWN_ALLOCATION_RULE")
+    counts = tuple(sum(row["split"] == split for row in value["records"]) for split in SPLITS)
+    if counts != ALLOCATION_COUNTS[mode]:
+        raise ValueError("ALLOCATION_COUNT_MISMATCH")
+    if mode == "development-all":
+        if value["declarations"]["unused_and_distinct"]:
+            raise ValueError("UNSUPPORTED_UNUSED_CLAIM")
+        for row in value["records"]:
+            if row["exposure"] != "UNKNOWN_EXPOSURE" or (
+                row.get("physical_match_verification") != "unverified"
+            ):
+                raise ValueError("DEVELOPMENT_EXPOSURE_OR_MATCH_UNVERIFIED_REQUIRED")
     ids: set[str] = set()
     hashes: set[str] = set()
     episodes: set[str] = set()
@@ -56,6 +78,11 @@ def public_summary(manifest: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "kind": "anonymous_source_intake_summary",
+        "allocation_mode": next(
+            name for name, rule in ALLOCATION_RULES.items()
+            if manifest["allocation_rule"] == rule
+        ),
+        "distinct_physical_matches_verified": False,
         "attempted": len(rows),
         "registered": sum(r["status"] == "accepted" for r in rows),
         "failed": sum(r["status"] == "rejected" for r in rows),
@@ -110,8 +137,13 @@ def register(
     source_dir: Path, registry: Path, batch_id: str, *,
     unused_and_distinct: bool = False, unedited: bool = False,
     ffprobe: str = "ffprobe", ffmpeg: str = "ffmpeg",
+    allocation_mode: str = "legacy-5-2-2",
 ) -> tuple[Path, dict[str, Any]]:
     batch_id = valid_id(batch_id)
+    if allocation_mode not in ALLOCATION_RULES:
+        raise ValueError("UNKNOWN_ALLOCATION_MODE")
+    if allocation_mode == "development-all" and unused_and_distinct:
+        raise ValueError("UNSUPPORTED_UNUSED_CLAIM")
     source_dir, registry = source_dir.resolve(), registry.resolve()
     _check_output_privacy(registry / batch_id)
     # Require an external registry, even if an in-repository path is gitignored.
@@ -148,18 +180,27 @@ def register(
             video_id = valid_id(f"{batch_id}_{index + 1:03d}")
             if video_id.casefold() in ids:
                 raise ValueError("DUPLICATE_ID")
-            split = SPLITS[0 if index < 5 else 1 if index < 7 else 2]
-            row.update({"video_id": video_id, "physical_match_id": video_id,
-                        "split": split, "exposure": (
-                            "DEVELOPMENT" if index < 5 else "PROSPECTIVE_HELD_OUT"
-                        ) if unused_and_distinct else "UNKNOWN_EXPOSURE",
-                        "status": "pending", "failure_rule": None,
-                        "managed_path": str(batch / "sources" / f"{video_id}.mp4"),
-                        "intake_path": str(batch / f"{video_id}.intake.json")})
+            split = SPLITS[
+                0 if allocation_mode == "development-all" or index < 5
+                else 1 if index < 7 else 2
+            ]
+            exposure = "UNKNOWN_EXPOSURE"
+            if allocation_mode == "legacy-5-2-2" and unused_and_distinct:
+                exposure = "DEVELOPMENT" if index < 5 else "PROSPECTIVE_HELD_OUT"
+            row.update({
+                "video_id": video_id, "physical_match_id": video_id,
+                "split": split, "exposure": exposure,
+                "status": "pending", "failure_rule": None,
+                "managed_path": str(batch / "sources" / f"{video_id}.mp4"),
+                "intake_path": str(batch / f"{video_id}.intake.json"),
+            })
+            if allocation_mode == "development-all":
+                # Provisional identity: different encodes can be one physical match.
+                row["physical_match_verification"] = "unverified"
         manifest: dict[str, Any] = {
             "schema_version": 1, "kind": "private_source_inventory_not_e2e",
             "created_at_utc": datetime.now(UTC).isoformat(), "batch_id": batch_id,
-            "allocation_rule": "source_sha256_lexical_5_2_2_before_content",
+            "allocation_rule": ALLOCATION_RULES[allocation_mode],
             "declarations": {"unused_and_distinct": unused_and_distinct,
                              "unedited_full_match": unedited, "basis": "explicit_user_attestation"},
             "prior_inventory_anchors": anchors,
@@ -175,9 +216,31 @@ def register(
                        "separate_failure_domain_backup": "pending_operator_action"},
             "records": records,
         }
-        validate_inventory(manifest)
         batch.mkdir(mode=0o700)
         (batch / "sources").mkdir(mode=0o700)
+        if allocation_mode == "development-all":
+            # Freeze the initial exposure evidence before metadata or decoding;
+            # this neither asserts prior non-use nor grants holdout status.
+            journal = {
+                "schema_version": 1,
+                "kind": "private_development_all_exposure_initialization",
+                "batch_id": batch_id,
+                "prior_exposure_verified": False,
+                "events": [
+                    {
+                        "video_id": row["video_id"], "sequence": index + 1,
+                        "event": "development_reserved_before_source_inspection",
+                        "split": "DEVELOPMENT", "exposure": "UNKNOWN_EXPOSURE",
+                        "prior_use": "not_verified",
+                    }
+                    for index, row in enumerate(records)
+                ],
+            }
+            write_private(batch / "exposure_history.json", journal)
+            manifest["exposure_history_sha256"] = sha256_file(
+                batch / "exposure_history.json"
+            )
+        validate_inventory(manifest)
         write_private(batch / "allocation.json", manifest)
         for row in records:
             try:
@@ -232,8 +295,35 @@ def verify(batch: Path, trusted_manifest: str, trusted_allocation: str) -> dict[
     manifest, allocation = read_json(batch / "manifest.json"), read_json(batch / "allocation.json")
     validate_inventory(manifest)
     validate_inventory(allocation)
-    if len(manifest["records"]) != len(allocation["records"]):
+    if len(manifest["records"]) != len(allocation["records"]) or any(
+        manifest[key] != allocation[key] for key in (
+            "batch_id", "allocation_rule", "declarations", "prior_inventory_anchors",
+            "contract_anchors", "backup",
+        )
+    ):
         raise ValueError("ALLOCATION_CHANGED")
+    if manifest["allocation_rule"] == ALLOCATION_RULES["development-all"]:
+        expected_hash = allocation["exposure_history_sha256"]
+        if manifest["exposure_history_sha256"] != expected_hash or (
+            sha256_file(batch / "exposure_history.json") != expected_hash
+        ):
+            raise ValueError("EXPOSURE_HISTORY_CHANGED")
+        journal = read_json(batch / "exposure_history.json")
+        if (
+            journal.get("kind") != "private_development_all_exposure_initialization"
+            or journal.get("batch_id") != allocation["batch_id"]
+            or journal.get("prior_exposure_verified") is not False
+            or journal.get("events") != [
+                {
+                    "video_id": row["video_id"], "sequence": index + 1,
+                    "event": "development_reserved_before_source_inspection",
+                    "split": "DEVELOPMENT", "exposure": "UNKNOWN_EXPOSURE",
+                    "prior_use": "not_verified",
+                }
+                for index, row in enumerate(allocation["records"])
+            ]
+        ):
+            raise ValueError("EXPOSURE_HISTORY_CHANGED")
     for row, frozen in zip(manifest["records"], allocation["records"], strict=True):
         if any(row[k] != v for k, v in frozen.items() if k not in {"status", "failure_rule"}):
             raise ValueError("ALLOCATION_CHANGED")
@@ -250,6 +340,56 @@ def verify(batch: Path, trusted_manifest: str, trusted_allocation: str) -> dict[
     return public_summary(manifest)
 
 
+def inspect_existing(batch: Path) -> dict[str, Any]:
+    """Read-only anonymized status; never touch recorded source video bytes."""
+    allocation = read_json(batch / "allocation.json")
+    validate_inventory(allocation)
+    manifest_path = batch / "manifest.json"
+    complete = manifest_path.is_file()
+    if complete:
+        manifest = read_json(manifest_path)
+        validate_inventory(manifest)
+        if any(manifest[key] != allocation[key] for key in (
+            "batch_id", "allocation_rule", "declarations", "prior_inventory_anchors",
+            "contract_anchors", "backup",
+        )) or any(
+            any(row[k] != frozen[k] for k in frozen if k not in {
+                "status", "failure_rule",
+            })
+            for row, frozen in zip(manifest["records"], allocation["records"], strict=True)
+        ):
+            raise ValueError("ALLOCATION_CHANGED")
+    else:
+        manifest = allocation
+    if allocation["allocation_rule"] == ALLOCATION_RULES["development-all"]:
+        path = batch / "exposure_history.json"
+        if sha256_file(path) != allocation["exposure_history_sha256"]:
+            raise ValueError("EXPOSURE_HISTORY_CHANGED")
+        history = read_json(path)
+        if (
+            history.get("kind") != "private_development_all_exposure_initialization"
+            or history.get("prior_exposure_verified") is not False
+            or [event.get("video_id") for event in history.get("events", [])]
+            != [row["video_id"] for row in allocation["records"]]
+        ):
+            raise ValueError("EXPOSURE_HISTORY_CHANGED")
+    summary = public_summary(manifest)
+    return {
+        "schema_version": 1,
+        "kind": "anonymous_existing_batch_status",
+        "state": "finalized" if complete else "incomplete_manual_review",
+        "allocation_mode": summary["allocation_mode"],
+        "reserved_by_split": summary["reserved_by_split"],
+        "exposure_counts": summary["exposure_counts"],
+        "registered": summary["registered"] if complete else None,
+        "failed": summary["failed"] if complete else None,
+        "source_bytes_checked": False,
+        "external_trust_anchors_verified": False,
+        "automatic_reclassification_allowed": False,
+        "recognition_executed": False,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -257,10 +397,17 @@ def main() -> None:
     intake.add_argument("--source-dir", type=Path, required=True)
     intake.add_argument("--registry", type=Path, required=True)
     intake.add_argument("--batch-id", required=True)
+    intake.add_argument(
+        "--allocation-mode", choices=tuple(ALLOCATION_RULES),
+        default="legacy-5-2-2",
+        help="Use development-all to allocate all nine recordings for development only",
+    )
     intake.add_argument("--user-confirmed-unused-and-distinct", action="store_true")
     intake.add_argument("--user-confirmed-unedited", action="store_true")
     intake.add_argument("--ffprobe", default="ffprobe")
     intake.add_argument("--ffmpeg", default="ffmpeg")
+    status = sub.add_parser("inspect-existing")
+    status.add_argument("--batch", type=Path, required=True)
     check = sub.add_parser("verify")
     check.add_argument("--batch", type=Path, required=True)
     check.add_argument("--trusted-manifest-sha256", required=True)
@@ -272,12 +419,15 @@ def main() -> None:
                 args.source_dir, args.registry, args.batch_id,
                 unused_and_distinct=args.user_confirmed_unused_and_distinct,
                 unedited=args.user_confirmed_unedited, ffprobe=args.ffprobe, ffmpeg=args.ffmpeg,
+                allocation_mode=args.allocation_mode,
             )
-        else:
+        elif args.command == "verify":
             summary = verify(args.batch, args.trusted_manifest_sha256,
                              args.trusted_allocation_sha256)
+        else:
+            summary = inspect_existing(args.batch)
         print(json.dumps(summary, indent=2))
-        if summary["failed"]:
+        if summary.get("failed"):
             raise SystemExit(2)
     except (OSError, ValueError, jsonschema.ValidationError, subprocess.SubprocessError):
         parser.exit(2, "PRIVATE_SOURCE_INTAKE_REJECTED\n")
