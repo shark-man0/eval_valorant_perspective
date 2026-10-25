@@ -12,7 +12,8 @@ from scripts.diagnostics.register_private_sources import register, verify
 from scripts.e2e.run_dataset_case import sha256_file
 
 
-def test_real_source_acceptance_and_invalid_source_quarantine(tmp_path):
+@pytest.mark.parametrize("allocation_mode", ["legacy-5-2-2", "development-all"])
+def test_real_source_acceptance_and_invalid_source_quarantine(tmp_path, allocation_mode):
     if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
         pytest.skip("FFmpeg tools unavailable")
     source = tmp_path / "source"
@@ -27,8 +28,19 @@ def test_real_source_acceptance_and_invalid_source_quarantine(tmp_path):
         )
     (source / "broken.mp4").write_bytes(b"not a recording")
     originals = {p.name: sha256_file(p) for p in source.iterdir()}
-    batch, summary = register(source, tmp_path / "private", "synthetic", unused_and_distinct=True)
+    batch, summary = register(
+        source, tmp_path / "private", "synthetic",
+        unused_and_distinct=allocation_mode == "legacy-5-2-2",
+        allocation_mode=allocation_mode,
+    )
     assert summary["registered"] == 8
+    assert summary["allocation_mode"] == allocation_mode
+    if allocation_mode == "development-all":
+        assert summary["reserved_by_split"] == {
+            "DEVELOPMENT": 9, "QUALIFICATION_CANDIDATE": 0,
+            "FINAL_HOLDOUT_CANDIDATE": 0,
+        }
+        assert summary["exposure_counts"]["UNKNOWN_EXPOSURE"] == 9
     assert summary["failed"] == 1
     assert originals == {p.name: sha256_file(p) for p in source.iterdir()}
     manifest = json.loads((batch / "manifest.json").read_text(encoding="utf-8"))
