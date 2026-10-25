@@ -1,7 +1,8 @@
 # Private source intake and allocation
 
 This workflow accepts nine original recordings for later Round End and Self Death
-research. It does not change readers, thresholds, canonical GT, qualification,
+research. The original 5/2/2 allocation remains the default for compatibility;
+the opt-in development-all mode uses 9/0/0 for the new, separate batch. It does not change readers, thresholds, canonical GT, qualification,
 Validation Packs or existing `match_001` / `match_002` registration. Related work:
 #62 (storage), #16 (Round lifecycle), #19 (independent evaluation), #21 (ownership).
 
@@ -17,6 +18,82 @@ Validation Packs or existing `match_001` / `match_002` registration. Related wor
   summary and this procedure belong in Git. No paths, original filenames, account
   names, audio, images, detailed PTS, source hashes or raw exposure rows are public.
   An aggregate inventory/allocation SHA is an integrity anchor, not a source hash.
+
+## New nine-recording development-only batch (opt-in)
+
+For the user's newly acquired nine recordings, **do not use the legacy
+5/2/2 invocation**. After mounting the nine private original files and
+selecting a new batch ID in the authoritative external registry, execute:
+
+```sh
+python -m scripts.diagnostics.register_private_sources register \
+  --source-dir "$NEW_RECORDINGS_DIR" --registry "$PRIVATE_REGISTRY" \
+  --batch-id new_development_batch --allocation-mode development-all
+```
+
+Omit both attestation flags unless independently and explicitly confirmed;
+`--user-confirmed-unused-and-distinct` is **rejected** in development-all
+mode because it must not serve as a future holdout claim. Do not assert
+unedited, unused, different-match, continuous-play or unexposed status on
+the basis of the user's statement that nine files have been acquired.
+
+The new explicit allocation rule
+`source_sha256_lexical_development_all_before_content` freezes nine
+`DEVELOPMENT` slots, zero `QUALIFICATION_CANDIDATE`, and zero
+`FINAL_HOLDOUT_CANDIDATE` before decoding or probing. Exposure is
+`UNKNOWN_EXPOSURE` for **all nine** until actual prior/current usage is
+documented. Assignment to DEVELOPMENT is a reservation, **not** proof
+that training, prediction review or annotation already occurred.
+`physical_match_verification=unverified` marks the provisional IDs;
+a unique SHA or candidate ID does not prove distinct physical matches
+when the video was cropped or re-encoded.
+
+A private, exclusively created `exposure_history.json` freezes one
+development-reservation event per video with prior exposure marked
+`not_verified`. The journal SHA-256 is bound into both private allocation
+and final manifest. `verify` checks the journal, all nine frozen events,
+source/copy hashes, and intake hashes. This initial event is **not** a
+fabricated complete historical Exposure log: any earlier use must be
+reviewed, and all later human views, GT, tuning, prediction reads and
+opening decisions must be chronologically logged in the existing private
+Temporal GT Exposure journal.
+
+The legacy default remains unchanged: `--allocation-mode legacy-5-2-2`
+(or omission) preserves the previous 5 DEVELOPMENT / 2 qualification
+candidate / 2 final candidate reservations and previous manifest rule.
+Existing frozen assignments, protected recordings, and `match_001` /
+`match_002` are never reclassified.
+
+If nine files were already registered, **do not run a second registration
+to repair the allocation**. The CLI refuses case-insensitive batch ID reuse,
+and identical prior source hashes are refused even under a different name.
+Read the existing private allocation, manifest, prior exposure records
+and externally stored trusted SHA anchors; report a conflict and preserve
+the frozen data and partial results. Differences in SHA do **not** rule
+out alternate encodes or excerpts of the same physical match: those need
+manual, private provenance review. No protected seven-video group is
+accessed by this procedure.
+
+Actual verification requires the source files and the user's external,
+private registry. GitHub code/CI have no access to those local bytes;
+a report must therefore distinguish *unreceived* source files from
+rejected files. Never pretend that counts, file sizes, hashes, decode
+checks, match independence, or backup were verified from GitHub alone.
+
+Backup status must remain `pending_operator_action` until an independent
+encrypted copy (separate failure domain) and a restoration/hash test
+are confirmed. Neither the private managed videos nor the private journal,
+source SHA, PTS, screenshots or personal paths may be committed or
+uploaded to Git LFS. This source-only operation performs no training,
+recognition, E2E qualification, or production accuracy assessment.
+
+For future independent evaluation, accept **other newly captured videos**
+only after freezing recognizer implementation, Profile, reference assets,
+evaluation policy, and intended acquisition rules. Allocate independent
+material **before** viewing its contents or predictions; never return
+these nine development sources to an independent qualification/final
+holdout. Do not claim generalization until genuinely new blind evidence
+passes the independent criteria.
 
 ## Intake
 
@@ -45,9 +122,10 @@ batch; differently encoded clips of the same match require honest user/history
 identification and must never be admitted under separate physical-match IDs.
 Nine files must be present. Unexpected files and symlinks reject intake.
 
-Unique batch-prefixed IDs avoid renumbering existing matches. Lexically sorted
-SHA order fixes five DEVELOPMENT, two QUALIFICATION_CANDIDATE and two
-FINAL_HOLDOUT_CANDIDATE reservations. The order uses no visual content, outcome,
+Unique batch-prefixed IDs avoid renumbering existing matches. In **legacy**
+mode, lexically sorted SHA order fixes five DEVELOPMENT, two
+QUALIFICATION_CANDIDATE and two FINAL_HOLDOUT_CANDIDATE reservations.
+Explicit development-all mode instead freezes nine DEVELOPMENT sources. The order uses no visual content, outcome,
 recognizer output or success filtering. It is deterministic, not a claim of
 population-random sampling. Failed files keep their reservation; no replacements
 are selected. A per-registry exclusive directory lock prevents concurrent writes.
