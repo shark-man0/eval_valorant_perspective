@@ -4,6 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
+import jsonschema
 import pytest
 
 from scripts.diagnostics import register_private_sources as inventory
@@ -178,8 +179,8 @@ def test_development_all_freezes_nine_slots_before_inspection(sources, monkeypat
     assert summary["registered"] == 9
     assert summary["failed"] == 0
     assert summary["allocation_mode"] == "development-all"
-    assert summary["accepted_by_split"] == dict(zip(inventory.SPLITS, (9, 0, 0)))
-    assert summary["reserved_by_split"] == dict(zip(inventory.SPLITS, (9, 0, 0)))
+    assert summary["accepted_by_split"] == dict(zip(inventory.SPLITS, (9, 0, 0), strict=True))
+    assert summary["reserved_by_split"] == dict(zip(inventory.SPLITS, (9, 0, 0), strict=True))
     assert summary["exposure_counts"]["UNKNOWN_EXPOSURE"] == 9
     assert summary["distinct_physical_matches_verified"] is False
     assert summary["e2e_registered"] is False
@@ -224,7 +225,7 @@ def test_development_all_schema_and_split_exposure_are_immutable(sources):
         inventory.validate_inventory(manifest)
     manifest["records"][0]["exposure"] = "UNKNOWN_EXPOSURE"
     manifest["records"][0]["physical_match_verification"] = "verified"
-    with pytest.raises(Exception):
+    with pytest.raises(jsonschema.ValidationError):
         inventory.validate_inventory(manifest)
 
 
@@ -266,8 +267,8 @@ def test_development_all_decode_failure_does_not_reassign(sources, monkeypatch):
         *sources, "new", allocation_mode="development-all",
     )
     assert summary["failed"] == 9
-    assert summary["accepted_by_split"] == dict(zip(inventory.SPLITS, (0, 0, 0)))
-    assert summary["reserved_by_split"] == dict(zip(inventory.SPLITS, (9, 0, 0)))
+    assert summary["accepted_by_split"] == dict(zip(inventory.SPLITS, (0, 0, 0), strict=True))
+    assert summary["reserved_by_split"] == dict(zip(inventory.SPLITS, (9, 0, 0), strict=True))
     assert (batch / "exposure_history.json").exists()
 
 
