@@ -64,6 +64,21 @@ candidate / 2 final candidate reservations and previous manifest rule.
 Existing frozen assignments, protected recordings, and `match_001` /
 `match_002` are never reclassified.
 
+For a non-mutating, anonymous check of an already frozen batch, use:
+
+```sh
+python -m scripts.diagnostics.register_private_sources inspect-existing \
+  --batch "$PRIVATE_REGISTRY/new_development_batch"
+```
+
+This reads the private allocation, final manifest if present, and frozen
+initial exposure journal. It does **not** read original or managed video
+bytes, expose paths or source hashes, or treat locally computed anchors as
+external trust. An incomplete registration reports
+`state=incomplete_manual_review`; accepted/rejected totals are not
+fabricated. Follow up with `verify` and separately trusted SHA anchors
+before claiming end-to-end source integrity.
+
 If nine files were already registered, **do not run a second registration
 to repair the allocation**. The CLI refuses case-insensitive batch ID reuse,
 and identical prior source hashes are refused even under a different name.
