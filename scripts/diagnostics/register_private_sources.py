@@ -20,6 +20,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = ROOT / "datasets/private_source_inventory.schema.json"
 SPLITS = ("DEVELOPMENT", "QUALIFICATION_CANDIDATE", "FINAL_HOLDOUT_CANDIDATE")
 EXPOSURES = ("DEVELOPMENT", "PROSPECTIVE_HELD_OUT", "UNKNOWN_EXPOSURE")
+ALLOCATION_RULES = {
+    "legacy-5-2-2": "source_sha256_lexical_5_2_2_before_content",
+    "development-all": "source_sha256_lexical_development_all_before_content",
+}
+ALLOCATION_COUNTS = {"legacy-5-2-2": (5, 2, 2), "development-all": (9, 0, 0)}
 
 
 def write_private(path: Path, value: dict[str, Any]) -> None:
@@ -30,6 +35,23 @@ def write_private(path: Path, value: dict[str, Any]) -> None:
 
 def validate_inventory(value: dict[str, Any]) -> None:
     jsonschema.validate(value, read_json(SCHEMA))
+    mode = next(
+        (name for name, rule in ALLOCATION_RULES.items()
+         if value["allocation_rule"] == rule), None,
+    )
+    if mode is None:
+        raise ValueError("UNKNOWN_ALLOCATION_RULE")
+    counts = tuple(sum(row["split"] == split for row in value["records"]) for split in SPLITS)
+    if counts != ALLOCATION_COUNTS[mode]:
+        raise ValueError("ALLOCATION_COUNT_MISMATCH")
+    if mode == "development-all":
+        if value["declarations"]["unused_and_distinct"]:
+            raise ValueError("UNSUPPORTED_UNUSED_CLAIM")
+        for row in value["records"]:
+            if row["exposure"] != "UNKNOWN_EXPOSURE" or (
+                row.get("physical_match_verification") != "unverified"
+            ):
+                raise ValueError("DEVELOPMENT_EXPOSURE_OR_MATCH_UNVERIFIED_REQUIRED")
     ids: set[str] = set()
     hashes: set[str] = set()
     episodes: set[str] = set()
@@ -56,6 +78,11 @@ def public_summary(manifest: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "kind": "anonymous_source_intake_summary",
+        "allocation_mode": next(
+            name for name, rule in ALLOCATION_RULES.items()
+            if manifest["allocation_rule"] == rule
+        ),
+        "distinct_physical_matches_verified": False,
         "attempted": len(rows),
         "registered": sum(r["status"] == "accepted" for r in rows),
         "failed": sum(r["status"] == "rejected" for r in rows),
@@ -110,8 +137,13 @@ def register(
     source_dir: Path, registry: Path, batch_id: str, *,
     unused_and_distinct: bool = False, unedited: bool = False,
     ffprobe: str = "ffprobe", ffmpeg: str = "ffmpeg",
+    allocation_mode: str = "legacy-5-2-2",
 ) -> tuple[Path, dict[str, Any]]:
     batch_id = valid_id(batch_id)
+    if allocation_mode not in ALLOCATION_RULES:
+        raise ValueError("UNKNOWN_ALLOCATION_MODE")
+    if allocation_mode == "development-all" and unused_and_distinct:
+        raise ValueError("UNSUPPORTED_UNUSED_CLAIM")
     source_dir, registry = source_dir.resolve(), registry.resolve()
     _check_output_privacy(registry / batch_id)
     # Require an external registry, even if an in-repository path is gitignored.
@@ -148,18 +180,27 @@ def register(
             video_id = valid_id(f"{batch_id}_{index + 1:03d}")
             if video_id.casefold() in ids:
                 raise ValueError("DUPLICATE_ID")
-            split = SPLITS[0 if index < 5 else 1 if index < 7 else 2]
-            row.update({"video_id": video_id, "physical_match_id": video_id,
-                        "split": split, "exposure": (
-                            "DEVELOPMENT" if index < 5 else "PROSPECTIVE_HELD_OUT"
-                        ) if unused_and_distinct else "UNKNOWN_EXPOSURE",
-                        "status": "pending", "failure_rule": None,
-                        "managed_path": str(batch / "sources" / f"{video_id}.mp4"),
-                        "intake_path": str(batch / f"{video_id}.intake.json")})
+            split = SPLITS[
+                0 if allocation_mode == "development-all" or index < 5
+                else 1 if index < 7 else 2
+            ]
+            exposure = "UNKNOWN_EXPOSURE"
+            if allocation_mode == "legacy-5-2-2" and unused_and_distinct:
+                exposure = "DEVELOPMENT" if index < 5 else "PROSPECTIVE_HELD_OUT"
+            row.update({
+                "video_id": video_id, "physical_match_id": video_id,
+                "split": split, "exposure": exposure,
+                "status": "pending", "failure_rule": None,
+                "managed_path": str(batch / "sources" / f"{video_id}.mp4"),
+                "intake_path": str(batch / f"{video_id}.intake.json"),
+            })
+            if allocation_mode == "development-all":
+                # Provisional identity: different encodes can be one physical match.
+                row["physical_match_verification"] = "unverified"
         manifest: dict[str, Any] = {
             "schema_version": 1, "kind": "private_source_inventory_not_e2e",
             "created_at_utc": datetime.now(UTC).isoformat(), "batch_id": batch_id,
-            "allocation_rule": "source_sha256_lexical_5_2_2_before_content",
+            "allocation_rule": ALLOCATION_RULES[allocation_mode],
             "declarations": {"unused_and_distinct": unused_and_distinct,
                              "unedited_full_match": unedited, "basis": "explicit_user_attestation"},
             "prior_inventory_anchors": anchors,
