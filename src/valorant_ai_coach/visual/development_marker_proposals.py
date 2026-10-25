@@ -52,6 +52,26 @@ class DevelopmentMarkerProposals:
             raise ValueError("Development floor unavailable")
         self.inspectors = [MarkerReferenceInspector() for _ in range(4)]
 
+    def _inspect_appearances(
+        self, crop: NDArray[Any], libraries: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        active = self.inspectors[:len(libraries)]
+        evidence = [inspector.inspect(crop, lib["matcher"])
+                    for inspector, lib in zip(active, libraries, strict=True)]
+        if any(e["reason"] != "appearance_comparison_only" for e in evidence):
+            raise ValueError("Invalid appearance library")
+        return evidence
+
+    def _verify_appearances(
+        self, libraries: list[dict[str, Any]], evidence: list[dict[str, Any]],
+    ) -> None:
+        active = self.inspectors[:len(libraries)]
+        for inspector, lib, member in zip(active, libraries, evidence, strict=True):
+            loader = inspector._loader
+            if (not loader._load(lib["matcher"])
+                    or loader.reference_fingerprint != member["reference_fingerprint"]):
+                raise ValueError("Reference changed during proposal observation")
+
     def observe(
         self, frame: NDArray[Any], *, sample: dict[str, Any],
         minimap_roi: list[float], appearance_pool: dict[str, Any],
@@ -86,11 +106,7 @@ class DevelopmentMarkerProposals:
         crop = frame[top:bottom, left:right]
         if max(crop.shape[:2]) > 1024:
             raise ValueError("Proposal ROI exceeds development bound")
-        active = self.inspectors[:len(libraries)]
-        evidence = [inspector.inspect(crop, lib["matcher"])
-                    for inspector, lib in zip(active, libraries, strict=True)]
-        if any(e["reason"] != "appearance_comparison_only" for e in evidence):
-            raise ValueError("Invalid appearance library")
+        evidence = self._inspect_appearances(crop, libraries)
         calibration = self.calibrator.analyze(
             frame, minimap_roi, self.definition, profile=calibration_profile)
         assert self.floor is not None
@@ -121,11 +137,7 @@ class DevelopmentMarkerProposals:
                     "version_compatibility": "UNKNOWN",
                 })
         # Re-read only bounded reference content, not cached frame transforms.
-        for inspector, lib, member in zip(active, libraries, evidence, strict=True):
-            loader = inspector._loader
-            if (not loader._load(lib["matcher"])
-                    or loader.reference_fingerprint != member["reference_fingerprint"]):
-                raise ValueError("Reference changed during proposal observation")
+        self._verify_appearances(libraries, evidence)
         if hashlib.sha256(frame.tobytes()).hexdigest() != bound["native_pixel_sha256"]:
             raise ValueError("Frame changed during proposal observation")
         return {
