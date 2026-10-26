@@ -52,6 +52,12 @@ def _torch_runtime() -> Any:
     return torch
 
 
+def _private_model_output(path: Path) -> None:
+    target = path.resolve()
+    if any((parent/".git").exists() for parent in target.parents):
+        raise ValueError("Learned model outputs must remain outside Git checkouts")
+
+
 def bound_patches(
     frame: Array, sample: dict[str, Any], centers: list[list[float]], *, radius: int = 12,
 ) -> tuple[list[Array], str]:

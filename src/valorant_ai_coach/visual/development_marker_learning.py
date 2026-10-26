@@ -19,7 +19,7 @@ from .development_learning_dataset import (
     validate_dataset,
     validate_use,
 )
-from .development_marker_features import AppearanceCentroids, Array, _digest
+from .development_marker_features import AppearanceCentroids, Array, _digest, _private_model_output
 
 
 def fit_centroids(
@@ -60,6 +60,7 @@ def fit_centroids(
 
 def save_centroids(model: AppearanceCentroids, output: Path) -> str:
     """Write a new local tensor/JSON snapshot; never pickle or overwrite."""
+    _private_model_output(output)
     metadata = {"version": 1, "labels": list(model.labels),
                 "feature_fingerprint": model.feature_fingerprint,
                 "maximum_distance": model.maximum_distance, "minimum_margin": model.minimum_margin,

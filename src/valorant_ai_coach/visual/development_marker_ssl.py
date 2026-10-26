@@ -18,7 +18,13 @@ import cv2
 import numpy as np
 
 from .development_learning_dataset import FrameRecord, Use, validate_dataset, validate_use
-from .development_marker_features import Array, _digest, _patches, _torch_runtime
+from .development_marker_features import (
+    Array,
+    _digest,
+    _patches,
+    _private_model_output,
+    _torch_runtime,
+)
 
 
 @dataclass(frozen=True)
@@ -69,6 +75,7 @@ def train_masked_encoder(
     split contract forbids validation/frozen frames even for this unlabeled loss.
     """
     budget.validate()
+    _private_model_output(output)
     if (not 16 <= len(patches) <= budget.maximum_images or len(frames) != len(patches)
             or len(patch_hashes) != len(patches) or output.exists()):
         raise ValueError("Bounded one-to-one patches/frames/hashes and new output required")

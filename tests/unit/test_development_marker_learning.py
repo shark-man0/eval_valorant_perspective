@@ -66,6 +66,17 @@ def fitted_model():
     return features, model, receipt
 
 
+def test_classifier_snapshot_cannot_be_written_into_a_git_checkout(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").write_bytes(b"gitdir: example")
+    _, model, _ = fitted_model()
+    path = repo / "private-weights.npz"
+    with pytest.raises(ValueError, match="outside Git"):
+        save_centroids(model, path)
+    assert not path.exists()
+
+
 def test_non_axis_aligned_prototypes_roundtrip_without_second_normalization(tmp_path):
     _, frames, labels = two_roi_training_data()
     features = np.random.default_rng(270027).normal(size=(2, 96)).astype(np.float32)

@@ -47,6 +47,18 @@ def test_masked_training_budget_accepts_inclusive_boundaries():
                              steps=1000, seconds=1200, batch_size=128).validate()
 
 
+def test_training_refuses_model_output_inside_git_before_torch_import(tmp_path, monkeypatch):
+    patches, frames, hashes = training_inputs()
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").write_bytes(b"gitdir: example")
+    calls = forbid_torch_import(monkeypatch)
+    with pytest.raises(ValueError, match="outside Git"):
+        ssl.train_masked_encoder(patches, frames, hashes,
+                                 budget=ssl.MaskedTrainingBudget(), output=repo / "weights.pth")
+    assert calls == []
+
+
 @pytest.mark.parametrize("change", [
     {"seed": -1}, {"seed": 2**31}, {"seed": True},
     {"maximum_images": 15}, {"maximum_images": 4097},

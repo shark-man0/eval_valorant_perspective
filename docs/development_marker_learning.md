@@ -91,7 +91,8 @@ that its policy generalizes.
 
 `save_centroids`/`load_centroids` use bounded tensor/JSON NPZ snapshots with exact
 file SHA verification, bounded decompressed members and `allow_pickle=False`.
-They never overwrite snapshots. Serialized unit prototypes are preserved exactly
+They never overwrite snapshots; model writers reject paths inside Git checkouts.
+Serialized unit prototypes are preserved exactly
 instead of renormalized again on reload; this avoids floating-point fingerprint
 drift. Fit receipts bind datasets, human labels and feature fingerprints.
 
@@ -156,3 +157,65 @@ a license or a suitable tiny-patch feature specification.
 
 Related: #21 (identity evidence), #62/#84 (private intake), #89 (unassigned
 cross-appearance baseline). No main merge or HUD/Production schema change.
+
+## Scoped development measurements
+
+The new private intake verifies nine DEVELOPMENT recordings, with immutable
+UNKNOWN_EXPOSURE history retained. A direct user statement supports distinct
+physical matches; this is recorded separately from mechanical source validation.
+A content-blind plan reserves four matches for SSL, two for development training,
+one for method selection and two for after-selection comparison. Sixty-eight
+native observations were acquired without success-based replacement. Only the
+four SSL sources supplied the masked-model training images.
+
+The fixed uniform-grid sampler produced 3,072 native patches; eight exact repeats
+were removed, leaving 3,064 unlabeled patches. Small encoder fits used 1,024 and
+3,064 patches, 12 epochs / 192 and 576 updates, with one CPU thread. Fits took
+9.89 and 30.64 seconds and exported 78,549-byte encoder states. These are actual
+domain SSL fits, not just pretrained feature extraction. Reconstruction loss
+does not establish useful marker classification.
+
+On 24 **training** crops from three previously exposed, typed human reviews
+(12 normal PLAYER, 5 death markers, 6 UI, 1 background), resubstitution results
+were 8/24 correct for hand-crafted features, 23/24 for both frozen MobileNet
+views, and 7/24 or 10/24 for the two masked-domain models at margin .02. UNKNOWN
+counts were 16, 1, 1, 13 and 12 respectively. These numbers include fitting the
+class centroids on those same labels and are not transfer or qualification
+accuracy. The single confirmed background example is especially insufficient.
+
+Train-only clustering covered 3,884 patches from 16 source recordings: 308 old
+candidate/confirmed patches, 3,064 new SSL patches and 512 unlabeled patches from
+the two new development-train sources. Validation and frozen sources were not
+used to fit clusters. Cluster IDs remain UNKNOWN; a higher silhouette does not
+mean better PLAYER/UI/background separation.
+
+Three isolated processes per method used the same 18 native observations,
+interleaved in a frozen order. OpenCV parallel regions were disabled, Accelerate
+BLAS mode checked on the executing thread, and Torch used one CPU thread. Decode
+is excluded; learned-model loading is included. Every method's full output digest
+repeats exactly across its three runs, and all original parent digests agree.
+
+| Experiment | Median 18-image sec | Median process peak MiB |
+| --- | ---: | ---: |
+| Single-scale baseline | 10.013 | 275.75 |
+| #86 quality backend | 25.309 | 309.94 |
+| #87 exhaustive backend | 15.298 | 275.02 |
+| #89 cross backend | 15.215 | 293.56 |
+| #89 + local64 appearance review | 17.700 | 550.22 |
+| #89 + global224 appearance review | 21.083 | 562.88 |
+| #89 + masked-domain appearance review | 17.023 | 486.41 |
+
+Raw coordinates and proposals are retained in every appearance-review path.
+These timings are a new controlled study, not a causal comparison with a past
+hardware/runtime session. Private evidence retains minimum/maximum values,
+load/feature/Map phases, CPU times, exact inputs and environment fingerprints.
+
+Unsafe variants were rejected: a learned center trial lost previously correct
+observations; a looser circle search recovered four extra points in the three
+seen ROIs but added seventeen unmatched proposals. Positive-only classification
+views also lose old correct detections outside those three ROIs, despite removing
+some training-image UI/background candidates. No default classifier, new center
+correction or expanded detector is adopted from these measurements. Method
+selection and after-selection results require their separately confirmed frames;
+training resubstitution cannot replace them. Recorder ownership, Map-build
+qualification and formal Facts/Events remain unresolved independent conditions.
