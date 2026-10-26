@@ -31,6 +31,14 @@ decoded, and still needs an explicit human attestation. An interval negative
 also needs a separate explicit no-change answer and v2.1 validation. Decode logs
 are not proof of human attention or semantic correctness.
 
+An UNKNOWN interval answer remains unknown even when its reviewed endpoints
+show a change; those points do not contradict an unknown answer. A YES interval
+answer is not evidence of an interval negative and does not create a boundary.
+Only an explicit NO can conflict with a change seen in reviewed points. These
+diagnostic reasons leave boundary, scope and negative eligibility unchanged.
+Keep original responses and previous validation receipts; store any later
+revalidation separately with the validator version.
+
 The page remains a development tool. Two endpoint observations can give a wide
 boundary interval; they do not supply an exact internal End time or a population
 accuracy measure. Separate acquisition epochs must not be fused. Physical

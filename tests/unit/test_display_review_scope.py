@@ -53,6 +53,29 @@ def run(packet, response):
     return validate_display_review(packet, response, trusted_packet_sha256=canonical_hash(packet))
 
 
+@pytest.mark.parametrize("occurred", ["UNKNOWN", "YES"])
+@pytest.mark.parametrize("kind", ["RESULT_APPEARANCE", "SCORE_CHANGE"])
+def test_nonnegative_interval_answers_do_not_claim_point_contradictions(occurred, kind):
+    p, r = example()
+    c = r["cases"][0]
+    c["points"] = [point(0, "ABSENT", [1, 2]), point(2, "PRESENT", [1, 3])]
+    c["scopes"] = [
+        {
+            "id": "s", "start": "0", "end": "3",
+            "coverage": "PARTIAL", "full_interval_reviewed": False,
+        }
+    ]
+    c["interval_claims"] = [{"kind": kind, "scope_id": "s", "occurred": occurred}]
+    result = run(p, r)["cases"][0]
+    assert result["brackets"] == [] and result["eligible_interval_negatives"] == []
+    claim = result["unknown_claims"][0]
+    assert claim["occurred"] == occurred and claim["status"] == "UNKNOWN"
+    assert claim["reasons"] == [
+        "interval_answer_unknown" if occurred == "UNKNOWN"
+        else "positive_interval_claim_not_negative_evidence"
+    ]
+
+
 def test_point_presence_and_score_endpoints_never_generate_an_event():
     p, r = example()
     r["cases"][0]["points"] = [point(0, "PRESENT", [0, 1]), point(2, "PRESENT", [0, 2])]
