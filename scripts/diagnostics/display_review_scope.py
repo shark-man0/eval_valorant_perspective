@@ -331,15 +331,19 @@ def validate_display_review(
                     }
                 )
             else:
+                if claim["occurred"] == "UNKNOWN":
+                    reason = "interval_answer_unknown"
+                elif claim["occurred"] == "YES":
+                    reason = "positive_interval_claim_not_negative_evidence"
+                elif contradicts:
+                    reason = "contradictory_reviewed_points"
+                else:
+                    reason = "no_explicit_full_interval_negative"
                 unknown.append(
                     {
                         **{k: claim[k] for k in ("kind", "scope_id", "occurred")},
                         "status": "UNKNOWN",
-                        "reasons": [
-                            "contradictory_reviewed_points"
-                            if contradicts
-                            else "no_explicit_full_interval_negative"
-                        ],
+                        "reasons": [reason],
                     }
                 )
         results.append(
