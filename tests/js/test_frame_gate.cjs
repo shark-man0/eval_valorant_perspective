@@ -1,0 +1,24 @@
+const assets=require('node:path').resolve(__dirname,'../../scripts/diagnostics/display_review_assets');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const file=assets+'/frame_gate.js';
+const context={module:{exports:{}}};vm.createContext(context);
+vm.runInContext(fs.readFileSync(file,'utf8')+'\nmodule.exports={decodeFrameReady,canRecordFrame,canAttestFullNative};',context);
+const {decodeFrameReady,canRecordFrame,canAttestFullNative}=context.module.exports;
+(async()=>{
+ const s={displaySequence:1,loadedFrameId:null,decodedFrames:new Set()};let resolveA;
+ const a=decodeFrameReady(s,'A',[{decode:()=>new Promise(r=>{resolveA=r;})}],1);
+ assert.equal(canRecordFrame(s,'A'),false);
+ s.displaySequence=2;
+ assert.equal(await decodeFrameReady(s,'B',[{decode:async()=>{}}],2),true);
+ assert.equal(canRecordFrame(s,'B'),true);
+ resolveA();assert.equal(await a,false);assert.equal(canRecordFrame(s,'A'),false);assert.equal(canRecordFrame(s,'B'),true);
+ s.displaySequence=3;s.loadedFrameId=null;
+ assert.equal(await decodeFrameReady(s,'C',[{decode:async()=>{throw Error('missing image');}}],3),false);
+ assert.equal(canRecordFrame(s,'C'),false);
+ assert.equal(canAttestFullNative(s,{all_native_images:false,frame_ids:['B']}),false);
+ assert.equal(canAttestFullNative(s,{all_native_images:true,frame_ids:['B','C']}),false);
+ assert.equal(canAttestFullNative(s,{all_native_images:true,frame_ids:['B']}),true);
+ console.log('frame readiness/race/full-scope checks passed');
+})().catch(e=>{console.error(e);process.exitCode=1;});
