@@ -27,6 +27,10 @@ dev = [
   "ruff>=0.9,<1",
 ]
 build = ["pyinstaller>=6.11,<7"]
+marker-learning = [
+  "torch==2.14.1",
+  "torchvision==0.29.1",
+]
 
 [project.scripts]
 valorant-ai-coach = "valorant_ai_coach.main:main"
