@@ -86,6 +86,42 @@ def test_feature_change_has_no_semantic_event() -> None:
     assert adjacent_change(a, b, x, x, expected_step=1)["change"] == 0
 
 
+@pytest.mark.parametrize("marker", [True, None, "UNKNOWN"])
+def test_known_or_unverified_cut_is_not_hidden_by_regular_pts(marker: Any) -> None:
+    a, b = frame(), frame()
+    b.update(tick=a["tick"]+1, discontinuity=marker)
+    x, y = np.eye(2, dtype=np.float32)
+    result = adjacent_change(a, b, x, y, expected_step=1)
+    assert result["state"] == "UNKNOWN" and result["change"] is None
+
+
+def test_unknown_geometry_and_non_score_text_cannot_form_agreement() -> None:
+    result = guarded_score("12", "12", source_valid=True,
+                           geometry_valid="UNKNOWN")  # type: ignore[arg-type]
+    assert result["value"] is None
+    for text in ("", "UNKNOWN", "012", "-1", "1:12", "100"):
+        assert guarded_score(text, text, source_valid=True, geometry_valid=True)["value"] is None
+    with pytest.raises(ValueError, match="source"):
+        guarded_score("12", "12", source_valid="UNKNOWN",  # type: ignore[arg-type]
+                      geometry_valid=True)
+
+
+@pytest.mark.parametrize("seconds", [float("nan"), float("inf"), -1.0])
+def test_nonfinite_training_budget_fails_before_torch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, seconds: float,
+) -> None:
+    from scripts.diagnostics import hud_feature_learning as learning
+
+    def unexpected_torch_load() -> None:
+        pytest.fail("invalid budget must fail before loading optional torch")
+
+    monkeypatch.setattr(learning, "_torch", unexpected_torch_load)
+    with pytest.raises(ValueError, match="budget"):
+        learning.contrastive_fit([np.zeros((4, 4, 3), np.uint8)]*2, seed=1, steps=10,
+                                 batch_size=2, max_seconds=seconds, output=tmp_path/"never.pt")
+    assert not (tmp_path/"never.pt").exists()
+
+
 def test_learned_score_cannot_override_unknown_geometry_or_digit_drop() -> None:
     assert guarded_score("12", "2", source_valid=True, geometry_valid=True)["value"] is None
     assert guarded_score(None, "12", source_valid=True, geometry_valid=True)["value"] is None

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import math
+import re
 from collections.abc import Sequence
 from fractions import Fraction
 from pathlib import Path
@@ -118,6 +119,8 @@ def adjacent_change(before: dict[str, Any], after: dict[str, Any],
     for frame in (before, after):
         validate_frame(frame)
     if (type(expected_step) is not int or expected_step <= 0
+            or any(frame.get("discontinuity", False) is not False
+                   for frame in (before, after))
             or any(before[k] != after[k] for k in (
                 "source_id", "source_sha256", "time_base", "epoch"))
             or after["tick"] - before["tick"] != expected_step):
@@ -135,9 +138,10 @@ def adjacent_change(before: dict[str, Any], after: dict[str, Any],
 
 def guarded_score(reader_value: str | None, learned_value: str | None, *,
                   source_valid: bool, geometry_valid: bool) -> dict[str, Any]:
-    if not source_valid:
+    if source_valid is not True:
         raise ValueError("unverified_feature_source")
-    value = (reader_value if geometry_valid and reader_value is not None
+    value = (reader_value if geometry_valid is True and reader_value is not None
+             and re.fullmatch(r"(?:0|[1-9][0-9]?)", reader_value) is not None
              and reader_value == learned_value else None)
     return {"value": value, "state": "UNKNOWN" if value is None else "DEVELOPMENT_AGREEMENT",
             "semantic_correctness_verified": False, "formal_events": []}

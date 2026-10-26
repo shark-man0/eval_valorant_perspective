@@ -10,6 +10,8 @@ frozen-test roles, original Reader/Profile/assets, Native acquisition plan, mode
 versions, seed and compute limits before observing experiment outputs. A new SHA
 does not establish a different physical match. SSL consumes image content even
 without semantic labels; frozen-test matches must not enter SSL fitting.
+Training requires a finite positive time limit and integer step/batch budgets;
+invalid budgets fail before optional model dependencies are loaded.
 
 `hud_feature_contract.validate_split` checks physical group, source, exact parent
 image, Profile and patch bindings. The allowlist must come from a separately
@@ -54,14 +56,18 @@ Incomplete vocabulary and absent labels require UNKNOWN or an explicitly
 unaccepted diagnostic hypothesis. Never report unlabelled consistency as accuracy.
 
 `adjacent_change` refuses foreign sources, epochs, duplicate/reversed/missing PTS
-and incompatible timebases. It emits image-change measurements, not semantic
+and incompatible timebases. Explicit cut markers or unknown cut-marker values
+also withhold comparison even when PTS remain regular. It emits image-change measurements, not semantic
 End/Start or visibility transitions. Content cuts can occur despite regular PTS;
 keep visual continuity UNVERIFIED until independently established. Existing
 Lifecycle and source-continuity gates remain necessary. Display persistence is
 not new appearance. Human display brackets do not measure internal game time.
 
 `guarded_score` withholds disagreement, missing Reader evidence or unsupported
-Geometry. Agreement is unqualified development evidence. A hybrid that loses
+Geometry. Source and Geometry admission require literal boolean approval;
+truthy strings such as `UNKNOWN` cannot authorize an observation. Agreed text
+must also satisfy the existing one/two-digit Score grammar. Agreement is
+unqualified development evidence. A hybrid that loses
 known correct readings or accepts a wrong/dropped digit is not adopted. Preserve
 all ten digit competitors and the frozen production thresholds in any actual
 reader integration. The appearance prototype experiment itself does not provide

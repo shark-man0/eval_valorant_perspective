@@ -5,6 +5,7 @@ application builds and contract CI need no torch, weights, or private imagery.
 """
 from __future__ import annotations
 
+import math
 import time
 from collections.abc import Sequence
 from pathlib import Path
@@ -67,10 +68,13 @@ def contrastive_fit(images: Sequence[NDArray[np.uint8]], *, seed: int,
     This learns an appearance representation, not semantic labels or a denoised
     evidence image. Repeated HUD states can be false negatives in this loss.
     """
-    torch = _torch()
-    if (len(images) < 2 or steps < 1 or batch_size < 2 or max_seconds <= 0
+    if (len(images) < 2 or type(steps) is not int or steps < 1
+            or type(batch_size) is not int or batch_size < 2
+            or not isinstance(max_seconds, (int, float)) or isinstance(max_seconds, bool)
+            or not math.isfinite(max_seconds) or max_seconds <= 0
             or output.exists()):
         raise ValueError("invalid_learning_budget")
+    torch = _torch()
     torch.manual_seed(seed)
     torch.set_num_threads(4)
     torch.use_deterministic_algorithms(True)
