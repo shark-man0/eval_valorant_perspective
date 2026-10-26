@@ -38,6 +38,9 @@ At most12 references are processed together, in64-output-row tiles. Identical
 reference content is computed once per group; moments are shared within the exact
 current image and mask. Integer correlation storage is reused for score planes.
 Frame arrays, moments and score maps are cleared on entry, return and exception.
+The follow-up lifetime optimization releases each row tile immediately and drops
+source/kernel and normalization scratch before their successors are allocated.
+Full72-record and repeated controlled benchmark digests remain identical.
 Reference content is re-read and fingerprinted by the inherited loader and verified
 again before return. No previous-frame marker or transform is reused.
 
@@ -87,10 +90,13 @@ rejected after losing3 teammate matches. Four unsupported appearances remain
 limited by overlapping portraits / insufficient isolated rim contrast and support;
 new references, lower thresholds and wider GT tolerance were not introduced.
 
-## Repeated isolated-process benchmark
+## Historical requested-thread benchmark (superseded)
 
-Same18 registered-Map images, three runs each, rotating method order, single CV
-and BLAS threads, macOS arm64, Python3.12.15, OpenCV4.14.0, NumPy2.5.4. Each child
+These values originally carried an unverified single-thread label. The scripts
+requested CV/BLAS limits but did not verify the Accelerate mode. The
+[controlled timing audit](development_marker_cross.md#controlled-timing-and-verification)
+supersedes that interpretation and includes the later scratch-lifetime optimization.
+Historical setup: same18 registered-Map images, three runs each, rotating method order, macOS arm64, Python3.12.15, OpenCV4.14.0, NumPy2.5.4. Each child
 loads expected record digests, not large prediction fixtures. Every expected digest
 matches. Constructor, first5 per-Map observations and subsequent13 are recorded
 separately; image decoding is excluded from recognition time. RSS is process peak,
