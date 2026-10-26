@@ -266,6 +266,9 @@ def review_proposals(
     if (sample != bound or hashlib.sha256(frame.tobytes()).hexdigest()
             != bound["native_pixel_sha256"]):
         raise ValueError("Native review frame identity mismatch")
+    if (result.get("sample") != bound
+            or any(row.get("sample_sha256") != bound["sample_sha256"] for row in rows)):
+        raise ValueError("Proposal producer and each candidate must bind this observation")
     binding = None
     if rows:
         patches, binding = bound_patches(frame, sample, [p["center_frame_px"] for p in rows])

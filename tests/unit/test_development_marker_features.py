@@ -295,11 +295,14 @@ def review_classifier(fingerprint):
 
 
 def development_proposals():
+    _, sample = native_frame()
     return {
         "qualification": "development_only", "ownership": "UNKNOWN",
+        "sample": sample,
         "formal_self_position_fact": None, "selected_self_position": None,
         "development_events": [], "track_segments": [],
         "proposals": [{
+            "sample_sha256": sample["sample_sha256"],
             "ownership": "UNKNOWN", "center_frame_px": [32.0, 32.0],
             "center_roi_px": [12.0, 12.0], "map_position_norm": None,
             "zone_resolution": None, "geometry_only_map_position_norm": [0.3, 0.4],
@@ -433,3 +436,64 @@ def test_feature_review_rejects_profile_fingerprint_changed_during_extraction():
             frame, sample, development_proposals(), extractor=extractor,
             classifier=review_classifier(extractor.fingerprint),
         )
+
+
+@pytest.mark.parametrize("field,value", [
+    ("native_pts_tick", 124),
+    ("source_id", "another-recording"),
+    ("source_sha256", "3" * 64),
+    ("acquisition_id", "epoch-2"),
+    ("native_time_base", "1/120"),
+    ("acquired_frame_sha256", "4" * 64),
+])
+def test_feature_review_rejects_valid_proposals_from_another_observation(field, value):
+    frame, sample = native_frame()
+    other = {key: v for key, v in sample.items() if key != "sample_sha256"}
+    other[field] = value
+    if field == "acquisition_id":
+        other["native_epoch"] = value
+    other = freeze_native_sample(other, frame_size_px=(64, 64))
+    proposals = development_proposals()
+    proposals["sample"] = other
+    proposals["proposals"][0]["sample_sha256"] = other["sample_sha256"]
+    extractor = SyntheticExtractor()
+    with pytest.raises(ValueError, match="Proposal.*observation"):
+        features.review_proposals(
+            frame, sample, proposals, extractor=extractor,
+            classifier=review_classifier(extractor.fingerprint),
+        )
+    assert extractor.calls == 0
+
+
+@pytest.mark.parametrize("empty", [False, True])
+def test_feature_review_requires_producer_observation_even_without_candidates(empty):
+    frame, sample = native_frame()
+    proposals = development_proposals()
+    proposals.pop("sample", None)
+    if empty:
+        proposals["proposals"] = []
+    extractor = SyntheticExtractor()
+    with pytest.raises(ValueError, match="Proposal.*observation"):
+        features.review_proposals(
+            frame, sample, proposals, extractor=extractor,
+            classifier=review_classifier(extractor.fingerprint),
+        )
+    assert extractor.calls == 0
+
+
+@pytest.mark.parametrize("row_sha", [None, "f" * 64])
+def test_feature_review_requires_each_candidate_to_bind_the_native_observation(row_sha):
+    frame, sample = native_frame()
+    proposals = development_proposals()
+    proposals["sample"] = sample
+    if row_sha is None:
+        proposals["proposals"][0].pop("sample_sha256", None)
+    else:
+        proposals["proposals"][0]["sample_sha256"] = row_sha
+    extractor = SyntheticExtractor()
+    with pytest.raises(ValueError, match="Proposal.*observation"):
+        features.review_proposals(
+            frame, sample, proposals, extractor=extractor,
+            classifier=review_classifier(extractor.fingerprint),
+        )
+    assert extractor.calls == 0

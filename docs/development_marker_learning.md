@@ -99,7 +99,10 @@ drift. Fit receipts bind datasets, human labels and feature fingerprints.
 `review_proposals` adds a separate `appearance_class_review` to each existing
 unassigned proposal. It deep-copies the result, rechecks native pixels, rejects
 formal/assigned locations and Zones, and retains all original coordinates and
-candidates. It does not filter, interpolate, generate tracks or emit events.
+candidates. The producer's complete native sample and each candidate's sample
+digest must match the reviewed observation, including empty producer results.
+Valid pixels alone cannot authorize stale candidates from another acquisition.
+It does not filter, interpolate, generate tracks or emit events.
 Current-frame geometry, Map-build qualification, context rejection and ownership
 remain the existing producer's independent responsibilities. A research harness
 may compare explicit filtered subsets, but must separately report abstentions,
