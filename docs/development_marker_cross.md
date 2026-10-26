@@ -105,31 +105,61 @@ its original complete-NCC fallback remain unchanged. Semantic/numerical backend
 qualification remains false; unverified Map identity/build and recorder ownership
 are not promoted by extra shape evidence.
 
-## Timing and verification
+## Controlled timing and verification
 
-Same18 registered-Map inputs, three isolated single-threaded processes per method,
-alternating order; expected digests only, all digests equal the frozen predictions.
-Image decoding is excluded. Constructor, first5 per-Map observations and subsequent13
-are recorded separately. Python3.12.15, macOS arm64, OpenCV4.14.0/NumPy2.5.4.
+A final audit found that the historical timing labels did not establish the
+actual BLAS thread limit. NumPy uses Apple Accelerate, so OPENBLAS/OMP variables
+alone are insufficient. Earlier timing values remain historical observations;
+the following controlled rerun supersedes their single-thread interpretation.
 
-| Method, later paired run | Median sec (range) | Median peak RSS MiB (range) |
+Same18 registered-Map inputs, three isolated processes per method, no large
+prediction fixtures. OpenCV parallel regions are disabled with request0 and
+getNumThreads reports1; OpenCL is disabled. Accelerate BLASSetThreading selects
+SINGLE_THREADED on the executing thread, and BLASGetThreading is checked before
+and after every observation. CPU user/system time is recorded separately from
+wall time. The observed recognition CPU/wall ratios are0.988–1.000. Constructor,
+first5 per-Map and subsequent13 observations are separated; decode is excluded.
+Python3.12.15, macOS arm64, OpenCV4.14.0/NumPy2.5.4.
+
+OpenCV's GCD getter can report the processor pool limit despite request1; the
+controlled run uses request0/getter1 instead. See the
+[OpenCV threading implementation](https://github.com/opencv/opencv/blob/4.x/modules/core/src/parallel.cpp).
+Accelerate mode meanings were verified against the installed SDK thread_api.h.
+These controls affect the benchmark process/thread only.
+
+A–D runtime code is unchanged. E/F below include early release of row windows,
+patches, partial products and per-reference normalization scratch. Full output
+records remain bit-identical on72 frozen observations, including ownership and
+all geometry/diagnostic fields. Every controlled timing-run digest also matches
+its original expected result. No recognition threshold, center or GT changes.
+
+| Controlled method | Median sec (range) | Median peak RSS MiB (range) |
 | --- | ---: | ---: |
-| Parent exhaustive E | 14.660 (14.064–14.823) | 314.30 (311.36–315.95) |
-| E plus cross observations F | 14.509 (14.295–15.567) | 311.13 (282.67–314.72) |
+| A: before #83 | 9.222 (9.188–9.584) | 270.53 (270.12–272.33) |
+| B: #83 | 36.425 (36.335–36.537) | 295.39 (291.45–297.14) |
+| C: screen | 22.906 (22.876–23.611) | 317.17 (313.95–318.62) |
+| D: #86 | 23.386 (23.353–23.815) | 315.48 (300.77–316.64) |
+| E: exhaustive + scratch release | 13.947 (13.931–13.997) | 299.00 (297.88–300.91) |
+| F: E + cross observations | 14.051 (14.018–14.087) | 302.16 (286.70–305.48) |
 
-Ranges overlap, so no speed or memory reduction caused by the added stage is
-claimed. Separate profiling measures0.210s in cross observation over18 images
-(including0.186s local shape sampling). Parent #87 documents the earlier A–E
-three-run comparison on the same inputs. Versus that #86 median23.306s/332.56MiB,
-F is37.7% faster and6.4% lower RSS; measurements are from different rounds.
-Versus the earlier reported23.18s/345.03MiB, differences are37.4%/9.8%. 🔴 F remains
-slower and larger than single-scale A (9.198s/276.45MiB). RSS is process peak,
-not Python allocations; observed spread is not a confidence bound.
+🟢 F versus controlled D: recognition time falls39.9%, median peak RSS4.2%.
+Versus the previous reported23.18s/345.03MiB, the values are14.051s/302.16MiB
+(39.4%/12.4% lower); historical thread control was not verified, so that is not
+a controlled causal comparison. 🔴 F still costs52.4% more time and11.7% more RSS
+than the less capable single-scale A.
 
-26 focused synthetic tests cover cross/plus/ring/arrow/solid controls, disconnected
-components, nearby NCC/cross retention, limits/overflow, full-image/local-tile
-parity including borders, profile validity/fingerprints, late mutation and raw
-geometry isolation.380 related tests, Ruff src/tests and mypy160 sources pass.
-Default Bind/Haven/spectator regressions are checked separately from the added
-unassigned observations. No HUD, intake, Production contract, Registry or default
-recognizer changes; no protected/unregistered recordings or Full E2E.
+The lifetime-only change lowers E peak RSS306.89→299.00MiB and F306.72→302.16MiB
+in the same explicit control conditions. E time14.113→13.947s, F14.664→14.051s.
+F RSS ranges overlap substantially; the small sample does not establish an
+all-input memory guarantee. RSS is process peak, not Python allocations, and
+observed spread is not a confidence bound. The extra cross stage itself is not
+claimed to reduce runtime/RSS. Separate profiling previously measured0.210s cross
+work over18 images, including0.186s local shape sampling.
+
+26 focused synthetic cross tests and22 exhaustive-NCC tests pass.380 related
+tests, Ruff src/tests and mypy160 sources are checked after the lifetime change.
+Controls cover cross/plus/ring/arrow/solid appearances, nearby observations,
+disconnected components, explicit budgets, local/full tile parity, profile/late
+mutation and raw geometry isolation. Bind/Haven/spectator regressions are checked
+separately. No HUD, intake, Production contract, Registry or default recognizer
+changes; no protected/unregistered recordings or Full E2E.

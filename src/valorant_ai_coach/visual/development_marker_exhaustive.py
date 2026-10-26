@@ -113,6 +113,11 @@ def _score_rows(
             patches = np.ascontiguousarray(view.transpose(0, 1, 3, 2)).reshape(-1, w*3)
             partial = patches @ kernel
             dots[top:top+rows] += partial.reshape(rows, ow, count).astype(np.int32)
+            # Do not retain the previous tile while allocating its successor.
+            del view, patches, partial
+        del kernel
+    # Normalization needs only the accumulated dots and shared moments.
+    del source, kernels
     # Reuse the integer buffer for scores, after reading each corresponding dot
     # plane. A list of views retains one buffer, not twelve additional copies.
     result = dots.view(np.float32)
@@ -130,6 +135,7 @@ def _score_rows(
         value[~valid] = -1
         np.clip(value, -1, 1, out=value)
         result[:, :, i] = value
+        del value, denominator, valid
     return [result[:, :, i] for i in range(count)]
 
 
