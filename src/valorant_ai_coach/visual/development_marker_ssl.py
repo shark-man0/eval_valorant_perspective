@@ -8,7 +8,6 @@ adaptation of the independently frozen ImageNet backbone. No model is downloaded
 from __future__ import annotations
 
 import hashlib
-import importlib
 import io
 import time
 from dataclasses import asdict, dataclass
@@ -19,7 +18,7 @@ import cv2
 import numpy as np
 
 from .development_learning_dataset import FrameRecord, Use, validate_dataset, validate_use
-from .development_marker_features import Array, _digest, _patches
+from .development_marker_features import Array, _digest, _patches, _torch_runtime
 
 
 @dataclass(frozen=True)
@@ -80,7 +79,7 @@ def train_masked_encoder(
         validate_use(frame, Use.SSL)
         if hashlib.sha256(patch.tobytes()).hexdigest() != expected:
             raise ValueError("Acquired training patch changed")
-    torch = importlib.import_module("torch")
+    torch = _torch_runtime()
     if torch.get_num_threads() != 1:
         raise ValueError("Training requires explicit one-thread CPU control")
     started = time.perf_counter()
@@ -150,7 +149,7 @@ class MaskedEncoderFeatures:
     def __init__(self, path: Path, expected_sha256: str) -> None:
         self.path, self.expected_sha256 = path, expected_sha256
         content = self._bytes()
-        self.torch = importlib.import_module("torch")
+        self.torch = _torch_runtime()
         self.encoder, _ = _network(self.torch)
         state = self.torch.load(io.BytesIO(content), map_location="cpu", weights_only=True)
         self.encoder.load_state_dict(state, strict=True)

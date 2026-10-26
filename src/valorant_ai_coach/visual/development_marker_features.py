@@ -40,6 +40,18 @@ def _patches(patches: list[Array]) -> None:
         raise ValueError("Bounded native uint8 BGR patches required")
 
 
+def _torch_runtime() -> Any:
+    torch = importlib.import_module("torch")
+    try:
+        version = tuple(int(p) for p in str(torch.__version__).split(".")[:2])
+    except (AttributeError, ValueError) as exc:
+        raise ValueError("Known patched Torch runtime required") from exc
+    # GHSA-63cw-57p8-fm3p: weights_only checkpoints were unsafe through 2.9.1.
+    if len(version) != 2 or version < (2, 10):
+        raise ValueError("Torch >=2.10 required for patched weights-only loading")
+    return torch
+
+
 def bound_patches(
     frame: Array, sample: dict[str, Any], centers: list[list[float]], *, radius: int = 12,
 ) -> tuple[list[Array], str]:
@@ -102,7 +114,7 @@ class FrozenMobileNetFeatures:
             raise ValueError("Explicit supported feature view required")
         self.path, self.expected_sha256, self.view = path, expected_sha256, view
         content = self._bytes()
-        self.torch = importlib.import_module("torch")
+        self.torch = _torch_runtime()
         models = importlib.import_module("torchvision.models")
         model = models.mobilenet_v3_small(weights=None)
         state = self.torch.load(io.BytesIO(content), map_location="cpu", weights_only=True)

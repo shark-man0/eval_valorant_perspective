@@ -36,7 +36,7 @@ def training_inputs(count: int = 16, split: Split = Split.SSL_TRAIN):
 
 def forbid_torch_import(monkeypatch):
     calls = []
-    monkeypatch.setattr(ssl.importlib, "import_module", lambda name: calls.append(name))
+    monkeypatch.setattr(ssl, "_torch_runtime", lambda: calls.append("torch"))
     return calls
 
 

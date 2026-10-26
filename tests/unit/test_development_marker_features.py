@@ -25,6 +25,20 @@ def native_frame() -> tuple[np.ndarray, dict[str, object]]:
     return frame, sample
 
 
+@pytest.mark.parametrize("version", ["2.9.0", "2.9.1", "1.13.1", "unknown"])
+def test_unpatched_torch_is_rejected_before_checkpoint_loading(monkeypatch, version):
+    fake = SimpleNamespace(__version__=version)
+    monkeypatch.setattr(features.importlib, "import_module", lambda name: fake)
+    with pytest.raises(ValueError, match="patched|Torch >=2.10"):
+        features._torch_runtime()
+
+
+def test_patched_torch_runtime_is_explicitly_accepted(monkeypatch):
+    fake = SimpleNamespace(__version__="2.14.1")
+    monkeypatch.setattr(features.importlib, "import_module", lambda name: fake)
+    assert features._torch_runtime() is fake
+
+
 def test_native_bound_patches_are_exact_copies_and_deterministic():
     frame, sample = native_frame()
     before = frame.copy()
@@ -242,7 +256,7 @@ def test_mobile_net_rejects_file_changed_after_binding_before_inference(tmp_path
             return self
 
     fake_torch = SimpleNamespace(
-        __version__="test",
+        __version__="2.14.1",
         load=lambda stream, map_location, weights_only: {},
         inference_mode=nullcontext,
     )

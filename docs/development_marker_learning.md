@@ -11,6 +11,11 @@ Install the optional research dependencies in an isolated environment:
 python -m pip install '.[marker-learning]'
 ```
 
+The research extra pins Torch 2.14.1 / Torchvision 0.29.1. Runtime loaders reject
+Torch older than 2.10: [GHSA-63cw-57p8-fm3p](https://github.com/pytorch/pytorch/security/advisories/GHSA-63cw-57p8-fm3p)
+affects weights-only loading through 2.9.1. Exact trusted hashes remain required;
+`weights_only=True` is not blanket permission to load untrusted model bytes.
+
 The normal application and CI do not require Torch, private weights or videos.
 No API in these modules downloads weights or uploads images. Acquire any model
 separately from its primary publisher, verify its license and exact SHA-256, and
@@ -138,10 +143,10 @@ success is a contract check, not recognition qualification.
 
 ## Model sources and terms
 
-- [Torchvision V3-small weight description](https://docs.pytorch.org/vision/0.24/models/generated/torchvision.models.mobilenet_v3_small.html)
-- [Pinned model implementation](https://github.com/pytorch/vision/blob/v0.24.0/torchvision/models/mobilenetv3.py)
-- [Torchvision code BSD-3-Clause license](https://github.com/pytorch/vision/blob/v0.24.0/LICENSE)
-- [Pretrained-model terms and preprocessing caveats](https://docs.pytorch.org/vision/0.24/models.html)
+- [Torchvision V3-small weight description](https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.mobilenet_v3_small.html)
+- [Pinned model implementation](https://github.com/pytorch/vision/blob/v0.29.1/torchvision/models/mobilenetv3.py)
+- [Torchvision code BSD-3-Clause license](https://github.com/pytorch/vision/blob/v0.29.1/LICENSE)
+- [Pretrained-model terms and preprocessing caveats](https://docs.pytorch.org/vision/stable/models.html)
 
 The library code license does not establish rights to all pretraining datasets
 or blanket permission to redistribute a fitted application. This experiment
