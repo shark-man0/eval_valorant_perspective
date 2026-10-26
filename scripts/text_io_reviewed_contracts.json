@@ -422,6 +422,41 @@
       "expression": "(\"appearance_pool_annulus_v1:\"+fingerprint).encode()",
       "category": "Python既定UTF-8",
       "reason": "Verified built-in str concatenation of a policy prefix and SHA-256 hex fingerprint. Default str.encode is UTF-8 regardless of Windows locale; this classification changes no bytes, recognition logic or broad audit rules."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/development_marker_features.py",
+      "operation": "encode",
+      "expression": "json.dumps(value, sort_keys=True, allow_nan=False, separators=(\",\", \":\")).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() for synthetic identifiers or canonical classifier JSON, not a feature extraction API; default UTF-8 is independent of Windows locale."
+    },
+    {
+      "path": "src/valorant_ai_coach/visual/development_marker_learning.py",
+      "operation": "encode",
+      "expression": "json.dumps(metadata, sort_keys=True).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() for synthetic identifiers or canonical classifier JSON, not a feature extraction API; default UTF-8 is independent of Windows locale."
+    },
+    {
+      "path": "tests/unit/test_development_marker_learning.py",
+      "operation": "encode",
+      "expression": "value.encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() for synthetic identifiers or canonical classifier JSON, not a feature extraction API; default UTF-8 is independent of Windows locale."
+    },
+    {
+      "path": "tests/unit/test_development_marker_learning.py",
+      "operation": "encode",
+      "expression": "json.dumps({ \"version\": 1, \"labels\": list(model.labels), \"feature_fingerprint\": model.feature_fingerprint, \"maximum_distance\": model.maximum_distance, \"minimum_margin\": model.minimum_margin, \"classifier_fingerprint\": model.fingerprint, }, s",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() for synthetic identifiers or canonical classifier JSON, not a feature extraction API; default UTF-8 is independent of Windows locale."
+    },
+    {
+      "path": "tests/unit/test_development_marker_learning.py",
+      "operation": "encode",
+      "expression": "json.dumps(metadata, sort_keys=True).encode()",
+      "category": "Python既定UTF-8",
+      "reason": "Verified built-in str.encode() for synthetic identifiers or canonical classifier JSON, not a feature extraction API; default UTF-8 is independent of Windows locale."
     }
   ]
 }
