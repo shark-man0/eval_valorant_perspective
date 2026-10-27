@@ -145,7 +145,17 @@ def native_input():
 def test_template_pool_preserves_parent_and_explicit_overflow(monkeypatch):
     patch, frame, label = inputs()
     human = bank_for(patch, frame, [label])
-    ssl = bank_for(patch, replace(frame, split=Split.SSL_TRAIN))
+    ssl = bank_for(
+        patch,
+        replace(
+            frame,
+            split=Split.SSL_TRAIN,
+            leakage_group_id="other",
+            source_sha256="0" * 64,
+            frame_sha256="1" * 64,
+            pixel_sha256="2" * 64,
+        ),
+    )
 
     def search(self, crop):
         return {
@@ -191,3 +201,37 @@ def test_bank_roles_cannot_be_swapped():
             profile_fingerprint="c" * 64,
             human_bank=unlabeled,
         )
+
+
+def test_physical_split_conflict_between_two_banks_is_rejected():
+    patch, frame, label = inputs()
+    human = bank_for(patch, frame, [label])
+    ssl = bank_for(patch, replace(frame, split=Split.SSL_TRAIN))
+    image, sample = native_input()
+    with pytest.raises(ValueError, match="split"):
+        template_candidate_pool(
+            image,
+            sample,
+            roi_xywh=[0, 0, 120, 100],
+            parent=[],
+            profile_fingerprint="c" * 64,
+            human_bank=human,
+            ssl_bank=ssl,
+        )
+
+
+def test_reference_change_during_search_is_rejected(monkeypatch):
+    import cv2
+
+    patch, frame, label = inputs()
+    bank = bank_for(patch, frame, [label])
+    original = cv2.matchTemplate
+
+    def changed(*args, **kwargs):
+        bank._templates[0].setflags(write=True)
+        bank._templates[0][0, 0] ^= 255
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(cv2, "matchTemplate", changed)
+    with pytest.raises(ValueError, match="changed"):
+        bank.search(np.zeros((100, 100, 3), np.uint8))

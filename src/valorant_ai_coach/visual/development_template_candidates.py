@@ -64,6 +64,7 @@ class NativeTemplateBank:
             )
             if label and label.label.value not in {"PLAYER", "DEATH_MARKER"}:
                 raise ValueError("Positive human templates or unlabeled train controls only")
+        self._frames = tuple(frames)
         self._templates = [p[4:21, 4:21].copy() for p in patches]
         for template in self._templates:
             template.setflags(write=False)
@@ -118,6 +119,8 @@ class NativeTemplateBank:
                         }
                     )
                     scores[max(0, y - 3) : y + 4, max(0, x - 3) : x + 4] = -1
+        if self._hashes != [hashlib.sha256(t.tobytes()).hexdigest() for t in self._templates]:
+            raise ValueError("Reference bank changed during search")
         return {
             "observations": observations,
             "bank_fingerprint": self.fingerprint,
@@ -151,6 +154,7 @@ def template_candidate_pool(
         ssl_bank is not None and ssl_bank.origin != "unlabeled_train_retrieval"
     ):
         raise ValueError("Human train bank and separately identified unlabeled controls required")
+    validate_dataset([*human_bank._frames, *(ssl_bank._frames if ssl_bank else ())])
     left, top, width, height = roi_xywh
     crop = frame[top : top + height, left : left + width]
     searches = [human_bank.search(crop)]

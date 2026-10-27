@@ -31,7 +31,9 @@ training contract. Unlabeled references use the SSL contract and retain UNKNOWN
 semantics. Each bank contains at most 24 hash-bound native 25px patches. Search
 uses their central 17px region, three fixed scales and at most two peaks per
 reference/scale, with fixed NCC minimum .45. No external download. Constant
-spatial templates have no NCC evidence. Parent-first output is capped at320;
+spatial templates have no NCC evidence. Reference bytes are verified again after
+search. Human and SSL banks are validated jointly for physical/source/frame/pixel
+split conflicts; separate bank admission cannot conceal cross-bank leakage. Parent-first output is capped at320;
 raw search evidence and overflow remain available. This trial uses the shape
 API's validation envelope, whose execution cost is included even though its
 extra shape windows belong to a separate comparison.
