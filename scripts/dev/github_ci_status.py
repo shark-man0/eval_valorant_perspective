@@ -11,6 +11,7 @@ Examples:
 Exit codes: 0=PASS, 1=FAIL, 2=PENDING/NOT VERIFIED, 3=CLI/API error.
 No git fetch/pull/push or GitHub writes are performed.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -19,7 +20,7 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -33,8 +34,12 @@ PASS_BUCKETS = {"pass", "skipping"}
 FAIL_BUCKETS = {"fail", "cancel"}
 SUCCESS_CONCLUSIONS = {"success"}
 FAIL_CONCLUSIONS = {
-    "failure", "cancelled", "timed_out", "action_required",
-    "startup_failure", "stale",
+    "failure",
+    "cancelled",
+    "timed_out",
+    "action_required",
+    "startup_failure",
+    "stale",
 }
 
 
@@ -47,11 +52,15 @@ def run_gh(*args: str, allow_check_exit: bool = False) -> Any:
         ["gh", *args], capture_output=True, text=True, check=False, encoding="utf-8"
     )
     if proc.returncode and not (allow_check_exit and proc.returncode in (1, 8)):
-        raise CliError(f"gh {' '.join(args[:2])}: {proc.stderr.strip() or 'exit ' + str(proc.returncode)}")
+        raise CliError(
+            f"gh {' '.join(args[:2])}: {proc.stderr.strip() or 'exit ' + str(proc.returncode)}"
+        )
     try:
         return json.loads(proc.stdout)
     except json.JSONDecodeError as exc:
-        raise CliError(f"gh {' '.join(args[:2])} returned invalid JSON: {proc.stderr.strip()}") from exc
+        raise CliError(
+            f"gh {' '.join(args[:2])} returned invalid JSON: {proc.stderr.strip()}"
+        ) from exc
 
 
 def git_sha(value: Any) -> str:
@@ -75,8 +84,10 @@ def core_check_present(checks: list[dict[str, Any]], workflow: str) -> bool:
     """Require a real result, not an entirely skipped core workflow."""
     job = WORKFLOW_JOB_FALLBACK[workflow]
     return any(
-        (str(check.get("workflow") or "").strip() == workflow
-         or str(check.get("name") or "").strip() == job)
+        (
+            str(check.get("workflow") or "").strip() == workflow
+            or str(check.get("name") or "").strip() == job
+        )
         and str(check.get("bucket") or "").lower() != "skipping"
         for check in checks
     )
@@ -84,13 +95,24 @@ def core_check_present(checks: list[dict[str, Any]], workflow: str) -> bool:
 
 def evaluate_pr(repo: str, number: int) -> dict[str, Any]:
     info = run_gh(
-        "pr", "view", str(number), "-R", repo, "--json",
+        "pr",
+        "view",
+        str(number),
+        "-R",
+        repo,
+        "--json",
         "number,title,url,state,isDraft,headRefOid,baseRefOid,headRefName,baseRefName,mergeStateStatus,reviewDecision",
     )
     head_sha = git_sha(info.get("headRefOid"))
     checks = run_gh(
-        "pr", "checks", str(number), "-R", repo, "--json",
-        "name,state,bucket,workflow,link", allow_check_exit=True,
+        "pr",
+        "checks",
+        str(number),
+        "-R",
+        repo,
+        "--json",
+        "name,state,bucket,workflow,link",
+        allow_check_exit=True,
     )
     if not isinstance(checks, list):
         raise CliError("gh pr checks did not return a list")
@@ -98,7 +120,48 @@ def evaluate_pr(repo: str, number: int) -> dict[str, Any]:
         raise CliError("gh pr checks returned malformed check entries")
     status = status_of_checks(checks)
     missing = sorted(w for w in CORE_WORKFLOWS if not core_check_present(checks, w))
+    # Checks are fetched separately from metadata. Reject a moving HEAD and
+    # verify Actions' native head SHA rather than trusting a green job name.
+    verified_runs: dict[str, Any] = {}
+    unverified: list[str] = []
+    for c in checks:
+        workflow = next(
+            (
+                w
+                for w in CORE_WORKFLOWS
+                if c.get("workflow") == w or c.get("name") == WORKFLOW_JOB_FALLBACK[w]
+            ),
+            None,
+        )
+        if workflow is None:
+            continue
+        match = re.fullmatch(
+            r"https://github\.com/"
+            + re.escape(repo)
+            + r"/actions/runs/(\d+)(?:/job/\d+)?(?:\?.*)?",
+            str(c.get("link") or ""),
+        )
+        if match is None:
+            unverified.append(workflow)
+            continue
+        run_id = match[1]
+        if run_id not in verified_runs:
+            verified_runs[run_id] = run_gh("api", f"repos/{repo}/actions/runs/{run_id}")
+        run = verified_runs[run_id]
+        if not isinstance(run, dict):
+            raise CliError("Actions run metadata is not an object")
+        if (
+            run.get("head_sha") != head_sha
+            or c.get("bucket") == "pass"
+            and (run.get("status") != "completed" or run.get("conclusion") != "success")
+        ):
+            unverified.append(workflow)
+    current = run_gh("pr", "view", str(number), "-R", repo, "--json", "headRefOid")
+    if git_sha(current.get("headRefOid")) != head_sha:
+        raise CliError("PR HEAD changed during snapshot; rerun explicitly")
     if missing and status == "PASS":
+        status = "PENDING"
+    if unverified and status == "PASS":
         status = "PENDING"
     return {
         "type": "pull_request",
@@ -115,6 +178,8 @@ def evaluate_pr(repo: str, number: int) -> dict[str, Any]:
         "review_decision": info.get("reviewDecision"),
         "ci_status": status,
         "missing_core_workflows": missing,
+        "unverified_core_workflows": sorted(set(unverified)),
+        "verified_run_head_shas": {k: v.get("head_sha") for k, v in verified_runs.items()},
         "checks": [
             {
                 "name": c.get("name"),
@@ -133,8 +198,18 @@ def evaluate_main(repo: str, branch: str) -> dict[str, Any]:
     branch_info = run_gh("api", f"repos/{repo}/branches/{branch}")
     sha = git_sha(branch_info.get("commit", {}).get("sha"))
     runs = run_gh(
-        "run", "list", "-R", repo, "--commit", sha, "--limit", "100",
-        "--json", "headSha,workflowName,status,conclusion,event,url,createdAt,databaseId",
+        "run",
+        "list",
+        "-R",
+        repo,
+        "--commit",
+        sha,
+        "--branch",
+        branch,
+        "--limit",
+        "100",
+        "--json",
+        "headSha,headBranch,workflowName,status,conclusion,event,url,createdAt,databaseId",
     )
     if not isinstance(runs, list):
         raise CliError("gh run list did not return a list")
@@ -142,18 +217,22 @@ def evaluate_main(repo: str, branch: str) -> dict[str, Any]:
     # API ordering is newest-first normally, but explicitly choose latest createdAt.
     for r in runs:
         if (
-            isinstance(r, dict) and r.get("workflowName") in CORE_WORKFLOWS
-            and r.get("event") == "push" and r.get("headSha") == sha
+            isinstance(r, dict)
+            and isinstance(r.get("workflowName"), str)
+            and r.get("workflowName")
+            and r.get("event") == "push"
+            and r.get("headSha") == sha
+            and r.get("headBranch") == branch
         ):
             name = str(r["workflowName"])
-            if name not in chosen or str(r.get("createdAt") or "") > str(chosen[name].get("createdAt") or ""):
+            if name not in chosen or str(r.get("createdAt") or "") > str(
+                chosen[name].get("createdAt") or ""
+            ):
                 chosen[name] = r
     statuses: dict[str, dict[str, Any]] = {}
-    for name in sorted(CORE_WORKFLOWS):
+    for name in sorted(CORE_WORKFLOWS | set(chosen)):
         r = chosen.get(name)
-        if r is None:
-            state = "PENDING"
-        elif r.get("status") != "completed":
+        if r is None or r.get("status") != "completed":
             state = "PENDING"
         elif str(r.get("conclusion") or "").lower() in SUCCESS_CONCLUSIONS:
             state = "PASS"
@@ -168,10 +247,20 @@ def evaluate_main(repo: str, branch: str) -> dict[str, Any]:
             "conclusion": r.get("conclusion") if r else None,
         }
     all_states = [s["state"] for s in statuses.values()]
-    ci_status = "FAIL" if "FAIL" in all_states else ("PASS" if all(s == "PASS" for s in all_states) else "PENDING")
+    ci_status = (
+        "FAIL"
+        if "FAIL" in all_states
+        else ("PASS" if all(s == "PASS" for s in all_states) else "PENDING")
+    )
+    current = run_gh("api", f"repos/{repo}/branches/{branch}")
+    if git_sha(current.get("commit", {}).get("sha")) != sha:
+        raise CliError("branch HEAD changed during snapshot; rerun explicitly")
     return {
-        "type": "branch", "branch": branch, "head_sha": sha,
-        "ci_status": ci_status, "workflows": statuses,
+        "type": "branch",
+        "branch": branch,
+        "head_sha": sha,
+        "ci_status": ci_status,
+        "workflows": statuses,
     }
 
 
@@ -190,11 +279,14 @@ def main() -> int:
     if not re.fullmatch(r"[A-Za-z0-9_.\-/]+", args.branch):
         parser.error("invalid --branch")
     if shutil.which("gh") is None:
-        print("ERROR: GitHub CLI (gh) is missing. Install it and run `gh auth login`.", file=sys.stderr)
+        print(
+            "ERROR: GitHub CLI (gh) is missing. Install it and run `gh auth login`.",
+            file=sys.stderr,
+        )
         return 3
     report: dict[str, Any] = {
         "repo": args.repo,
-        "checked_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "checked_at_utc": datetime.now(UTC).isoformat(timespec="seconds"),
         "results": [],
     }
     try:
@@ -206,13 +298,19 @@ def main() -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 3
     statuses = [result["ci_status"] for result in report["results"]]
-    report["ci_status"] = "FAIL" if "FAIL" in statuses else ("PASS" if all(s == "PASS" for s in statuses) else "PENDING")
+    report["ci_status"] = (
+        "FAIL"
+        if "FAIL" in statuses
+        else ("PASS" if all(s == "PASS" for s in statuses) else "PENDING")
+    )
     print(f"Repository: {args.repo}")
     for r in report["results"]:
         descriptor = f"PR #{r['number']}" if r["type"] == "pull_request" else r["branch"]
         print(f"{descriptor}: {r['ci_status']} | SHA {r['head_sha']}")
         if r["type"] == "pull_request":
-            print(f"  draft={r['draft']}, merge_state={r['merge_state']}, checks={len(r['checks'])}")
+            print(
+                f"  draft={r['draft']}, merge_state={r['merge_state']}, checks={len(r['checks'])}"
+            )
             for c in r["checks"]:
                 print(f"  - {c['bucket'] or '?':8} {c['workflow'] or '-'} / {c['name']}")
             if r["missing_core_workflows"]:
@@ -224,7 +322,9 @@ def main() -> int:
     print("Note: PASS is CI only, NOT a merge authorization (reviews/conflicts still apply).")
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        args.output.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         print("Snapshot:", args.output)
     return {"PASS": 0, "FAIL": 1, "PENDING": 2}[report["ci_status"]]
 
