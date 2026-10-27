@@ -1,123 +1,195 @@
-"""Read-only snapshot guards: real branch/SHA and missing evidence."""
+"""Offline CI status contracts; live GitHub verification is separate."""
 
-from __future__ import annotations
-
-from typing import Any
+import importlib.util
+import subprocess
+from pathlib import Path
 
 import pytest
 
-from scripts.dev import github_ci_status as ci
+SPEC = importlib.util.spec_from_file_location(
+    "ci_snapshot", Path(__file__).resolve().parents[2] / "scripts/dev/github_ci_status.py"
+)
+assert SPEC and SPEC.loader
+ci = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(ci)
+SHA, NEW = "a" * 40, "b" * 40
 
-SHA = "a" * 40
+
+def info(sha=SHA):
+    return {"number": 95, "headRefOid": sha, "baseRefOid": "c" * 40, "isDraft": True}
+
+
+def checks(bucket="pass"):
+    return [
+        {"workflow": n, "name": job, "bucket": bucket}
+        for n, job in ci.WORKFLOW_JOB_FALLBACK.items()
+    ]
+
+
+def runs(state="completed", conclusion="success", sha=SHA):
+    return [
+        {
+            "workflowName": n,
+            "status": state,
+            "conclusion": conclusion,
+            "headSha": sha,
+            "headBranch": "main",
+            "event": "pull_request",
+            "createdAt": "2026-10-27T00:00:00Z",
+            "databaseId": i,
+        }
+        for i, n in enumerate(sorted(ci.CORE_WORKFLOWS), 1)
+    ]
+
+
+def fake(monkeypatch, *, current=SHA, workflow_runs=None, returned_checks=None):
+    calls = []
+
+    def gh(*args, **kwargs):
+        calls.append(args)
+        if args[:2] == ("pr", "view"):
+            return info(SHA if sum(a[:2] == ("pr", "view") for a in calls) == 1 else current)
+        if args[:2] == ("pr", "checks"):
+            return checks() if returned_checks is None else returned_checks
+        if args[:2] == ("run", "list"):
+            return runs() if workflow_runs is None else workflow_runs
+        raise AssertionError(args)
+
+    monkeypatch.setattr(ci, "run_gh", gh)
+    return calls
+
+
+def test_changed_pr_head_never_inherits_old_green_checks(monkeypatch):
+    fake(monkeypatch, current=NEW)
+    result = ci.evaluate_pr("owner/repo", 95)
+    assert result["ci_status"] == "PENDING"
+    assert result["head_sha"] == SHA
+    assert result["observed_head_sha"] == NEW
+
+
+def test_success_checks_without_exact_sha_workflows_are_pending(monkeypatch):
+    fake(monkeypatch, workflow_runs=runs(sha=NEW))
+    assert ci.evaluate_pr("owner/repo", 95)["ci_status"] == "PENDING"
+
+
+def test_job_name_cannot_impersonate_required_workflow(monkeypatch):
+    fake(
+        monkeypatch,
+        returned_checks=[{"workflow": "unrelated", "name": "linux-validation", "bucket": "pass"}],
+        workflow_runs=[],
+    )
+    assert ci.evaluate_pr("owner/repo", 95)["ci_status"] == "PENDING"
 
 
 @pytest.mark.parametrize(
-    ("buckets", "expected"),
+    "state,conclusion,expected",
     [
-        ([], "PENDING"),
-        (["pass"], "PASS"),
-        (["pass", "pending"], "PENDING"),
-        (["pass", "fail"], "FAIL"),
-        (["fail", "pending"], "FAIL"),
-        (["skipping"], "PASS"),
-        (["unknown"], "PENDING"),
+        ("completed", "success", "PASS"),
+        ("completed", "failure", "FAIL"),
+        ("completed", "cancelled", "FAIL"),
+        ("completed", "skipped", "PENDING"),
+        ("in_progress", "", "PENDING"),
+        ("queued", "", "PENDING"),
     ],
 )
-def test_classification(buckets: list[str], expected: str) -> None:
-    assert ci.status_of_checks([{"bucket": b} for b in buckets]) == expected
+def test_exact_pr_workflow_states(monkeypatch, state, conclusion, expected):
+    fake(monkeypatch, workflow_runs=runs(state, conclusion))
+    assert ci.evaluate_pr("owner/repo", 95)["ci_status"] == expected
 
 
-def test_main_same_sha_other_branch_is_not_main(monkeypatch: pytest.MonkeyPatch) -> None:
-    def gh(*args: str, **kw: Any) -> Any:
+def test_duplicate_workflow_attempt_uses_latest(monkeypatch):
+    rr = runs() + [
+        {
+            **r,
+            "createdAt": "2026-10-27T01:00:00Z",
+            "conclusion": "failure",
+            "databaseId": 10 + r["databaseId"],
+        }
+        for r in runs()
+    ]
+    fake(monkeypatch, workflow_runs=rr[::-1])
+    assert ci.evaluate_pr("owner/repo", 95)["ci_status"] == "FAIL"
+
+
+def test_api_failure_is_cli_error(monkeypatch):
+    monkeypatch.setattr(
+        ci.subprocess,
+        "run",
+        lambda *a, **kw: subprocess.CompletedProcess(a, 1, "", "authentication failed"),
+    )
+    with pytest.raises(ci.CliError):
+        ci.run_gh("api", "repos/owner/repo")
+
+
+@pytest.mark.parametrize("data", ["notjson", "{}"])
+def test_bad_response_is_not_green(monkeypatch, data):
+    if data == "notjson":
+        monkeypatch.setattr(
+            ci.subprocess, "run", lambda *a, **kw: subprocess.CompletedProcess(a, 0, data, "")
+        )
+        with pytest.raises(ci.CliError):
+            ci.run_gh("api", "repos/owner/repo")
+    else:
+        fake(monkeypatch, workflow_runs={})
+        with pytest.raises(ci.CliError):
+            ci.evaluate_pr("owner/repo", 95)
+
+
+@pytest.mark.parametrize(
+    "bucket,expected",
+    [("pass", "PASS"), ("fail", "FAIL"), ("cancel", "FAIL"), ("pending", "PENDING")],
+)
+def test_buckets(bucket, expected):
+    assert ci.status_of_checks([{"bucket": bucket}]) == expected
+
+
+def test_no_checks_is_pending():
+    assert ci.status_of_checks([]) == "PENDING"
+
+
+def test_remote_main_race_is_pending(monkeypatch):
+    count = 0
+
+    def gh(*args, **kwargs):
+        nonlocal count
+        if args[:2] == ("api", "repos/owner/repo/branches/main"):
+            count += 1
+            return {"commit": {"sha": SHA if count == 1 else NEW}}
+        return [{**r, "event": "push"} for r in runs()]
+
+    monkeypatch.setattr(ci, "run_gh", gh)
+    assert ci.evaluate_main("owner/repo", "main")["ci_status"] == "PENDING"
+
+
+def test_main_same_sha_feature_push_does_not_override_main(monkeypatch):
+    rr = [{**r, "event": "push"} for r in runs()]
+    rr += [
+        {
+            **r,
+            "event": "push",
+            "headBranch": "feature",
+            "conclusion": "cancelled",
+            "createdAt": "2026-10-28T00:00:00Z",
+        }
+        for r in runs()
+    ]
+
+    def gh(*args, **kwargs):
         if args[0] == "api":
             return {"commit": {"sha": SHA}}
-        return [
-            {
-                "headSha": SHA,
-                "headBranch": branch,
-                "workflowName": w,
-                "status": "completed",
-                "conclusion": conclusion,
-                "event": "push",
-                "createdAt": date,
-            }
-            for w in ci.CORE_WORKFLOWS
-            for branch, conclusion, date in [
-                ("main", "success", "2026-01-01"),
-                ("research", "cancelled", "2026-02-01"),
-            ]
-        ]
+        assert "--branch" in args and args[args.index("--branch") + 1] == "main"
+        return rr
 
     monkeypatch.setattr(ci, "run_gh", gh)
     assert ci.evaluate_main("owner/repo", "main")["ci_status"] == "PASS"
 
 
-@pytest.mark.parametrize(
-    ("run_sha", "changed", "expected"),
-    [
-        (SHA, False, "PASS"),
-        ("b" * 40, False, "PENDING"),
-        (SHA, True, "ERROR"),
-    ],
-)
-def test_pr_native_sha_and_moving_head(
-    monkeypatch: pytest.MonkeyPatch, run_sha: str, changed: bool, expected: str
-) -> None:
-    def gh(*args: str, **kw: Any) -> Any:
-        if args[0] == "api":
-            return {"head_sha": run_sha, "status": "completed", "conclusion": "success"}
-        if args[1] == "view":
-            current = args[-1] == "headRefOid"
-            return {"number": 1, "headRefOid": "c" * 40 if current and changed else SHA}
-        return [
-            {
-                "workflow": w,
-                "bucket": "pass",
-                "link": "https://github.com/owner/repo/actions/runs/123/job/456",
-            }
-            for w in ci.CORE_WORKFLOWS
-        ]
+def test_main_optional_failure_is_not_hidden(monkeypatch):
+    rr = [{**r, "event": "push"} for r in runs()]
+    rr.append({**rr[0], "workflowName": "additional", "conclusion": "failure"})
 
-    monkeypatch.setattr(ci, "run_gh", gh)
-    if expected == "ERROR":
-        with pytest.raises(ci.CliError, match="HEAD changed"):
-            ci.evaluate_pr("owner/repo", 1)
-    else:
-        assert ci.evaluate_pr("owner/repo", 1)["ci_status"] == expected
-
-
-def test_all_skipped_core_is_missing() -> None:
-    assert not ci.core_check_present([{"workflow": "Basic CI", "bucket": "skipping"}], "Basic CI")
-
-
-def test_successful_optional_only_pr_is_pending(monkeypatch: pytest.MonkeyPatch) -> None:
-    def gh(*args: str, **kw: Any) -> Any:
-        if args[1] == "view":
-            return {"headRefOid": SHA}
-        return [{"workflow": "optional", "bucket": "pass"}]
-
-    monkeypatch.setattr(ci, "run_gh", gh)
-    result = ci.evaluate_pr("owner/repo", 1)
-    assert result["ci_status"] == "PENDING"
-    assert set(result["missing_core_workflows"]) == ci.CORE_WORKFLOWS
-
-
-def test_optional_main_workflow_failure_is_not_hidden(monkeypatch: pytest.MonkeyPatch) -> None:
-    def gh(*args: str, **kw: Any) -> Any:
-        if args[0] == "api":
-            return {"commit": {"sha": SHA}}
-        return [
-            {
-                "headSha": SHA,
-                "headBranch": "main",
-                "workflowName": w,
-                "status": "completed",
-                "conclusion": "failure" if w == "extra" else "success",
-                "event": "push",
-                "createdAt": "2026-01-01",
-            }
-            for w in ci.CORE_WORKFLOWS | {"extra"}
-        ]
+    def gh(*args, **kwargs):
+        return {"commit": {"sha": SHA}} if args[0] == "api" else rr
 
     monkeypatch.setattr(ci, "run_gh", gh)
     assert ci.evaluate_main("owner/repo", "main")["ci_status"] == "FAIL"

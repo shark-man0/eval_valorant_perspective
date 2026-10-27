@@ -48,9 +48,12 @@ class CliError(Exception):
 
 
 def run_gh(*args: str, allow_check_exit: bool = False) -> Any:
-    proc = subprocess.run(
-        ["gh", *args], capture_output=True, text=True, check=False, encoding="utf-8"
-    )
+    try:
+        proc = subprocess.run(
+            ["gh", *args], capture_output=True, text=True, check=False, encoding="utf-8", timeout=60
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise CliError(f"GitHub CLI unavailable or timed out: {type(exc).__name__}") from exc
     if proc.returncode and not (allow_check_exit and proc.returncode in (1, 8)):
         raise CliError(
             f"gh {' '.join(args[:2])}: {proc.stderr.strip() or 'exit ' + str(proc.returncode)}"
@@ -80,16 +83,66 @@ def status_of_checks(checks: list[dict[str, Any]]) -> str:
     return "PASS"
 
 
-def core_check_present(checks: list[dict[str, Any]], workflow: str) -> bool:
-    """Require a real result, not an entirely skipped core workflow."""
-    job = WORKFLOW_JOB_FALLBACK[workflow]
-    return any(
-        (
-            str(check.get("workflow") or "").strip() == workflow
-            or str(check.get("name") or "").strip() == job
-        )
-        and str(check.get("bucket") or "").lower() != "skipping"
-        for check in checks
+def core_runs(
+    repo: str,
+    sha: str,
+    events: set[str],
+    *,
+    branch: str | None = None,
+    include_optional: bool = False,
+) -> dict[str, dict[str, Any]]:
+    """Require exact-SHA workflow evidence, not a similarly named job."""
+    runs = run_gh(
+        "run",
+        "list",
+        "-R",
+        repo,
+        "--commit",
+        sha,
+        *(["--branch", branch] if branch is not None else []),
+        "--limit",
+        "100",
+        "--json",
+        "headSha,headBranch,workflowName,status,conclusion,event,url,createdAt,databaseId",
+    )
+    if not isinstance(runs, list) or any(not isinstance(r, dict) for r in runs):
+        raise CliError("gh run list did not return workflow entries")
+    chosen: dict[str, dict[str, Any]] = {}
+    for run in runs:
+        name = run.get("workflowName")
+        if (
+            not isinstance(name, str)
+            or not name
+            or not include_optional
+            and name not in CORE_WORKFLOWS
+            or run.get("headSha") != sha
+            or run.get("event") not in events
+            or branch is not None
+            and run.get("headBranch") != branch
+        ):
+            continue
+        if name not in chosen or (
+            str(run.get("createdAt") or ""),
+            int(run.get("databaseId") or 0),
+        ) > (str(chosen[name].get("createdAt") or ""), int(chosen[name].get("databaseId") or 0)):
+            chosen[name] = run
+    return chosen
+
+
+def workflow_status(run: dict[str, Any] | None) -> str:
+    if run is None or run.get("status") != "completed":
+        return "PENDING"
+    conclusion = str(run.get("conclusion") or "").lower()
+    if conclusion in SUCCESS_CONCLUSIONS:
+        return "PASS"
+    return "FAIL" if conclusion in FAIL_CONCLUSIONS else "PENDING"
+
+
+def combined(states: list[str]) -> str:
+    return (
+        "FAIL"
+        if "FAIL" in states
+        else ("PASS" if states and all(s == "PASS" for s in states) else "PENDING")
     )
 
 
@@ -118,50 +171,20 @@ def evaluate_pr(repo: str, number: int) -> dict[str, Any]:
         raise CliError("gh pr checks did not return a list")
     if not all(isinstance(c, dict) for c in checks):
         raise CliError("gh pr checks returned malformed check entries")
-    status = status_of_checks(checks)
-    missing = sorted(w for w in CORE_WORKFLOWS if not core_check_present(checks, w))
-    # Checks are fetched separately from metadata. Reject a moving HEAD and
-    # verify Actions' native head SHA rather than trusting a green job name.
-    verified_runs: dict[str, Any] = {}
-    unverified: list[str] = []
-    for c in checks:
-        workflow = next(
-            (
-                w
-                for w in CORE_WORKFLOWS
-                if c.get("workflow") == w or c.get("name") == WORKFLOW_JOB_FALLBACK[w]
-            ),
-            None,
-        )
-        if workflow is None:
-            continue
-        match = re.fullmatch(
-            r"https://github\.com/"
-            + re.escape(repo)
-            + r"/actions/runs/(\d+)(?:/job/\d+)?(?:\?.*)?",
-            str(c.get("link") or ""),
-        )
-        if match is None:
-            unverified.append(workflow)
-            continue
-        run_id = match[1]
-        if run_id not in verified_runs:
-            verified_runs[run_id] = run_gh("api", f"repos/{repo}/actions/runs/{run_id}")
-        run = verified_runs[run_id]
-        if not isinstance(run, dict):
-            raise CliError("Actions run metadata is not an object")
-        if (
-            run.get("head_sha") != head_sha
-            or c.get("bucket") == "pass"
-            and (run.get("status") != "completed" or run.get("conclusion") != "success")
-        ):
-            unverified.append(workflow)
-    current = run_gh("pr", "view", str(number), "-R", repo, "--json", "headRefOid")
-    if git_sha(current.get("headRefOid")) != head_sha:
-        raise CliError("PR HEAD changed during snapshot; rerun explicitly")
-    if missing and status == "PASS":
-        status = "PENDING"
-    if unverified and status == "PASS":
+    chosen = core_runs(repo, head_sha, {"pull_request", "push"})
+    workflows: dict[str, dict[str, Any]] = {
+        name: {
+            "state": workflow_status(chosen.get(name)),
+            "run_id": chosen[name].get("databaseId") if name in chosen else None,
+            "url": chosen[name].get("url") if name in chosen else None,
+        }
+        for name in sorted(CORE_WORKFLOWS)
+    }
+    missing = sorted(CORE_WORKFLOWS - chosen.keys())
+    observed = run_gh("pr", "view", str(number), "-R", repo, "--json", "headRefOid")
+    observed_sha = git_sha(observed.get("headRefOid"))
+    status = combined([status_of_checks(checks), *[w["state"] for w in workflows.values()]])
+    if observed_sha != head_sha:
         status = "PENDING"
     return {
         "type": "pull_request",
@@ -173,13 +196,14 @@ def evaluate_pr(repo: str, number: int) -> dict[str, Any]:
         "branch": info.get("headRefName"),
         "base": info.get("baseRefName"),
         "head_sha": head_sha,
+        "observed_head_sha": observed_sha,
+        "head_changed_during_read": observed_sha != head_sha,
+        "workflows": workflows,
         "base_sha": info.get("baseRefOid"),
         "merge_state": info.get("mergeStateStatus"),
         "review_decision": info.get("reviewDecision"),
         "ci_status": status,
         "missing_core_workflows": missing,
-        "unverified_core_workflows": sorted(set(unverified)),
-        "verified_run_head_shas": {k: v.get("head_sha") for k, v in verified_runs.items()},
         "checks": [
             {
                 "name": c.get("name"),
@@ -197,49 +221,11 @@ def evaluate_main(repo: str, branch: str) -> dict[str, Any]:
     # Branch endpoint reads the remote SHA; it does not trust stale local refs.
     branch_info = run_gh("api", f"repos/{repo}/branches/{branch}")
     sha = git_sha(branch_info.get("commit", {}).get("sha"))
-    runs = run_gh(
-        "run",
-        "list",
-        "-R",
-        repo,
-        "--commit",
-        sha,
-        "--branch",
-        branch,
-        "--limit",
-        "100",
-        "--json",
-        "headSha,headBranch,workflowName,status,conclusion,event,url,createdAt,databaseId",
-    )
-    if not isinstance(runs, list):
-        raise CliError("gh run list did not return a list")
-    chosen: dict[str, dict[str, Any]] = {}
-    # API ordering is newest-first normally, but explicitly choose latest createdAt.
-    for r in runs:
-        if (
-            isinstance(r, dict)
-            and isinstance(r.get("workflowName"), str)
-            and r.get("workflowName")
-            and r.get("event") == "push"
-            and r.get("headSha") == sha
-            and r.get("headBranch") == branch
-        ):
-            name = str(r["workflowName"])
-            if name not in chosen or str(r.get("createdAt") or "") > str(
-                chosen[name].get("createdAt") or ""
-            ):
-                chosen[name] = r
+    chosen = core_runs(repo, sha, {"push"}, branch=branch, include_optional=True)
     statuses: dict[str, dict[str, Any]] = {}
     for name in sorted(CORE_WORKFLOWS | set(chosen)):
         r = chosen.get(name)
-        if r is None or r.get("status") != "completed":
-            state = "PENDING"
-        elif str(r.get("conclusion") or "").lower() in SUCCESS_CONCLUSIONS:
-            state = "PASS"
-        elif str(r.get("conclusion") or "").lower() in FAIL_CONCLUSIONS:
-            state = "FAIL"
-        else:
-            state = "PENDING"
+        state = workflow_status(r)
         statuses[name] = {
             "state": state,
             "run_id": r.get("databaseId") if r else None,
@@ -247,18 +233,17 @@ def evaluate_main(repo: str, branch: str) -> dict[str, Any]:
             "conclusion": r.get("conclusion") if r else None,
         }
     all_states = [s["state"] for s in statuses.values()]
-    ci_status = (
-        "FAIL"
-        if "FAIL" in all_states
-        else ("PASS" if all(s == "PASS" for s in all_states) else "PENDING")
-    )
-    current = run_gh("api", f"repos/{repo}/branches/{branch}")
-    if git_sha(current.get("commit", {}).get("sha")) != sha:
-        raise CliError("branch HEAD changed during snapshot; rerun explicitly")
+    ci_status = combined(all_states)
+    observed = run_gh("api", f"repos/{repo}/branches/{branch}")
+    observed_sha = git_sha(observed.get("commit", {}).get("sha"))
+    if observed_sha != sha:
+        ci_status = "PENDING"
     return {
         "type": "branch",
         "branch": branch,
         "head_sha": sha,
+        "observed_head_sha": observed_sha,
+        "head_changed_during_read": observed_sha != sha,
         "ci_status": ci_status,
         "workflows": statuses,
     }
