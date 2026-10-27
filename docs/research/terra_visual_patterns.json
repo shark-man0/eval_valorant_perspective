@@ -1,0 +1,91 @@
+{
+  "schema_version": "terra.public_visual_patterns.v1",
+  "scope": "development_only",
+  "semantic_status": "hypothesis_only",
+  "ownership": "UNKNOWN",
+  "pattern_counts_overlap": true,
+  "patterns": [
+    {
+      "pattern_id": "VP01",
+      "name": "肖像様の内部と円環の変種",
+      "observation": "類似した内部に異なる外周色があり、異なる内部にも円環がある。",
+      "observation_count": 43,
+      "candidate_meanings": [
+        "プレイヤー様表示",
+        "他のUI・オブジェクト",
+        "UNKNOWN"
+      ],
+      "limitations": "円形UIも外周を持つ。色から所有者や所属は決まらない。",
+      "recognizer_use": "円弧と内部構造を別特徴とし、色への依存を下げる。"
+    },
+    {
+      "pattern_id": "VP02",
+      "name": "X様の交差構造",
+      "observation": "対角方向の腕と交差部があり、背景線との重なり方に違いがある。",
+      "observation_count": 9,
+      "candidate_meanings": [
+        "死亡関連の可能性",
+        "他のUI・状態",
+        "背景",
+        "UNKNOWN"
+      ],
+      "limitations": "同研究の該当9枚には既存D候補があり、死亡や未検出は確定していない。",
+      "recognizer_use": "腕・交差部と背景線を別特徴にし、後段の順位付けで比較。"
+    },
+    {
+      "pattern_id": "VP03",
+      "name": "円環と黄色い記号の重なり",
+      "observation": "肖像様表示や青紫色の図像の端に黄色い図形が重なる例がある。",
+      "observation_count": 9,
+      "candidate_meanings": [
+        "複数UIの重なり",
+        "複合UI",
+        "他のオブジェクト",
+        "UNKNOWN"
+      ],
+      "limitations": "該当9枚すべてが既存D候補由来。重なりによる検出失敗とは言えない。",
+      "recognizer_use": "部分円弧と内部を組み合わせ、重なりを即時棄却理由にしない。"
+    },
+    {
+      "pattern_id": "VP04",
+      "name": "円形・三角形と内部記号",
+      "observation": "明るい円、暗い円盤、三角状の表示が肖像様円環と紛らわしい。",
+      "observation_count": 11,
+      "candidate_meanings": [
+        "UI・オブジェクト",
+        "プレイヤー様表示",
+        "背景",
+        "UNKNOWN"
+      ],
+      "limitations": "内部や周辺の見た目が異なり、意味・対象クラスは未確認。",
+      "recognizer_use": "外周と内部模様、周辺線を併用して候補を比較。"
+    },
+    {
+      "pattern_id": "VP05",
+      "name": "文字様・直線・背景の類似物",
+      "observation": "白い文字様断片や直角線、高コントラスト図形が候補と似る場合がある。",
+      "observation_count": 46,
+      "candidate_meanings": [
+        "地図の文字や線",
+        "UI装飾",
+        "背景",
+        "UNKNOWN"
+      ],
+      "limitations": "未レビューの画像は確定した負例ではない。",
+      "recognizer_use": "直線の連続性や局所エッジの方向を順位付けの特徴として扱う。"
+    },
+    {
+      "pattern_id": "VP06",
+      "name": "切り出し端と周辺文脈",
+      "observation": "小さな切り出しでは一部しか見えない図形が、周辺の確認で広く見える場合がある。",
+      "observation_count": 7,
+      "candidate_meanings": [
+        "プレイヤー様表示",
+        "他のUI・オブジェクト",
+        "UNKNOWN"
+      ],
+      "limitations": "既存DはフルROIで処理されており、crop端切れがD欠落の原因とは証明できない。",
+      "recognizer_use": "固定cropの判定に限らず、フルROIで複数スケールの候補を提案。"
+    }
+  ]
+}
