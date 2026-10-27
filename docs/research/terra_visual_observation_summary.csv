@@ -1,0 +1,12 @@
+scope,metric,count,interpretation
+sample,reviewed_images,144,選択バイアスがあり独立した標本数ではない
+sample,images_with_pattern,120,複数パターンに所属しうる
+sample,images_unassigned,24,未割当は負例ではない
+sample,existing_d_center_within_crop,70,中心はcropの範囲内という記録であり正答を意味しない
+sample,no_existing_d_center_within_crop,74,false negativeの数ではない
+pattern_membership,VP01,43,重複可能、分布推定やGTではない
+pattern_membership,VP02,9,重複可能、分布推定やGTではない
+pattern_membership,VP03,9,重複可能、分布推定やGTではない
+pattern_membership,VP04,11,重複可能、分布推定やGTではない
+pattern_membership,VP05,46,重複可能、分布推定やGTではない
+pattern_membership,VP06,7,重複可能、分布推定やGTではない
