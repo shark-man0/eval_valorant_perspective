@@ -83,7 +83,14 @@ def status_of_checks(checks: list[dict[str, Any]]) -> str:
     return "PASS"
 
 
-def core_runs(repo: str, sha: str, events: set[str]) -> dict[str, dict[str, Any]]:
+def core_runs(
+    repo: str,
+    sha: str,
+    events: set[str],
+    *,
+    branch: str | None = None,
+    include_optional: bool = False,
+) -> dict[str, dict[str, Any]]:
     """Require exact-SHA workflow evidence, not a similarly named job."""
     runs = run_gh(
         "run",
@@ -92,10 +99,11 @@ def core_runs(repo: str, sha: str, events: set[str]) -> dict[str, dict[str, Any]
         repo,
         "--commit",
         sha,
+        *(["--branch", branch] if branch is not None else []),
         "--limit",
         "100",
         "--json",
-        "headSha,workflowName,status,conclusion,event,url,createdAt,databaseId",
+        "headSha,headBranch,workflowName,status,conclusion,event,url,createdAt,databaseId",
     )
     if not isinstance(runs, list) or any(not isinstance(r, dict) for r in runs):
         raise CliError("gh run list did not return workflow entries")
@@ -103,9 +111,14 @@ def core_runs(repo: str, sha: str, events: set[str]) -> dict[str, dict[str, Any]
     for run in runs:
         name = run.get("workflowName")
         if (
-            name not in CORE_WORKFLOWS
+            not isinstance(name, str)
+            or not name
+            or not include_optional
+            and name not in CORE_WORKFLOWS
             or run.get("headSha") != sha
             or run.get("event") not in events
+            or branch is not None
+            and run.get("headBranch") != branch
         ):
             continue
         if name not in chosen or (
@@ -159,7 +172,7 @@ def evaluate_pr(repo: str, number: int) -> dict[str, Any]:
     if not all(isinstance(c, dict) for c in checks):
         raise CliError("gh pr checks returned malformed check entries")
     chosen = core_runs(repo, head_sha, {"pull_request", "push"})
-    workflows = {
+    workflows: dict[str, dict[str, Any]] = {
         name: {
             "state": workflow_status(chosen.get(name)),
             "run_id": chosen[name].get("databaseId") if name in chosen else None,
@@ -208,9 +221,9 @@ def evaluate_main(repo: str, branch: str) -> dict[str, Any]:
     # Branch endpoint reads the remote SHA; it does not trust stale local refs.
     branch_info = run_gh("api", f"repos/{repo}/branches/{branch}")
     sha = git_sha(branch_info.get("commit", {}).get("sha"))
-    chosen = core_runs(repo, sha, {"push"})
+    chosen = core_runs(repo, sha, {"push"}, branch=branch, include_optional=True)
     statuses: dict[str, dict[str, Any]] = {}
-    for name in sorted(CORE_WORKFLOWS):
+    for name in sorted(CORE_WORKFLOWS | set(chosen)):
         r = chosen.get(name)
         state = workflow_status(r)
         statuses[name] = {

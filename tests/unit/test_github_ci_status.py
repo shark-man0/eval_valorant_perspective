@@ -33,6 +33,7 @@ def runs(state="completed", conclusion="success", sha=SHA):
             "status": state,
             "conclusion": conclusion,
             "headSha": sha,
+            "headBranch": "main",
             "event": "pull_request",
             "createdAt": "2026-10-27T00:00:00Z",
             "databaseId": i,
@@ -158,3 +159,37 @@ def test_remote_main_race_is_pending(monkeypatch):
 
     monkeypatch.setattr(ci, "run_gh", gh)
     assert ci.evaluate_main("owner/repo", "main")["ci_status"] == "PENDING"
+
+
+def test_main_same_sha_feature_push_does_not_override_main(monkeypatch):
+    rr = [{**r, "event": "push"} for r in runs()]
+    rr += [
+        {
+            **r,
+            "event": "push",
+            "headBranch": "feature",
+            "conclusion": "cancelled",
+            "createdAt": "2026-10-28T00:00:00Z",
+        }
+        for r in runs()
+    ]
+
+    def gh(*args, **kwargs):
+        if args[0] == "api":
+            return {"commit": {"sha": SHA}}
+        assert "--branch" in args and args[args.index("--branch") + 1] == "main"
+        return rr
+
+    monkeypatch.setattr(ci, "run_gh", gh)
+    assert ci.evaluate_main("owner/repo", "main")["ci_status"] == "PASS"
+
+
+def test_main_optional_failure_is_not_hidden(monkeypatch):
+    rr = [{**r, "event": "push"} for r in runs()]
+    rr.append({**rr[0], "workflowName": "additional", "conclusion": "failure"})
+
+    def gh(*args, **kwargs):
+        return {"commit": {"sha": SHA}} if args[0] == "api" else rr
+
+    monkeypatch.setattr(ci, "run_gh", gh)
+    assert ci.evaluate_main("owner/repo", "main")["ci_status"] == "FAIL"
