@@ -95,4 +95,5 @@ def test_truncation_is_reported_without_removing_parent_candidates(tmp_path, mon
     assert (result['arc_search']['search_truncated']
             == bool(result['arc_search']['output_overflow']
                     or result['arc_search']['unprocessed_peaks']))
-    assert [p['candidate'] for p in result['proposals'] if p['source'] == 'D'] == result['baseline_d']['candidates']
+    parents = [p['candidate'] for p in result['proposals'] if p['source'] == 'D']
+    assert parents == result['baseline_d']['candidates']
