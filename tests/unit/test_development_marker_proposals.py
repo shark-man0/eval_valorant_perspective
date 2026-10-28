@@ -140,3 +140,22 @@ def test_claimed_sample_hash_cannot_silently_rebind_metadata(tmp_path, field, va
     options['sample'][field] = value
     with pytest.raises(ValueError, match='Exact frozen'):
         DevelopmentMarkerProposals('bind').observe(frame, **options)
+
+
+def test_candidate_calibration_retains_measured_confidence_for_zone_connection(
+    tmp_path, monkeypatch,
+):
+    from valorant_ai_coach.maps.resolver import ZoneResolver
+
+    frame, options, _ = case(tmp_path)
+    engine = DevelopmentMarkerProposals('bind')
+    calibration = CalibrationResult('ok', .93, (0., 0., 1., 1.), 'synthetic', (),
+                                    (1., 0., 0., 0., 1., 0.), (160, 140), (0., 0., 160., 140.))
+    monkeypatch.setattr(engine.calibrator, 'analyze', lambda *a, **k: calibration)
+    result = engine.observe(frame, **options)
+    assert result['calibration']['confidence'] == .93
+    zone = ZoneResolver(engine.definition).resolve(
+        time_sec=1., frame_index=1, calibration=result['calibration'], controlled_player=False)
+    assert zone['calibration_status'] == 'ok'
+    assert 'calibration_contract_incomplete' not in zone['diagnostics']
+    assert result['formal_self_position_fact'] is None

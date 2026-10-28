@@ -145,6 +145,7 @@ class DevelopmentMarkerProposals:
             "map_id": self.definition.map_id, "geometry_version": self.definition.geometry_version,
             "context_eligible": context_eligible, "context_semantics_qualified": False,
             "calibration": {"status": calibration.status,
+                            "confidence": calibration.confidence,
                             "diagnostics": list(calibration.diagnostics)},
             "search_truncated": any(member["truncated"] for member in evidence),
             "proposals": candidates, "selected_self_position": None,
