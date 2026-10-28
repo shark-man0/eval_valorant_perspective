@@ -147,3 +147,162 @@ def test_human_seed_is_explicit_and_not_repeated_as_current_ui():
     assert r["life"] == "alive" and r["state_origin"] == "temporal_inference"
     with pytest.raises(ValueError):
         model.observe(second, ui(second), initial_review=deepcopy(reviewed))
+
+
+def test_existing_spectated_name_reaches_state_without_becoming_recorder_identity(monkeypatch):
+    import hashlib
+
+    import numpy as np
+
+    from valorant_ai_coach.visual.development_marker_attribution import freeze_native_sample
+    from valorant_ai_coach.visual.development_owner_observations import DevelopmentOwnerUI
+
+    image = np.zeros((80, 80, 3), dtype=np.uint8)
+    sample = freeze_native_sample(
+        {
+            "source_id": "synthetic",
+            "source_sha256": "a" * 64,
+            "native_epoch": "epoch",
+            "acquisition_id": "epoch",
+            "native_pts_tick": 0,
+            "native_time_base": "1/60",
+            "acquired_frame_sha256": "b" * 64,
+            "native_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest(),
+        },
+        frame_size_px=(80, 80),
+    )
+    reader = DevelopmentOwnerUI({})
+    monkeypatch.setattr(
+        reader.screen,
+        "inspect",
+        lambda *a, **k: {
+            "observed_cues": [],
+            "spectator_slot": {"checked": True, "panel_present": True},
+        },
+    )
+    monkeypatch.setattr(reader.spectator, "inspect", lambda *a, **k: {"status": "not_detected"})
+    monkeypatch.setattr(
+        reader.agent,
+        "inspect",
+        lambda *a, **k: {
+            "positive_agent_association": False,
+            "block_position_candidate": True,
+            "actor_alias_evidence": {
+                "status": "observed",
+                "observed_alias": "synthetic-recorder",
+                "slot_kind": "spectated_player_name",
+                "ocr_confidence": 0.95,
+                "alias_association": "alias_matches_recorder",
+                "current_name_pixels_sha256": "c" * 64,
+                "activation_reference_sha256": "d" * 64,
+            },
+        },
+    )
+    observed = reader.inspect(image, sample)
+    assert observed["own_hud_support"] is False
+    subject = observed["spectated_subject_observation"]
+    assert subject["observed_alias"] == "synthetic-recorder"
+    assert subject["sample_sha256"] == sample["sample_sha256"]
+    assert subject["ownership"] == "UNKNOWN"
+    state = DevelopmentOwnerTimeline().observe(sample, observed)
+    assert state["view"] == "spectator" and state["life"] != "alive"
+    assert state["camera_subject"] == subject
+    assert state["formal_outputs"] == 0
+
+
+def test_foreign_spectated_subject_cannot_be_attached_to_current_owner_sample():
+    model = DevelopmentOwnerTimeline()
+    sample, _ = observation(0)
+    with pytest.raises(ValueError, match="subject"):
+        model.observe(
+            sample,
+            ui(
+                sample,
+                spectator_ui=True,
+                spectated_subject_observation={
+                    "sample_sha256": "f" * 64,
+                    "observed_alias": "synthetic",
+                },
+            ),
+        )
+
+
+@pytest.mark.parametrize("bad", ["low_confidence", "nonfinite", "no_spectator", "actor_slot"])
+def test_name_only_or_unreliable_name_never_becomes_a_spectated_subject(bad):
+    from valorant_ai_coach.visual.development_owner_observations import _spectated_subject
+
+    sample, _ = observation(0)
+    alias = {
+        "status": "observed",
+        "slot_kind": "spectated_player_name",
+        "observed_alias": "synthetic-player",
+        "ocr_confidence": 0.95,
+        "current_name_pixels_sha256": "c" * 64,
+        "activation_reference_sha256": "d" * 64,
+    }
+    if bad == "low_confidence":
+        alias["ocr_confidence"] = 0.899
+    elif bad == "nonfinite":
+        alias["ocr_confidence"] = float("nan")
+    elif bad == "actor_slot":
+        alias["slot_kind"] = "current_actor_identifier"
+    assert _spectated_subject(alias, sample, spectator_present=bad != "no_spectator") is None
+
+
+def test_spectated_name_is_not_carried_as_current_identity_when_pixels_are_missing():
+    from valorant_ai_coach.visual.development_owner_observations import _spectated_subject
+
+    sample, _ = observation(0)
+    subject = _spectated_subject(
+        {
+            "status": "observed",
+            "slot_kind": "spectated_player_name",
+            "observed_alias": "synthetic-player",
+            "ocr_confidence": 0.95,
+            "current_name_pixels_sha256": "c" * 64,
+            "activation_reference_sha256": "d" * 64,
+        },
+        sample,
+        spectator_present=True,
+    )
+    model = DevelopmentOwnerTimeline()
+    first = model.observe(
+        sample, ui(sample, spectator_ui=True, spectated_subject_observation=subject)
+    )
+    assert first["camera_subject"] is not None
+    following, _ = observation(1)
+    missing = model.observe(
+        following, ui(following, spectator_ui=True), continuity=continuity(sample, following)
+    )
+    assert missing["camera_subject"] is None
+    assert missing["view"] == "spectator" and missing["life"] != "alive"
+
+
+def test_camera_subject_switch_does_not_reassign_recorder_life_or_marker():
+    from valorant_ai_coach.visual.development_owner_observations import _spectated_subject
+
+    model = DevelopmentOwnerTimeline()
+    previous = None
+    for tick, name in enumerate(["synthetic-first", "synthetic-second"]):
+        sample, _ = observation(tick)
+        subject = _spectated_subject(
+            {
+                "status": "observed",
+                "slot_kind": "spectated_player_name",
+                "observed_alias": name,
+                "ocr_confidence": 0.95,
+                "current_name_pixels_sha256": "c" * 64,
+                "activation_reference_sha256": "d" * 64,
+            },
+            sample,
+            spectator_present=True,
+        )
+        result = model.observe(
+            sample,
+            ui(sample, spectator_ui=True, spectated_subject_observation=subject),
+            continuity=continuity(previous, sample) if previous else None,
+        )
+        assert result["camera_subject"]["observed_alias"] == name
+        assert result["view"] == "spectator" and result["life"] != "alive"
+        assert result["self_marker_id"] is None and result["formal_outputs"] == 0
+        previous = sample

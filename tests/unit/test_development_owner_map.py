@@ -125,3 +125,35 @@ def test_real_reader_does_not_make_blank_spectator_slot_verified_absence(bind_ca
     observed = DevelopmentOwnerUI(profile).inspect(image, sample)
     assert observed["own_hud_support"] is False
     assert observed["spectator_absence_checked"] is False
+
+
+def test_spectated_subject_reaches_map_envelope_without_self_coordinates(bind_case):
+    from valorant_ai_coach.visual.development_owner_observations import _spectated_subject
+
+    _, _, image, profile, _ = bind_case
+    model = DevelopmentOwnerMapPipeline(profile, tracking="legacy")
+    frame, sample = inputs(image, 0)
+    subject = _spectated_subject(
+        {
+            "status": "observed",
+            "slot_kind": "spectated_player_name",
+            "observed_alias": "synthetic-camera-subject",
+            "ocr_confidence": 0.96,
+            "current_name_pixels_sha256": "c" * 64,
+            "activation_reference_sha256": "d" * 64,
+        },
+        sample,
+        spectator_present=True,
+    )
+    cues = ui(
+        sample,
+        spectator_ui=True,
+        fingerprint=model.reader.fingerprint,
+        source_profile_fingerprint=_digest(profile),
+        spectated_subject_observation=subject,
+    )
+    result = model.observe(image, sample, frame, cached_ui=cues)
+    assert result["map"]["camera_subject_observation"] == subject
+    assert result["map"]["map_position_norm"] is None
+    assert result["owner"]["view"] == "spectator"
+    assert result["formal_outputs"] == 0 and result["ownership"] == "UNKNOWN"

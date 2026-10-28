@@ -7,6 +7,7 @@ temporal carry and optional exact reviewed initialization remain separate.
 from __future__ import annotations
 
 import hashlib
+import math
 from copy import deepcopy
 from dataclasses import asdict
 from fractions import Fraction
@@ -38,6 +39,62 @@ _OPTIONAL_FLAGS = (
     "active_phase_visible",
     "round_result_visible",
 )
+
+
+def _spectated_subject(
+    alias: Any, sample: dict[str, Any], *, spectator_present: bool
+) -> dict[str, Any] | None:
+    """Forward an existing current-frame name read, never recorder identity."""
+    if not isinstance(alias, dict):
+        return None
+    name, confidence = alias.get("observed_alias"), alias.get("ocr_confidence")
+    if (
+        spectator_present is not True
+        or alias.get("status") != "observed"
+        or alias.get("slot_kind") != "spectated_player_name"
+        or not isinstance(name, str)
+        or not 1 <= len(name.strip()) <= 64
+        or not isinstance(confidence, (int, float))
+        or isinstance(confidence, bool)
+        or not math.isfinite(confidence)
+        or not 0.90 <= confidence <= 1
+        or not _sha(alias.get("current_name_pixels_sha256"))
+        or not _sha(alias.get("activation_reference_sha256"))
+    ):
+        return None
+    return {
+        "kind": "spectated_display_alias",
+        "observed_alias": name.strip(),
+        "ocr_confidence": float(confidence),
+        "sample_sha256": sample["sample_sha256"],
+        "source_sha256": sample["source_sha256"],
+        "native_epoch": sample["native_epoch"],
+        "name_pixels_sha256": alias["current_name_pixels_sha256"],
+        "activation_reference_sha256": alias["activation_reference_sha256"],
+        "ownership": "UNKNOWN",
+        "qualification": "development_only",
+        "origin": "image_reader",
+        "qualified": False,
+        "formal_outputs": 0,
+    }
+
+
+def _valid_subject(subject: Any, sample: dict[str, Any]) -> bool:
+    if not isinstance(subject, dict):
+        return False
+    expected = _spectated_subject(
+        {
+            "observed_alias": subject.get("observed_alias"),
+            "ocr_confidence": subject.get("ocr_confidence"),
+            "status": "observed",
+            "slot_kind": "spectated_player_name",
+            "current_name_pixels_sha256": subject.get("name_pixels_sha256"),
+            "activation_reference_sha256": subject.get("activation_reference_sha256"),
+        },
+        sample,
+        spectator_present=True,
+    )
+    return expected is not None and subject == expected
 
 
 class DevelopmentOwnerUI:
@@ -195,6 +252,9 @@ class DevelopmentOwnerUI:
             "screen_measurements": screen,
             "agent_measurements": agent,
             "spectator_measurements": spectator,
+            "spectated_subject_observation": _spectated_subject(
+                agent.get("actor_alias_evidence"), sample, spectator_present=present
+            ),
             "origin": "image_reader",
             "qualified": False,
             "formal_outputs": 0,
@@ -294,6 +354,11 @@ class DevelopmentOwnerTimeline:
             or any(key in ui and type(ui[key]) is not bool for key in _OPTIONAL_FLAGS)
         ):
             raise ValueError("Bound exact-native image UI measurements required")
+        subject = ui.get("spectated_subject_observation")
+        if subject is not None and (
+            ui["spectator_ui"] is not True or not _valid_subject(subject, sample)
+        ):
+            raise ValueError("Current exact-frame spectator subject observation required")
         adjacent = (
             native_continuity(self.previous, sample, continuity)
             and ui.get("source_discontinuity", False) is False

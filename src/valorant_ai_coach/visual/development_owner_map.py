@@ -153,6 +153,7 @@ class DevelopmentOwnerMapPipeline:
             acquisition_id=frame.acquisition_id,
             source_sha256=frame.source_sha256,
         )
+        mapped["camera_subject_observation"] = deepcopy(owner["camera_subject"])
         return {
             "sample": deepcopy(sample),
             "owner": owner,

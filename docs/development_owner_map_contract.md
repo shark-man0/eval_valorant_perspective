@@ -91,3 +91,23 @@ with content hashes alongside bounded cached features and reject changed evidenc
 New videos enter through existing registration/allocation before this adapter.
 Physical groups must remain isolated across training/comparison splits. Cache hits
 and accumulated data are processing results, not recognition gains.
+
+## Observed spectator names are a separate camera subject
+
+The image producer forwards the existing activated spectator-name reader only
+when the current spectator UI is positive, the exact name read meets the existing
+0.90 gate, and current name-pixel/reference/sample hashes are present. The timeline
+validates the observation against this sample and the adapter preserves it in the
+nested development Map envelope. It does not carry a missing name as current.
+
+A spectator display alias, including one identical to the recorder alias, is not
+recorder ownership or a qualified account identity. It cannot initialize a self
+marker or produce self coordinates. No name is inferred from a persistent Report.
+Private names and individual native times remain outside Git.
+
+On a separate fixed dense native spectator window, the existing reader supplied
+67 accepted name observations that previously disappeared before the timeline;
+they now reach the state output. This measures information preservation only.
+No new human name labels, self-death confirmation, or automatic owner-recognition
+accuracy gain is claimed. Baseline life/view and Map position outcomes must remain
+unchanged in the same-input regression comparison.
