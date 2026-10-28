@@ -79,7 +79,9 @@ but selected-path coverage is not uniformly better. The additional Haven interva
 has four more map observations. Neither increase alone proves correct ownership.
 
 One initial Haven selection and three additional-interval initial selections were
-independently reviewed as recorder markers after predictions were frozen. A
+independently reviewed as recorder markers after predictions were frozen. These
+are frame-only proposals; one is a UI refresh in the temporal run. Of the four
+temporal starts, three have direct role reviews; the Bind start remains unreviewed. A
 highlighted Spike was reviewed as UI and was not initialized as recorder. Exact
 review roles are evaluation only. The two already-reviewed static coordinate
 samples and one Bind sample provide limited coordinate comparisons; unreviewed

@@ -199,3 +199,12 @@ def test_other_subject_life_evidence_cannot_assign_recorder_death(subject):
         DevelopmentOwnerTimeline().observe(
             observation(0, life_evidence="owner_death", life_subject=subject)
         )
+
+
+def test_detached_current_measurement_retains_unknown_development_boundary():
+    row = DevelopmentOwnerTimeline().observe(bound())
+    detached = row["current_observation"]
+    assert detached["ownership"] == "UNKNOWN"
+    assert detached["qualification"] == "development_only"
+    assert detached["position_subject"] == "recorder_association_candidate"
+    assert detached["formal_outputs"] == 0

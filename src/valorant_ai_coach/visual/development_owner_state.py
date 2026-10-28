@@ -232,7 +232,15 @@ class DevelopmentOwnerTimeline:
             "binding_state": binding_state,
             "binding_origin": self._binding_origin,
             "binding_evidence_sha256": self._binding_receipt,
-            "current_observation": asdict(current) if current else None,
+            "current_observation": {
+                **asdict(current),
+                "qualification": "development_only",
+                "ownership": "UNKNOWN",
+                "position_subject": "recorder_association_candidate",
+                "formal_outputs": 0,
+            }
+            if current
+            else None,
             "current_position_observed": current is not None,
             "current_observation_subject": "recorder_association_candidate",
             "marker_binding_qualified": False,
