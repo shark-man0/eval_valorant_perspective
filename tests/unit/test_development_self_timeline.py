@@ -9,7 +9,6 @@ from valorant_ai_coach.visual.development_self_timeline import (
     SelfFrameCues,
 )
 
-
 SHA = "a" * 64
 
 
