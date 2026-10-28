@@ -38,6 +38,32 @@ class DevelopmentMarkerAssociations:
         continuity: dict[str, Any] | None,
         hud: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
+        try:
+            return self._observe(
+                sample,
+                pool,
+                appearance,
+                appearance_fingerprint=appearance_fingerprint,
+                continuity=continuity,
+                hud=hud,
+            )
+        except Exception:
+            # Invalid identity/geometry/features can raise inside validation.
+            # Propagate the error, but never let the next valid observation
+            # reconnect to state from before the rejected observation.
+            self.reset()
+            raise
+
+    def _observe(
+        self,
+        sample: dict[str, Any],
+        pool: dict[str, Any],
+        appearance: Array,
+        *,
+        appearance_fingerprint: str,
+        continuity: dict[str, Any] | None,
+        hud: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         size = sample.get("frame_size_px")
         if (
             not isinstance(size, list)

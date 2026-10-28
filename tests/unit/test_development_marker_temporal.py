@@ -196,3 +196,13 @@ def test_mutated_pool_is_rejected_and_discards_prior_state():
     with pytest.raises(ValueError, match="Bound current"):
         observe(tracker, (second[0], changed), first[0])
     assert observe(tracker, second, first[0])["reason"] == "first_observation"
+
+
+def test_invalid_native_acquisition_discards_prior_even_when_freezing_raises():
+    tracker = DevelopmentMarkerAssociations()
+    first, second = observation(60), observation(72)
+    observe(tracker, first)
+    changed_sample = {**second[0], "acquisition_id": "different-acquisition"}
+    with pytest.raises(ValueError, match="source/native/image identity"):
+        observe(tracker, (changed_sample, second[1]), first[0])
+    assert observe(tracker, second, first[0])["reason"] == "first_observation"

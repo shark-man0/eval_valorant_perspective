@@ -106,6 +106,8 @@ require position distance <=12px AND native-patch appearance cosine >=0.90,
 mutual unique matching and a 0.10 ambiguity margin. Missing detections, discontinuous
 or nonincreasing PTS, identity changes and view/life changes reset association.
 Crossing lookalikes are rejected rather than assigning an identity by proximity.
+Malformed observations discard prior state before propagating the validation
+exception, including failures inside native sample freezing.
 
 Only observed endpoints are linked. There is no interpolation, retained track
 through a missing observation, inferred movement, or recorder-marker binding.
@@ -155,8 +157,8 @@ DEVELOPMENT sources do not establish an independent physical-match qualification
 ## Resource measurements
 
 Three isolated single-thread runs on the same existing 18 native DEVELOPMENT
-images give median recognition times A/B/C/D/E of 14.57/14.84/17.06/16.83/17.27s,
-and median peak RSS 299.9/302.0/306.6/307.9/316.2MiB. All three runs reproduce the
+images give median recognition times A/B/C/D/E of 14.57/14.84/17.06/16.83/16.96s,
+and median peak RSS 299.9/302.0/306.6/307.9/305.9MiB. All three runs reproduce the
 same output digests within each method. C/D timing differences overlap ordinary
 measurement variability; the added semantic readout is not claimed faster.
 Decode time is excluded and model construction is included. These 18 are not
@@ -165,3 +167,11 @@ intervals. The separate 80-frame run measures 0.53s for association/HUD handling
 73.62s total processing and 261.8MiB peak RSS. Source verification and native
 acquisition are separate (23.97s); neither is hidden as recognition throughput.
 The experiment is not a calibration speed optimization or a performance guarantee.
+
+After hardening exception-state reset, all 240 calls over the same 80 native
+observations reproduce the earlier association results exactly. Three additional
+isolated E processes reproduce all 18 original output digests; the timing/RSS
+figures above use those final E runs. Lower observed RSS is process variation,
+not a claimed optimization. An acquisition-mismatch validation exception is
+reproduced before the fix and no longer permits a later observation to reconnect
+to the pre-error state.
