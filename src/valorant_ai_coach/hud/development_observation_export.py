@@ -128,6 +128,14 @@ def export_owner_ui(frame: FrameRecord, source_id: str, ui: dict[str, Any],
                        "roi_xywh_px": None, "roi_qualification": "see_constituent_probes",
                        "value": True if value is True else None, "uncalibrated_score": None,
                        "evidence": {"reader_output": value}})
+    fields.append({
+        "name": "owner_reader_diagnostics", "status": screen.get("status", "UNKNOWN"),
+        "roi_xywh_px": None, "roi_qualification": "see_constituent_probes",
+        "value": {"screen_measurements": deepcopy(screen),
+                  "remote_detection": ui.get("remote_detection"),
+                  "spectator_absence_checked": ui.get("spectator_absence_checked")},
+        "uncalibrated_score": None, "evidence": {},
+    })
     return _packet(frame, source_id, ui["fingerprint"], _digest(profile), fields,
                    {"source_discontinuity": ui.get("source_discontinuity"),
                     "spectator_slot": deepcopy(screen.get("spectator_slot"))})

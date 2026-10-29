@@ -268,3 +268,21 @@ def test_unanalysed_native_rows_are_not_reader_absence():
     assert all(x["status"] == "NOT_ANALYSED" for x in packet["measurements"])
     assert packet["measurements"][-1]["value"]["analysed"] is False
     assert packet["formal_events"] == []
+
+
+def test_original_screen_rejection_and_obscuration_diagnostics_survive_export():
+    _, _, frame, ui, profile = case()
+    ui["screen_measurements"].update(
+        status="unavailable", block_position_candidate=True,
+        reasons=["configured_screen_probe_unavailable"],
+        spectator_slot={"checked": False, "panel_present": None, "reason": "icon_roi_obscured"},
+    )
+    ui["remote_detection"] = "not_configured_UNVERIFIED"
+    ui["spectator_absence_checked"] = False
+    packet = export_owner_ui(frame, "synthetic", ui, profile)
+    diagnostic = next(m for m in packet["measurements"] if m["name"] == "owner_reader_diagnostics")
+    assert diagnostic["status"] == "unavailable"
+    assert diagnostic["value"]["screen_measurements"] == ui["screen_measurements"]
+    assert diagnostic["value"]["remote_detection"] == "not_configured_UNVERIFIED"
+    assert diagnostic["value"]["spectator_absence_checked"] is False
+    assert packet["formal_outputs"] == 0 and packet["qualified"] is False

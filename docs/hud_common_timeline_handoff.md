@@ -23,6 +23,8 @@ interfaces remain untouched.
   `DevelopmentOwnerUI.inspect` result. Keep its exact reader/Profile fingerprint
   and original image/cache receipt. Shared HUD, agent glyphs, spectator controls,
   activated spectator alias, purchase and Report are observations, not ownership.
+  Original screen status/rejection reasons, obscuration diagnostics, blocking flags
+  and unconfigured-remote status remain in the diagnostics measurement.
 - `export_round_readers(frame, row, reader_fingerprint=..., profile_fingerprint=...,
   rois=...)` projects existing offline Round reader output. Score/Timer/Result
   literals, sources, scores, component Geometry and display context survive.
