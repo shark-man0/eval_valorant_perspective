@@ -234,6 +234,7 @@ class DevelopmentGameTimeline:
         prior: dict[str, Any] | None = None
         last_direct: dict[str, tuple[Fraction, dict[str, Any]]] = {}
         round_token: str | None = None
+        round_progress_since_buy = False
         self_token: str | None = None
         death_latch: str | None = None
         death_round_token: str | None = None
@@ -251,6 +252,7 @@ class DevelopmentGameTimeline:
                 last_clock = None
                 last_score_frame = None
                 round_token, self_token = None, None
+                round_progress_since_buy = False
                 death_latch, last_alive, last_dead = None, None, None
                 death_round_token = None
             ids = [r["observation_id"] for r in frame["observations"]]
@@ -408,9 +410,13 @@ class DevelopmentGameTimeline:
                         uncertainty="continuation_unverified",
                     )
             previous_state = states[-1] if states and link["carry_allowed"] else None
-            previous_round = previous_state["round"]["value"] if previous_state else "UNKNOWN"
-            if current["round"]["value"] == "BUY" and previous_round != "BUY":
+            if current["round"]["value"] in {"ACTIVE", "ENDED", "INTERMISSION"}:
+                round_progress_since_buy = True
+            if current["round"]["value"] == "BUY" and (
+                round_token is None or round_progress_since_buy
+            ):
                 round_token = digest({"buy": frame["sample"]["sample_sha256"]})
+                round_progress_since_buy = False
                 self_token = None
             returned = False
             if "owner_hud" in signals and death_latch:

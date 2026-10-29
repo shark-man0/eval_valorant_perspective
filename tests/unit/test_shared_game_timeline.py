@@ -350,6 +350,22 @@ def test_owner_return_in_same_buy_phase_does_not_manufacture_next_round():
     assert not any(t["kind"] == "return" for t in result["transitions"])
 
 
+def test_missing_round_ui_does_not_mint_a_new_buy_token_or_self_return():
+    result = replay(
+        [
+            obs(0, ["buy", "owner_hud"]),
+            obs(1, ["buy", "death"]),
+            obs(11),
+            obs(21),
+            obs(31),
+            obs(32, ["buy", "owner_hud"]),
+        ]
+    )
+    assert result["frames"][-1]["round_token"] == result["frames"][0]["round_token"]
+    assert result["frames"][-1]["life"]["value"] == "UNKNOWN"
+    assert not any(t["kind"] == "return" for t in result["transitions"])
+
+
 def test_first_positive_self_observation_in_next_buy_phase_can_support_return():
     result = replay(
         [

@@ -72,6 +72,8 @@ available below the one-second display index.
   The BUY token must differ from the one at death/downing; a new self observation
   in that next BUY can support reentry immediately. Contradictory revival/owner
   observations cannot clear the latch, and unresolved returns retain DOWNED.
+  Missing BUY UI cannot mint a new token: measured ACTIVE/ENDED/INTERMISSION
+  progress is required before replacing an existing BUY token.
 - Report presence alone is not death. Report plus measured shared-HUD
   non-detection can withhold stale ALIVE/SELF; positive current spectator/remote
   observations are preserved. Unconfigured detectors remain UNKNOWN.
