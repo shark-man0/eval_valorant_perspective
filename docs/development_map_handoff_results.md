@@ -1,5 +1,12 @@
 # Map handoff validation (development only)
 
+Latest result: actual common API round-trip and the public Map CLI both complete
+on the same 140 native samples, with 140 exact snapshot joins. A/B/C Map counts
+are 30/81/0; C withholds positions because the necessary common-state support
+remains UNKNOWN. Related tests pass 66/66, Ruff and mypy pass. Recognition
+improvement and exact-head CI verification remain incomplete. Earlier runs and
+the resolved upstream failure below are retained as separate evidence.
+
 ## Scope and preservation
 
 The handoff starts from PR112 `c4f1cf5ffb33320344dac55eee5992194b94751e`.
@@ -170,3 +177,12 @@ run. The missing-context C and controlled D comparisons above remain distinct.
 See [the API finding](development_map_common_api_findings.md) for the exact
 connection, reproduction and next upstream action. The Map-side tests/regression
 results remain valid; full integration is still incomplete.
+
+The authorized report was then delivered to the common owner. A later fixed
+source snapshot completes actual C; the public CLI reproduces its consumer
+records exactly. It observes camera SPECTATOR47 / UNKNOWN93 while preserving
+recorder life UNKNOWN140. Source continuity is UNKNOWN140 and is not upgraded
+from native cadence. C emits no self position/Zone/path or formal output and
+abstains on the four reviewed self-marker cases. This is a completed connection
+comparison, not improved recognition. Full details and the source fingerprint
+are in [the actual API report](development_map_common_api_findings.md).

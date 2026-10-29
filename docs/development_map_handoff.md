@@ -8,10 +8,12 @@ contracts and the default recognizers are unchanged. All outputs are
 `development_only`, `ownership=UNKNOWN`, `formal_outputs=0`.
 
 Update: the common owner's local API was subsequently located and exercised.
-Its `map_context` matches this boundary, but actual replay fails upstream before
-returning the state series. See [the connection finding and minimal
-reproduction](development_map_common_api_findings.md). The earlier no-producer
-comparison remains a historical baseline, not an actual common-state result.
+Its `map_context` matches this boundary. An initial upstream replay failure was
+reported to the owner; a later fixed-source snapshot completes the actual
+round-trip and the public Map CLI on all 140 samples. See [the connection
+results and historical reproduction](development_map_common_api_findings.md).
+The earlier no-producer comparison remains a historical baseline, distinct from
+the actual common-state result, which also withholds every self position.
 
 ## Responsibilities and connection
 
@@ -126,11 +128,29 @@ python scripts/diagnostics/development_map_handoff.py \
 
 Input is `{ "rows": [...] }`; each row supplies `image_path`, `sample`, `pool`,
 `ui`, `appearance`, `geometry`, `reference_context_fingerprint`, optional
-`context`, and optional `continuity`. Images must match the exact native pixel
-hash. This CLI does not discover recordings, decode videos, read HUD or infer
+`context`, and optional `continuity`. Images must match both the recorded encoded-frame SHA and native pixel
+hash. The CLI hashes and decodes the same acquired byte buffer. This CLI does not discover recordings, decode videos, read HUD or infer
 game state. No context is the fail-closed default. Existing outputs are never
 overwritten. Keep plans, images, results, positions, individual PTS, Profiles,
 aliases and HTML private. Public tests use synthetic images only.
+
+For actual common-engine snapshots, export `map_context` for the exact native
+Map samples into PRIVATE JSON `{ "contexts": [...] }`, then run:
+
+```sh
+python scripts/diagnostics/development_map_handoff.py \
+  --input /absolute/private/map_plan.json \
+  --common-contexts /absolute/private/common_map_contexts.json \
+  --output /absolute/private/new_actual_common_result.json
+```
+
+The CLI uses `join_common_map_contexts`: exact sample SHA only, no approximate
+PTS/second matching, no state propagation to missing samples. It rejects
+duplicate upstream sample revisions, preexisting Map contexts and snapshots
+tagged as human/controlled rather than actual common-engine output. UNKNOWN
+continuity remains UNKNOWN. Join counts and the context-file SHA are recorded;
+an unused common sample is not an observed Map position. The Map branch does
+not copy or import the common state engine as a required dependency.
 
 ## Duplicate state inventory and integration plan
 
