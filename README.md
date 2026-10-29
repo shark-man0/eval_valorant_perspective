@@ -332,3 +332,14 @@ See [Windows E2E](WINDOWS_E2E.md), [Raspberry Pi setup](RASPBERRY_PI_E2E.md),
 and [migration audit](docs/cross_platform_e2e_migration.md).
 Linux/Pi real-device execution remains unverified; Analyzer improvements are paused
 until that result is reviewed. Desktop installation requires the `gui` extra.
+
+### Development shared HUD / Map timeline
+
+The opt-in [common timeline](docs/development_shared_timeline.md) consumes native
+HUD/Map observations, retains exact evidence, and exposes a shared one-second
+Source clock. Its CLI, [selective integration ledger](docs/development_shared_timeline_dependencies.md)
+and comparison report remain development-only; they issue no qualified Facts or
+Events. Production adoption and main integration require supervisor review.
+
+Development measurements and restart tasks are in the
+[shared timeline comparison](docs/development_shared_timeline_results.md).
