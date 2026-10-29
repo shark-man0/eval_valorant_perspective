@@ -1,5 +1,10 @@
 # Shared development timeline comparison
 
+This page preserves the initial #115 comparison. The supervisor subsequently
+authorized observation work. See the [dependent recorder episode experiment](development_recorder_episode.md)
+for later gate recovery, three-point human review and current measurements;
+the historical restart gate below is no longer a pending permission request.
+
 The common engine and supplier APIs reconstruct a development Round sequence,
 but recorder life/reentry and self-position recovery remain **UNMET**. Keep this
 Draft and retain the existing default recognizers. No Production/main merge or

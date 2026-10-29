@@ -14,7 +14,7 @@ from typing import Any, Literal, TypedDict
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
 
-VERSION = "development_game_timeline_v1"
+VERSION = "development_game_timeline_v2"
 
 
 class RoundState(StrEnum):
@@ -66,6 +66,7 @@ SIGNALS = {
     "ability_return",
     "report",
     "hud_not_detected",
+    "recorder_elimination_display",
 }
 
 
@@ -165,12 +166,19 @@ class DevelopmentGameTimeline:
     """
 
     def __init__(
-        self, *, max_carry_seconds: Fraction = Fraction(2), future_seconds: Fraction = Fraction(3)
+        self,
+        *,
+        max_carry_seconds: Fraction = Fraction(2),
+        future_seconds: Fraction = Fraction(3),
+        fuse_exact_native_evidence: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
         self.max_carry = max_carry_seconds
         self.future = future_seconds
+        if type(fuse_exact_native_evidence) is not bool:
+            raise ValueError("Explicit current-pixel fusion boolean required")
+        self.fuse_exact_native_evidence = fuse_exact_native_evidence
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -227,6 +235,8 @@ class DevelopmentGameTimeline:
                 }
             )
         frames.sort(key=lambda f: (source_scope(f["sample"]), native_time(f["sample"])))
+        if self.fuse_exact_native_evidence:
+            self._fuse_current_pixels(frames)
         self._revision += 1
         states: list[dict[str, Any]] = []
         transitions: list[dict[str, Any]] = []
@@ -238,6 +248,8 @@ class DevelopmentGameTimeline:
         self_token: str | None = None
         death_latch: str | None = None
         death_round_token: str | None = None
+        pending_elimination: dict[str, Any] | None = None
+        last_alive_evidence: list[str] = []
         last_dead: dict[str, Any] | None = None
         last_alive: dict[str, Any] | None = None
         last_score_frame: dict[str, Any] | None = None
@@ -255,6 +267,8 @@ class DevelopmentGameTimeline:
                 round_progress_since_buy = False
                 death_latch, last_alive, last_dead = None, None, None
                 death_round_token = None
+                pending_elimination = None
+                last_alive_evidence = []
             ids = [r["observation_id"] for r in frame["observations"]]
             signals = set(frame["signals"])
             now = native_time(frame["sample"])
@@ -421,7 +435,7 @@ class DevelopmentGameTimeline:
             returned = False
             if "owner_hud" in signals and death_latch:
                 reentry = bool(
-                    current["round"]["value"] == "BUY"
+                    current["round"]["value"] in {"BUY", "ACTIVE"}
                     and round_token
                     and round_token != death_round_token
                 )
@@ -452,7 +466,8 @@ class DevelopmentGameTimeline:
             if "spectator" in signals and not death_latch:
                 # Preserve competing life explanations. Spectator UI is a camera observation.
                 current["life"] = _estimate(
-                    alternatives=["DEAD", "UNKNOWN"],
+                    alternatives=["DEAD", "UNKNOWN"]
+                    + (["ALIVE"] if "owner_hud" in signals else []),
                     reason="spectator_death_hypothesis",
                     evidence=ids,
                 )
@@ -478,6 +493,111 @@ class DevelopmentGameTimeline:
                 )
                 last_direct.pop("life", None)
                 last_direct.pop("camera", None)
+            # A measured recorder alias in a victim column is stronger than
+            # Report/spectator alone, but does not qualify normal death. Keep a
+            # competing temporal elimination hypothesis separate from the direct
+            # death/downed latch and all formal Fact/Event collections.
+            if death_latch or "remote" in signals:
+                pending_elimination = None
+            if (
+                pending_elimination is None
+                and not death_latch
+                and "recorder_elimination_display" in signals
+                and current["camera"]["value"] == "SPECTATOR"
+                and last_alive is not None
+                and round_token is not None
+                and self_token == round_token
+            ):
+                later_downed_ids: list[str] = []
+                forward_prior = frame
+                for later in frames[i + 1 :]:
+                    if (
+                        source_scope(later["sample"]) != source_scope(frame["sample"])
+                        or native_time(later["sample"]) - now > self.future
+                        or not continuity_between(forward_prior, later, max_gap=self.max_carry)[
+                            "carry_allowed"
+                        ]
+                    ):
+                        break
+                    forward_prior = {
+                        **later,
+                        "fingerprints": {**forward_prior["fingerprints"], **later["fingerprints"]},
+                    }
+                    if "downed" in later["signals"]:
+                        later_downed_ids = [r["observation_id"] for r in later["observations"]]
+                        break
+                candidate = {
+                    "kind": "death_hypothesis",
+                    "domain": "life",
+                    "before": "ALIVE",
+                    "after": "DEAD_OR_DOWNED_HYPOTHESIS",
+                    "lower_sample": last_alive,
+                    "upper_sample": frame["sample"],
+                    "evidence_ids": sorted(set(last_alive_evidence + ids + later_downed_ids)),
+                    "internal_game_event_time": None,
+                    "status": "competing_unqualified_hypothesis",
+                    "alternatives": ["DEAD", "DOWNED", "UNKNOWN"],
+                    "normal_kill_qualified": False,
+                }
+                candidate["candidate_id"] = digest(
+                    {
+                        "kind": "recorder_elimination_hypothesis",
+                        "lower_sample": last_alive,
+                        "upper_sample": frame["sample"],
+                    }
+                )
+                transitions.append(candidate)
+                pending_elimination = {
+                    "candidate": candidate,
+                    "round_token": round_token,
+                    "last_spectator_sample": frame["sample"],
+                    "life_value": "DOWNED" if later_downed_ids else "DEAD",
+                }
+            if pending_elimination is not None:
+                candidate = pending_elimination["candidate"]
+                if "spectator" in signals:
+                    pending_elimination["last_spectator_sample"] = frame["sample"]
+                current_self = (
+                    "owner_hud" in signals
+                    and current["life"]["value"] == "ALIVE"
+                    and current["camera"]["value"] == "SELF"
+                )
+                next_round = bool(round_token and round_token != pending_elimination["round_token"])
+                if current_self and (next_round or "revival" in signals):
+                    transitions.append(
+                        {
+                            "kind": "return_hypothesis",
+                            "domain": "life",
+                            "before": "DEAD_OR_DOWNED_HYPOTHESIS",
+                            "after": "ALIVE",
+                            "lower_sample": pending_elimination["last_spectator_sample"],
+                            "upper_sample": frame["sample"],
+                            "linked_elimination_candidate_id": candidate["candidate_id"],
+                            "evidence_ids": sorted(set(candidate["evidence_ids"] + ids)),
+                            "internal_game_event_time": None,
+                            "status": "competing_unqualified_hypothesis",
+                        }
+                    )
+                    pending_elimination = None
+                elif current_self:
+                    current["life"] = _estimate(
+                        alternatives=["ALIVE", "DEAD", "DOWNED", "UNKNOWN"],
+                        reason="candidate_return_edge_unobserved",
+                        evidence=ids,
+                    )
+                    last_direct.pop("life", None)
+                elif current["life"]["value"] == "UNKNOWN":
+                    current["life"] = _estimate(
+                        "UNKNOWN" if next_round else pending_elimination["life_value"],
+                        alternatives=["ALIVE", "DEAD", "UNKNOWN"]
+                        if next_round
+                        else ["DEAD", "DOWNED", "UNKNOWN"],
+                        reason="next_round_return_unobserved"
+                        if next_round
+                        else "victim_display_and_owned_spectator_hypothesis",
+                        evidence=candidate["evidence_ids"] + ids,
+                    )
+                    current["life"]["uncertainty"] = "competing_unqualified_life_hypothesis"
             if (
                 current["life"]["value"] == "ALIVE"
                 and current["camera"]["value"] == "SELF"
@@ -485,11 +605,15 @@ class DevelopmentGameTimeline:
             ):
                 last_alive = frame["sample"]
                 self_token = round_token
+                last_alive_evidence = list(current["life"]["evidence_ids"])
             frame_state = {
                 "sample": frame["sample"],
                 **current,
                 "continuity": link,
                 "observation_ids": ids,
+                "current_pixel_evidence_links": deepcopy(
+                    frame.get("current_pixel_evidence_links", [])
+                ),
                 "round_token": round_token,
                 "self_view_round_token": self_token,
                 "tracking_epoch": digest(
@@ -550,7 +674,10 @@ class DevelopmentGameTimeline:
                             and after == "ENDED"
                             and (before == "ACTIVE" or bool(end_support))
                             else "death"
-                            if domain == "life" and before == "ALIVE" and after == "DEAD"
+                            if domain == "life"
+                            and before == "ALIVE"
+                            and after == "DEAD"
+                            and "death" in signals
                             else "spectator"
                             if domain == "camera" and after == "SPECTATOR"
                             else "state_change"
@@ -627,6 +754,7 @@ class DevelopmentGameTimeline:
         acquisition_seconds = self._seconds(states)
         result = {
             "version": VERSION,
+            "configuration": {"fuse_exact_native_evidence": self.fuse_exact_native_evidence},
             "revision": self._revision,
             "observations": deepcopy(list(self._observations.values())),
             "frames": states,
@@ -658,6 +786,74 @@ class DevelopmentGameTimeline:
         result["revision_history"] = deepcopy(self._history)
         self._last = {"frames": deepcopy(states)}
         return result
+
+    @staticmethod
+    def _fuse_current_pixels(frames: list[dict[str, Any]]) -> None:
+        """Reuse exact current measurements, never another epoch's inferred state.
+
+        Source/hash, original integer PTS/timebase, pixels and dimensions must all
+        match. Acquisitions remain separate for temporal carry. Aliased evidence
+        is one observation, not independent confirmation or semantic continuity.
+        """
+        groups: dict[tuple[Any, ...], list[dict[str, Any]]] = defaultdict(list)
+        for frame in frames:
+            sample = frame["sample"]
+            broken = any(
+                r["continuity"].get(key) is True
+                for r in frame["observations"]
+                for key in ("discontinuity", "source_discontinuity", "content_break_confirmed")
+            ) or any(r["continuity"].get("decode_ok") is False for r in frame["observations"])
+            if broken:
+                continue
+            key = tuple(
+                sample[k]
+                for k in (
+                    "source_id",
+                    "source_sha256",
+                    "native_pts_tick",
+                    "native_time_base",
+                    "native_pixel_sha256",
+                )
+            ) + (tuple(sample["frame_size_px"]),)
+            groups[key].append(frame)
+        for group in groups.values():
+            rows = {r["observation_id"]: r for f in group for r in f["observations"]}
+            for frame in group:
+                frame["observations"] = sorted(rows.values(), key=lambda r: r["observation_id"])
+                frame["signals"] = sorted({s for r in frame["observations"] for s in r["signals"]})
+                # Each acquisition owns its producer/profile stream. A second
+                # exact-pixel observer appearing is not a configuration change
+                # in the first observer. Changes within either origin still reset.
+                origin_streams = {
+                    (source_scope(r["sample"]), r["context"].get("stream_kind", "generic"))
+                    for r in frame["observations"]
+                }
+                frame["fingerprints"] = {
+                    digest({"scope": scope, "stream_kind": kind}): sorted(
+                        {
+                            (
+                                r["producer_fingerprint"],
+                                str(r["context"].get("profile_fingerprint", "")),
+                            )
+                            for r in frame["observations"]
+                            if source_scope(r["sample"]) == scope
+                            and r["context"].get("stream_kind", "generic") == kind
+                        }
+                    )
+                    for scope, kind in origin_streams
+                }
+                frame["current_pixel_evidence_links"] = [
+                    {
+                        "observation_id": r["observation_id"],
+                        "original_sample_sha256": r["sample"]["sample_sha256"],
+                        "current_sample_sha256": frame["sample"]["sample_sha256"],
+                        "criterion": "exact_Source_native_PTS_timebase_pixels_dimensions",
+                        "independent_confirmation": False,
+                        "semantic_continuity": "UNKNOWN",
+                    }
+                    for r in frame["observations"]
+                    if r["sample"]["sample_sha256"] != frame["sample"]["sample_sha256"]
+                ]
 
     @staticmethod
     def _score(frame: dict[str, Any] | None) -> tuple[int, int] | None:
@@ -731,6 +927,15 @@ class DevelopmentGameTimeline:
                         "value": values[0] if len(values) == 1 else "UNKNOWN",
                         "within_second_states": values,
                         "last_observed_state": items[-1][domain]["value"] if items else "UNKNOWN",
+                        "hypotheses": sorted({h for r in items for h in r[domain]["hypotheses"]})
+                        or ["UNKNOWN"],
+                        "uncertainties": sorted({r[domain]["uncertainty"] for r in items})
+                        or ["unresolved"],
+                        "reasons": sorted({r[domain]["reason"] for r in items})
+                        or ["unobserved_second_bin"],
+                        "evidence_ids": sorted(
+                            {e for r in items for e in r[domain]["evidence_ids"]}
+                        ),
                     }
                 seconds.append(summary)
         return seconds
@@ -804,6 +1009,17 @@ class DevelopmentGameTimeline:
                         "value": values[0] if len(values) == 1 else "UNKNOWN",
                         "within_second_states": values,
                         "acquisition_consensus": len(values) == 1,
+                        "hypotheses": sorted({h for v in views for h in v[domain]["hypotheses"]})
+                        or ["UNKNOWN"],
+                        "uncertainties": sorted(
+                            {u for v in views for u in v[domain]["uncertainties"]}
+                        )
+                        or ["unresolved"],
+                        "reasons": sorted({r for v in views for r in v[domain]["reasons"]})
+                        or ["unobserved_second_bin"],
+                        "evidence_ids": sorted(
+                            {e for v in views for e in v[domain]["evidence_ids"]}
+                        ),
                     }
                 result.append(row)
         return result

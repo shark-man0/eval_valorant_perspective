@@ -100,3 +100,45 @@ def test_end_to_end_development_replay_never_opens_video(tmp_path):
     )
     with pytest.raises(ValueError, match="physical-match"):
         replay(policy_path=tmp_path / "policy.json", hud_path=hud)
+
+
+def test_killfeed_archive_is_source_admitted_and_digest_checked(tmp_path):
+    from valorant_ai_coach.temporal.game import observation
+
+    policy = policy_fixture(tmp_path)
+    policy_path = write(tmp_path / "policy.json", policy)
+    sample = obs(0)["sample"]
+    contract = frame(sample)
+    contract.update(
+        leakage_group_id="physical1",
+        split="DEVELOPMENT_TRAIN",
+        source_acceptance={
+            "accepted": True,
+            "manifest_sha256": policy["manifest_sha256"],
+            "allocation_sha256": policy["allocation_sha256"],
+        },
+    )
+    event = observation(
+        sample=sample,
+        producer="e" * 64,
+        signals=["recorder_elimination_display"],
+        raw={"normal_kill_confirmed": False},
+    )
+    archive = {
+        "version": "development_killfeed_victim_observations_v1",
+        "records": [{"observation": event, "frame_contract": contract}],
+    }
+    path = write(tmp_path / "events.json", archive)
+    result = replay(policy_path=policy_path, hud_events=path)
+    # No prior self/spectator/round witness: a display alone never establishes death.
+    assert result["frames"][0]["life"]["value"] == "UNKNOWN"
+    assert not result["qualified_events"]
+    contract["leakage_group_id"] = "another_physical_match"
+    write(path, archive)
+    with pytest.raises(ValueError, match="physical-match"):
+        replay(policy_path=policy_path, hud_events=path)
+    contract["leakage_group_id"] = "physical1"
+    event["signals"] = ["death"]
+    write(path, archive)
+    with pytest.raises(ValueError):
+        replay(policy_path=policy_path, hud_events=path)

@@ -343,3 +343,6 @@ Events. Production adoption and main integration require supervisor review.
 
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
+The dependent [recorder episode experiment](docs/development_recorder_episode.md)
+documents current victim observations, competing death/return hypotheses and
+the unadopted exact-current-pixel sharing comparison.
