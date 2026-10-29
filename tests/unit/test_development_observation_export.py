@@ -286,3 +286,26 @@ def test_original_screen_rejection_and_obscuration_diagnostics_survive_export():
     assert diagnostic["value"]["remote_detection"] == "not_configured_UNVERIFIED"
     assert diagnostic["value"]["spectator_absence_checked"] is False
     assert packet["formal_outputs"] == 0 and packet["qualified"] is False
+
+
+def test_repeated_probe_claims_preserve_each_original_roi():
+    _, _, frame, ui, profile = case()
+    profile["development_ownership_evidence"]["probes"].append(
+        {"claim": "death_report", "roi": [.5, .5, 1, 1]},
+    )
+    first = ui["screen_measurements"]["observed_cues"][0]
+    ui["screen_measurements"]["observed_cues"].append({**first, "similarity": .8})
+    ui["source_profile_fingerprint"] = _digest(profile)
+    packet = export_owner_ui(frame, "synthetic", ui, profile)
+    probes = packet["measurements"][:2]
+    width, height = frame.frame_size_px
+    assert probes[0]["roi_xywh_px"] == [0, 0, width // 2, height // 2]
+    assert probes[1]["roi_xywh_px"] == [width // 2, height // 2, width // 2, height // 2]
+    assert [p["uncalibrated_score"] for p in probes] == [.2, .8]
+
+
+def test_mismatched_reader_probe_order_cannot_reassign_roi():
+    _, _, frame, ui, profile = case()
+    ui["screen_measurements"]["observed_cues"][0]["claim"] = "first_person_hud"
+    with pytest.raises(ValueError, match="probe"):
+        export_owner_ui(frame, "synthetic", ui, profile)

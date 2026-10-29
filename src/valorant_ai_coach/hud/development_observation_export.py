@@ -80,12 +80,15 @@ def export_owner_ui(frame: FrameRecord, source_id: str, ui: dict[str, Any],
         raise ValueError("Current UI/Profile/exact native frame binding required")
     screen = ui.get("screen_measurements", {})
     probes = profile.get("development_ownership_evidence", {}).get("probes", [])
-    rois = {p["claim"]: p.get("roi") for p in probes}
+    cues = screen.get("observed_cues", [])
+    if cues and (len(cues) != len(probes)
+                 or any(c["claim"] != p["claim"] for c, p in zip(cues, probes, strict=True))):
+        raise ValueError("Original reader probe order and Profile binding required")
     fields = []
-    for cue in screen.get("observed_cues", []):
+    for cue, probe in zip(cues, probes, strict=False):
         fields.append({
             "name": cue["claim"], "status": cue["status"],
-            "roi_xywh_px": _roi(rois.get(cue["claim"]), frame.frame_size_px),
+            "roi_xywh_px": _roi(probe.get("roi"), frame.frame_size_px),
             "roi_qualification": "author_profile_not_independent_calibration",
             "value": True if cue["status"] == "present" else None,
             "uncalibrated_score": cue.get("similarity"), "evidence": deepcopy(cue),

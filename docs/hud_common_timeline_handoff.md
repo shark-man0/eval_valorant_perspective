@@ -59,6 +59,8 @@ negative observations, and multiple observations per second are not discarded.
 The measurement list can contain correlated probes with the same semantic name;
 retain the full entries and evidence rather than collapsing them into a name-keyed
 dictionary or counting them as independent votes.
+Screen probes retain the existing reader's Profile order, so repeated claims from
+different ROIs keep their own geometry. Mismatched nonempty probe sequences are rejected.
 
 Statuses deliberately preserve reader meanings. `not_detected` is not a human
 negative or a calibrated absence. False owner/remote support is UNKNOWN. A
