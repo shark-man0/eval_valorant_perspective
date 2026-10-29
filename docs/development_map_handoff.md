@@ -1,11 +1,17 @@
 # Map observations for the common timeline owner
 
 This is a **provisional Map consumer boundary**, not a common timeline engine.
-The common owner and its connection API are still being prepared. This branch
+At initial delivery, the common owner/API were still being prepared. This branch
 preserves the existing Map/HUD experiments and adds an opt-in route that never
 constructs `DevelopmentOwnerTimeline` or `DevelopmentSelfTimeline`. Production
 contracts and the default recognizers are unchanged. All outputs are
 `development_only`, `ownership=UNKNOWN`, `formal_outputs=0`.
+
+Update: the common owner's local API was subsequently located and exercised.
+Its `map_context` matches this boundary, but actual replay fails upstream before
+returning the state series. See [the connection finding and minimal
+reproduction](development_map_common_api_findings.md). The earlier no-producer
+comparison remains a historical baseline, not an actual common-state result.
 
 ## Responsibilities and connection
 

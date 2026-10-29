@@ -14,8 +14,8 @@ unchanged to a Map-only module and re-exported from the old import path. No HUD
 reader, shared Production schema, GT, threshold, model or default recognizer was
 changed. No protected recordings, newly decoded video or Full E2E was used.
 
-The actual common producer/API is not available yet (confirmed by the user).
-Consequently this is a handoff implementation, **not completed common-engine
+At the first replay, the common producer/API was unavailable (confirmed by the user).
+Consequently the initial result is a handoff implementation, **not completed common-engine
 integration or recognition improvement**. No new life/camera/Round inference
 was added to Map. The provisional boundary and duplication inventory are in
 [the connection specification](development_map_handoff.md).
@@ -150,7 +150,23 @@ Current related tests pass **61/61**, Ruff passes and mypy passes for 182 module
 The earlier broad suite predates this repair; it was not rerun needlessly.
 Exact-head Linux/Windows CI for the follow-up commit remains unverified pending
 the user's verification notice; no repeated CI polling was performed. Actual
-common-engine integration is still blocked on the integration owner/API and
-source-bound snapshots. The reviewed selection loss remains unresolved, and the
+common-engine integration remains incomplete; its later API trial is documented
+below. The reviewed selection loss remains unresolved, and the
 adapter still does not replace the baseline. The full integration Goal is not
 complete.
+
+## Actual common API trial
+
+The common owner's local implementation was subsequently found. Its Map input
+adapter and returned context schema were exercised using the same 140 native
+Map observations plus 80 exact-matching native HUD observations. The replay
+fails in the upstream engine with `KeyError: 'candidate_id'` because a boundary
+candidate collection is overwritten by the current frame's Map candidates.
+A one-observation synthetic example reproduces the same failure. No common/HUD
+file was edited and no fake boundary IDs were added to Map candidates.
+
+Consequently actual C performance is unmeasured, not a completed zero-position
+run. The missing-context C and controlled D comparisons above remain distinct.
+See [the API finding](development_map_common_api_findings.md) for the exact
+connection, reproduction and next upstream action. The Map-side tests/regression
+results remain valid; full integration is still incomplete.
