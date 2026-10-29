@@ -12,48 +12,19 @@ import math
 from fractions import Fraction
 from typing import Any
 
-import cv2
 import numpy as np
 
 from .development_camera_marker_ui import UI_FINGERPRINT
-from .development_marker_features import Array, _digest, bound_patches
+from .development_map_features import (
+    OWNER_TRACK_FEATURE_FINGERPRINT as OWNER_TRACK_FEATURE_FINGERPRINT,
+)
+from .development_map_features import (
+    owner_tracking_features as owner_tracking_features,
+)
+from .development_marker_features import Array, _digest
 from .development_marker_temporal import DevelopmentMarkerAssociations
-from .development_marker_topk import _native
 from .development_owner_state import DevelopmentOwnerTimeline, MarkerObservation, OwnerObservation
 from .development_self_timeline import SelfFrameCues
-
-OWNER_TRACK_FEATURE_FINGERPRINT = _digest(
-    {
-        "feature": "native_circle7_mean_centered_BGR_gaussian5_sigma1.2",
-        "opencv": cv2.__version__,
-        "numpy": np.__version__,
-        "gap": 0.3,
-        "reappearance_gap": 0.6,
-        "cosine": 0.90,
-        "distance": 12,
-        "margin": 0.10,
-    }
-)
-
-
-def owner_tracking_features(frame: Array, sample: dict[str, Any], pool: dict[str, Any]) -> Array:
-    """Translation-tolerant native appearance, without adding/changing centers."""
-    _native(frame, sample)
-    n = pool["parent_count"]
-    if type(n) is not int or not 0 <= n <= 128 or n > len(pool["candidates"]):
-        raise ValueError("Bounded parent candidates required")
-    if not n:
-        return np.empty((0, 447), dtype=np.float64)
-    patches, _ = bound_patches(
-        frame, sample, [p["center_frame_px"] for p in pool["candidates"][:n]], radius=17
-    )
-    yy, xx = np.mgrid[-17:18, -17:18]
-    mask = xx * xx + yy * yy <= 49
-    features = np.array(
-        [cv2.GaussianBlur(p, (5, 5), 1.2)[mask].astype(float).ravel() for p in patches]
-    )
-    features -= features.mean(axis=1, keepdims=True)
-    return features
 
 
 class DevelopmentOwnerTracking:
