@@ -1,14 +1,20 @@
 """Map consumer contracts with controlled external state, not game-state GT."""
 
+import hashlib
+import json
 from copy import deepcopy
 
+import cv2
+import numpy as np
 import pytest
 
+from scripts.diagnostics.development_map_handoff import main as handoff_main
 from tests.unit.test_development_owner_tracking import frame, link
 from valorant_ai_coach.visual.development_map_handoff import (
     HANDOFF_VERSION,
     DevelopmentMapStateConsumer,
     aggregate_map_seconds,
+    join_common_map_contexts,
     make_map_observation,
     map_candidate_path_record,
 )
@@ -337,3 +343,67 @@ def test_geometry_detector_and_execution_provenance_survive_the_handoff():
     )
     with pytest.raises(ValueError, match="Unchanged"):
         feed(tracker, a, packet)
+
+
+def test_actual_common_join_is_exact_sample_only_and_preserves_unknown_continuity():
+    a, p = observation(60)
+    b, _ = observation(72)
+    c = context(p, origin="common_engine", source_continuity="UNKNOWN")
+    rows = [{"sample": a["sample"]}, {"sample": b["sample"]}]
+    joined, counts = join_common_map_contexts(rows, [c])
+    assert counts == {"matched": 1, "missing": 1, "unused_common_samples": 0}
+    assert joined[0]["context"] == c and joined[1]["context"] is None
+    assert joined[0]["context"]["source_continuity"] == "UNKNOWN"
+    assert all("context" not in row for row in rows)
+    assert not DevelopmentMapStateConsumer().observe(
+        p, a["features"], context=joined[0]["context"], continuity=None
+    )["current_position_observed"]
+
+
+def test_common_join_rejects_duplicate_revisions_and_preexisting_map_context():
+    a, p = observation(60)
+    c = context(p, origin="common_engine")
+    with pytest.raises(ValueError, match="Duplicate common"):
+        join_common_map_contexts([{"sample": a["sample"]}], [c, c])
+    with pytest.raises(ValueError, match="preexisting"):
+        join_common_map_contexts([{"sample": a["sample"], "context": c}], [c])
+
+
+@pytest.mark.parametrize("origin", ["human_exact_frame", "controlled_ablation"])
+def test_common_context_sidecar_cannot_mislabel_controlled_or_human_state(origin):
+    a, p = observation(60)
+    with pytest.raises(ValueError, match="Actual common-engine"):
+        join_common_map_contexts([{"sample": a["sample"]}], [context(p, origin=origin)])
+
+
+def test_cli_rejects_changed_encoded_image_even_when_decoded_pixels_are_identical(
+    tmp_path,
+    monkeypatch,
+):
+    image = np.zeros((32, 32, 3), dtype=np.uint8)
+    ok, encoded = cv2.imencode(".png", image)
+    assert ok
+    original = encoded.tobytes()
+    modified = original + b"synthetic container trailer"
+    assert np.array_equal(cv2.imdecode(np.frombuffer(modified, np.uint8), cv2.IMREAD_COLOR), image)
+    path = tmp_path / "frame.png"
+    path.write_bytes(modified)
+    plan = tmp_path / "plan.json"
+    plan.write_text(
+        json.dumps(
+            {
+                "rows": [
+                    {
+                        "image_path": str(path),
+                        "sample": {"acquired_frame_sha256": hashlib.sha256(original).hexdigest()},
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "result.json"
+    monkeypatch.setattr("sys.argv", ["handoff", "--input", str(plan), "--output", str(output)])
+    with pytest.raises(ValueError, match="encoded native-frame hash"):
+        handoff_main()
+    assert not output.exists()

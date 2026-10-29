@@ -199,6 +199,43 @@ def _gate(context: dict[str, Any] | None) -> str | None:
     return None
 
 
+def join_common_map_contexts(
+    rows: list[dict[str, Any]],
+    contexts: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    """Join actual common snapshots by exact native sample ID, never by time.
+
+    Missing snapshots remain None; UNKNOWN values are never strengthened. A
+    caller must select a single upstream revision before joining. Conflicting
+    duplicates and preexisting contexts are rejected instead of overwritten.
+    """
+    by_id: dict[str, dict[str, Any]] = {}
+    for context in contexts:
+        key = context.get("sample_sha256")
+        if not isinstance(key, str) or not _sha(key) or context.get("origin") != "common_engine":
+            raise ValueError("Actual common-engine snapshot required")
+        validate_external_context(context, {"sample_sha256": key})
+        if key in by_id:
+            raise ValueError("Duplicate common sample; select one upstream revision")
+        by_id[key] = context
+    seen: set[str] = set()
+    result = []
+    matched = 0
+    for row in rows:
+        key = row["sample"]["sample_sha256"]
+        if key in seen or row.get("context") is not None:
+            raise ValueError("Unique Map samples without preexisting context required")
+        seen.add(key)
+        current = by_id.get(key)
+        matched += current is not None
+        result.append(deepcopy({**row, "context": current}))
+    return result, {
+        "matched": matched,
+        "missing": len(rows) - matched,
+        "unused_common_samples": len(set(by_id) - seen),
+    }
+
+
 class DevelopmentMapStateConsumer:
     """Map identity memory and observed endpoints only; no game-state machine."""
 
