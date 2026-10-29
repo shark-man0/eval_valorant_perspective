@@ -1,3 +1,4 @@
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -56,7 +57,8 @@ def test_sparse_pngs_retain_exact_native_pts_after_complete_decoder_check(tmp_pa
     assert all(Path(r["path"]).is_absolute() for r in result["frames"])
     assert result["source_bytes_verified_before_and_after"] is True
     assert result["semantic_continuity"] == "UNKNOWN"
-    assert all(Path(r["path"]).stat().st_mode & 0o777 == 0o600 for r in result["frames"])
+    if os.name != "nt":  # Windows stat mode bits do not describe its ACL.
+        assert all(Path(r["path"]).stat().st_mode & 0o777 == 0o600 for r in result["frames"])
     with pytest.raises(ValueError, match="outside Git"):
         acquire(
             policy_path=policy_path, source_id="a", start=0, end=2, output=tmp_path / "acquired"

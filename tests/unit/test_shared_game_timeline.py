@@ -403,3 +403,24 @@ def test_later_result_does_not_erase_current_conflicting_round_observation():
     state = result["frames"][1]["round"]
     assert state["value"] == "UNKNOWN"
     assert set(state["hypotheses"]) == {"ACTIVE", "BUY", "ENDED"}
+
+
+def test_boundary_ledger_survives_nonempty_and_then_empty_map_candidates():
+    engine = DevelopmentGameTimeline()
+    marker = {"marker_observation_id": "unassigned-marker"}
+    engine.add(obs(0, ["active"], context={"score": [1, 1]}, maps=[marker]))
+    engine.add(obs(1, ["active"], context={"score": [2, 1]}, maps=[marker]))
+    first = engine.rebuild()
+    boundary = first["boundary_candidates"][0]
+    assert boundary["kind"] == "round_end"
+    assert first["frames"][-1]["map"]["candidates"] == [marker]
+    assert first["revision_history"][-1]["candidate_statuses"] == {
+        boundary["candidate_id"]: "pending"
+    }
+    engine.add(obs(2))
+    second = engine.rebuild()
+    assert second["boundary_candidates"] == first["boundary_candidates"]
+    assert second["frames"][-1]["map"]["candidates"] == []
+    assert second["revision_history"][-1]["candidate_statuses"] == {
+        boundary["candidate_id"]: "pending"
+    }

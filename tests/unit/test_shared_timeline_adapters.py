@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from test_shared_game_timeline import obs, replay
 
@@ -151,7 +153,9 @@ def test_unknown_review_never_enters_negative_denominator():
 def test_private_outputs_are_exclusive_and_reject_checkout(tmp_path):
     p = tmp_path / "private.json"
     write_private(p, {"text": "日本語"})
-    assert p.stat().st_mode & 0o777 == 0o600
+    if os.name != "nt":  # Windows stat mode bits do not describe its ACL.
+        assert p.stat().st_mode & 0o777 == 0o600
+    assert p.read_text(encoding="utf-8").strip() == '{"text":"日本語"}'
     with pytest.raises(FileExistsError):
         write_private(p, {})
     checkout = tmp_path / "checkout"

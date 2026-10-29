@@ -146,7 +146,9 @@ and explicit protected exclusions. Every input must be an accepted DEVELOPMENT
 source; HUD lineage must match the physical match and frozen admission receipt.
 The CLI opens no video. It replays frozen native observations, not a new decoder
 or full recognition E2E. Original acquisition/pixel receipts must be preserved.
-Private outputs are exclusive, mode0600, and rejected inside Git checkouts.
+Private outputs are exclusive, mode0600 on POSIX, and rejected inside Git checkouts.
+Windows POSIX-mode bits do not establish ACL confidentiality; that is not qualified
+by this development experiment. Native/overwrite/checkout checks still run there.
 
 The emitted Map plan supplies a shared snapshot for every exact native Map
 sample. Run it with the pinned supplier's existing
@@ -227,3 +229,7 @@ labels nor UNKNOWN is used as invented correspondence or negative GT.
 `MapState` is an exported common contract with explicit Zone candidates,
 association candidates, current observation presence and UNKNOWN; an observed
 empty Map measurement is distinct from receiving no Map observation.
+
+The boundary ledger and per-frame Map pool use separate collections. A combined
+nonempty-Map/pending-boundary regression also covers a later empty Map frame,
+so Map pools cannot replace boundary records or revision candidate statuses.

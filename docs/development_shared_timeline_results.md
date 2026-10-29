@@ -65,7 +65,7 @@ time was not recorded, and that missing timing is not inferred from file dates.
 ## Validation and restart boundary
 
 Local full repository run before the final comparison/Map contract and transition corrections:
-4155 passed, 9 skipped, coverage86.16%. Final affected tests:69 passed. Full-source
+4155 passed, 9 skipped, coverage86.16%. Final affected tests:70 passed. Full-source
 mypy141 modules, Ruff, classified text-I/O and38 dataset contract cases pass.
 The codec test checks all native PTS versus sparse retained PNGs. These tests are
 not real-video recognition qualification. Exact Draft-head CI/Windows/package
