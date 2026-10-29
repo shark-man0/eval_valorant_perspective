@@ -121,6 +121,7 @@ def make_map_observation(
             "pool": pool,
             "ui": ui,
             "appearance": appearance,
+            "geometry_observation": deepcopy(geometry),
             "geometry_version": geometry["geometry_version"],
             "calibration": geometry.get("calibration", {}),
             "reference_context_fingerprint": reference_context_fingerprint,
@@ -209,6 +210,7 @@ class DevelopmentMapStateConsumer:
         self.previous: dict[str, Any] | None = None
         self.memory: dict[str, Any] | None = None
         self.last_known: dict[str, Any] | None = None
+        self.native_input_times: dict[tuple[str, str], Fraction] = {}
         self.scope: str | None = None
         self.segment = 0
 
@@ -243,18 +245,19 @@ class DevelopmentMapStateConsumer:
             pool=pool,
             ui=observation["ui"],
             appearance=observation["appearance"],
-            geometry={
-                "sample": sample,
-                "map_id": pool["map_id_candidate"],
-                "geometry_version": observation["geometry_version"],
-                "calibration": observation["calibration"],
-                "qualification": "development_only",
-                "formal_self_position_fact": None,
-            },
+            geometry=observation["geometry_observation"],
             reference_context_fingerprint=observation["reference_context_fingerprint"],
         )
         if rebuilt != observation or features.shape != (pool["parent_count"], 447):
             raise ValueError("Unchanged native observation/paired Map features required")
+        input_key = sample["source_sha256"], sample["native_epoch"]
+        native_time = sample["native_pts_tick"] * Fraction(sample["native_time_base"])
+        if (
+            input_key in self.native_input_times
+            and native_time <= self.native_input_times[input_key]
+        ):
+            raise ValueError("Strict native acquisition order required")
+        self.native_input_times[input_key] = native_time
         if context is not None:
             validate_external_context(context, sample)
         blocked = _gate(context)

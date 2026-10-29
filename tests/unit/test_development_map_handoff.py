@@ -173,11 +173,18 @@ def test_no_inheritance_across_native_or_geometry_breaks(change):
         q["geometry_version" if change == "geometry" else "reference_context_fingerprint"] = (
             "0" * 64
         )
+        if change == "geometry":
+            q["geometry_observation"]["geometry_version"] = "0" * 64
         q["observation_sha256"] = _digest({k: v for k, v in q.items() if k != "observation_sha256"})
     feed(tracker, a, p)
     link(a, b)
     if change == "receipt":
         b["continuity"]["verified"] = False
+    if change == "reverse":
+        with pytest.raises(ValueError, match="native acquisition order"):
+            feed(tracker, b, q)
+        assert tracker.last_known is None and tracker.memory is None
+        return
     row = feed(tracker, b, q)
     assert row["current_observation"] is None and row["marker_identity_candidate"] is None
 
@@ -275,3 +282,58 @@ def test_changed_measured_reference_cannot_inherit_even_with_stale_caller_contex
     q["observation_sha256"] = _digest({k: v for k, v in q.items() if k != "observation_sha256"})
     row = feed(tracker, link(a, b), q)
     assert row["marker_identity_candidate"] is None and row["current_observation"] is None
+
+
+@pytest.mark.parametrize("tick", [60, 48])
+def test_nonincreasing_native_input_never_exposes_a_future_last_known_position(tick):
+    tracker = DevelopmentMapStateConsumer()
+    a, p = observation(60)
+    b, q = observation(tick, ())
+    feed(tracker, a, p)
+    with pytest.raises(ValueError, match="native acquisition order"):
+        feed(tracker, link(a, b), q)
+    assert tracker.last_known is None and tracker.memory is None
+
+
+def test_acquisition_order_is_checked_even_after_external_camera_veto():
+    tracker = DevelopmentMapStateConsumer()
+    a, p = observation(60)
+    b, q = observation(72)
+    c, r = observation(72)
+    feed(tracker, a, p)
+    feed(tracker, link(a, b), q, camera="SPECTATOR", recorder_life="UNKNOWN")
+    with pytest.raises(ValueError, match="native acquisition order"):
+        feed(tracker, link(b, c), r)
+
+
+def test_geometry_detector_and_execution_provenance_survive_the_handoff():
+    a, p = observation(60)
+    geometry = {
+        "sample": a["sample"],
+        "map_id": "synthetic",
+        "geometry_version": "v1",
+        "calibration": p["calibration"],
+        "qualification": "development_only",
+        "formal_self_position_fact": None,
+        "detector_evidence": {"implementation_sha256": "4" * 64},
+        "execution_evidence": {"geometry_receipt_sha256": "5" * 64},
+    }
+    packet = make_map_observation(
+        sample=a["sample"],
+        pool=a["pool"],
+        ui=a["ui"],
+        appearance=p["appearance"],
+        geometry=geometry,
+        reference_context_fingerprint="1" * 64,
+    )
+    assert packet["geometry_observation"] == geometry
+    geometry["detector_evidence"]["implementation_sha256"] = "6" * 64
+    assert packet["geometry_observation"]["detector_evidence"]["implementation_sha256"] == "4" * 64
+    tracker = DevelopmentMapStateConsumer()
+    assert feed(tracker, a, packet)["current_position_observed"]
+    packet["calibration"]["confidence"] = 0.2
+    packet["observation_sha256"] = _digest(
+        {k: v for k, v in packet.items() if k != "observation_sha256"}
+    )
+    with pytest.raises(ValueError, match="Unchanged"):
+        feed(tracker, a, packet)

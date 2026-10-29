@@ -119,10 +119,38 @@ reviewed selection loss without increasing misattribution, and validate natural
 Round/death/spectator/reentry sequences. Production and Qualification remain
 blocked. Draft handoff review is appropriate; main merge is not authorized.
 
-Local validation: Ruff (the repository CI scope plus the new CLI) and mypy
+Validation at `6f6d37d`: Ruff (the repository CI scope plus the new CLI) and mypy
 (182 source modules) pass. The final related tests pass 57/57. The broader
 local run passed 4,806 tests with nine skips; its sole failure was a sandbox
 loopback bind denial, and that exact synthetic test passed when rerun with
 loopback permission. Two final safety tests were added after the broader run
 started and are included in the 57/57 result. Linux/Windows exact-head CI must
 be checked on the Draft handoff commit; older PR112 CI is not evidence for it.
+
+## Follow-up acquisition/provenance audit
+
+Four failing reproduction cases exposed two handoff gaps: a backward or repeated
+native sample could retain a later position as last-known history, and the
+geometry summary omitted supplied detector/execution provenance. The consumer
+now rejects nonincreasing native time per Source/epoch even after a camera veto,
+clears its retained state on rejection, and preserves the full geometry envelope
+alongside a separately copied calibration/version summary. Consumption checks
+that the summary and original envelope agree. No game-state inference is added.
+
+The repaired consumer replays the same 140 native observations with **zero
+selection/state differences** from the preceding controlled run: 82 Map
+candidates, 28 one-second bins, all 140 original geometry envelopes retained.
+No new calibration or video decode was run; this consumer-only replay reuses the
+previously measured geometry/calibration and is not a recognition or speedup
+experiment. It took 7.58 seconds, with peak process RSS 210.56 MiB, and is not
+comparable to the earlier calibration-plus-viewer run. All non-handoff legacy
+recognizer file digests in the fixed real-data regression are unchanged.
+
+Current related tests pass **61/61**, Ruff passes and mypy passes for 182 modules.
+The earlier broad suite predates this repair; it was not rerun needlessly.
+Exact-head Linux/Windows CI for the follow-up commit remains unverified pending
+the user's verification notice; no repeated CI polling was performed. Actual
+common-engine integration is still blocked on the integration owner/API and
+source-bound snapshots. The reviewed selection loss remains unresolved, and the
+adapter still does not replace the baseline. The full integration Goal is not
+complete.

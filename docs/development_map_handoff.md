@@ -16,6 +16,9 @@ candidate, including unassigned geometry-only coordinates. The Map-only initial
 candidate is the existing unique joint rim/reference selection, without the
 legacy HUD/HP/life decision. Scores are uncalibrated evidence, not probabilities.
 Reference matches and highlights are **not recorder ownership proof**.
+The complete input geometry envelope is retained as `geometry_observation`,
+including supplied detector and execution provenance. Its independently copied
+calibration/version summary must agree with that envelope on consumption.
 
 `DevelopmentMapStateConsumer.observe` consumes that packet, native appearance
 features, acquisition continuity receipt and an optional external state snapshot.
@@ -88,6 +91,11 @@ empty seconds and does not treat the final point as the position at a bin end.
 Different scopes in the same second remain separate rows. Duplicate/backward
 native samples are rejected; data is not silently sorted. The common owner can
 represent missing seconds using its own state model.
+The consumer itself also rejects nonincreasing native time per Source/epoch,
+even after a camera veto, and clears its retained history on rejection. A
+backward input therefore cannot expose a later sample as a past last-known
+position. The raw input can still be quarantined by the calling acquisition
+layer; it must not silently reorder it or fabricate an acquisition epoch.
 
 `map_candidate_path_record` adapts consumer output to the existing private
 `analyze_candidate_path` / `write_candidate_path_html` pipeline. Use the
