@@ -332,3 +332,9 @@ See [Windows E2E](WINDOWS_E2E.md), [Raspberry Pi setup](RASPBERRY_PI_E2E.md),
 and [migration audit](docs/cross_platform_e2e_migration.md).
 Linux/Pi real-device execution remains unverified; Analyzer improvements are paused
 until that result is reviewed. Desktop installation requires the `gui` extra.
+
+## 開発用Map観測の共通時系列への受渡し
+
+Map観測・外部状態の接続、1秒集約、欠測・Round切替時の扱いは
+[Map引継ぎ仕様](docs/development_map_handoff.md)を参照してください。
+接続APIは暫定で、共通エンジンは別担当です。未資格の本人所有・位置を正式Factへ渡しません。
