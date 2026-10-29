@@ -179,9 +179,11 @@ def replay(
     hud_path: Path | None = None,
     map_path: Path | None = None,
     hud_supplement: Path | None = None,
+    hud_events: Path | None = None,
+    fuse_exact_native_evidence: bool = False,
 ) -> dict[str, Any]:
     policy = SourcePolicy(read_json(policy_path))
-    engine = DevelopmentGameTimeline()
+    engine = DevelopmentGameTimeline(fuse_exact_native_evidence=fuse_exact_native_evidence)
     started = time.perf_counter()
     inputs: dict[str, str] = {}
     supplier_hints = []
@@ -211,6 +213,15 @@ def replay(
             supplier_hints.extend(hud["boundary_hints"])
         else:
             raise ValueError("Unsupported HUD input")
+    if hud_events:
+        inputs["hud_events"] = file_sha(hud_events)
+        events = read_json(hud_events)
+        if events.get("version") != "development_killfeed_victim_observations_v1":
+            raise ValueError("Development killfeed observation archive required")
+        for record in events["records"]:
+            row = record["observation"]
+            policy.admit(row["sample"], record["frame_contract"])
+            engine.add(row)
     if map_path:
         inputs["map"] = file_sha(map_path)
         data = read_json(map_path)
@@ -263,13 +274,15 @@ def main() -> None:
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--hud", type=Path)
     parser.add_argument("--hud-supplement", type=Path)
+    parser.add_argument("--hud-events", type=Path)
+    parser.add_argument("--fuse-exact-native-evidence", action="store_true")
     parser.add_argument("--map", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--map-plan", type=Path)
     parser.add_argument("--map-plan-output", type=Path)
     parser.add_argument("--learning-split", type=Path)
     args = parser.parse_args()
-    if not args.hud and not args.map and not args.hud_supplement:
+    if not args.hud and not args.map and not args.hud_supplement and not args.hud_events:
         parser.error("at least one frozen supplier input is required")
     if bool(args.map_plan) != bool(args.map_plan_output):
         parser.error("--map-plan and --map-plan-output must be supplied together")
@@ -278,6 +291,8 @@ def main() -> None:
         hud_path=args.hud,
         map_path=args.map,
         hud_supplement=args.hud_supplement,
+        hud_events=args.hud_events,
+        fuse_exact_native_evidence=args.fuse_exact_native_evidence,
     )
     if args.learning_split:
         split = read_json(args.learning_split)
