@@ -403,6 +403,23 @@ class DevelopmentOwnerTimeline:
             and previous_view == "self"
             and ui.get("death_animation_ui") is True
         )
+        screen = ui.get("screen_measurements", {})
+        cues = screen.get("observed_cues", []) if isinstance(screen, dict) else []
+        unresolved_view_change = bool(
+            adjacent
+            and previous_life == "alive"
+            and previous_view == "self"
+            and not own
+            and ui["combat_report_visible"]
+            and not self.report_previous
+            and isinstance(screen, dict)
+            and screen.get("status") == "observed"
+            and isinstance(cues, list)
+            and any(isinstance(c, dict) and c.get("claim") == "death_report"
+                    and c.get("status") == "present" for c in cues)
+            and any(isinstance(c, dict) and c.get("claim") == "first_person_hud"
+                    and c.get("status") == "not_detected" for c in cues)
+        )
         cue = SelfFrameCues(
             source_sha256=sample["source_sha256"],
             source_epoch=sample["native_epoch"],
@@ -417,6 +434,7 @@ class DevelopmentOwnerTimeline:
             revival_transition=ui.get("revival_ui", False),
             ultimate_return=ui.get("ability_return_ui", False),
             new_round_reentry=reentry,
+            unresolved_view_change=unresolved_view_change,
         )
         state = self.timeline.observe(cue)
         if ui["purchase_phase_visible"]:

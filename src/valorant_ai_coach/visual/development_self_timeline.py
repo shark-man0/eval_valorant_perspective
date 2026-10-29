@@ -32,6 +32,7 @@ class SelfFrameCues:
     new_round_reentry: bool = False
     marker_id: str | None = None
     marker_is_self_ui: bool = False
+    unresolved_view_change: bool = False
 
     def __post_init__(self) -> None:
         if (len(self.source_sha256) != 64
@@ -141,6 +142,13 @@ class DevelopmentSelfTimeline:
             else:
                 self.life, self.view = "unknown", "unknown"
                 reason = "unanchored_ability_return"
+        elif (cue.unresolved_view_change and not cue.own_view_ui
+              and self.life == "alive" and self.view == "self"):
+            # A changed/obscured HUD can invalidate ALIVE/SELF carry without
+            # proving death. Do not generate a death or require a resurrection
+            # from this uncertainty alone; current positive UI may recover it.
+            self.life, self.view = "unknown", "unknown"
+            reason = "unresolved_view_change"
         elif cue.own_view_ui:
             if self._reentry_required or self.life in {"dead", "downed"}:
                 # Never invent a revive from a possibly spectated HUD alone.

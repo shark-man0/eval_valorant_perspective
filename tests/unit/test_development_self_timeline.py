@@ -138,3 +138,30 @@ def test_invalid_reentry_without_owner_ui_keeps_reentry_requirement() -> None:
     for tick in (3, 4):
         assert timeline.observe(frame(tick, own_view_ui=True)).life != "alive"
     assert timeline.observe(frame(5, new_round_reentry=True, own_view_ui=True)).life == "alive"
+
+
+def test_unresolved_view_change_withholds_carry_without_inventing_death() -> None:
+    timeline = DevelopmentSelfTimeline()
+    timeline.observe(frame(0, own_view_ui=True))
+    result = timeline.observe(frame(1, unresolved_view_change=True))
+    assert (result.life, result.view, result.reason) == (
+        "unknown", "unknown", "unresolved_view_change"
+    )
+    assert timeline.observe(frame(2)).life == "unknown"
+    assert timeline.observe(frame(3, own_view_ui=True)).life == "alive"
+
+
+def test_unresolved_view_change_does_not_erase_observed_death_latch() -> None:
+    timeline = DevelopmentSelfTimeline()
+    timeline.observe(frame(0, own_view_ui=True))
+    timeline.observe(frame(1, self_death_transition=True))
+    assert timeline.observe(frame(2, unresolved_view_change=True)).life == "dead"
+    assert timeline.observe(frame(3, own_view_ui=True)).life == "unknown"
+    assert timeline.observe(frame(4, own_view_ui=True)).life == "unknown"
+
+
+def test_current_positive_owner_ui_is_not_overridden_by_unresolved_cue() -> None:
+    timeline = DevelopmentSelfTimeline()
+    timeline.observe(frame(0, own_view_ui=True))
+    result = timeline.observe(frame(1, own_view_ui=True, unresolved_view_change=True))
+    assert (result.life, result.view) == ("alive", "self")

@@ -306,3 +306,69 @@ def test_camera_subject_switch_does_not_reassign_recorder_life_or_marker():
         assert result["view"] == "spectator" and result["life"] != "alive"
         assert result["self_marker_id"] is None and result["formal_outputs"] == 0
         previous = sample
+
+
+def screen_context(*, shared_hud):
+    return {
+        "status": "observed",
+        "observed_cues": [
+            {"claim": "first_person_hud", "status": shared_hud},
+            {"claim": "death_report", "status": "present"},
+        ],
+    }
+
+
+def test_new_report_with_missing_current_hud_cannot_carry_stale_alive_self():
+    model = DevelopmentOwnerTimeline()
+    first, _ = observation(0)
+    model.observe(first, ui(first, own_hud_support=True))
+    second, _ = observation(1)
+    result = model.observe(
+        second,
+        ui(second, combat_report_visible=True,
+           screen_measurements=screen_context(shared_hud="not_detected")),
+        continuity=continuity(first, second),
+    )
+    assert (result["life"], result["view"]) == ("unknown", "unknown")
+    assert result["reason"] == "unresolved_view_change"
+    assert result["death_transition_candidate"] is None
+    assert result["formal_outputs"] == 0
+    third, _ = observation(2)
+    held = model.observe(third, ui(third, combat_report_visible=True),
+                         continuity=continuity(second, third))
+    assert (held["life"], held["view"]) == ("unknown", "unknown")
+
+
+@pytest.mark.parametrize("own,shared", [(True, "not_detected"), (False, "present")])
+@pytest.mark.parametrize("role", ["NONSELF_VICTIM", "SELF_KILLER", "UNKNOWN"])
+def test_report_controls_with_current_hud_do_not_change_life(own, shared, role):
+    model = DevelopmentOwnerTimeline()
+    previous, _ = observation(0)
+    model.observe(previous, ui(previous, own_hud_support=True))
+    for tick, report in enumerate([True, True, False, True], 1):
+        current, _ = observation(tick)
+        result = model.observe(
+            current,
+            ui(current, own_hud_support=own, combat_report_visible=report,
+               killfeed_role=role, screen_measurements=screen_context(shared_hud=shared)),
+            continuity=continuity(previous, current),
+        )
+        assert (result["life"], result["view"]) == ("alive", "self")
+        assert result["death_transition_candidate"] is None
+        previous = current
+
+
+@pytest.mark.parametrize("shared", ["unavailable", None])
+def test_unavailable_screen_measurement_is_not_a_report_view_change(shared):
+    model = DevelopmentOwnerTimeline()
+    first, _ = observation(0)
+    model.observe(first, ui(first, own_hud_support=True))
+    second, _ = observation(1)
+    result = model.observe(
+        second,
+        ui(second, combat_report_visible=True,
+           screen_measurements=screen_context(shared_hud=shared)),
+        continuity=continuity(first, second),
+    )
+    assert result["life"] == "alive"
+    assert result["death_transition_candidate"] is None

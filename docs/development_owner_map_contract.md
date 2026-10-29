@@ -111,3 +111,21 @@ they now reach the state output. This measures information preservation only.
 No new human name labels, self-death confirmation, or automatic owner-recognition
 accuracy gain is claimed. Baseline life/view and Map position outcomes must remain
 unchanged in the same-input regression comparison.
+
+## Changed overlay with unresolved current view
+
+A newly observed Report panel, together with an explicitly measured failure to
+find the current shared first-person HUD and no current owner-HUD support, blocks
+ALIVE/SELF temporal carry. The existing timeline returns UNKNOWN and retains no
+current self position. This is a loss of certainty, not a self-death observation:
+it emits no death candidate, supplies no internal event time, and does not turn
+a Report into ownership evidence. Report presence alone, killfeed roles,
+persistent/reopened Report with a supported current HUD, and ordinary missing UI
+without the changed overlay do not trigger this rule. A later positive current
+owner HUD may resolve uncertainty; an already observed death still requires the
+existing revival/round-reentry evidence.
+
+This guard can increase UNKNOWN when a live player opens a Report while the HUD
+reader also fails. It has not established a population error rate, remote-view
+safety or automatic self-death recognition. Missing/unavailable screen probes are
+not fabricated into an explicitly observed HUD non-detection.
