@@ -346,3 +346,5 @@ Development measurements and restart tasks are in the
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
 documents current victim observations, competing death/return hypotheses and
 the unadopted exact-current-pixel sharing comparison.
+The [current Map projection](docs/development_current_map_projection.md) separates
+current native position hypotheses from temporal continuity and paths.

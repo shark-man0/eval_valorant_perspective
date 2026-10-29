@@ -43,6 +43,9 @@ class MapState(TypedDict):
     observation_present: bool
     candidates: list[dict[str, Any]]
     current_self_position_candidates: list[dict[str, Any]]
+    current_recorder_view_evidence_ids: list[str]
+    temporal_path_eligible: Literal[False]
+    current_view_contract: Literal["development_current_map_v1"]
     zone_candidates: list[dict[str, Any]]
     marker_associations: list[dict[str, Any]]
     status: Literal["CANDIDATES", "UNKNOWN"]
@@ -707,7 +710,21 @@ class DevelopmentGameTimeline:
             gate = (
                 current["life"]["value"] == "ALIVE"
                 and current["camera"]["value"] == "SELF"
-                and current["round"]["value"] in {"BUY", "ACTIVE"}
+                and "owner_hud" in signals
+                and not signals
+                & {"spectator", "remote", "death", "downed", "result", "intermission"}
+                and not set(current["round"]["hypotheses"]) & {"ENDED", "INTERMISSION"}
+                and not any(
+                    r["continuity"].get("decode_ok") is False for r in frame["observations"]
+                )
+            )
+            # A current unqualified view can support a current candidate with
+            # Round UNKNOWN. It does not establish a Round token, semantic
+            # continuity, a path, or identity from a carried life/camera estimate.
+            current_owner_evidence = sorted(
+                r["observation_id"]
+                for r in frame["observations"]
+                if gate and "owner_hud" in r["signals"]
             )
             self_candidates = []
             if gate:
@@ -739,8 +756,11 @@ class DevelopmentGameTimeline:
                 ],
                 "candidates": candidates,
                 "current_self_position_candidates": self_candidates,
+                "current_recorder_view_evidence_ids": current_owner_evidence,
+                "temporal_path_eligible": False,
+                "current_view_contract": "development_current_map_v1",
                 "status": "CANDIDATES" if candidates else "UNKNOWN",
-                "reason": "common_state_allows_development_candidates"
+                "reason": "current_recorder_view_supports_development_candidates"
                 if gate
                 else "self_state_unresolved",
                 "ownership": "UNKNOWN",
