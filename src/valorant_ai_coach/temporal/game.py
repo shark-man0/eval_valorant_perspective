@@ -236,6 +236,7 @@ class DevelopmentGameTimeline:
         round_token: str | None = None
         self_token: str | None = None
         death_latch: str | None = None
+        death_round_token: str | None = None
         last_dead: dict[str, Any] | None = None
         last_alive: dict[str, Any] | None = None
         last_score_frame: dict[str, Any] | None = None
@@ -251,6 +252,7 @@ class DevelopmentGameTimeline:
                 last_score_frame = None
                 round_token, self_token = None, None
                 death_latch, last_alive, last_dead = None, None, None
+                death_round_token = None
             ids = [r["observation_id"] for r in frame["observations"]]
             signals = set(frame["signals"])
             now = native_time(frame["sample"])
@@ -370,7 +372,11 @@ class DevelopmentGameTimeline:
                 )
                 if end_support:
                     end_support.extend(r["observation_id"] for r in score_before["observations"])
-                    choices["round"] = ["ENDED"]
+                    choices["round"] = (
+                        ["ENDED"]
+                        if set(choices["round"]) <= {"ACTIVE", "ENDED"}
+                        else sorted(set(choices["round"]) | {"ENDED"})
+                    )
             if score is not None:
                 last_score_frame = frame
             for domain, values in choices.items():
@@ -408,18 +414,26 @@ class DevelopmentGameTimeline:
                 self_token = None
             returned = False
             if "owner_hud" in signals and death_latch:
-                reentry = bool(round_token and previous_round == "BUY")
-                if "revival" in signals or reentry:
+                reentry = bool(
+                    current["round"]["value"] == "BUY"
+                    and round_token
+                    and round_token != death_round_token
+                )
+                unopposed_self = (
+                    current["life"]["value"] == "ALIVE" and current["camera"]["value"] == "SELF"
+                )
+                if unopposed_self and ("revival" in signals or reentry):
                     death_latch = None
+                    death_round_token = None
                     returned = True
                 else:
                     current["life"] = _estimate(
-                        alternatives=["DEAD", "ALIVE"],
+                        alternatives=[*current["life"]["hypotheses"], death_latch, "ALIVE"],
                         reason="return_edge_unobserved",
                         evidence=ids,
                     )
                     current["camera"] = _estimate(
-                        alternatives=["SELF", "SPECTATOR"],
+                        alternatives=[*current["camera"]["hypotheses"], "SELF", "SPECTATOR"],
                         reason="return_edge_unobserved",
                         evidence=ids,
                     )
@@ -427,6 +441,7 @@ class DevelopmentGameTimeline:
                     last_direct.pop("camera", None)
             if current["life"]["value"] in {"DEAD", "DOWNED"} and signals & {"death", "downed"}:
                 death_latch = current["life"]["value"]
+                death_round_token = round_token
                 last_dead = frame["sample"]
             if "spectator" in signals and not death_latch:
                 # Preserve competing life explanations. Spectator UI is a camera observation.

@@ -340,3 +340,50 @@ def test_returned_native_sample_cannot_rewrite_the_evidence_ledger():
     second = engine.rebuild()
     assert second["frames"][0]["sample"]["source_sha256"] == "a" * 64
     assert second["frames"][0]["sample"]["frame_size_px"] == [1920, 1080]
+
+
+def test_owner_return_in_same_buy_phase_does_not_manufacture_next_round():
+    result = replay(
+        [obs(0, ["buy", "owner_hud"]), obs(1, ["buy", "death"]), obs(2, ["buy", "owner_hud"])]
+    )
+    assert result["frames"][-1]["life"]["value"] == "UNKNOWN"
+    assert not any(t["kind"] == "return" for t in result["transitions"])
+
+
+def test_first_positive_self_observation_in_next_buy_phase_can_support_return():
+    result = replay(
+        [
+            obs(0, ["buy", "owner_hud"]),
+            obs(1, ["active", "owner_hud"]),
+            obs(2, ["death", "spectator"]),
+            obs(3, ["result"]),
+            obs(4, ["buy", "owner_hud"]),
+        ]
+    )
+    assert result["frames"][-1]["life"]["value"] == "ALIVE"
+    assert sum(t["kind"] == "return" for t in result["transitions"]) == 1
+
+
+def test_unresolved_return_preserves_downed_hypothesis():
+    state = replay([obs(0, ["downed"]), obs(1, ["owner_hud"])])["frames"][-1]
+    assert state["life"]["value"] == "UNKNOWN"
+    assert "DOWNED" in state["life"]["hypotheses"]
+
+
+def test_conflicting_revival_observation_does_not_clear_death_latch():
+    result = replay([obs(0, ["death"]), obs(1, ["owner_hud", "revival", "death"]), obs(2)])
+    assert not any(t["kind"] == "return" for t in result["transitions"])
+    assert result["frames"][-1]["life"]["value"] == "DEAD"
+
+
+def test_later_result_does_not_erase_current_conflicting_round_observation():
+    result = replay(
+        [
+            obs(0, ["active"], context={"score": [1, 1]}),
+            obs(1, ["active", "buy"], context={"score": [2, 1]}),
+            obs(2, ["result"], context={"score": [2, 1]}),
+        ]
+    )
+    state = result["frames"][1]["round"]
+    assert state["value"] == "UNKNOWN"
+    assert set(state["hypotheses"]) == {"ACTIVE", "BUY", "ENDED"}

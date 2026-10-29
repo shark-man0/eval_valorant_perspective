@@ -54,9 +54,9 @@ a perfect agreement there does not establish self recognition. All learners are
 **unadopted** and old methods remain available.
 
 Frozen observation normalization/replay reference measurements:
-HUD-only 6.720s / 552.8MiB;
-Map-only 3.042s / 276.4MiB;
-combined 10.047s / 701.7MiB.
+HUD-only 6.790s / 553.0MiB;
+Map-only 3.036s / 276.4MiB;
+combined 10.002s / 744.0MiB.
 They exclude new video decoding, image recognition, output writing and learning;
 no end-to-end speedup or full-match memory qualification is claimed. New bounded
 Round image recognition took16.4s in its recorded run. Source capture total wall
@@ -64,12 +64,14 @@ time was not recorded, and that missing timing is not inferred from file dates.
 
 ## Validation and restart boundary
 
-Local full repository run before the final small comparison/Map contract changes:
-4155 passed, 9 skipped, coverage86.16%. Final affected tests:63 passed. Full-source
+Local full repository run before the final comparison/Map contract and transition corrections:
+4155 passed, 9 skipped, coverage86.16%. Final affected tests:68 passed. Full-source
 mypy141 modules, Ruff, classified text-I/O and38 dataset contract cases pass.
 The codec test checks all native PTS versus sparse retained PNGs. These tests are
 not real-video recognition qualification. Exact Draft-head CI/Windows/package
 status is recorded separately; historical supplier CI is not reused.
+
+Five transition defects were reproduced and fixed: same-BUY false return, first-self next-BUY missed return, lost DOWNED alternatives, conflicting revival clearing a death latch, and future Result erasing current Round conflicts. Fixed real-input replay remains identical at all 11,402 frame states, transitions and second rows. This is a state-model regression fix, not evidence of recognition accuracy improvement.
 
 Supervisor review precedes restarting separate recognition improvements:
 

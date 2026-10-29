@@ -69,12 +69,17 @@ available below the one-second display index.
 - Observed DEAD/DOWNED latches need positive revival or observed next-Round/self
   reentry support before returning to ALIVE. DOWNED does not become DEAD because
   time passed. Remote camera and ability return remain distinct inputs.
+  The BUY token must differ from the one at death/downing; a new self observation
+  in that next BUY can support reentry immediately. Contradictory revival/owner
+  observations cannot clear the latch, and unresolved returns retain DOWNED.
 - Report presence alone is not death. Report plus measured shared-HUD
   non-detection can withhold stale ALIVE/SELF; positive current spectator/remote
   observations are preserved. Unconfigured detectors remain UNKNOWN.
 - Conflicting current observations preserve alternatives and abstain. Later
   same-state support can reconcile a bounded missing hypothesis without
   smoothing across conflicts, source resets or observed edges.
+  Later Result support can add ENDED to a conflicting current Round hypothesis;
+  it cannot erase a current BUY/INTERMISSION observation.
 
 The two-second carry and three-second future window are development association
 policies. They are not qualified event tolerances, reader thresholds or proof
