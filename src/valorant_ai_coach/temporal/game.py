@@ -13,6 +13,7 @@ from fractions import Fraction
 from typing import Any, Literal, TypedDict
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
+from .zone_contract import ZONE_CONTEXT_CONTRACT, viewed_zone_candidate
 
 VERSION = "development_game_timeline_v2"
 
@@ -47,6 +48,9 @@ class MapState(TypedDict):
     temporal_path_eligible: Literal[False]
     current_view_contract: Literal["development_current_map_v1"]
     zone_candidates: list[dict[str, Any]]
+    current_recorder_zone_candidates: list[dict[str, Any]]
+    zone_observation_ids: list[str]
+    zone_context_contract: Literal["development_zone_context_v1"]
     marker_associations: list[dict[str, Any]]
     status: Literal["CANDIDATES", "UNKNOWN"]
     reason: str
@@ -738,17 +742,45 @@ class DevelopmentGameTimeline:
                         and 0 <= selected < len(record["map_candidates"])
                     ):
                         self_candidates.append(deepcopy(record["map_candidates"][selected]))
+            map_zones = []
+            for candidate in candidates:
+                supplied = []
+                for zone_field in ("zone_candidate", "zone_resolution"):
+                    value = candidate.get(zone_field)
+                    if isinstance(value, dict) and value not in supplied:
+                        supplied.append(value)
+                map_zones.extend(deepcopy(supplied))
+            viewed_zones = [
+                zone_candidate for row in frame["observations"]
+                if (zone_candidate := viewed_zone_candidate(row)) is not None
+            ]
+            current_zones = []
+            if gate:
+                for candidate in viewed_zones:
+                    # Keep original acquisition provenance. Raw exact-pixel
+                    # aliases are not promoted into another acquisition's Zone.
+                    if candidate["sample"] != frame["sample"]:
+                        continue
+                    associated = deepcopy(candidate)
+                    associated["zone_subject"] = "current_recorder_hypothesis"
+                    associated["current_recorder_view_evidence_ids"] = current_owner_evidence
+                    current_zones.append(associated)
             frame_state["map"] = {
                 "observation_present": bool(candidates)
+                or bool(viewed_zones)
                 or any(
-                    r["raw"].get("schema") == "map_consumer_provisional_v1"
+                    r["raw"].get("schema") in {
+                        "map_consumer_provisional_v1", "development_hud_zone_measurement_v1"
+                    }
                     for r in frame["observations"]
                 ),
-                "zone_candidates": [
-                    c["zone_candidate"]
-                    for c in candidates
-                    if isinstance(c.get("zone_candidate"), dict)
-                ],
+                "zone_candidates": map_zones + viewed_zones,
+                "current_recorder_zone_candidates": current_zones,
+                "zone_observation_ids": sorted(
+                    r["observation_id"] for r in frame["observations"]
+                    if r["raw"].get("schema") == "development_hud_zone_measurement_v1"
+                ),
+                "zone_context_contract": ZONE_CONTEXT_CONTRACT,
                 "marker_associations": [
                     deepcopy(a)
                     for r in frame["observations"]
@@ -759,7 +791,7 @@ class DevelopmentGameTimeline:
                 "current_recorder_view_evidence_ids": current_owner_evidence,
                 "temporal_path_eligible": False,
                 "current_view_contract": "development_current_map_v1",
-                "status": "CANDIDATES" if candidates else "UNKNOWN",
+                "status": "CANDIDATES" if candidates or map_zones or viewed_zones else "UNKNOWN",
                 "reason": "current_recorder_view_supports_development_candidates"
                 if gate
                 else "self_state_unresolved",

@@ -16,6 +16,8 @@ from .adapters import hud_packet, map_packet, owner_ui, round_readers
 from .evidence import digest, freeze_native_sample, is_sha, source_scope
 from .game import DevelopmentGameTimeline, map_context
 from .learning import compare_temporal_learning
+from .zone_contract import MEASUREMENT_SCHEMA
+from .zone_observations import VERSION as ZONE_ARCHIVE_VERSION
 
 
 def read_json(path: Path) -> Any:
@@ -180,6 +182,7 @@ def replay(
     map_path: Path | None = None,
     hud_supplement: Path | None = None,
     hud_events: Path | None = None,
+    hud_zones: Path | None = None,
     fuse_exact_native_evidence: bool = False,
 ) -> dict[str, Any]:
     policy = SourcePolicy(read_json(policy_path))
@@ -232,6 +235,16 @@ def replay(
             row = map_packet(packet)
             policy.admit(row["sample"])
             engine.add(row)
+    if hud_zones:
+        inputs["hud_zones"] = file_sha(hud_zones)
+        zones = read_json(hud_zones)
+        if zones.get("version") != ZONE_ARCHIVE_VERSION or zones.get("formal_outputs") != 0:
+            raise ValueError("Development HUD location observation archive required")
+        for row in zones["observations"]:
+            if row["raw"].get("schema") != MEASUREMENT_SCHEMA:
+                raise ValueError("HUD location archive cannot contain other state observations")
+            policy.admit(freeze_native_sample(row["sample"]))
+            engine.add(row)
     if hud_inputs:
         del hud
     if map_path:
@@ -275,6 +288,7 @@ def main() -> None:
     parser.add_argument("--hud", type=Path)
     parser.add_argument("--hud-supplement", type=Path)
     parser.add_argument("--hud-events", type=Path)
+    parser.add_argument("--hud-zones", type=Path)
     parser.add_argument("--fuse-exact-native-evidence", action="store_true")
     parser.add_argument("--map", type=Path)
     parser.add_argument("--output", type=Path, required=True)
@@ -282,7 +296,7 @@ def main() -> None:
     parser.add_argument("--map-plan-output", type=Path)
     parser.add_argument("--learning-split", type=Path)
     args = parser.parse_args()
-    if not args.hud and not args.map and not args.hud_supplement and not args.hud_events:
+    if not any((args.hud, args.map, args.hud_supplement, args.hud_events, args.hud_zones)):
         parser.error("at least one frozen supplier input is required")
     if bool(args.map_plan) != bool(args.map_plan_output):
         parser.error("--map-plan and --map-plan-output must be supplied together")
@@ -292,6 +306,7 @@ def main() -> None:
         map_path=args.map,
         hud_supplement=args.hud_supplement,
         hud_events=args.hud_events,
+        hud_zones=args.hud_zones,
         fuse_exact_native_evidence=args.fuse_exact_native_evidence,
     )
     if args.learning_split:
