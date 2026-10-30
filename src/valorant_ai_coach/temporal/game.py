@@ -261,6 +261,7 @@ class DevelopmentGameTimeline:
         last_alive: dict[str, Any] | None = None
         last_score_frame: dict[str, Any] | None = None
         last_clock: tuple[Fraction, int, tuple[int, int] | None] | None = None
+        last_round_support: dict[str, Any] | None = None
         for i, frame in enumerate(frames):
             link = continuity_between(prior, frame, max_gap=self.max_carry)
             same = bool(prior and source_scope(prior["sample"]) == source_scope(frame["sample"]))
@@ -270,6 +271,7 @@ class DevelopmentGameTimeline:
                 last_direct = {}
                 last_clock = None
                 last_score_frame = None
+                last_round_support = None
                 round_token, self_token = None, None
                 round_progress_since_buy = False
                 death_latch, last_alive, last_dead = None, None, None
@@ -689,27 +691,44 @@ class DevelopmentGameTimeline:
                             if domain == "camera" and after == "SPECTATOR"
                             else "state_change"
                         )
-                        transitions.append(
-                            {
-                                "kind": kind,
-                                "domain": domain,
-                                "before": before,
-                                "after": after,
-                                "lower_sample": score_before["sample"]
-                                if kind == "round_end" and end_support and score_before
-                                else previous_state["sample"],
-                                "upper_sample": frame["sample"],
-                                "evidence_ids": sorted(
-                                    set(
-                                        previous_state[domain]["evidence_ids"]
-                                        + current[domain]["evidence_ids"]
-                                    )
-                                ),
-                                "internal_game_event_time": None,
-                                "status": "development_candidate",
-                                "last_alive_sample": last_alive if kind == "spectator" else None,
-                            }
+                        lower_sample = (
+                            score_before["sample"]
+                            if kind == "round_end" and end_support and score_before
+                            else previous_state["sample"]
                         )
+                        carried_lower = None
+                        if (
+                            kind in {"round_start", "round_end"}
+                            and not (kind == "round_end" and end_support and score_before)
+                            and previous_state[domain]["reason"] == "bounded_missing_observation"
+                            and last_round_support is not None
+                            and last_round_support["value"] == before
+                        ):
+                            # Carry is a hypothesis, not a new before-state
+                            # observation that can narrow an event bracket.
+                            lower_sample = last_round_support["sample"]
+                            carried_lower = previous_state["sample"]
+                        transition = {
+                            "kind": kind,
+                            "domain": domain,
+                            "before": before,
+                            "after": after,
+                            "lower_sample": lower_sample,
+                            "upper_sample": frame["sample"],
+                            "evidence_ids": sorted(
+                                set(
+                                    previous_state[domain]["evidence_ids"]
+                                    + current[domain]["evidence_ids"]
+                                )
+                            ),
+                            "internal_game_event_time": None,
+                            "status": "development_candidate",
+                            "last_alive_sample": last_alive if kind == "spectator" else None,
+                        }
+                        if carried_lower is not None:
+                            transition["carried_before_sample"] = carried_lower
+                            transition["lower_sample_basis"] = "last_current_round_support"
+                        transitions.append(transition)
             candidates = [deepcopy(c) for r in frame["observations"] for c in r["map_candidates"]]
             gate = (
                 current["life"]["value"] == "ALIVE"
@@ -799,6 +818,12 @@ class DevelopmentGameTimeline:
                 "qualified": False,
             }
             states.append(frame_state)
+            if len(set(choices["round"])) == 1:
+                last_round_support = {
+                    "value": current["round"]["value"], "sample": frame["sample"]
+                }
+            elif choices["round"]:
+                last_round_support = None
             prior = frame
         # Bounded bidirectional reconciliation: only fill a missing same-state hypothesis.
         # No smoothing across a conflict, reset, life edge or camera edge.
