@@ -54,6 +54,15 @@ available below the one-second display index.
 ## Temporal rules and uncertainty
 
 - A measured BUY-to-active-clock change creates a Round-start candidate.
+- When the prior BUY or ACTIVE estimate was carried through unread frames, the
+  Round boundary's `lower_sample` remains the last native current observation
+  supporting that before-state. A carried estimate cannot narrow the bracket.
+  `carried_before_sample` retains the adjacent inferred frame, with
+  `lower_sample_basis=last_current_round_support`. Score-confirmed End candidates
+  continue to use their actual before-Score sample. Conflicts and continuity
+  resets clear the remembered support. Directly adjacent observations keep their
+  original brackets. The state values and upper witness do not change, and no
+  internal event time or formal qualification is inferred.
 - An observed Score increment can remain pending across unread intermediate
   fields. It needs later measured Result support before the shared Round state
   follows that boundary. The before witness remains the last actual Score read.
