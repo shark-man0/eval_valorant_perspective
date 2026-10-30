@@ -348,3 +348,6 @@ documents current victim observations, competing death/return hypotheses and
 the unadopted exact-current-pixel sharing comparison.
 The [current Map projection](docs/development_current_map_projection.md) separates
 current native position hypotheses from temporal continuity and paths.
+The [HUD location adapter](docs/development_hud_zone_context.md) retains viewed
+names on that same timeline and requires current shared SELF evidence before
+associating a name with the recorder.

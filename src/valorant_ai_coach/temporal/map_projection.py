@@ -17,6 +17,7 @@ from typing import Any
 from .evidence import digest, freeze_native_sample, native_time
 from .game import observation
 from .replay import SourcePolicy, file_sha, read_json, write_private
+from .zone_contract import ZONE_CONTEXT_CONTRACT, ZONE_KIND, viewed_zone_candidate
 
 VERSION = "development_current_map_projection_v1"
 
@@ -85,11 +86,40 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
         pool = [c for r in exact_map for c in r["map_candidates"]]
         if any(c not in pool for c in state["current_self_position_candidates"]):
             raise ValueError("Current candidates must belong to the exact native Map pool")
+        current_zones = state.get("current_recorder_zone_candidates", [])
+        if state.get("zone_context_contract") == ZONE_CONTEXT_CONTRACT:
+            expected_zones = [
+                candidate for key in frame["observation_ids"] if key in observations
+                if (candidate := viewed_zone_candidate(observations[key])) is not None
+            ]
+            recorded_zones = [z for z in state["zone_candidates"] if z.get("kind") == ZONE_KIND]
+            if recorded_zones != expected_zones:
+                raise ValueError("Original observed HUD location candidates required")
+            expected_current = []
+            if owner_ids:
+                for candidate in expected_zones:
+                    if candidate["sample"] == sample:
+                        associated = deepcopy(candidate)
+                        associated["zone_subject"] = "current_recorder_hypothesis"
+                        associated["current_recorder_view_evidence_ids"] = list(owner_ids)
+                        expected_current.append(associated)
+            if current_zones != expected_current or (
+                current_zones and (
+                    frame["life"]["value"] != "ALIVE" or frame["camera"]["value"] != "SELF"
+                )
+            ):
+                raise ValueError(
+                    "Current recorder Zone hypotheses require shared current SELF evidence"
+                )
+        elif current_zones:
+            raise ValueError("Known shared Zone context contract required")
         result = {
             "sample": deepcopy(sample),
             "current_position_hypotheses": deepcopy(state["current_self_position_candidates"]),
             "marker_candidate_pool": deepcopy(pool),
             "zone_candidates": deepcopy(state["zone_candidates"]),
+            "current_recorder_zone_hypotheses": deepcopy(current_zones),
+            "zone_observation_ids": list(state.get("zone_observation_ids", [])),
             "current_view_evidence_ids": list(owner_ids),
             "Map_observation_ids": [r["observation_id"] for r in exact_map],
             "common_states": {d: deepcopy(frame[d]) for d in ("round", "life", "camera")},
@@ -124,6 +154,14 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
                     for r in current
                     for c in r["current_position_hypotheses"]
                 ],
+                "viewed_zone_candidates": [
+                    {"sample": deepcopy(r["sample"]), "candidate": deepcopy(z)}
+                    for r in current for z in r["zone_candidates"]
+                ],
+                "current_recorder_zone_hypotheses": [
+                    {"sample": deepcopy(r["sample"]), "candidate": deepcopy(z)}
+                    for r in current for z in r["current_recorder_zone_hypotheses"]
+                ],
                 "position_status": "CANDIDATES"
                 if any(r["current_position_hypotheses"] for r in current)
                 else "UNKNOWN",
@@ -144,6 +182,10 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
             "UNKNOWN_position_second_bins": sum(r["position_status"] == "UNKNOWN" for r in seconds),
             "verified_correct_positions": None,
             "verified_correct_Zones": None,
+            "viewed_zone_candidate_samples": sum(bool(r["zone_candidates"]) for r in rows),
+            "current_recorder_zone_candidate_samples": sum(
+                bool(r["current_recorder_zone_hypotheses"]) for r in rows
+            ),
         },
         "ownership": "UNKNOWN",
         "qualification": "development_only",
