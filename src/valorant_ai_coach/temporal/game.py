@@ -178,6 +178,8 @@ class DevelopmentGameTimeline:
         max_carry_seconds: Fraction = Fraction(2),
         future_seconds: Fraction = Fraction(3),
         fuse_exact_native_evidence: bool = False,
+        forward_only: bool = False,
+        mark_round_transition_gaps: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -186,6 +188,12 @@ class DevelopmentGameTimeline:
         if type(fuse_exact_native_evidence) is not bool:
             raise ValueError("Explicit current-pixel fusion boolean required")
         self.fuse_exact_native_evidence = fuse_exact_native_evidence
+        if type(forward_only) is not bool or type(mark_round_transition_gaps) is not bool:
+            raise ValueError("Explicit temporal comparison flags required")
+        if forward_only and mark_round_transition_gaps:
+            raise ValueError("Transition brackets require offline future observations")
+        self.forward_only = forward_only
+        self.mark_round_transition_gaps = mark_round_transition_gaps
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -357,6 +365,8 @@ class DevelopmentGameTimeline:
                 confirmation = None
                 forward_prior = frame
                 for j in range(i, len(frames)):
+                    if self.forward_only and j > i:
+                        break
                     later = frames[j]
                     if (
                         source_scope(later["sample"]) != source_scope(frame["sample"])
@@ -770,7 +780,8 @@ class DevelopmentGameTimeline:
                         supplied.append(value)
                 map_zones.extend(deepcopy(supplied))
             viewed_zones = [
-                zone_candidate for row in frame["observations"]
+                zone_candidate
+                for row in frame["observations"]
                 if (zone_candidate := viewed_zone_candidate(row)) is not None
             ]
             current_zones = []
@@ -788,15 +799,15 @@ class DevelopmentGameTimeline:
                 "observation_present": bool(candidates)
                 or bool(viewed_zones)
                 or any(
-                    r["raw"].get("schema") in {
-                        "map_consumer_provisional_v1", "development_hud_zone_measurement_v1"
-                    }
+                    r["raw"].get("schema")
+                    in {"map_consumer_provisional_v1", "development_hud_zone_measurement_v1"}
                     for r in frame["observations"]
                 ),
                 "zone_candidates": map_zones + viewed_zones,
                 "current_recorder_zone_candidates": current_zones,
                 "zone_observation_ids": sorted(
-                    r["observation_id"] for r in frame["observations"]
+                    r["observation_id"]
+                    for r in frame["observations"]
                     if r["raw"].get("schema") == "development_hud_zone_measurement_v1"
                 ),
                 "zone_context_contract": ZONE_CONTEXT_CONTRACT,
@@ -819,17 +830,18 @@ class DevelopmentGameTimeline:
             }
             states.append(frame_state)
             if len(set(choices["round"])) == 1:
-                last_round_support = {
-                    "value": current["round"]["value"], "sample": frame["sample"]
-                }
+                last_round_support = {"value": current["round"]["value"], "sample": frame["sample"]}
             elif choices["round"]:
                 last_round_support = None
             prior = frame
         # Bounded bidirectional reconciliation: only fill a missing same-state hypothesis.
         # No smoothing across a conflict, reset, life edge or camera edge.
-        self._reconcile(states)
+        if not self.forward_only:
+            self._reconcile(states)
+        if self.mark_round_transition_gaps:
+            self._mark_round_transition_gaps(states, transitions)
         acquisition_seconds = self._seconds(states)
-        result = {
+        result: dict[str, Any] = {
             "version": VERSION,
             "configuration": {"fuse_exact_native_evidence": self.fuse_exact_native_evidence},
             "revision": self._revision,
@@ -844,6 +856,11 @@ class DevelopmentGameTimeline:
             "qualified_events": [],
             "formal_outputs": 0,
         }
+        if self.forward_only or self.mark_round_transition_gaps:
+            result["configuration"].update(
+                forward_only=self.forward_only,
+                mark_round_transition_gaps=self.mark_round_transition_gaps,
+            )
         changed = []
         if self._last:
             old = {s["sample"]["sample_sha256"]: s for s in self._last["frames"]}
@@ -944,6 +961,47 @@ class DevelopmentGameTimeline:
             else set()
         )
         return next(iter(scores)) if len(scores) == 1 else None
+
+    @staticmethod
+    def _mark_round_transition_gaps(
+        states: list[dict[str, Any]], transitions: list[dict[str, Any]]
+    ) -> None:
+        """Replace an unverified carry within a measured edge with alternatives.
+
+        Neither side is selected as the true state of an unread native frame.
+        Existing direct observations, candidate brackets and all life/camera
+        states are retained. The original forward estimate remains inspectable.
+        """
+        for transition in transitions:
+            pair = {"round_start": ("BUY", "ACTIVE"), "round_end": ("ACTIVE", "ENDED")}.get(
+                transition["kind"]
+            )
+            if pair is None:
+                continue
+            lower, upper = transition["lower_sample"], transition["upper_sample"]
+            for frame in states:
+                if (
+                    source_scope(frame["sample"]) != source_scope(lower)
+                    or source_scope(upper) != source_scope(lower)
+                    or not native_time(lower) < native_time(frame["sample"]) < native_time(upper)
+                    or frame["round"]["reason"] != "bounded_missing_observation"
+                ):
+                    continue
+                original = deepcopy(frame["round"])
+                frame["round"] = _estimate(
+                    alternatives=list(pair),
+                    reason="bracketed_round_transition_candidate",
+                    evidence=transition["evidence_ids"],
+                )
+                frame["round"].update(
+                    uncertainty="boundary_within_observation_gap",
+                    forward_estimate=original,
+                    transition_bracket={
+                        "lower_sample": lower,
+                        "upper_sample": upper,
+                        "internal_game_event_time": None,
+                    },
+                )
 
     def _reconcile(self, states: list[dict[str, Any]]) -> None:
         for domain in DOMAINS:
