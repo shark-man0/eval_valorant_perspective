@@ -17,8 +17,10 @@ from numpy.typing import NDArray
 
 from valorant_ai_coach.hud.analyzers import RealHudAnalyzer, _detect_letterbox
 from valorant_ai_coach.hud.identity import live_identity
-from valorant_ai_coach.hud.templates import HudTemplateProfile
+from valorant_ai_coach.hud.templates import HudTemplateProfile, SubregionReader
+from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader
 
+from .clock_components import clock_components
 from .evidence import digest
 from .replay import file_sha, read_json
 from .round_scope import PixelRoundScope
@@ -58,12 +60,15 @@ class ProfileHudObserver:
 
     def __init__(self, config_path: Path) -> None:
         config = read_json(config_path)
-        keys = set(config)
+        keys = set(config) - {"clock_prefix"}
         if keys not in (
             {"layout", "profile"},
             {"layout", "profile", "structural_bank", "result_method"},
         ):
             raise ValueError("Common pixel reader configuration required")
+        self.clock_prefix = config.get("clock_prefix", False)
+        if type(self.clock_prefix) is not bool:
+            raise ValueError("clock_prefix must be a boolean")
         layout, profile = (Path(config[k]).expanduser().resolve() for k in ("layout", "profile"))
         _reject_identity_configuration(read_json(profile))
         self.analyzer = RealHudAnalyzer(layout, template_profile_path=profile)
@@ -123,11 +128,13 @@ class ProfileHudObserver:
                     "hud/score_glyphs.py",
                     "hud/timer_glyphs.py",
                     "temporal/round_scope.py",
+                    "temporal/clock_components.py",
                 )
             },
             "opencv": cv2.__version__,
             "numpy": np.__version__,
             "round_scope": None if self.round_scope is None else self.round_scope.bindings,
+            "clock_prefix": self.clock_prefix,
             "explicit_score_foreground": None
             if self.round_scope is None
             else "white200_rowcontrast_v1",
@@ -185,6 +192,7 @@ class ProfileHudObserver:
             signals.append("result")
         if component and component["top_structure_supported"] and component["result"]["value"]:
             signals.append("result")
+        partial_clock = self._observe_clock_prefix(image, round_supported, timer, signals)
         pair = [_accepted(values[k]) for k in ("ally_score", "enemy_score")]
         score = (
             [int(str(v)) for v in pair]
@@ -227,6 +235,7 @@ class ProfileHudObserver:
                 "values": values,
                 "semantic_measurements": measurements,
                 "round_component_measurement": component,
+                "clock_components": partial_clock,
                 "calibration": {
                     "calibrated": calibration.calibrated,
                     "reasons": list(calibration.reasons),
@@ -238,3 +247,44 @@ class ProfileHudObserver:
             "map_candidates": [],
             "map_observation_status": "UNCONFIGURED",
         }
+
+    def _observe_clock_prefix(
+        self,
+        image: NDArray[np.uint8],
+        round_supported: bool,
+        timer: int | None,
+        signals: list[str],
+    ) -> dict[str, Any] | None:
+        if not self.clock_prefix:
+            return None
+        partial = self._clock_components(image)
+        if (
+            round_supported
+            and timer is None
+            and partial["active_prefix_supported"]
+            and "buy" not in signals
+            and "result" not in signals
+        ):
+            # A recognized minute >= 1 supports the existing >45 phase rule.
+            # Neither missing seconds nor an event time is filled.
+            signals.append("active")
+        return partial
+
+    def _clock_components(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        reader = self.analyzer.readers.get("round_timer")
+        if reader is None or "round_timer" not in self.layout.regions:
+            return {"active_prefix_supported": False, "reason": "timer_unconfigured"}
+        left, top, right, bottom = self.layout.normalized_roi("round_timer").pixel_bounds(
+            image.shape[1], image.shape[0]
+        )
+        crop = image[top:bottom, left:right]
+        if isinstance(reader, SubregionReader):
+            x1, y1, x2, y2 = reader.bounds
+            height, width = crop.shape[:2]
+            crop = crop[
+                round(y1 * height) : round(y2 * height), round(x1 * width) : round(x2 * width)
+            ]
+            reader = reader.reader
+        if not isinstance(reader, StrictTimerGlyphReader):
+            return {"active_prefix_supported": False, "reason": "strict_timer_unavailable"}
+        return clock_components(crop, reader)

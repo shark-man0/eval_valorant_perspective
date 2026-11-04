@@ -530,6 +530,8 @@ class DevelopmentGameTimeline:
                 later_downed_ids: list[str] = []
                 forward_prior = frame
                 for later in frames[i + 1 :]:
+                    if self.forward_only:
+                        break
                     if (
                         source_scope(later["sample"]) != source_scope(frame["sample"])
                         or native_time(later["sample"]) - now > self.future

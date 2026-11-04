@@ -4,6 +4,8 @@ This Draft extends #115–#120. `temporal.game.DevelopmentGameTimeline` remains
 the only Round/life/camera state owner. The automatic route is an experiment;
 it is not adopted in Production and does not replace the archived comparison.
 The tracking issue is [#121](https://github.com/shark-man0/eval_valorant_perspective/issues/121).
+Measured results and remaining regressions are recorded in
+[the development comparison](development_full_match_comparison.md).
 
 ## One pixel observer, multiple registered matches
 
@@ -30,6 +32,17 @@ runtime configuration by the explicit `white200_rowcontrast_v1` mode already
 used by the older diagnostic CLI. Parent Profile bytes and class thresholds
 remain unchanged. The raw digits, geometry rejection, identity rejection and
 OCR text are retained even when the shared state is UNKNOWN.
+
+The additional boolean `clock_prefix` (default `false`) opts into independent
+clock components. It retains the original timer segmentation, all ten classes,
+0.90 acceptance and 0.04 competitor margin. An independently accepted minute
+of at least one can support the existing ACTIVE clock-range rule when the
+complete clock is unread, current Round geometry is supported, and neither
+BUY nor Result is observed. Confident invalid seconds syntax rejects this
+support. The full numeric clock remains unknown; missing seconds and exact
+event times are never supplied. Raw per-digit alternatives and acceptance
+are retained, and the option/module are bound to the observer fingerprint.
+The original full timer reader and Production qualification stay unchanged.
 
 Two helper changes are selectively reused from the pinned earlier HUD supplier:
 `hud_scope_structure.py` and the compatible `EdgeReference` addition to
@@ -96,7 +109,8 @@ are read. Duplicate reviews cannot multiply denominators; contradictory answers
 are rejected. Unavailable/UNKNOWN points stay outside scored denominators.
 
 - `legacy_offline`: the previous default with bounded future confirmation.
-- `forward`: disable later-frame Score/Result confirmation and backward filling.
+- `forward`: disable later-frame Score/Result confirmation, future DOWNED
+  evidence for elimination hypotheses, and backward filling.
 - `offline_transition_brackets`: retain an unread carried Round estimate as
   competing before/after states within a measured transition bracket. Save its
   original forward estimate; do not choose an event time or overwrite a direct

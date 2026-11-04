@@ -97,3 +97,13 @@ def test_later_downed_evidence_revises_prior_elimination_without_changing_candid
 def test_later_downed_cannot_revise_across_a_confirmed_break():
     result = replay(episode()[:3] + [obs(3, ["downed"], continuity={"decode_ok": False})])
     assert result["frames"][2]["life"]["value"] == "DEAD"
+
+
+def test_forward_control_cannot_use_later_downed_to_revise_prior_elimination():
+    rows = episode()[:3] + [obs(3, ["downed"])]
+    offline, forward = replay(rows), replay(rows, forward_only=True)
+    assert offline["frames"][2]["life"]["value"] == "DOWNED"
+    assert forward["frames"][2]["life"]["value"] == "DEAD"
+    assert forward["frames"][3]["life"]["value"] == "DOWNED"
+    death = next(t for t in forward["transitions"] if t["kind"] == "death_hypothesis")
+    assert rows[3]["observation_id"] not in death["evidence_ids"]
