@@ -253,7 +253,8 @@ state/output replay, not new full-length pixel recognition or improved accuracy.
 No independent Round-number accuracy is inferred from those coverage counts.
 Three frozen exact review points currently abstain on number selection: two
 lack a complete accepted score, and the third has a score but no current phase.
-Their newly requested display score/phase answers remain pending, not labels.
+Those display score/phase answers were pending at that stage; their later
+exact-frame comparison is recorded below.
 Three new 60-second native CLI pilots verify the new JSON/CSV path with the
 same new primary fingerprint; they are explicitly partial and do not replace
 the earlier full-run receipts. Focused shared/codec/Text I/O regression: 284
@@ -268,8 +269,66 @@ wide/tall red geometry gives 28/9/21 proposals, including 5/7/0 points with an
 already readable timer. Visual diagnosis of the first proposals shows red world
 backgrounds as well as a possible timer-replacement icon. Color/geometry alone
 therefore is not adopted as ACTIVE or a spike event. The icon's semantic label
-is pending human review; no model weights or GT are fitted from these proposals.
+was pending at that stage; the later reply and separate weak-prototype
+comparison are recorded below.
 Candidate counts and UNKNOWN reduction are not recognition improvements.
+
+## Exact display reply and bounded weak-shape follow-up
+
+The human confirmed three exact display score/phase frames, including one
+post-plant ACTIVE display. This adds two Round labels; the third re-confirms an
+existing point and is not counted twice. The enlarged fixed cohort is Round
+12 correct/0 wrong/1 abstained out of 13, life 12/12 and camera 12/12. Display
+scores give 1 correct/2 abstained out of 3. All three score/phase-derived number
+references remain abstentions; these references are not internal-counter GT.
+No interval, precise event time, training, life/camera or Zone labels are added.
+
+Three literal-header OCR variants on the same 180 native images each accepted
+zero numbers at the fixed word threshold. They are not connected to the current
+recognizer. A weak centered-shape centroid also fails to recover the reviewed
+abstention and is rejected. The private three-prototype comparison retains
+fixed 0.90 similarity / 0.04 competitor-gap gates and fits only automatic pixel
+teachers. All 19 exact comparison references are excluded from fit. Source IDs
+partition physical matches; they never enter the classifier.
+
+Three fresh native prefixes of 180 seconds each, using one frozen primary
+recognizer, completed at 180/180/185 points. Source before/after hashes, selected
+native samples, output hashes and audit references were checked. Each run also
+saves a same-native baseline and a fixed-grid comparison whose learned view and
+shape parameters exclude the evaluated physical match. Main weights exclude A
+and train on B/C. UI/feature design and method selection are known-DEVELOPMENT
+exposed, so these parameter splits do not establish untouched generalization.
+
+| Match | Reviewed Round | Baseline correct / wrong / abstained | Weak current-shape candidate | Life/camera correct retained |
+|---|---:|---|---|---|
+| A | 2 | 2 / 0 / 0 | 2 / 0 / 0 | 2 / 2 each |
+| B | 8 | 8 / 0 / 0 | 8 / 0 / 0 | 3 / 3 each |
+| C | 3 | 2 / 0 / 1 | 3 / 0 / 0 | 7 / 7 each |
+
+The current-frame selected Round estimate recovers one reviewed abstention:
+12/13 -> 13/13. The parameter-held-out comparison gives the same result; no
+previously correct reviewed point is lost. This is one positive post-plant
+display control, not a full-match false-ACTIVE or event-accuracy estimate.
+The recovered estimate retains ACTIVE/UNKNOWN alternatives. In its one-second
+bin other samples remain unresolved, so that bin still reports UNKNOWN. The
+point label is not extended to a whole-second label. Number selection remains
+unresolved and strict Fact/Event qualification remains absent.
+
+Weak Round rows are isolated from all Rule calculations before a bounded
+current-pixel projection. Native before/after life, camera, Map, continuity,
+Round/self-view tokens and rule-generated transition/boundary evidence match
+exactly in all three runs and their parameter-held-out controls. An initial
+prototype leaked weak observation IDs into future-result evidence; its failed
+executions are retained. The corrected separation and fresh native runs verify
+that fix. All 13 untagged cached full-observation outputs also remain identical.
+No weak cue creates a Round/spike/death/return event or authorizes current Map
+ownership. This remains an optional, unadopted research supplier.
+
+Final related shared/native/Text I/O regression at this stage: 303 passed;
+Ruff and mypy (151 source modules) passed. New-head Linux/Windows/package-smoke
+CI and new full-recording runs of this optional supplier are unverified. The
+earlier complete full runs remain separate evidence rather than being relabeled
+as this version's E2E result. The Goal remains open.
 
 ## Remaining failures and unavailable metrics
 

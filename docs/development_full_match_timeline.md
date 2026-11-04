@@ -193,6 +193,22 @@ abstention, boundary width and losses separately.
 
 ## Evaluation and current limitations
 
+Research Round-shape observations can set `context.unqualified_round_model=true`.
+This permits only an `active` display claim or no signal, with no score/timer
+context or Map candidates. The original ledger retains each claim and native
+sample. Before lifecycle inference these rows are removed from the entire Rule
+evidence graph, including future-result helpers. They cannot advance Round
+tokens, death/return context or Map ownership.
+
+After the Rule/reconciliation pass, a current weak ACTIVE claim can project an
+otherwise unobserved UNKNOWN Round into an ACTIVE/UNKNOWN candidate. Existing
+estimates and conflicts remain intact. Frames retain `round_model_hypotheses`
+and the original `rule_estimate`; `round_model_projection_history` records
+before/after estimates and precise samples. This is an estimate revision, not
+a Round-start or spike event. Weak claims are not carried/backfilled and cannot
+select a Round number from a score. A one-second view remains UNKNOWN when its
+sampled estimates conflict. Untagged frozen outputs remain unchanged.
+
 Research view observations can set `context.unqualified_view_model = true`.
 The shared engine retains ALIVE/UNKNOWN and SELF/REMOTE/UNKNOWN alternatives
 for such owner claims, including during carry/reconciliation. They cannot

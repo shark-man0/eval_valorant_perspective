@@ -103,6 +103,15 @@ def observation(
         and not is_sha(context["elimination_display_signature"])
     ):
         raise ValueError("elimination_display_signature must be a SHA256")
+    if context and "unqualified_round_model" in context:
+        if type(context["unqualified_round_model"]) is not bool:
+            raise ValueError("unqualified_round_model must be a boolean")
+        if context["unqualified_round_model"] and (
+            not set(signals) <= {"active"}
+            or {"score", "timer_seconds"} & set(context)
+            or map_candidates
+        ):
+            raise ValueError("Round model supplies only an unqualified active display claim")
     row = {
         "sample": frozen,
         "producer_fingerprint": producer,
@@ -358,6 +367,34 @@ class DevelopmentGameTimeline:
         frames.sort(key=lambda f: (source_scope(f["sample"]), native_time(f["sample"])))
         if self.fuse_exact_native_evidence:
             self._fuse_current_pixels(frames)
+        if any(
+            r["context"].get("unqualified_round_model") is True
+            for frame in frames for r in frame["observations"]
+        ):
+            # Future-result/score helpers also inspect frame observations. Keep
+            # research Round claims out of that entire Rule evidence graph.
+            for frame in frames:
+                frame["all_observation_ids"] = [
+                    r["observation_id"] for r in frame["observations"]
+                ]
+                frame["observations"] = [
+                    r for r in frame["observations"]
+                    if r["context"].get("unqualified_round_model") is not True
+                ]
+                rows = frame["observations"]
+                frame["signals"] = sorted({s for r in rows for s in r["signals"]})
+                frame["fingerprints"] = {
+                    kind: sorted({
+                        (
+                            r["producer_fingerprint"],
+                            str(r["context"].get("profile_fingerprint", "")),
+                        )
+                        for r in rows if r["context"].get("stream_kind", "generic") == kind
+                    })
+                    for kind in {r["context"].get("stream_kind", "generic") for r in rows}
+                }
+            if self.fuse_exact_native_evidence:
+                self._fuse_current_pixels(frames)
         self._revision += 1
         states: list[dict[str, Any]] = []
         transitions: list[dict[str, Any]] = []
@@ -401,8 +438,17 @@ class DevelopmentGameTimeline:
                 death_round_token = None
                 pending_elimination = None
                 last_alive_evidence = []
-            ids = [r["observation_id"] for r in frame["observations"]]
-            signals = set(frame["signals"])
+            all_ids = frame.get("all_observation_ids", [
+                r["observation_id"] for r in frame["observations"]
+            ])
+            # Research Round claims are projected after lifecycle inference.
+            # They cannot advance Rule tokens, death/return context or Map gates.
+            rule_rows = [
+                r for r in frame["observations"]
+                if r["context"].get("unqualified_round_model") is not True
+            ]
+            ids = [r["observation_id"] for r in rule_rows]
+            signals = {s for r in rule_rows for s in r["signals"]}
             display_ids = {
                 r["context"]["elimination_display_signature"]
                 for r in frame["observations"]
@@ -791,7 +837,7 @@ class DevelopmentGameTimeline:
                 "sample": frame["sample"],
                 **current,
                 "continuity": link,
-                "observation_ids": ids,
+                "observation_ids": all_ids,
                 "current_pixel_evidence_links": deepcopy(
                     frame.get("current_pixel_evidence_links", [])
                 ),
@@ -1009,9 +1055,38 @@ class DevelopmentGameTimeline:
             self._reconcile(states)
         if self.mark_round_transition_gaps:
             self._mark_round_transition_gaps(states, transitions)
+        round_projections = []
         for state in states:
+            rows = [self._observations[i] for i in state["observation_ids"]]
+            weak = [
+                r for r in rows
+                if r["context"].get("unqualified_round_model") is True
+                and "active" in r["signals"]
+            ]
+            if weak:
+                before = deepcopy(state["round"])
+                evidence = sorted({r["observation_id"] for r in weak})
+                state["round_model_hypotheses"] = {
+                    "value": "ACTIVE", "hypotheses": ["ACTIVE", "UNKNOWN"],
+                    "evidence_ids": evidence, "qualified": False,
+                    "input_samples": [r["sample"] for r in weak],
+                    "scope": "current_pixels_only_no_lifecycle_authority",
+                }
+                if before["value"] == "UNKNOWN" and before["reason"] == "unobserved":
+                    state["round"] = _estimate(
+                        "ACTIVE", alternatives=["ACTIVE", "UNKNOWN"],
+                        reason="unqualified_round_shape_candidate", evidence=evidence,
+                        origin="observation_projection",
+                    )
+                    state["round"]["uncertainty"] = "unqualified_learned_round_candidate"
+                    state["round"]["rule_estimate"] = before
+                round_projections.append({
+                    "sample": state["sample"], "before": before,
+                    "after": deepcopy(state["round"]), "evidence_ids": evidence,
+                    "kind": "current_round_estimate_revision_not_event", "qualified": False,
+                })
             state["round_number"] = _round_number(
-                state, [self._observations[i] for i in state["observation_ids"]]
+                state, rows
             )
         acquisition_seconds = self._seconds(states)
         result: dict[str, Any] = {
@@ -1034,6 +1109,8 @@ class DevelopmentGameTimeline:
                 forward_only=self.forward_only,
                 mark_round_transition_gaps=self.mark_round_transition_gaps,
             )
+        if round_projections:
+            result["round_model_projection_history"] = round_projections
         changed = []
         if self._last:
             old = {s["sample"]["sample_sha256"]: s for s in self._last["frames"]}
