@@ -147,6 +147,9 @@ The input may also be a pre-existing shared timeline with its original
 `observations` collection. All three predictions are saved before review labels
 are read. Duplicate reviews cannot multiply denominators; contradictory answers
 are rejected. Unavailable/UNKNOWN points stay outside scored denominators.
+Native composite archives replay each original supplier envelope, using the same
+transport adapter as `run_match`. The adaptive-sampling summary is not another
+state observation and cannot replace a supplier's spectator/owner claim.
 
 - `legacy_offline`: the previous default with bounded future confirmation.
 - `forward`: disable later-frame Score/Result confirmation, future DOWNED
@@ -198,13 +201,17 @@ match, the recording duration, observed/inferred/UNKNOWN bins, previous correct
 losses, and performance scope. Never label a match with no reviews the best or
 worst by an invented zero accuracy.
 
-The generic observer currently lacks a source-independent recorder identity
-bootstrap. The old four confirmed Map-role outputs remain abstentions in the
-shared path; their raw marker pools are retained in the archived route. The
-automatic full-video observer's Map reader is UNCONFIGURED, not an observation
-of no markers. Generic full-recording life/death/spectator/return recognition and full Match
-Map/Zone integration remain required work. Round-number candidates are not yet
-provided by this first automatic route. No qualified Fact/Event is produced.
+The default generic observer lacks a source-independent recorder identity
+bootstrap. An optional private image-only composite now completes full recordings
+through the same API and improves the fixed reviewed life/camera points; its
+unqualified weights, full-match safety and unseen generalization remain unadopted.
+The old four confirmed Map-role outputs remain abstentions. An exact archived
+Map-supplier replay retains pools at 22 matching native points in the new full
+timeline; unmatched points and acquisition lanes are not interpolated or collapsed.
+The automatic full-video observer's Map reader is UNCONFIGURED, not an observation
+of no markers. Reliable generic life/death/down/remote/return recognition, full
+Map/Zone integration and Round-number candidates remain required work. No
+qualified Fact/Event is produced.
 
 Keep protected recordings, canonical GT, fixed evaluation windows, schemas and
 Production gates unchanged. All resulting PRs remain Draft; main merging and

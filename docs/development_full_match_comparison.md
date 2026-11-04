@@ -137,21 +137,106 @@ These counts compare the selected estimate with the human label; DEAD still
 retains DOWNED/UNKNOWN alternatives and SELF retains REMOTE/UNKNOWN. They do not
 establish reliable normal-death/down/remote separation.
 
-This remains an unadopted bounded experiment. The automatic full-recording CLI
-has not integrated the private view observer. Its original full runs remain
-unchanged; the six full-route abstention losses and four Map-role losses are
-not declared recovered by this short replay. Profile calibration, full-match
-REMOTE/negative coverage, unseen generalization and Round numbers remain open.
-No formal Fact/Event or current Map-owner evidence is issued by the weak model.
+This bounded experiment remains unadopted. The following full-recording stage
+connects the same inference procedure through bound native suppliers. The older
+runs are retained unchanged. Full-match REMOTE/negative coverage, unseen
+generalization and Round numbers remain open. No formal Fact/Event or current
+Map-owner evidence is issued by the weak model.
+
+## Completed automatic composite runs
+
+Three new full-recording runs completed with source bytes checked before/after,
+selected native PTS/pixels checked, output hashes verified and 19 predeclared
+native review references matched. Five references required additional native
+points; all 19 retained their original/new epoch aliases. The frozen audit plan
+contains no labels or initialization and is not given to the pixel observer.
+There are 9,536 native points and 6,206 second bins across 6,203.949 recorded
+seconds. All bins have a selected video observation; semantic support is sparse.
+
+One primary recognizer uses identical frozen weights and rules on all three
+matches. It is role-weight-held-out on A and training-side regression on B/C;
+it is **not** a three-match independent model test. The separate LOMO role
+weight comparison excludes the evaluated physical match from fit and uses only
+the fixed coarse grid plus predeclared controls, excluding primary-selected
+dense frames. Whole-model UI/Profile design exposure remains known DEVELOPMENT.
+
+| Match | Native points | Round reviewed / correct | Life reviewed / correct | Camera reviewed / correct | Old source-bound correct lost |
+|---|---:|---|---|---|---:|
+| A | 3164 | 2 / 2 | 2 / 2 | 2 / 2 | 0 |
+| B | 3650 | 7 / 7 | 3 / 3 | 3 / 3 | 0 |
+| C | 2722 | 2 / 2 | 7 / 7 | 7 / 7 | 0 |
+
+The baseline uses the same new native points, clock-prefix option and shared
+state engine, with only the original HUD supplier: Round 11 correct/0 wrong/0
+abstained, life 0/0/12, camera 0/0/12. Adding the unqualified view supplier gives
+Round 11/0/0, life 12/0/0 and camera 12/0/0. Pooled and per-match-mean selected
+label agreement are 100% in each domain, with zero baseline-correct losses.
+The LOMO fixed-grid control has the same reviewed counts, against life/camera
+abstentions in its own same-grid baseline. These are selected known-development
+point agreements, not full-match accuracy, untouched evaluation or qualification.
+The five additional life/camera review frames absent from the original cadence
+are present in both new methods; the original seven-point full cohort must not
+be used as the denominator for a 12-point improvement claim.
+
+The six older correct life/camera values on B are recovered in this full route.
+Across the enlarged reviewed cohort all seven source-bound correct domain
+values are retained. No wrong SELF occurs at the two reviewed SPECTATOR points;
+population false attribution and unreviewed death/return events remain unscored.
+Forward, legacy offline and transition-bracket controls all agree at the same
+11/12/12 reviewed domain points: no extra correct label from future context was
+measured. The corrected comparison CLI reproduces every primary domain estimate
+at all 9,536 native points from the original separate supplier archives.
+
+| Match | Round UNKNOWN bins | Life UNKNOWN bins | Camera UNKNOWN bins | Inferred-only known Round / life / camera bins | Wall seconds | Python peak MiB | Deferred refinement windows |
+|---|---:|---:|---:|---|---:|---:|---:|
+| A | 613 | 913 | 804 | 322 / 415 / 325 | 1437.03 | 512.19 | 107 |
+| B | 1035 | 885 | 765 | 458 / 1051 / 323 | 1729.76 | 578.59 | 121 |
+| C | 649 | 592 | 491 | 318 / 527 / 228 | 1448.55 | 467.66 | 69 |
+
+The original HUD-only same-native baseline has the same Round UNKNOWN counts
+and UNKNOWN life/camera in all bins. Unlabeled UNKNOWN reductions are not scored
+as accuracy gains. Native UNKNOWN Round reasons are unsupported observations;
+life additionally lacks owned-death context or current return confirmation.
+These domain-support gaps differ from absent video frames. Match B has the most
+Round-UNKNOWN bins, but reviewed recognition is tied; there is no justified
+worst full-match accuracy ranking. The known old B clock error was addressed
+without a Source/time exception.
+
+The three jobs ran concurrently, with a local test run overlapping part of the
+measurement. Receipts include hashing, native acquisition, primary/sidecar image
+inspection and shared primary/baseline state/output work, but exclude the later
+fixed-grid LOMO replay. Python peaks exclude children and later replay; no total
+system-memory or isolated speed comparison is claimed. The refinement budget
+still leaves uninspected candidate windows. Learned role weights and report
+signatures remain unadopted research; DEAD/DOWNED and SELF/REMOTE alternatives
+and qualified-output suppression remain intact.
+
+An additional replay joins 22/140 archived Map packets at exact full-run pixels
+without altering their original epochs. All joined pools are retained in the
+original full acquisition, with zero Round/life/camera selected-value changes.
+The other 118 packets have no exact current full-run counterpart and are not
+interpolated. Parallel epoch estimates remain separate: the first diagnostic
+mistakenly collapsed four such comparisons by physical-key dictionary order;
+the corrected comparison keys the original acquisition sample. This is archived
+supplier reuse, not a generic full-video Map recognizer. Known self-role outputs
+remain 0 correct/4 abstained; raw candidate retention is not role recovery.
+
+Final local regression for this stage: 4,327 passed/9 skipped; Ruff, mypy (151
+source modules) and Text I/O audit pass. Exact new-head Linux/Windows/package
+CI is unverified and is not inferred from these local results. The Goal remains
+open: Round numbers, full Map/Zone processing, independent event/REMOTE/negative
+coverage and unseen generalization are incomplete.
 
 ## Remaining failures and unavailable metrics
 
-The full automatic route abstains on all seven available reviewed life points
+The original automatic baseline abstains on all seven available reviewed life points
 and all seven available reviewed camera points across the three matches. Eight
 older life/camera domain points lack exact native counterparts in its cadence
 and are excluded, not counted as incorrect or negative. Compared with the older
 source-bound route, six previously correct life/camera values on Match B are
-lost. The clock add-on does not recover them. HP is readable in a reviewed
+lost in that archived baseline. The clock add-on alone does not recover them;
+the completed composite stage above reports recovery on its enlarged fixed
+cohort. HP is readable in a reviewed
 spectator view, so positive view HP cannot independently establish recorder life.
 
 The four known legacy Map-role selections remain lost in the shared path.
@@ -160,6 +245,19 @@ attribution; an observed candidate must not disappear merely because recorder
 life is uncertain. The full-video route has not connected its Map reader, so it
 has no full-match Map/Zone accuracy denominator. This limitation is not a
 measurement of no markers or no movement.
+
+An exact archived audit revalidates the original review packet/response hashes,
+candidate IDs and previous predictions. All 140 Map observations and candidate
+pools are unchanged. Each of the four reviewed self-marker objects remains in
+its pool, and its initial selection index still agrees with the reviewed marker.
+All four common consumers abstain at `external_self_or_round_support_incomplete`:
+the old common Round, life, camera, recorder correspondence and semantic
+continuity were UNKNOWN. Candidate preservation is not recovery of the four
+correct role selections: correct 4 -> 0, abstained 0 -> 4. The separately reviewed
+spike UI is blocked by a SPECTATOR context. The old initial selector requires a
+Source/agent-supported appearance reference, so restoring that selector alone
+would not establish source-independent recorder identity. No coordinate, Zone,
+path or population Map-role accuracy is inferred from these exact-image roles.
 
 There is no complete independent event inventory or internal boundary-time GT.
 Correct/false/missed Round starts/ends, event precision/recall, boundary-time
@@ -170,11 +268,10 @@ and major-regression acceptance remain open. No formal Fact/Event is produced.
 
 ## Validation and reproduction
 
-Related shared/timer/geometry/Text I/O tests: 266 passed. Ruff src/tests and mypy
-on 151 source files passed. An earlier full local suite reported 4,274 passed,
-9 skipped and one Text I/O inventory failure in new fixtures; explicit UTF-8
-fixes passed the related audit. A fresh all-green full suite or new-head
-Linux/Windows/package-smoke CI is not claimed.
+Final full local suite: 4,327 passed and 9 skipped. Ruff src/tests, mypy on 151
+source files and the Text I/O audit passed. This supersedes the earlier local
+suite's UTF-8 fixture inventory failure; that earlier result remains historical.
+Exact new-head Linux/Windows/package-smoke CI is unverified.
 
 The original 11,402 native-frame Round/life/camera/Map/continuity/token fields,
 transitions and second rows are unchanged under the new optional view contract.

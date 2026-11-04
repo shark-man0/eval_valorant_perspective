@@ -74,3 +74,53 @@ def test_conflicting_reviews_are_reported_without_selecting_a_convenient_truth(
         module.compare_modes(
             policy_path=policy, input_path=data, output=tmp_path / "compare", reviews=[review]
         )
+
+
+@pytest.mark.parametrize("composite", [False, True])
+def test_native_archive_replays_supplier_claims_instead_of_sampling_summary(
+    tmp_path, monkeypatch, composite
+):
+    data, policy, review = inputs(tmp_path, monkeypatch, [])
+    sample = obs(0)["sample"]
+    supplier = {"signals": ["spectator"], "context": {}, "raw": {}}
+    measurement = (
+        {
+            "signals": ["owner_hud"],
+            "supplier_observations": [{"producer_fingerprint": "b" * 64, **supplier}],
+        }
+        if composite
+        else supplier
+    )
+    data.write_text(
+        json.dumps(
+            {
+                "reader_fingerprint": "c" * 64,
+                "records": [{"sample": sample, "measurement": measurement}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    review.write_text(
+        json.dumps(
+            {
+                "records": [
+                    {
+                        "sample": sample,
+                        "domain": "camera",
+                        "value": "SPECTATOR",
+                        "origin": "human_exact_frame",
+                        "review_sha256": "d" * 64,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "compare"
+    result = module.compare_modes(
+        policy_path=policy, input_path=data, output=output, reviews=[review]
+    )
+    for mode in module.MODES:
+        assert result["exact_point_evaluation"][mode]["matches"]["a"]["camera_correct"] == 1
+        predicted = module.read_json(output / f"{mode}_predictions_PRIVATE.json")
+        assert predicted[sample["sample_sha256"]]["life"]["value"] == "UNKNOWN"

@@ -13,7 +13,8 @@ from pathlib import Path
 from typing import Any
 
 from .evidence import is_sha, native_time
-from .game import DOMAINS, DevelopmentGameTimeline, observation
+from .game import DOMAINS, DevelopmentGameTimeline
+from .match import frame_observations
 from .replay import SourcePolicy, file_sha, read_json, write_private
 
 MODES = {
@@ -34,16 +35,9 @@ def compare_modes(
     if rows is None:
         producer = data["reader_fingerprint"]
         rows = [
-            observation(
-                sample=r["sample"],
-                producer=producer,
-                signals=r["measurement"]["signals"],
-                raw=r["measurement"]["raw"],
-                context=r["measurement"]["context"],
-                map_candidates=r["measurement"]["map_candidates"],
-                continuity={"decode_ok": True},
-            )
+            row
             for r in data["records"]
+            for row in frame_observations(r["measurement"], r["sample"], producer)
         ]
     for row in rows:
         policy.admit(row["sample"])
