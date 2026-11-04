@@ -53,6 +53,27 @@ OCR binary/model and native decoder binary is fingerprinted in private outputs.
 
 ## Acquisition and adaptive refinement
 
+`run_match(..., observer_factory=...)` also accepts a development `PixelObserver`
+factory. It receives the reader configuration path, and `inspect(image)` receives
+only native BGR pixels. A factory's deterministic fingerprint/bindings are
+rechecked after processing; changed observer, engine, decoder or Source bytes
+prevent a completion receipt. Native pixel identity is captured before a
+supplier's in-place preprocessing. Factories remain responsible for binding
+their actual code, assets and model weights.
+
+A composite returns `supplier_observations`, each with its own
+`producer_fingerprint`, `signals`, `context`, `raw` and optional `map_candidates`.
+Declare their fingerprints in `bindings.supplier_producer_fingerprints`.
+Suppliers cannot replace native sample identity or continuity, and duplicates
+are rejected. The top-level signal summary drives adaptive sampling only;
+it is not counted as another observation. The single shared engine receives
+each supplier claim once at the verified native sample.
+
+Optional `bindings.baseline_producer_fingerprints` writes a separate
+`baseline_timeline_PRIVATE.json` from exactly those suppliers at the same native
+points. A missing declared baseline supplier is an error. This compares methods
+using one state definition; it does not create HUD/Map lifecycle implementations.
+
 The CLI streams native PNGs through a bounded frame buffer and verifies each
 selected PNG's correspondence with FFmpeg's integer native PTS. It normally
 observes about once per second. Changes in measured display signals, score,
@@ -75,6 +96,10 @@ prevent a completion receipt. A failed/partial directory is retained without a
 success marker. A pilot is explicitly partial; it cannot report full-match
 completion. PNG retention is optional and off for whole-match runs.
 
+Pilot end time is exclusive, including native timestamps and the recording-second
+CSV grid. The CSV also retains per-domain hypotheses/uncertainty and an explicit
+development-only qualification column; the rich JSON keeps original evidence.
+
 Run from the development checkout (the optional diagnostic helpers require the
 checkout's `scripts` package):
 
@@ -92,6 +117,21 @@ native and one-second state views, CSV, decoder logs and a hash-bound completion
 receipt. The elapsed time includes intake hashing, decoding, observer execution
 and state rebuilding. Reported peak RSS is Python's peak only; it is not total
 simultaneous Python/FFmpeg/OCR memory.
+
+`--audit-sample-plan /ABSOLUTE/PRIVATE/native_audit.json` optionally adds frozen
+exact native comparison points. The strict `development_native_audit_v1` plan
+contains only `schema` and `samples`; each sample contains only the existing
+native identity fields. Labels/initialization are rejected. Every referenced
+Source must pass the allowlist, and target stream timebase/size/PTS/pixels must
+match. Other admitted Sources are ignored for this run; references beyond a
+pilot limit are deferred explicitly. The observer never receives the plan.
+
+Audit points already sampled are checked without an extra observation. Missing
+points are decoded with bounded balanced PTS filters. The alias ledger retains
+original and new acquisition epochs and marks exact pixels as **not independent
+confirmation**. Missing/changed points fail rather than invent a GT counterpart.
+Audit metadata selects evaluation acquisition only, not recognition conditions,
+event time or initial state. The plan hash is frozen for the run.
 
 ## Same-observation temporal controls
 

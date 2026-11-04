@@ -17,10 +17,10 @@ import struct
 import subprocess
 import time
 import uuid
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from fractions import Fraction
 from pathlib import Path
-from typing import IO, Any, cast
+from typing import IO, Any, Protocol, cast
 
 import cv2
 import numpy as np
@@ -28,10 +28,66 @@ import numpy as np
 from valorant_ai_coach.video.native import _sha256, decoded_source_ticks
 from valorant_ai_coach.video.service import _subprocess_environment
 
-from .evidence import digest, freeze_native_sample, native_time
+from .evidence import digest, freeze_native_sample, is_sha, native_time
 from .game import DevelopmentGameTimeline, observation
 from .match_observer import ProfileHudObserver
 from .replay import SourcePolicy, file_sha, peak_rss_mib, read_json, write_private
+
+
+class PixelObserver(Protocol):
+    """Deterministic image-only supplier; no acquisition identity is passed in."""
+
+    fingerprint: str
+    bindings: dict[str, Any]
+
+    def inspect(self, image: np.typing.NDArray[np.uint8]) -> dict[str, Any]: ...
+
+
+def _pts_expression(ticks: list[int]) -> str:
+    """Balanced expression avoids FFmpeg's linear expression-depth limit."""
+    if not ticks:
+        raise ValueError("Native audit points required")
+    if len(ticks) == 1:
+        return f"eq(pts\\,{ticks[0]})"
+    middle = len(ticks) // 2
+    return f"({_pts_expression(ticks[:middle])}+{_pts_expression(ticks[middle:])})"
+
+
+def frame_observations(
+    measurement: dict[str, Any], sample: dict[str, Any], producer: str
+) -> list[dict[str, Any]]:
+    """Attach the verified native sample to separately fingerprinted suppliers.
+
+    A composite observer may expose supplier_observations. Their Source/PTS
+    cannot override the transport's sample. The summary drives sampling only;
+    the shared engine consumes the original supplier claims, once each.
+    """
+    suppliers = measurement.get("supplier_observations")
+    if suppliers is None:
+        suppliers = [{**measurement, "producer_fingerprint": producer}]
+    elif not isinstance(suppliers, list) or not suppliers:
+        raise ValueError("Nonempty supplier observations required")
+    allowed = {"producer_fingerprint", "signals", "raw", "context", "map_candidates"}
+    rows = []
+    for item in suppliers:
+        if not isinstance(item, dict) or (
+            "supplier_observations" in measurement and set(item) - allowed
+        ):
+            raise ValueError("Supplier cannot override acquisition or continuity")
+        rows.append(
+            observation(
+                sample=sample,
+                producer=item["producer_fingerprint"],
+                signals=item["signals"],
+                raw=item["raw"],
+                context=item.get("context", {}),
+                map_candidates=item.get("map_candidates", []),
+                continuity={"decode_ok": True},
+            )
+        )
+    if len({r["observation_id"] for r in rows}) != len(rows):
+        raise ValueError("Duplicate supplier observation is not independent evidence")
+    return rows
 
 
 def _read_exact(stream: IO[bytes], size: int) -> bytes:
@@ -119,9 +175,12 @@ def run_match(
     max_refinement_windows: int = 40,
     stop_after: int | None = None,
     retain_frames: bool = False,
+    observer_factory: Callable[[Path], PixelObserver] | None = None,
+    audit_sample_plan: Path | None = None,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
+    engine_sha = file_sha(Path(__file__).with_name("game.py"))
     if not 0 < dense_seconds < coarse_seconds <= 2 or max_refinement_windows < 0:
         raise ValueError("Bounded coarse/dense observation cadence required")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
@@ -168,18 +227,78 @@ def run_match(
     if base <= 0 or duration <= 0:
         raise ValueError("Native stream timing required")
     limit = min(duration, Fraction(stop_after)) if stop_after is not None else duration
-    observer = ProfileHudObserver(reader_config)
+    audit_requests: dict[int, list[dict[str, Any]]] = {}
+    deferred_audits = 0
+    audit_plan_sha = None if audit_sample_plan is None else file_sha(audit_sample_plan)
+    if audit_sample_plan is not None:
+        plan = read_json(audit_sample_plan)
+        if set(plan) != {"schema", "samples"} or plan["schema"] != "development_native_audit_v1":
+            raise ValueError("Native-sample-only audit plan required")
+        if not isinstance(plan["samples"], list):
+            raise ValueError("Native sample list required")
+        for reference in plan["samples"]:
+            if not isinstance(reference, dict):
+                raise ValueError("Native sample record required")
+            sample = freeze_native_sample(reference)
+            if set(reference) - set(sample):
+                raise ValueError("Audit sample cannot carry labels or initialization")
+            policy.admit(sample)
+            if sample["source_sha256"] != source["source_sha256"]:
+                continue
+            if (
+                Fraction(sample["native_time_base"]) != base
+                or sample["frame_size_px"] != [int(stream["width"]), int(stream["height"])]
+                or not native_start <= native_time(sample) < native_start + duration
+            ):
+                raise ValueError("Audit sample outside the admitted native stream")
+            if native_time(sample) >= native_start + limit:
+                deferred_audits += 1
+                continue
+            audit_requests.setdefault(sample["native_pts_tick"], []).append(sample)
+    make_observer: Callable[[Path], PixelObserver] = observer_factory or ProfileHudObserver
+    observer = make_observer(reader_config)
+    if not is_sha(observer.fingerprint):
+        raise ValueError("Bound pixel observer fingerprint required")
+    bindings_sha = digest(observer.bindings)
+    baseline_producers: list[str] = observer.bindings.get("baseline_producer_fingerprints", [])
+    if (
+        not isinstance(baseline_producers, list)
+        or not all(is_sha(p) for p in baseline_producers)
+        or len(set(baseline_producers)) != len(baseline_producers)
+    ):
+        raise ValueError("Explicit baseline supplier fingerprints required")
+    permitted_producers: list[str] = observer.bindings.get(
+        "supplier_producer_fingerprints", [observer.fingerprint]
+    )
+    if (
+        not isinstance(permitted_producers, list)
+        or not permitted_producers
+        or not all(is_sha(p) for p in permitted_producers)
+        or len(set(permitted_producers)) != len(permitted_producers)
+    ):
+        raise ValueError("Bound supplier fingerprints required")
+    decoder_shas = {"ffmpeg": file_sha(Path(ffmpeg)), "ffprobe": file_sha(Path(ffprobe))}
     epoch = uuid.uuid4().hex
     output.mkdir(parents=True, mode=0o700)
     records: dict[int, dict[str, Any]] = {}
 
-    def decode(lower: Fraction, upper: Fraction, step: Fraction, name: str) -> None:
+    def decode(
+        lower: Fraction,
+        upper: Fraction,
+        step: Fraction,
+        name: str,
+        expected: dict[int, list[dict[str, Any]]] | None = None,
+    ) -> None:
         tick_lower, tick_upper = math.ceil(lower / base), math.floor(upper / base)
         filters = (
             f"trim=end_pts={tick_upper + 1},select=between(pts\\,{tick_lower}\\,{tick_upper}),"
             f"select=isnan(prev_selected_pts)+gte(t-prev_selected_t\\,{float(step)}),"
             "showinfo"
         )
+        if expected is not None:
+            filters = (
+                f"trim=end_pts={tick_upper + 1},select={_pts_expression(sorted(expected))},showinfo"
+            )
         command = [ffmpeg, "-hide_banner", "-loglevel", "info", "-threads", "1"]
         if lower > 0:
             command += ["-noaccurate_seek", "-seek_timestamp", "1", "-ss", str(float(lower))]
@@ -225,10 +344,13 @@ def run_match(
                         int(stream["height"]),
                     ]:
                         raise ValueError("Native decoded geometry mismatch")
+                    # Bind the decoded native pixels, before any supplier's
+                    # in-place preprocessing can alter its analysis buffer.
+                    native_pixel_sha = hashlib.sha256(image.tobytes()).hexdigest()
                     measurement = observer.inspect(cast(np.typing.NDArray[np.uint8], image))
                     item = {
                         "encoded_sha": hashlib.sha256(encoded).hexdigest(),
-                        "pixel_sha": hashlib.sha256(image.tobytes()).hexdigest(),
+                        "pixel_sha": native_pixel_sha,
                         "measurement": measurement,
                     }
                     if retain_frames:
@@ -263,7 +385,13 @@ def run_match(
             or any(b <= a for a, b in zip(ticks, ticks[1:], strict=False))
         ):
             raise ValueError("Decoder output/native PTS correspondence failed")
+        if expected is not None and list(ticks) != sorted(expected):
+            raise ValueError("Audit native PTS missing or changed")
         for tick, item in zip(ticks, pending, strict=True):
+            if expected is not None and any(
+                s["native_pixel_sha256"] != item["pixel_sha"] for s in expected[tick]
+            ):
+                raise ValueError("Audit native pixels changed")
             if tick in records:
                 if records[tick]["sample"]["native_pixel_sha256"] != item["pixel_sha"]:
                     raise ValueError("Repeated decoding changed native pixels")
@@ -283,32 +411,72 @@ def run_match(
             )
             records[tick] = {"sample": sample, "pass": name, **item}
 
-    decode(native_start, native_start + limit, coarse_seconds, "coarse")
+    exclusive_end = native_start + limit - base
+    decode(native_start, exclusive_end, coarse_seconds, "coarse")
     coarse = [records[k] for k in sorted(records)]
     windows, deferred = refinement_windows(
         coarse, max_windows=max_refinement_windows, origin=native_start
     )
     for index, (lower, upper) in enumerate(windows):
-        decode(lower, min(upper, native_start + limit), dense_seconds, f"dense_{index:04d}")
+        decode(lower, min(upper, exclusive_end), dense_seconds, f"dense_{index:04d}")
+    needed = sorted(set(audit_requests) - set(records))
+    for index in range(0, len(needed), 512):
+        batch = needed[index : index + 512]
+        decode(
+            batch[0] * base,
+            batch[-1] * base,
+            dense_seconds,
+            f"audit_{index // 512:04d}",
+            {t: audit_requests[t] for t in batch},
+        )
+    aliases = []
+    for tick, references in sorted(audit_requests.items()):
+        actual = records[tick]["sample"]
+        for reference in references:
+            if actual["native_pixel_sha256"] != reference["native_pixel_sha256"]:
+                raise ValueError("Audit native pixels changed")
+            aliases.append(
+                {
+                    "reference_sample": reference,
+                    "observed_sample": actual,
+                    "criterion": "same_Source_native_PTS_timebase_size_pixels",
+                    "independent_confirmation": False,
+                }
+            )
     if _sha256(video) != source["source_sha256"]:
         raise ValueError("Source bytes changed during processing")
+    if audit_sample_plan is not None and file_sha(audit_sample_plan) != audit_plan_sha:
+        raise ValueError("Native audit plan changed during execution")
     if file_sha(Path(__file__)) != implementation_sha:
         raise ValueError("Acquisition implementation changed during execution")
+    if file_sha(Path(__file__).with_name("game.py")) != engine_sha:
+        raise ValueError("Shared engine changed during execution")
+    if (
+        digest(observer.bindings) != bindings_sha
+        or make_observer(reader_config).fingerprint != observer.fingerprint
+    ):
+        raise ValueError("Pixel observer bindings changed during execution")
+    if decoder_shas != {"ffmpeg": file_sha(Path(ffmpeg)), "ffprobe": file_sha(Path(ffprobe))}:
+        raise ValueError("Native decoder binaries changed during execution")
     engine = DevelopmentGameTimeline(fuse_exact_native_evidence=True)
+    baseline_engine = (
+        DevelopmentGameTimeline(fuse_exact_native_evidence=True) if baseline_producers else None
+    )
     for tick in sorted(records):
         r = records[tick]
         m = r["measurement"]
-        engine.add(
-            observation(
-                sample=r["sample"],
-                producer=observer.fingerprint,
-                signals=m["signals"],
-                context=m["context"],
-                raw=m["raw"],
-                map_candidates=m["map_candidates"],
-                continuity={"decode_ok": True},
-            )
-        )
+        suppliers = frame_observations(m, r["sample"], observer.fingerprint)
+        if {s["producer_fingerprint"] for s in suppliers} - set(permitted_producers):
+            raise ValueError("Unbound supplier fingerprint at native frame")
+        if set(baseline_producers) - {s["producer_fingerprint"] for s in suppliers}:
+            raise ValueError("Baseline supplier missing at an observed native frame")
+        for supplied in suppliers:
+            engine.add(supplied)
+            if (
+                baseline_engine is not None
+                and supplied["producer_fingerprint"] in baseline_producers
+            ):
+                baseline_engine.add(supplied)
     timeline = engine.rebuild()
     write_private(
         output / "observations_PRIVATE.json",
@@ -319,6 +487,10 @@ def run_match(
         },
     )
     write_private(output / "timeline_PRIVATE.json", timeline)
+    if baseline_engine is not None:
+        write_private(output / "baseline_timeline_PRIVATE.json", baseline_engine.rebuild())
+    if audit_sample_plan is not None:
+        write_private(output / "native_audit_aliases_PRIVATE.json", {"records": aliases})
     # Seconds outside observed endpoints remain explicit unobserved rows.
     relative_bins: dict[int, list[dict[str, Any]]] = {}
     for frame in timeline["frames"]:
@@ -327,7 +499,21 @@ def run_match(
     with (output / "timeline_1s_PRIVATE.csv").open("x", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
         writer.writerow(
-            ["source_id", "recording_second", "observation_present", "round", "life", "camera"]
+            [
+                "source_id",
+                "recording_second",
+                "observation_present",
+                "round",
+                "life",
+                "camera",
+                "round_hypotheses",
+                "round_uncertainty",
+                "life_hypotheses",
+                "life_uncertainty",
+                "camera_hypotheses",
+                "camera_uncertainty",
+                "qualification",
+            ]
         )
         for second in range(math.ceil(limit)):
             rows = relative_bins.get(second, [])
@@ -341,6 +527,25 @@ def run_match(
                         for d in ("round", "life", "camera")
                         for values in [{r[d]["value"] for r in rows}]
                     ),
+                    *(
+                        "|".join(
+                            sorted(
+                                {
+                                    v
+                                    for r in rows
+                                    for v in (
+                                        r[d]["hypotheses"]
+                                        if field == "hypotheses"
+                                        else [r[d]["uncertainty"]]
+                                    )
+                                }
+                            )
+                        )
+                        or "UNKNOWN"
+                        for d in ("round", "life", "camera")
+                        for field in ("hypotheses", "uncertainty")
+                    ),
+                    "development_only",
                 ]
             )
     receipt = {
@@ -362,10 +567,15 @@ def run_match(
         "policy_sha256": file_sha(policy_path),
         "reader_fingerprint": observer.fingerprint,
         "implementation_sha256": implementation_sha,
-        "shared_engine_sha256": file_sha(Path(__file__).with_name("game.py")),
-        "decoder_binary_sha256s": {
-            "ffmpeg": file_sha(Path(ffmpeg)),
-            "ffprobe": file_sha(Path(ffprobe)),
+        "shared_engine_sha256": engine_sha,
+        "decoder_binary_sha256s": decoder_shas,
+        "same_native_baseline_producers": baseline_producers,
+        "native_audit": {
+            "plan_sha256": audit_plan_sha,
+            "matched_references": len(aliases),
+            "additional_native_points": len(needed),
+            "deferred_outside_pilot_limit": deferred_audits,
+            "recognition_or_initialization_input": False,
         },
         "all_decoded_frame_PTS_audited": False,
         "epoch": epoch,
@@ -389,6 +599,14 @@ def run_match(
             )
         },
     }
+    if baseline_engine is not None:
+        receipt["artifact_sha256s"]["baseline_timeline_PRIVATE.json"] = file_sha(
+            output / "baseline_timeline_PRIVATE.json"
+        )
+    if audit_sample_plan is not None:
+        receipt["artifact_sha256s"]["native_audit_aliases_PRIVATE.json"] = file_sha(
+            output / "native_audit_aliases_PRIVATE.json"
+        )
     receipt["receipt_id"] = digest(receipt)
     write_private(output / "completion_PRIVATE.json", receipt)
     return receipt
@@ -403,6 +621,7 @@ def main() -> None:
     parser.add_argument("--max-refinement-windows", type=int, default=40)
     parser.add_argument("--pilot-seconds", type=int)
     parser.add_argument("--retain-frames", action="store_true")
+    parser.add_argument("--audit-sample-plan", type=Path)
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -412,6 +631,7 @@ def main() -> None:
         max_refinement_windows=args.max_refinement_windows,
         stop_after=args.pilot_seconds,
         retain_frames=args.retain_frames,
+        audit_sample_plan=args.audit_sample_plan,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 
