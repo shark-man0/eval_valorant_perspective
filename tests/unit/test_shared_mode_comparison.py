@@ -21,8 +21,8 @@ def inputs(tmp_path, monkeypatch, labels):
     data, policy, review = (
         tmp_path / name for name in ("input.json", "policy.json", "review.json")
     )
-    data.write_text(json.dumps({"observations": rows}))
-    policy.write_text("{}")
+    data.write_text(json.dumps({"observations": rows}), encoding="utf-8")
+    policy.write_text("{}", encoding="utf-8")
     label = {
         "sample_sha256": rows[1]["sample"]["sample_sha256"],
         "domain": "round",
@@ -30,7 +30,9 @@ def inputs(tmp_path, monkeypatch, labels):
         "origin": "human_exact_frame",
         "review_sha256": "a" * 64,
     }
-    review.write_text(json.dumps({"records": [dict(label, **extra) for extra in labels]}))
+    review.write_text(
+        json.dumps({"records": [dict(label, **extra) for extra in labels]}), encoding="utf-8"
+    )
     return data, policy, review
 
 

@@ -59,9 +59,10 @@ def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch
                     }
                 ]
             }
-        )
+        ),
+        encoding="utf-8",
     )
-    allocation.write_text("{}")
+    allocation.write_text("{}", encoding="utf-8")
     policy.write_text(
         json.dumps(
             {
@@ -71,9 +72,10 @@ def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch
                 "allocation_sha256": hashlib.sha256(allocation.read_bytes()).hexdigest(),
                 "allowed_source_sha256s": [source_sha],
             }
-        )
+        ),
+        encoding="utf-8",
     )
-    config.write_text("{}")
+    config.write_text("{}", encoding="utf-8")
 
     class PixelObserver:
         def __init__(self, config_path: Path):
@@ -95,12 +97,12 @@ def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch
     assert receipt["whole_file_completed"] is True
     assert receipt["source_bytes_verified_before_and_after"] is True
     assert receipt["native_start_pts_tick"] > 0
-    timeline = json.loads((output / "timeline_PRIVATE.json").read_text())
+    timeline = json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
     assert all(
         f["sample"]["native_pts_tick"] >= receipt["native_start_pts_tick"]
         for f in timeline["frames"]
     )
-    with (output / "timeline_1s_PRIVATE.csv").open() as stream:
+    with (output / "timeline_1s_PRIVATE.csv").open(encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
     assert [r["recording_second"] for r in rows] == ["0", "1"]
     assert all(r["round"] == r["life"] == r["camera"] == "UNKNOWN" for r in rows)
