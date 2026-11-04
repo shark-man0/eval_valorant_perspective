@@ -123,6 +123,26 @@ abstention, boundary width and losses separately.
 
 ## Evaluation and current limitations
 
+Research view observations can set `context.unqualified_view_model = true`.
+The shared engine retains ALIVE/UNKNOWN and SELF/REMOTE/UNKNOWN alternatives
+for such owner claims, including during carry/reconciliation. They cannot
+sponsor current Map owner evidence or recorder correspondence. A stronger
+independent current owner observation retains its existing behavior. The flag
+does not relax `hud.identity`, authorize Production ownership, or add a second
+lifecycle state machine.
+
+A weak `recorder_elimination_display` observation additionally needs
+`context.elimination_display_signature`, a SHA256 of independently read display
+attributes, to support a fresh elimination hypothesis. Omit the field when
+unread; `None` and malformed values are rejected. The engine remembers observed
+signatures across Round changes and unread gaps, including displays first seen
+while SELF. A repeated signature cannot by itself create another death candidate.
+Source/epoch changes or confirmed breaks reinitialize that history. Existing
+owned-alive, Round and spectator conditions still apply; a hash alone never
+establishes death. This is display identity, **not physical-event identity**:
+different deaths with identical cards may remain unresolved. Legacy suppliers
+without the research flag retain their old unqualified behavior.
+
 Freeze physical matches, Profile assets and A/B/C/D conditions before tuning.
 Known development cross-validation is not untouched final evaluation. New
 recordings require predeclared use/split and independent physical-match IDs;
@@ -142,7 +162,7 @@ The generic observer currently lacks a source-independent recorder identity
 bootstrap. The old four confirmed Map-role outputs remain abstentions in the
 shared path; their raw marker pools are retained in the archived route. The
 automatic full-video observer's Map reader is UNCONFIGURED, not an observation
-of no markers. Generic life/death/spectator/return recognition and full Match
+of no markers. Generic full-recording life/death/spectator/return recognition and full Match
 Map/Zone integration remain required work. Round-number candidates are not yet
 provided by this first automatic route. No qualified Fact/Event is produced.
 

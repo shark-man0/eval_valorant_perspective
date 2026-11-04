@@ -91,6 +91,18 @@ def observation(
     frozen = freeze_native_sample(sample)
     if not is_sha(producer) or not isinstance(signals, list) or not set(signals) <= SIGNALS:
         raise ValueError("Known observation signals and producer fingerprint required")
+    if (
+        context
+        and "unqualified_view_model" in context
+        and type(context["unqualified_view_model"]) is not bool
+    ):
+        raise ValueError("unqualified_view_model must be a boolean")
+    if (
+        context
+        and "elimination_display_signature" in context
+        and not is_sha(context["elimination_display_signature"])
+    ):
+        raise ValueError("elimination_display_signature must be a SHA256")
     row = {
         "sample": frozen,
         "producer_fingerprint": producer,
@@ -270,9 +282,18 @@ class DevelopmentGameTimeline:
         last_score_frame: dict[str, Any] | None = None
         last_clock: tuple[Fraction, int, tuple[int, int] | None] | None = None
         last_round_support: dict[str, Any] | None = None
+        seen_elimination_displays: set[str] = set()
         for i, frame in enumerate(frames):
             link = continuity_between(prior, frame, max_gap=self.max_carry)
             same = bool(prior and source_scope(prior["sample"]) == source_scope(frame["sample"]))
+            # Display identity survives unread gaps and Round changes. It is
+            # not physical-event identity; identical later cards stay ambiguous.
+            if not same or any(
+                r["continuity"].get(key) is True
+                for r in frame["observations"]
+                for key in ("content_break_confirmed", "source_discontinuity", "discontinuity")
+            ):
+                seen_elimination_displays = set()
             if link["carry_allowed"] and prior is not None:
                 frame["fingerprints"] = {**prior["fingerprints"], **frame["fingerprints"]}
             if not link["carry_allowed"]:
@@ -288,6 +309,35 @@ class DevelopmentGameTimeline:
                 last_alive_evidence = []
             ids = [r["observation_id"] for r in frame["observations"]]
             signals = set(frame["signals"])
+            display_ids = {
+                r["context"]["elimination_display_signature"]
+                for r in frame["observations"]
+                if "recorder_elimination_display" in r["signals"]
+                and "elimination_display_signature" in r["context"]
+            }
+            fresh_display_ids = display_ids - seen_elimination_displays
+            unbound_legacy_display = any(
+                "recorder_elimination_display" in r["signals"]
+                and r["context"].get("unqualified_view_model") is not True
+                and "elimination_display_signature" not in r["context"]
+                for r in frame["observations"]
+            )
+            strong_owner_rows = [
+                r
+                for r in frame["observations"]
+                if "owner_hud" in r["signals"]
+                and r["context"].get("unqualified_view_model") is not True
+            ]
+            weak_owner_only = "owner_hud" in signals and not strong_owner_rows
+            weak_camera_only = any(
+                r["context"].get("unqualified_view_model") is True
+                and set(r["signals"]) & {"owner_hud", "spectator", "remote"}
+                for r in frame["observations"]
+            ) and not any(
+                r["context"].get("unqualified_view_model") is not True
+                and set(r["signals"]) & {"owner_hud", "spectator", "remote"}
+                for r in frame["observations"]
+            )
             now = native_time(frame["sample"])
             current = {domain: _estimate() for domain in DOMAINS}
             choices: dict[str, list[str]] = {
@@ -434,6 +484,18 @@ class DevelopmentGameTimeline:
                         if end_support and domain == "round"
                         else "observation_projection",
                     )
+                    if (
+                        domain == "life"
+                        and values[0] == "ALIVE"
+                        and weak_owner_only
+                        or domain == "camera"
+                        and weak_camera_only
+                    ):
+                        current[domain]["hypotheses"] = sorted(
+                            {values[0], "UNKNOWN"}
+                            | ({"REMOTE"} if domain == "camera" and values[0] == "SELF" else set())
+                        )
+                        current[domain]["uncertainty"] = "unqualified_learned_view_candidate"
                     last_direct[domain] = now, deepcopy(current[domain])
                 elif domain in last_direct and now - last_direct[domain][0] <= self.max_carry:
                     current[domain] = deepcopy(last_direct[domain][1])
@@ -522,6 +584,7 @@ class DevelopmentGameTimeline:
                 pending_elimination is None
                 and not death_latch
                 and "recorder_elimination_display" in signals
+                and (fresh_display_ids or unbound_legacy_display)
                 and current["camera"]["value"] == "SPECTATOR"
                 and last_alive is not None
                 and round_token is not None
@@ -567,6 +630,9 @@ class DevelopmentGameTimeline:
                         "upper_sample": frame["sample"],
                     }
                 )
+                if display_ids:
+                    candidate["display_signatures"] = sorted(fresh_display_ids)
+                    candidate["display_identity_semantics"] = "not_physical_event_identity"
                 transitions.append(candidate)
                 pending_elimination = {
                     "candidate": candidate,
@@ -745,7 +811,7 @@ class DevelopmentGameTimeline:
             gate = (
                 current["life"]["value"] == "ALIVE"
                 and current["camera"]["value"] == "SELF"
-                and "owner_hud" in signals
+                and bool(strong_owner_rows)
                 and not signals
                 & {"spectator", "remote", "death", "downed", "result", "intermission"}
                 and not set(current["round"]["hypotheses"]) & {"ENDED", "INTERMISSION"}
@@ -759,7 +825,9 @@ class DevelopmentGameTimeline:
             current_owner_evidence = sorted(
                 r["observation_id"]
                 for r in frame["observations"]
-                if gate and "owner_hud" in r["signals"]
+                if gate
+                and "owner_hud" in r["signals"]
+                and r["context"].get("unqualified_view_model") is not True
             )
             self_candidates = []
             if gate:
@@ -830,6 +898,11 @@ class DevelopmentGameTimeline:
                 "ownership": "UNKNOWN",
                 "qualified": False,
             }
+            if display_ids & seen_elimination_displays:
+                frame_state["previously_seen_elimination_display_signatures"] = sorted(
+                    display_ids & seen_elimination_displays
+                )
+            seen_elimination_displays.update(display_ids)
             states.append(frame_state)
             if len(set(choices["round"])) == 1:
                 last_round_support = {"value": current["round"]["value"], "sample": frame["sample"]}
@@ -1034,6 +1107,14 @@ class DevelopmentGameTimeline:
                                 evidence=anchor[domain]["evidence_ids"] + est["evidence_ids"],
                             )
                             item[domain]["uncertainty"] = "continuation_unverified"
+                            if (
+                                anchor[domain]["uncertainty"]
+                                == "unqualified_learned_view_candidate"
+                                or est["uncertainty"] == "unqualified_learned_view_candidate"
+                            ):
+                                item[domain]["hypotheses"] = sorted(
+                                    set(anchor[domain]["hypotheses"]) | set(est["hypotheses"])
+                                )
                     anchor, missing = state, []
 
     @staticmethod
@@ -1179,7 +1260,10 @@ def map_context(
         "recorder_life": frame_state["life"]["value"],
         "camera": frame_state["camera"]["value"],
         "recorder_correspondence": "supported"
-        if frame_state["life"]["value"] == "ALIVE" and frame_state["camera"]["value"] == "SELF"
+        if frame_state["life"]["value"] == "ALIVE"
+        and frame_state["camera"]["value"] == "SELF"
+        and frame_state["life"]["hypotheses"] == ["ALIVE"]
+        and frame_state["camera"]["hypotheses"] == ["SELF"]
         else "UNKNOWN",
         "source_continuity": "UNKNOWN",
         "round_token": frame_state["round_token"],

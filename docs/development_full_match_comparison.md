@@ -83,10 +83,66 @@ C 6/6. Held-out match samples are excluded from fitting; original comparison-onl
 labels and the four new comparison replies are not training labels. Training-side
 human controls are used only in other physical-match folds. UI feature design
 is development-exposed. Models/predictions reproduce byte-for-byte; the report
-has identical JSON values with key-order-only differences. This experiment is
-not integrated into timeline camera/life inference and is unadopted. Only one
-reviewed SPECTATOR point is a negative for SELF; REMOTE and full negative episodes
-are unmeasured. Classifier point counts cannot establish safe recorder attribution.
+has identical JSON values with key-order-only differences. At that image-only
+stage it was not integrated into timeline inference. A later reviewed SPECTATOR
+negative increases the denominator to 12: the centroid gives 11 correct/1
+abstained. Three prototypes alone give 8 correct/4 abstained and are rejected.
+The bounded shared-engine follow-up is below. REMOTE and full negative episodes
+remain unmeasured. Classifier point counts do not establish safe attribution.
+
+## Bounded view and persistent-report follow-up
+
+Replay a fixed first 150 seconds per match, including the already fixed native
+review controls: 2,109 native points / 450 second bins. This cohort includes
+older exact controls absent from the full cadence and a newly reviewed frame;
+its 12 life/camera points must not be compared with the full run's seven-point
+denominator. Per-fold learned weights exclude the held-out physical match.
+The inference procedure is shared; these are not identical weights in all folds.
+New comparison replies are not fitted or used for initialization. Existing
+Profile/UI design exposure still prevents untouched whole-model claims.
+
+The private pixel observer proposes view claims, HP displays and an exact
+Japanese owned-victim verb phrase. It receives no Source, timestamp, previous
+state or roster. The existing shared engine alone infers life and transitions.
+The raw phrase is an unqualified observation, not an imputed complete header,
+normal-death certificate or event time. Existing competing-view exclusions
+veto learned owner claims. SELF retains REMOTE/UNKNOWN alternatives; weak
+view claims cannot sponsor current Map evidence or recorder correspondence.
+
+| Match | Reviewed life | Baseline correct / abstained | Constrained candidate correct / abstained | Reviewed camera / candidate correct | Round correct retained |
+|---|---:|---|---|---|---|
+| A | 2 | 0 / 2 | 2 / 0 | 2 / 2 | 2 / 2 |
+| B | 3 | 0 / 3 | 3 / 0 | 3 / 3 | 7 / 7 |
+| C | 7 | 0 / 7 | 7 / 0 | 7 / 7 | 2 / 2 |
+
+An initial integration scored 11 correct/1 abstained on life, with one known
+return left unresolved. Reusing a persistent report as fresh evidence created
+another elimination hypothesis. The common engine now remembers bound display
+signatures across Round changes, occlusion/unread gaps and reappearance. A weak
+elimination claim without a readable signature cannot establish freshness. A
+signature still needs prior owned-alive/round/spectator context. It identifies
+display attributes, not physical events; genuinely different identical cards
+can remain ambiguous. This retains the original candidate rather than inferring
+a new death solely from its old display.
+
+With the view exclusions and display-identity rule, reviewed life and camera
+both score 12 correct/0 wrong/0 abstained; Round stays 11/11. Both per-match mean
+and pooled reviewed-point fractions are 100%, with no baseline-correct point
+lost. The six older correct Match B life/camera values are retained in this
+bounded experiment. No wrong SELF is observed at the two reviewed SPECTATOR
+points; this is not a population false-attribution estimate. Unlabeled candidate
+events, including later candidates, are unscored. No internal event-time error
+or independent full-episode accuracy is inferred from these point labels.
+These counts compare the selected estimate with the human label; DEAD still
+retains DOWNED/UNKNOWN alternatives and SELF retains REMOTE/UNKNOWN. They do not
+establish reliable normal-death/down/remote separation.
+
+This remains an unadopted bounded experiment. The automatic full-recording CLI
+has not integrated the private view observer. Its original full runs remain
+unchanged; the six full-route abstention losses and four Map-role losses are
+not declared recovered by this short replay. Profile calibration, full-match
+REMOTE/negative coverage, unseen generalization and Round numbers remain open.
+No formal Fact/Event or current Map-owner evidence is issued by the weak model.
 
 ## Remaining failures and unavailable metrics
 
@@ -114,11 +170,15 @@ and major-regression acceptance remain open. No formal Fact/Event is produced.
 
 ## Validation and reproduction
 
-Related shared/timer/geometry/Text I/O tests: 251 passed. Ruff src/tests and mypy
+Related shared/timer/geometry/Text I/O tests: 266 passed. Ruff src/tests and mypy
 on 151 source files passed. An earlier full local suite reported 4,274 passed,
 9 skipped and one Text I/O inventory failure in new fixtures; explicit UTF-8
 fixes passed the related audit. A fresh all-green full suite or new-head
 Linux/Windows/package-smoke CI is not claimed.
+
+The original 11,402 native-frame Round/life/camera/Map/continuity/token fields,
+transitions and second rows are unchanged under the new optional view contract.
+All three full-recording temporal-control prediction files reproduce byte-for-byte.
 
 The API/CLI, intake and temporal-control commands are in
 [development_full_match_timeline.md](development_full_match_timeline.md).
