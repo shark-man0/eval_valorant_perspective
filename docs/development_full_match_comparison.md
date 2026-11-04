@@ -224,8 +224,52 @@ remain 0 correct/4 abstained; raw candidate retention is not role recovery.
 Final local regression for this stage: 4,327 passed/9 skipped; Ruff, mypy (151
 source modules) and Text I/O audit pass. Exact new-head Linux/Windows/package
 CI is unverified and is not inferred from these local results. The Goal remains
-open: Round numbers, full Map/Zone processing, independent event/REMOTE/negative
+open: independent Round-number validation, full Map/Zone processing, event/REMOTE/negative
 coverage and unseen generalization are incomplete.
+
+## Additive Round-number and UNKNOWN diagnosis
+
+The shared engine now exposes current-score/phase Round-number candidates in
+native frames, acquisition seconds and common seconds. The full CLI appends
+numeric/candidate/uncertainty CSV columns. It does not count start candidates,
+reuse unread previous scores, choose an ENDED score-update side, or resolve a
+carried phase. Invalid/conflicting scores and parallel acquisition uncertainty
+remain explicit. This is development inference, with no qualified number Fact.
+
+Before editing the engine, code and input/output hashes from the completed
+stage were frozen. Replaying the same cached observations for all four methods
+on each match plus the exact archived Map replay produces 13 timelines. Removing
+only the additive `round_number` fields gives the complete original outputs
+unchanged, including observations, native samples, all previous state fields,
+transitions, Map pools, second views and qualification suppression. This is a
+state/output replay, not new full-length pixel recognition or improved accuracy.
+
+| Match | Second bins | Selected unqualified number | Ambiguous number | No number candidates |
+|---|---:|---:|---:|---:|
+| A | 2054 | 825 | 667 | 562 |
+| B | 2542 | 684 | 905 | 953 |
+| C | 1610 | 408 | 508 | 694 |
+
+No independent Round-number accuracy is inferred from those coverage counts.
+Three frozen exact review points currently abstain on number selection: two
+lack a complete accepted score, and the third has a score but no current phase.
+Their newly requested display score/phase answers remain pending, not labels.
+Three new 60-second native CLI pilots verify the new JSON/CSV path with the
+same new primary fingerprint; they are explicitly partial and do not replace
+the earlier full-run receipts. Focused shared/codec/Text I/O regression: 284
+passed; Ruff and mypy (151 source modules) passed. The 4,327-test full-suite result
+above belongs to the preceding head, not this new field's exact-head CI.
+
+For UNKNOWN diagnosis, a source-blind top-HUD pixel probe acquired the same
+fixed first 180 seconds on all three sources: 180/180/185 exact native points,
+each matched to prior full-run pixels, with one probe fingerprint. It records
+HSV/contours and content-addressed native crops without a state claim. Centered
+wide/tall red geometry gives 28/9/21 proposals, including 5/7/0 points with an
+already readable timer. Visual diagnosis of the first proposals shows red world
+backgrounds as well as a possible timer-replacement icon. Color/geometry alone
+therefore is not adopted as ACTIVE or a spike event. The icon's semantic label
+is pending human review; no model weights or GT are fitted from these proposals.
+Candidate counts and UNKNOWN reduction are not recognition improvements.
 
 ## Remaining failures and unavailable metrics
 
@@ -263,15 +307,17 @@ There is no complete independent event inventory or internal boundary-time GT.
 Correct/false/missed Round starts/ends, event precision/recall, boundary-time
 error, population false death/SELF attribution and full-match Map-role accuracy
 are therefore **unavailable**, not zero. Candidate starts/ends remain unqualified.
-Round-number candidates, generic death/down/remote/revival handling, Map routing
-and major-regression acceptance remain open. No formal Fact/Event is produced.
+Independent Round-number validation, generic death/down/remote/revival handling,
+Map routing and major-regression acceptance remain open. No formal Fact/Event
+is produced.
 
 ## Validation and reproduction
 
-Final full local suite: 4,327 passed and 9 skipped. Ruff src/tests, mypy on 151
-source files and the Text I/O audit passed. This supersedes the earlier local
-suite's UTF-8 fixture inventory failure; that earlier result remains historical.
-Exact new-head Linux/Windows/package-smoke CI is unverified.
+The full composite stage's local suite passed 4,327 tests with 9 skipped. The
+subsequent Round-number change passed 284 focused shared/codec/Text I/O tests,
+Ruff src/tests and mypy on 151 source files. These supersede the earlier UTF-8
+fixture inventory failure; historical results remain retained. Exact new-head
+Linux/Windows/package-smoke CI is unverified.
 
 The original 11,402 native-frame Round/life/camera/Map/continuity/token fields,
 transitions and second rows are unchanged under the new optional view contract.

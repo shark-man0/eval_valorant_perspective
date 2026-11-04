@@ -135,6 +135,100 @@ def _estimate(
     }
 
 
+def _round_number(state: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Current score/phase candidates; no event count or previous-number carry."""
+    scores = []
+    for row in rows:
+        score = row["context"].get("score")
+        if score is None:
+            continue
+        valid = (
+            isinstance(score, (list, tuple))
+            and len(score) == 2
+            and all(type(v) is int and 0 <= v <= 99 for v in score)
+            and row["continuity"].get("decode_ok") is not False
+        )
+        scores.append(
+            {
+                "observation_id": row["observation_id"],
+                "sample": deepcopy(row["sample"]),
+                "producer_fingerprint": row["producer_fingerprint"],
+                "displayed_score": deepcopy(score),
+                "eligible": valid,
+            }
+        )
+    pairs = {tuple(r["displayed_score"]) for r in scores if r["eligible"]}
+    phase = state["round"]
+    current_phase = (
+        phase["value"] in {"BUY", "ACTIVE"}
+        and phase["origin"] == "observation_projection"
+        and phase["hypotheses"] == [phase["value"]]
+    )
+    unambiguous = bool(
+        len(pairs) == 1 and all(r["eligible"] for r in scores) and current_phase
+    )
+    candidates = sorted(
+        {
+            n
+            for pair in pairs
+            for n in ([sum(pair) + 1] if unambiguous else [sum(pair), sum(pair) + 1])
+            if n > 0
+        }
+    )
+    reason = (
+        "current_score_and_buy_or_active"
+        if unambiguous
+        else "score_unobserved"
+        if not scores
+        else "invalid_score_observation"
+        if not all(r["eligible"] for r in scores)
+        else "conflicting_current_scores"
+        if len(pairs) != 1
+        else "score_update_or_round_phase_unresolved"
+    )
+    return {
+        "contract": "development_round_number_v1",
+        "value": candidates[0] if unambiguous else None,
+        "candidates": candidates,
+        "status": "CANDIDATE" if unambiguous else "AMBIGUOUS" if candidates else "UNKNOWN",
+        "reason": reason,
+        "uncertainty": "unqualified_score_reading" if unambiguous else reason,
+        "unknown_possible": True,
+        "evidence_ids": sorted({r["observation_id"] for r in scores} | set(phase["evidence_ids"])),
+        "phase": phase["value"],
+        "phase_evidence_ids": list(phase["evidence_ids"]),
+        "score_observations": scores,
+        "qualification": "development_only",
+        "qualified": False,
+    }
+
+
+def round_number_summary(estimates: list[dict[str, Any]]) -> dict[str, Any]:
+    """Retain unknown samples and parallel acquisitions in a second-bin view."""
+    values = {e["value"] for e in estimates}
+    candidates = sorted({n for e in estimates for n in e["candidates"]})
+    resolved = len(values) == 1 and None not in values
+    reason = (
+        "unqualified_sample_consensus"
+        if resolved
+        else "unobserved_second_bin"
+        if not estimates
+        else "unresolved_or_conflicting_samples"
+    )
+    return {
+        "contract": "development_round_number_v1",
+        "value": next(iter(values)) if resolved else None,
+        "candidates": candidates,
+        "status": "CANDIDATE" if resolved else "AMBIGUOUS" if candidates else "UNKNOWN",
+        "reason": reason,
+        "uncertainty": "unqualified_score_reading" if resolved else reason,
+        "unknown_possible": True,
+        "evidence_ids": sorted({i for e in estimates for i in e["evidence_ids"]}),
+        "qualification": "development_only",
+        "qualified": False,
+    }
+
+
 def continuity_between(
     prior: dict[str, Any] | None, current: dict[str, Any], *, max_gap: Fraction
 ) -> dict[str, Any]:
@@ -915,6 +1009,10 @@ class DevelopmentGameTimeline:
             self._reconcile(states)
         if self.mark_round_transition_gaps:
             self._mark_round_transition_gaps(states, transitions)
+        for state in states:
+            state["round_number"] = _round_number(
+                state, [self._observations[i] for i in state["observation_ids"]]
+            )
         acquisition_seconds = self._seconds(states)
         result: dict[str, Any] = {
             "version": VERSION,
@@ -1155,6 +1253,7 @@ class DevelopmentGameTimeline:
                             {e for r in items for e in r[domain]["evidence_ids"]}
                         ),
                     }
+                summary["round_number"] = round_number_summary([r["round_number"] for r in items])
                 seconds.append(summary)
         return seconds
 
@@ -1239,6 +1338,7 @@ class DevelopmentGameTimeline:
                             {e for v in views for e in v[domain]["evidence_ids"]}
                         ),
                     }
+                row["round_number"] = round_number_summary([v["round_number"] for v in views])
                 result.append(row)
         return result
 

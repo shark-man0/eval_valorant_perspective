@@ -133,6 +133,33 @@ confirmation**. Missing/changed points fail rather than invent a GT counterpart.
 Audit metadata selects evaluation acquisition only, not recognition conditions,
 event time or initial state. The plan hash is frozen for the run.
 
+## Round-number candidates
+
+HUD and Map consume `frames[].round_number` and `seconds[].round_number` from
+the same shared engine. The additive `development_round_number_v1` contract
+contains a nullable numeric `value`, competing integer `candidates`, status,
+reason, uncertainty, evidence IDs and `unknown_possible=true`. Native estimates
+also retain the original displayed scores, producer and exact original samples,
+including another acquisition's exact-pixel provenance. No qualified number
+Fact or internal event time is issued.
+
+A single valid current score pair plus a direct current BUY/ACTIVE observation
+supports score sum + 1 as an unqualified candidate. A carried or future-filled
+phase cannot select the number. ENDED/INTERMISSION/UNKNOWN, competing phases
+or score conflicts keep score sum / sum + 1 alternatives, excluding zero.
+Even one remaining alternative does not resolve an unknown phase. Opposite
+score pairs with the same sum still conflict. Invalid scores are retained as
+ineligible observations. Missing scores never reuse a previous score or count
+Round-start candidates; Source/epoch changes need no number initialization.
+
+One-second aggregation preserves unknown native samples and parallel acquisition
+uncertainty. A known number at one sampled instant cannot resolve another unread
+instant in that bin. Missing bins have no number candidates. The full CLI appends
+`round_number`, `round_number_candidates` and `round_number_uncertainty` to its
+existing CSV columns; precise score evidence stays in rich JSON. Synthetic
+nonzero-PTS codec tests verify the numeric and UNKNOWN CSV paths. Candidate
+coverage is not number accuracy; independent display/number review is separate.
+
 ## Same-observation temporal controls
 
 ```sh
@@ -210,8 +237,8 @@ Map-supplier replay retains pools at 22 matching native points in the new full
 timeline; unmatched points and acquisition lanes are not interpolated or collapsed.
 The automatic full-video observer's Map reader is UNCONFIGURED, not an observation
 of no markers. Reliable generic life/death/down/remote/return recognition, full
-Map/Zone integration and Round-number candidates remain required work. No
-qualified Fact/Event is produced.
+Map/Zone integration and independent Round-number validation remain required
+work. No qualified Fact/Event is produced.
 
 Keep protected recordings, canonical GT, fixed evaluation windows, schemas and
 Production gates unchanged. All resulting PRs remain Draft; main merging and

@@ -112,6 +112,7 @@ def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch
         rows = list(csv.DictReader(stream))
     assert [r["recording_second"] for r in rows] == ["0", "1"]
     assert all(r["round"] == r["life"] == r["camera"] == "UNKNOWN" for r in rows)
+    assert all(r["round_number"] == r["round_number_candidates"] == "UNKNOWN" for r in rows)
     assert timeline["qualified_events"] == timeline["qualified_facts"] == []
 
 
@@ -135,7 +136,7 @@ class CompositePixels:
                     "producer_fingerprint": "b" * 64,
                     "signals": ["buy"],
                     "raw": {},
-                    "context": {"stream_kind": "base"},
+                    "context": {"stream_kind": "base", "score": [2, 1]},
                 },
                 {
                     "producer_fingerprint": "c" * 64,
@@ -170,6 +171,11 @@ def test_source_blind_factory_keeps_separate_suppliers_and_same_native_baseline(
         for r in actual["frames"]
     )
     assert all(len(r["observation_ids"]) == 2 for r in actual["frames"])
+    assert all(r["round_number"]["value"] == 4 for r in actual["frames"])
+    with (output / "timeline_1s_PRIVATE.csv").open(encoding="utf-8") as stream:
+        csv_rows = list(csv.DictReader(stream))
+    assert all(r["round_number"] == r["round_number_candidates"] == "4" for r in csv_rows)
+    assert all(r["qualification"] == "development_only" for r in csv_rows)
     assert (
         receipt["artifact_sha256s"]["baseline_timeline_PRIVATE.json"]
         == hashlib.sha256((output / "baseline_timeline_PRIVATE.json").read_bytes()).hexdigest()

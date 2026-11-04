@@ -29,7 +29,7 @@ from valorant_ai_coach.video.native import _sha256, decoded_source_ticks
 from valorant_ai_coach.video.service import _subprocess_environment
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time
-from .game import DevelopmentGameTimeline, observation
+from .game import DevelopmentGameTimeline, observation, round_number_summary
 from .match_observer import ProfileHudObserver
 from .replay import SourcePolicy, file_sha, peak_rss_mib, read_json, write_private
 
@@ -513,10 +513,14 @@ def run_match(
                 "camera_hypotheses",
                 "camera_uncertainty",
                 "qualification",
+                "round_number",
+                "round_number_candidates",
+                "round_number_uncertainty",
             ]
         )
         for second in range(math.ceil(limit)):
             rows = relative_bins.get(second, [])
+            number = round_number_summary([r["round_number"] for r in rows])
             writer.writerow(
                 [
                     source_id,
@@ -546,6 +550,9 @@ def run_match(
                         for field in ("hypotheses", "uncertainty")
                     ),
                     "development_only",
+                    number["value"] if number["value"] is not None else "UNKNOWN",
+                    "|".join(str(n) for n in number["candidates"]) or "UNKNOWN",
+                    number["uncertainty"],
                 ]
             )
     receipt = {
