@@ -347,6 +347,11 @@ forward/offline controls. Its pixel observer uses one shared Profile without
 Source/time/roster initialization. Generic life/camera and Map recognition remain
 unfinished; this route is not adopted as a recognition improvement.
 
+The [minimum application timeline](docs/development_timeline_application.md)
+connects whole-recording generation, unified JSON/CSV, a local viewer with
+original-video seek, and a development evaluation/review handoff. UNKNOWN and
+unqualified candidates remain usable without being promoted to formal outputs.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
