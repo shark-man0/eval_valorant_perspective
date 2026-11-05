@@ -1,6 +1,7 @@
 """Current evidence and two bounded anchors never qualify identity or events."""
 
 from copy import deepcopy
+from fractions import Fraction
 
 import pytest
 from test_shared_game_timeline import obs, replay
@@ -142,3 +143,75 @@ def test_life_edge_at_future_anchor_cannot_rewrite_the_preceding_gap(signal):
     assert result["frames"][-1]["life"]["value"] == "ALIVE"
     assert result["frames"][4]["life"]["value"] == "UNKNOWN"
     assert result["report_view_projection_history"] == []
+
+
+def abstaining_view(rows, seconds):
+    result = deepcopy(rows)
+    for second in seconds:
+        row = result[2 * second + 1]
+        raw = deepcopy(row["raw"])
+        raw.update(camera_hypothesis="UNKNOWN", view_hp=None, classifiers={
+            "centroid": {"value": "UNKNOWN"}, "three_prototypes": {"value": "UNKNOWN"}})
+        result[2 * second + 1] = observation(
+            sample=row["sample"], producer=row["producer_fingerprint"],
+            signals=row["signals"], context=row["context"], raw=raw,
+        )
+    return result
+
+
+def test_short_explicit_classifier_abstention_keeps_context_but_stays_unknown():
+    rows = abstaining_view(span(), [4])
+    before = replay(rows)
+    after = replay(rows, report_view_bridge=True)
+    assert after["frames"][4] == before["frames"][4]
+    assert after["frames"][4]["camera"]["value"] == "UNKNOWN"
+    assert after["frames"][5]["life"]["value"] == "ALIVE"
+    assert after["frames"][5]["camera"]["value"] == "SELF"
+    assert after["transitions"] == before["transitions"]
+    assert after["boundary_candidates"] == before["boundary_candidates"]
+    assert after["configuration"]["max_abstaining_view_gap_seconds"] == "2"
+    assert all(h["sample"] != after["frames"][4]["sample"]
+               for h in after["report_view_projection_history"])
+    assert all(h["abstaining_view_samples"] == [after["frames"][4]["sample"]]
+               for h in after["report_view_projection_history"])
+
+
+@pytest.mark.parametrize("seconds,carry,retained", [
+    ([3, 4], Fraction(2), True),
+    ([3, 4, 5], Fraction(2), False),
+    ([3, 4], Fraction(1), False),
+])
+def test_classifier_abstention_uses_existing_carry_bound(seconds, carry, retained):
+    result = replay(abstaining_view(span(), seconds), report_view_bridge=True,
+                    max_carry_seconds=carry)
+    assert bool(result["report_view_projection_history"]) is retained
+    assert all(result["frames"][s]["camera"]["value"] == "UNKNOWN" for s in seconds)
+
+
+@pytest.mark.parametrize("classifier", [None, {}, {
+    "centroid": {"value": "UNKNOWN"}, "three_prototypes": {"value": "SPECTATOR"}}, {
+    "centroid": {"value": "SELF"}, "three_prototypes": {"value": "UNKNOWN"}},
+])
+def test_missing_or_conflicting_classifiers_are_not_an_explicit_abstention(classifier):
+    result = replay(span(change={"raw": {
+        "camera_hypothesis": "UNKNOWN", "classifiers": classifier}}), report_view_bridge=True)
+    assert result["report_view_projection_history"] == []
+
+
+def test_accepted_zero_hp_rejects_even_an_abstaining_camera():
+    result = replay(span(change={"raw": {
+        "camera_hypothesis": "UNKNOWN",
+        "classifiers": {"centroid": {"value": "UNKNOWN"},
+                        "three_prototypes": {"value": "UNKNOWN"}},
+        "view_hp": {"display": "0", "confidence": .99},
+    }}), report_view_bridge=True)
+    assert result["report_view_projection_history"] == []
+
+
+@pytest.mark.parametrize("signal", ["spectator", "remote", "death", "downed", "revival"])
+def test_explicit_life_or_camera_signal_overrides_classifier_abstention(signal):
+    rows = abstaining_view(span(), [4])
+    row = rows[8]
+    rows[8] = observation(sample=row["sample"], producer=row["producer_fingerprint"],
+                          signals=[*row["signals"], signal], context=row["context"], raw=row["raw"])
+    assert replay(rows, report_view_bridge=True)["report_view_projection_history"] == []

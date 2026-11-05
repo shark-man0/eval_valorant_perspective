@@ -1122,8 +1122,9 @@ class DevelopmentGameTimeline:
         if round_projections:
             result["round_model_projection_history"] = round_projections
         if self.report_view_bridge:
-            result["configuration"]["report_view_bridge"] = "development_report_view_bridge_v1"
+            result["configuration"]["report_view_bridge"] = "development_report_view_bridge_v2"
             result["configuration"]["max_report_bridge_seconds"] = "10"
+            result["configuration"]["max_abstaining_view_gap_seconds"] = str(self.max_carry)
             result["report_view_projection_history"] = view_projections
         changed = []
         if self._last:
@@ -1278,23 +1279,34 @@ class DevelopmentGameTimeline:
             return False, False
         raw = views[0]["raw"]
         if not (
-            raw.get("camera_hypothesis") == "SELF"
-            and raw.get("current_HUD_component_supported") is True
+            raw.get("current_HUD_component_supported") is True
             and raw.get("owner_hypothesis_exclusions") == ["combat_report_visible"]
             and raw.get("owned_verb_phrase") is None
         ):
             return False, False
         hp = raw.get("view_hp") or {}
         if not isinstance(hp, dict):
-            return True, False
+            hp = {}
         value, confidence = hp.get("display"), hp.get("confidence")
         accepted = (isinstance(confidence, (float, int)) and not isinstance(confidence, bool)
                     and math.isfinite(confidence) and confidence >= .90)
-        if not (isinstance(value, str) and value.isascii() and value.isdigit() and accepted):
-            return True, False
-        if not 1 <= int(value) <= 150:
+        parsed_hp = (int(value) if isinstance(value, str) and value.isascii()
+                     and value.isdigit() and accepted else None)
+        if parsed_hp is not None and not 1 <= parsed_hp <= 150:
             return False, False
-        return True, True
+        camera = raw.get("camera_hypothesis")
+        if camera == "UNKNOWN":
+            classifiers = raw.get("classifiers")
+            if not isinstance(classifiers, dict) or not all(
+                isinstance(classifiers.get(name), dict)
+                and classifiers[name].get("value") == "UNKNOWN"
+                for name in ["centroid", "three_prototypes"]
+            ):
+                return False, False
+            # An explicit classifier abstention is missing evidence. It may
+            # preserve bounded context, but must never support filling itself.
+            return True, False
+        return (True, parsed_hp is not None) if camera == "SELF" else (False, False)
 
     def _reconcile_report_views(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Reconcile current report-blocked SELF pixels between direct anchors.
@@ -1307,6 +1319,7 @@ class DevelopmentGameTimeline:
         anchor: dict[str, Any] | None = None
         pending: list[tuple[dict[str, Any], bool]] = []
         score: tuple[int, int] | None = None
+        last_current_self: Fraction | None = None
         for frame in states:
             rows = [self._observations[i] for i in frame["observation_ids"]]
             current_score = self._score({"observations": rows})
@@ -1317,7 +1330,7 @@ class DevelopmentGameTimeline:
                 or frame["round_token"] != anchor["round_token"]
                 or (score is not None and current_score is not None and current_score != score)
             ):
-                anchor, pending, score = None, [], None
+                anchor, pending, score, last_current_self = None, [], None, None
             barrier = any(set(r["signals"]) & _REPORT_VIEW_BARRIERS for r in rows)
             direct = not barrier and bool(frame["round_token"]) and frame["round"]["value"] in {
                 "BUY", "ACTIVE"
@@ -1327,6 +1340,11 @@ class DevelopmentGameTimeline:
             )
             if direct:
                 if anchor:
+                    abstaining = [deepcopy(target["sample"]) for target, _ in pending if any(
+                        self._observations[i]["context"].get("unqualified_view_model") is True
+                        and self._observations[i]["raw"].get("camera_hypothesis") == "UNKNOWN"
+                        for i in target["observation_ids"]
+                    )]
                     for target, hp_supported in pending:
                         if not hp_supported:
                             continue
@@ -1356,12 +1374,18 @@ class DevelopmentGameTimeline:
                                 "sample": target["sample"], "domain": domain,
                                 "before": before, "after": deepcopy(target[domain]),
                                 "lower_sample": anchor["sample"], "upper_sample": frame["sample"],
+                                "abstaining_view_samples": deepcopy(abstaining),
                                 "kind": "view_estimate_revision_not_event", "qualified": False,
                                 "Map_authority": False,
                             })
                 anchor, pending, score = frame, [], current_score
+                last_current_self = native_time(frame["sample"])
                 continue
             compatible, supported = self._report_view_support(frame)
+            current_self = any(
+                r["context"].get("unqualified_view_model") is True
+                and r["raw"].get("camera_hypothesis") == "SELF" for r in rows
+            )
             if not compatible or any(
                 frame[d]["value"] not in {"UNKNOWN", value}
                 or (frame[d]["value"] == "UNKNOWN" and frame[d]["reason"] not in {
@@ -1370,10 +1394,17 @@ class DevelopmentGameTimeline:
                 for d, value in [("life", "ALIVE"), ("camera", "SELF")]
             ) or frame["round"]["value"] in {"ENDED", "INTERMISSION"} or (
                 frame["round"]["reason"] == "conflicting_observations"
+            ) or (
+                anchor is not None and not current_self and (
+                    last_current_self is None
+                    or native_time(frame["sample"]) - last_current_self > self.max_carry
+                )
             ):
-                anchor, pending, score = None, [], None
+                anchor, pending, score, last_current_self = None, [], None, None
             elif anchor:
                 pending.append((frame, supported))
+                if current_self:
+                    last_current_self = native_time(frame["sample"])
                 if current_score is not None:
                     score = current_score
         return history

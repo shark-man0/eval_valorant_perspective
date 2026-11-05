@@ -719,3 +719,73 @@ and verifies source/output hashes. Related 1091 tests, Ruff src/tests, mypy 152
 and classified Text I/O (653 files/1859 sites) pass. Platform/package CI at the
 new head remains unverified. The Goal, independent validation, historical four
 Map-role losses and other unresolved recognition metrics remain open.
+
+## Classifier abstention versus contrary view evidence
+
+Uniform 180-second/one-second acquisitions now complete on all five additional
+DEVELOPMENT matches: 900 native points, with all 300 common coarse pixels and
+measurements matching the prior purchase-projection condition under the declared
+shape-producer correspondence. These are prefixes, not full matches. The first
+completed acquisition is reused after orchestration rejects string seconds
+against an integer and then compares against the earlier unprojected condition;
+both verification failures are preserved. The resumed verifier uses the exact
+60 coarse points of the prior projected adaptive runs. No reader, acquisition
+settings or earlier results are changed to repair those checks.
+
+Each prefix contains SPECTATOR candidates. Before recovering images, one middle
+frame from the first stable observed SPECTATOR run is selected in each of the
+first three qualifying matches. Actual human replies confirm all three native
+frames DEAD/SPECTATOR. Ordinary inference, bridge v1 and bridge v2 retain all
+three correctly in both domains. The surrounding runs, death times and return
+episodes remain unlabelled; these are selected audits, not event error rates.
+
+On the remaining three wide-context ALIVE/SELF abstentions, two have no past
+direct ALIVE/SELF anchor. The third has same-Round anchors nine seconds apart,
+but one intervening frame makes both classifiers abstain. The v1 bridge clears
+context for this missing view as it would for contrary evidence. The v2 option
+keeps bounded context without changing that unreadable frame. It continues to
+require current SELF/HUD/accepted HP at every revised frame, both direct
+same-Round anchors, and all original lifecycle/source barriers.
+
+On exactly the same nine wider inputs, v1 gives 6 correct/3 abstained and v2
+7 correct/2 abstained in each domain. Forward and ordinary offline stay 5/4;
+the preserved short condition stays 5/4 for all methods. Wide v2 per-match
+correct counts are 2/2, 1/2, 1/2, 1/1, 2/2: selected-point micro agreement 7/9,
+unweighted mean match rate 80%. The two worst matches tie at 1/2 because they
+still lack a past anchor. The newly matched point was already matched on a
+different full/dense input; this improves the fixed 21-point condition, not a
+new independent physical success or a truth label for the unreadable frame.
+
+Three further newly revised frames across three affected physical matches are
+preselected before image recovery, maximizing distance from the nearer direct
+anchor. Actual replies confirm Q1-Q3 ALIVE/SELF. V1/default/forward abstain on
+all three; v2 matches all three in each domain. Other revised frames remain
+unlabelled. These audits remain separate from the fixed nine-point denominator.
+
+Frozen/current default results exactly match on twelve saved input conditions
+(17,600 native points, including parallel sampling of the same match). Other
+frame fields, rules, tokens, boundary candidates and Map remain unchanged.
+Unreadable-view frames are not revised. All previously selected non-UNKNOWN
+life/camera values are retained mechanically; this alone does not make them
+correct. The scoped old Round13/13, life12/12, camera12/12, previous separate
+audits and both sampling variants' controls remain correct with no reviewed
+loss or new error. No new weights, thresholds, event or Map authority are added.
+
+The 180-second acquisitions take 54.56/53.62/51.53/60.69/53.68 seconds with Python
+peaks 193.80/193.81/183.80/185.50/184.05 MiB, excluding children. Acquisition runs
+use the v1 binding before the state change. Separate fresh-process cached-state
+pairs reproduce all five saved v1/v2 outputs: mean preparation/ingest/rebuild
+0.2915 versus 0.2982 seconds, RSS means119.12 versus119.07 MiB including input
+and output comparison. One run per mode, alternating pair order; these are not
+statistical throughput results or complete pipeline memory figures.
+
+New native ten-second CLI smoke verifies both default and v2 configuration,
+source/output hashes and identical pixel measurements across modes. The new
+primary binding is
+`ec874940634b98263501cdd414a409c00cf0dc90c5f6b96d9eea89a7dd5699ba`;
+archived `f483…`/`b146…` identities are retained. The changed shared-state code
+also changes the coupled shape producer; pixel weights and other measurements
+are unchanged under the explicit producer correspondence. Native smoke is
+configuration/provenance evidence, not full semantic E2E. Local 1105 related
+tests, Ruff, mypy152 and classified Text I/O653/1859 pass. Latest-head platform
+and packaged CI remain unverified. Default remains off; Goal remains open.

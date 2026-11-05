@@ -338,9 +338,9 @@ cannot carry expected states or initialize recognition.
 
 `DevelopmentGameTimeline(report_view_bridge=True)` optionally reconciles a
 report-blocked current SELF candidate between two directly observed ALIVE/SELF
-anchors in the same observed Round token, within ten native seconds. Every
-intermediate frame needs compatible current SELF/HUD evidence; a frame is
-revised only with accepted current HP. Missing HP stays unfilled. Explicit
+anchors in the same observed Round token, within ten native seconds. A frame
+is revised only with compatible current SELF/HUD and accepted current HP.
+Missing HP stays unfilled. Explicit
 spectator/remote/death/downed/revival/elimination/phase evidence, score change,
 or source/epoch/fingerprint/decode break rejects the span. Life-edge evidence at
 the future anchor also prevents rewriting the preceding gap.
@@ -351,6 +351,18 @@ hypotheses, current evidence and both native anchors in
 `report_view_projection_history`. They do not advance rule tokens, lifecycle
 events, Map authority or qualification. Updating/retracting future observations
 rebuilds these hypotheses in the same shared engine.
+
+Version `development_report_view_bridge_v2` distinguishes explicit contrary
+evidence from an explicit abstention by both view classifiers. With current HUD
+structure, only the report blocker and no owned-death relation, that abstention
+can preserve context for at most the existing `max_carry_seconds` (default two
+native seconds) since a current SELF measurement. The unreadable frame's own
+estimate is retained without revision. Missing/malformed/conflicting classifier
+results and accepted invalid HP reject the span. The ten-second overall bound,
+same-Round anchors and all source/life/view/phase barriers remain unchanged.
+Configuration records `max_abstaining_view_gap_seconds`; projection history
+links `abstaining_view_samples` as exact native samples. This does not add
+current SELF evidence to the unreadable frame or produce a lifecycle event.
 
 The acquisition API and CLI expose `report_view_bridge=True` and
 `--report-view-bridge`. Receipts bind engine configuration and a
