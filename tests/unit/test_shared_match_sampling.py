@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import pytest
 
-from valorant_ai_coach.temporal.match import png_frames, refinement_windows
+from valorant_ai_coach.temporal.match import _native_audit_batches, png_frames, refinement_windows
 from valorant_ai_coach.temporal.match_observer import _reject_identity_configuration
 
 
@@ -164,3 +164,22 @@ def test_balanced_empty_or_unchanging_input_requests_no_dense_frames(rows):
 def test_unknown_refinement_policy_is_rejected(policy):
     with pytest.raises(ValueError, match="selection policy"):
         refinement_windows([point(0), point(1)], max_windows=40, selection_policy=policy)
+
+
+def test_sparse_native_audits_do_not_decode_the_minutes_between_requested_points():
+    ticks = [10, 20, 6000, 6010]
+    assert list(_native_audit_batches(ticks, Fraction(1, 10))) == [[10, 20], [6000, 6010]]
+
+
+def test_native_audit_batches_keep_exact_six_second_edge_and_point_limit():
+    assert list(_native_audit_batches([0, 30, 60, 61], Fraction(1, 10))) == [[0, 30, 60], [61]]
+    ticks = list(range(513))
+    assert list(_native_audit_batches(ticks, Fraction(1, 1000))) == [ticks[:512], ticks[512:]]
+    assert list(_native_audit_batches([], Fraction(1, 1000))) == []
+
+
+@pytest.mark.parametrize("ticks,base", [([1, 1], Fraction(1)), ([2, 1], Fraction(1)),
+                                      ([True], Fraction(1)), ([1], Fraction(0))])
+def test_malformed_audit_batch_fails_before_any_decode(ticks, base):
+    with pytest.raises(ValueError, match="Increasing native audit"):
+        next(_native_audit_batches(ticks, base))

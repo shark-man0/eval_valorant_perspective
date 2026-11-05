@@ -583,6 +583,27 @@ that count.
 Five balanced60s pilots verify source/runtime/output hashes and reproduce all300
 coarse pixels/base measurements. They retain the chronological-adaptive ten
 reviewed Round displays,10/10 with zero prior correct lost. Related864 unit
-tests, Ruff src/tests, mypy152 and classified Text I/O pass. Full-video balanced
-comparison and current-head platform CI remain pending; no full-match accuracy
-or performance improvement is claimed from the pilot or plan results.
+tests, Ruff src/tests, mypy152 and classified Text I/O pass.
+
+The balanced full run subsequently completes with3,187 native points and
+reproduces all2,636 coarse pixels and complete pixel measurements exactly. The
+two Round controls and three separate ALIVE/SELF audits remain correct; the
+existing ALIVE/SELF miss remains abstained. No reviewed correct is lost, and no
+additional reviewed correct is gained in this full sampling comparison.
+UNKNOWN bins increase: Round966 to978, life841 to898, camera601 to604. Balanced
+allocation combines changed placement with half the dense duration (120 versus
+240 seconds); these coverage changes do not isolate placement at equal sampled
+volume. The chronological default is retained; balanced remains a development
+comparison option, without demonstrated recognition improvement.
+
+Acquisition elapsed is1,227.03 seconds and Python peak760.766 MiB. Runs have
+different workload overlap and audit requests, so this does not establish an
+isolated whole-pipeline speed or memory improvement. The full run's sparse
+audit spends148.43 decoder-reported seconds seeking two widely separated native
+points in one pass. Audit batching now caps each batch at512 points and six
+native seconds. Reacquiring the identical two PTS/pixel references in bounded
+batches takes0.84 subprocess-wall seconds, with source/binary hashes verified.
+The timing scopes differ; this is a sparse transport check, not recognition or
+whole-match throughput accuracy. Related870 tests, Ruff, mypy152 and classified
+Text I/O pass after this transport change. Current-head Linux/Windows/package
+smoke CI remains unverified.

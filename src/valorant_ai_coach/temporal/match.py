@@ -53,6 +53,24 @@ def _pts_expression(ticks: list[int]) -> str:
     return f"({_pts_expression(ticks[:middle])}+{_pts_expression(ticks[middle:])})"
 
 
+def _native_audit_batches(ticks: list[int], base: Fraction) -> Iterator[list[int]]:
+    """Bound both expression size and intervening decoding for sparse audits."""
+    if (
+        base <= 0
+        or any(type(tick) is not int for tick in ticks)
+        or any(right <= left for left, right in zip(ticks, ticks[1:], strict=False))
+    ):
+        raise ValueError("Increasing native audit ticks and positive time base required")
+    batch: list[int] = []
+    for tick in ticks:
+        if batch and (len(batch) >= 512 or (tick - batch[0]) * base > 6):
+            yield batch
+            batch = []
+        batch.append(tick)
+    if batch:
+        yield batch
+
+
 def frame_observations(
     measurement: dict[str, Any], sample: dict[str, Any], producer: str
 ) -> list[dict[str, Any]]:
@@ -507,13 +525,13 @@ def run_match(
     for index, (lower, upper) in enumerate(windows):
         decode(lower, min(upper, exclusive_end), dense_seconds, f"dense_{index:04d}")
     needed = sorted(set(audit_requests) - set(records))
-    for index in range(0, len(needed), 512):
-        batch = needed[index : index + 512]
+    audit_batches = list(_native_audit_batches(needed, base))
+    for index, batch in enumerate(audit_batches):
         decode(
             batch[0] * base,
             batch[-1] * base,
             dense_seconds,
-            f"audit_{index // 512:04d}",
+            f"audit_{index:04d}",
             {t: audit_requests[t] for t in batch},
         )
     aliases = []
@@ -668,6 +686,9 @@ def run_match(
         "same_native_baseline_producers": baseline_producers,
         "native_audit": {
             "plan_sha256": audit_plan_sha,
+            "decode_batches": len(audit_batches),
+            "max_decode_batch_span_seconds": 6,
+            "max_decode_batch_points": 512,
             "matched_references": len(aliases),
             "additional_native_points": len(needed),
             "deferred_outside_pilot_limit": deferred_audits,

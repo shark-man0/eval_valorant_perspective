@@ -329,3 +329,9 @@ Receipts bind the selected policy and deferred-count unit. Candidate selection
 uses current observation changes and temporal strata only, without labels,
 known Round times, Source conditions or a separate game-state model. Window
 coverage remains distinct from correct state/event recognition.
+
+Native audit references are grouped by at most512 points and six native
+seconds per decode batch. This preserves exact PTS/pixel verification without
+decoding minutes of intervening footage for two sparse references. Receipts
+record batch count and limits. These audit references remain optional and
+cannot carry expected states or initialize recognition.
