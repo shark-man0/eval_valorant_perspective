@@ -80,7 +80,10 @@ def native_case(tmp_path):
     return policy, config
 
 
-def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch, native_case):
+@pytest.mark.parametrize("report_view_bridge", [False, True])
+def test_full_file_native_origin_and_recording_second_grid(
+    tmp_path, monkeypatch, native_case, report_view_bridge
+):
     policy, config = native_case
 
     class PixelObserver:
@@ -99,11 +102,14 @@ def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch
         reader_config=config,
         output=output,
         max_refinement_windows=0,
+        report_view_bridge=report_view_bridge,
     )
     assert receipt["whole_file_completed"] is True
     assert receipt["source_bytes_verified_before_and_after"] is True
     assert receipt["native_start_pts_tick"] > 0
     timeline = json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
+    assert receipt["shared_engine_configuration"] == timeline["configuration"]
+    assert ("report_view_bridge" in timeline["configuration"]) == report_view_bridge
     assert all(
         f["sample"]["native_pts_tick"] >= receipt["native_start_pts_tick"]
         for f in timeline["frames"]
@@ -114,6 +120,32 @@ def test_full_file_native_origin_and_recording_second_grid(tmp_path, monkeypatch
     assert all(r["round"] == r["life"] == r["camera"] == "UNKNOWN" for r in rows)
     assert all(r["round_number"] == r["round_number_candidates"] == "UNKNOWN" for r in rows)
     assert timeline["qualified_events"] == timeline["qualified_facts"] == []
+
+
+def test_reconstruction_fingerprint_binds_mode_but_not_acquisition_epoch(
+    tmp_path, monkeypatch, native_case
+):
+    policy, config = native_case
+
+    class Pixels:
+        def __init__(self, config_path):
+            self.fingerprint, self.bindings = "a" * 64, {}
+
+        def inspect(self, image):
+            return {"signals": [], "context": {}, "raw": {}, "map_candidates": []}
+
+    monkeypatch.setattr(module, "ProfileHudObserver", Pixels)
+    receipts = [module.run_match(
+        policy_path=policy, source_id="registered-synthetic", reader_config=config,
+        output=tmp_path / ("fingerprint_run" + str(i)), max_refinement_windows=0,
+        report_view_bridge=flag,
+    ) for i, flag in enumerate([False, False, True])]
+    assert len({r["epoch"] for r in receipts}) == 3
+    assert len({r["reader_fingerprint"] for r in receipts}) == 1
+    assert receipts[0]["state_reconstruction_fingerprint"] == receipts[1][
+        "state_reconstruction_fingerprint"]
+    assert receipts[0]["state_reconstruction_fingerprint"] != receipts[2][
+        "state_reconstruction_fingerprint"]
 
 
 class CompositePixels:

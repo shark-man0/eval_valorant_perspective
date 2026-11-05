@@ -607,3 +607,44 @@ The timing scopes differ; this is a sparse transport check, not recognition or
 whole-match throughput accuracy. Related870 tests, Ruff, mypy152 and classified
 Text I/O pass after this transport change. Current-head Linux/Windows/package
 smoke CI remains unverified.
+
+## Same-input report-view reconciliation
+
+An opt-in common-engine study uses the current SELF/HUD/HP pixels and direct
+view anchors before and after an unresolved report-overlay interval. The
+legacy default exactly reproduces the frozen engine on three old full inputs,
+two sampling variants of the additional full match and the fixed contextual
+observations. No new pixel recognition or model fitting is involved in that
+comparison. Rule transitions, boundary candidates, Round tokens, other frame
+fields, Map and formal authority remain unchanged.
+
+On the existing worst-match exact ALIVE/SELF control, forward and ordinary
+offline inference abstain; the new offline candidate matches ALIVE/SELF on the
+identical full input. This holds in both sampling variants of that same match
+and frame, counting as one reviewed improvement per domain. The fixed nine
+short-context controls remain5 correct/4 abstained; the full-context result must
+not be substituted into that denominator.
+
+A further audit preselects one previously unlabelled revision in each of three
+different physical matches, maximizing distance from the nearer direct anchor
+before image recovery. Actual human responses confirm all three exact native
+frames ALIVE/SELF. Default/forward inference abstains on all three; the candidate
+matches all three in each domain. This is a selected DEVELOPMENT audit, not
+population accuracy or independent unseen validation. Other revisions and
+intervening frames are unlabelled.
+
+Original fixed Round13/13, life12/12 and camera12/12, the separate three earlier
+view audits and the two additional prefix Round controls are retained. No
+reviewed correct is lost or newly incorrect in these comparisons. Their scope
+does not establish population false attribution, special lifecycle accuracy,
+normal death/return events or boundary-time error. All model weights and GT
+remain unchanged; formal outputs remain zero. The new option stays explicit
+and off by default.
+
+Final-source local validation passes902 related tests, Ruff src/tests, mypy152
+and classified Text I/O (652 files/1858 sites). Native CLI smoke with and without
+the option reproduces the same ten pixel measurements, verifies source/output
+hashes and gives distinct mode-bound reconstruction fingerprints. Smoke is
+transport/configuration evidence; semantic improvement is measured by the
+fixed-input replay and scoped reviews above. Current-head platform CI and
+packaged smoke remain unverified.

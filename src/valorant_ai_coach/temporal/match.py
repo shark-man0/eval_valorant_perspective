@@ -279,6 +279,7 @@ def run_match(
     observer_factory: Callable[[Path], PixelObserver] | None = None,
     audit_sample_plan: Path | None = None,
     refinement_selection_policy: str = "chronological",
+    report_view_bridge: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
@@ -287,6 +288,8 @@ def run_match(
         raise ValueError("Bounded coarse/dense observation cadence required")
     if refinement_selection_policy not in {"chronological", "balanced"}:
         raise ValueError("Known development refinement selection policy required")
+    if type(report_view_bridge) is not bool:
+        raise ValueError("Explicit development report-view reconciliation boolean required")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
     output = output.expanduser().resolve()
@@ -563,9 +566,14 @@ def run_match(
         raise ValueError("Pixel observer bindings changed during execution")
     if decoder_shas != {"ffmpeg": file_sha(Path(ffmpeg)), "ffprobe": file_sha(Path(ffprobe))}:
         raise ValueError("Native decoder binaries changed during execution")
-    engine = DevelopmentGameTimeline(fuse_exact_native_evidence=True)
+    engine = DevelopmentGameTimeline(
+        fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge
+    )
     baseline_engine = (
-        DevelopmentGameTimeline(fuse_exact_native_evidence=True) if baseline_producers else None
+        DevelopmentGameTimeline(
+            fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge
+        )
+        if baseline_producers else None
     )
     for tick in sorted(records):
         r = records[tick]
@@ -682,6 +690,12 @@ def run_match(
         "reader_fingerprint": observer.fingerprint,
         "implementation_sha256": implementation_sha,
         "shared_engine_sha256": engine_sha,
+        "shared_engine_configuration": timeline["configuration"],
+        "state_reconstruction_fingerprint": digest({
+            "pixel_observer_fingerprint": observer.fingerprint,
+            "shared_engine_sha256": engine_sha,
+            "configuration": timeline["configuration"],
+        }),
         "decoder_binary_sha256s": decoder_shas,
         "same_native_baseline_producers": baseline_producers,
         "native_audit": {
@@ -742,6 +756,7 @@ def main() -> None:
     parser.add_argument("--pilot-seconds", type=int)
     parser.add_argument("--retain-frames", action="store_true")
     parser.add_argument("--audit-sample-plan", type=Path)
+    parser.add_argument("--report-view-bridge", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -753,6 +768,7 @@ def main() -> None:
         stop_after=args.pilot_seconds,
         retain_frames=args.retain_frames,
         audit_sample_plan=args.audit_sample_plan,
+        report_view_bridge=args.report_view_bridge,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

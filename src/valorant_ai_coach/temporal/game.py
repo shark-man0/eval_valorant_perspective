@@ -6,6 +6,7 @@ No path from this module issues Production Facts/Events or qualified ownership.
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from copy import deepcopy
 from enum import StrEnum
@@ -59,6 +60,10 @@ class MapState(TypedDict):
 
 
 DOMAINS = {"round": RoundState, "life": RecorderLife, "camera": CameraState}
+_REPORT_VIEW_BARRIERS = frozenset({
+    "spectator", "remote", "death", "downed", "revival",
+    "recorder_elimination_display", "result", "intermission",
+})
 SIGNALS = {
     "buy",
     "active",
@@ -295,6 +300,7 @@ class DevelopmentGameTimeline:
         fuse_exact_native_evidence: bool = False,
         forward_only: bool = False,
         mark_round_transition_gaps: bool = False,
+        report_view_bridge: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -309,6 +315,9 @@ class DevelopmentGameTimeline:
             raise ValueError("Transition brackets require offline future observations")
         self.forward_only = forward_only
         self.mark_round_transition_gaps = mark_round_transition_gaps
+        if type(report_view_bridge) is not bool or (forward_only and report_view_bridge):
+            raise ValueError("Report view reconciliation requires explicit offline mode")
+        self.report_view_bridge = report_view_bridge
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -1055,6 +1064,7 @@ class DevelopmentGameTimeline:
             self._reconcile(states)
         if self.mark_round_transition_gaps:
             self._mark_round_transition_gaps(states, transitions)
+        view_projections = self._reconcile_report_views(states) if self.report_view_bridge else []
         round_projections = []
         for state in states:
             rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1111,6 +1121,10 @@ class DevelopmentGameTimeline:
             )
         if round_projections:
             result["round_model_projection_history"] = round_projections
+        if self.report_view_bridge:
+            result["configuration"]["report_view_bridge"] = "development_report_view_bridge_v1"
+            result["configuration"]["max_report_bridge_seconds"] = "10"
+            result["report_view_projection_history"] = view_projections
         changed = []
         if self._last:
             old = {s["sample"]["sample_sha256"]: s for s in self._last["frames"]}
@@ -1252,6 +1266,117 @@ class DevelopmentGameTimeline:
                         "internal_game_event_time": None,
                     },
                 )
+
+    def _report_view_support(self, frame: dict[str, Any]) -> tuple[bool, bool]:
+        """Current pixels may support a weak view; report age stays unresolved."""
+        rows = [self._observations[i] for i in frame["observation_ids"]]
+        signals = {s for r in rows for s in r["signals"]}
+        if signals & _REPORT_VIEW_BARRIERS:
+            return False, False
+        views = [r for r in rows if r["context"].get("unqualified_view_model") is True]
+        if len(views) != 1:
+            return False, False
+        raw = views[0]["raw"]
+        if not (
+            raw.get("camera_hypothesis") == "SELF"
+            and raw.get("current_HUD_component_supported") is True
+            and raw.get("owner_hypothesis_exclusions") == ["combat_report_visible"]
+            and raw.get("owned_verb_phrase") is None
+        ):
+            return False, False
+        hp = raw.get("view_hp") or {}
+        if not isinstance(hp, dict):
+            return True, False
+        value, confidence = hp.get("display"), hp.get("confidence")
+        accepted = (isinstance(confidence, (float, int)) and not isinstance(confidence, bool)
+                    and math.isfinite(confidence) and confidence >= .90)
+        if not (isinstance(value, str) and value.isascii() and value.isdigit() and accepted):
+            return True, False
+        if not 1 <= int(value) <= 150:
+            return False, False
+        return True, True
+
+    def _reconcile_report_views(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Reconcile current report-blocked SELF pixels between direct anchors.
+
+        This post-inference candidate cannot advance lifecycle rules or Map
+        attribution. Missing HP stays unfilled; explicit contrary evidence
+        rejects the span. Native proximity alone never authorizes a revision.
+        """
+        history: list[dict[str, Any]] = []
+        anchor: dict[str, Any] | None = None
+        pending: list[tuple[dict[str, Any], bool]] = []
+        score: tuple[int, int] | None = None
+        for frame in states:
+            rows = [self._observations[i] for i in frame["observation_ids"]]
+            current_score = self._score({"observations": rows})
+            if anchor and (
+                not frame["continuity"]["carry_allowed"]
+                or source_scope(frame["sample"]) != source_scope(anchor["sample"])
+                or native_time(frame["sample"]) - native_time(anchor["sample"]) > 10
+                or frame["round_token"] != anchor["round_token"]
+                or (score is not None and current_score is not None and current_score != score)
+            ):
+                anchor, pending, score = None, [], None
+            barrier = any(set(r["signals"]) & _REPORT_VIEW_BARRIERS for r in rows)
+            direct = not barrier and bool(frame["round_token"]) and frame["round"]["value"] in {
+                "BUY", "ACTIVE"
+            } and all(
+                frame[d]["value"] == value and frame[d]["origin"] == "observation_projection"
+                for d, value in [("life", "ALIVE"), ("camera", "SELF")]
+            )
+            if direct:
+                if anchor:
+                    for target, hp_supported in pending:
+                        if not hp_supported:
+                            continue
+                        current_ids = [i for i in target["observation_ids"]
+                                       if self._observations[i]["context"].get(
+                                           "unqualified_view_model") is True]
+                        evidence = sorted(set(current_ids
+                            + anchor["life"]["evidence_ids"] + anchor["camera"]["evidence_ids"]
+                            + frame["life"]["evidence_ids"] + frame["camera"]["evidence_ids"]))
+                        for domain, value, alternatives in [
+                            ("life", "ALIVE", ["ALIVE", "DEAD", "UNKNOWN"]),
+                            ("camera", "SELF", ["SELF", "SPECTATOR", "REMOTE", "UNKNOWN"]),
+                        ]:
+                            if target[domain]["value"] != "UNKNOWN":
+                                continue
+                            before = deepcopy(target[domain])
+                            target[domain] = _estimate(
+                                value, alternatives=alternatives, evidence=evidence,
+                                reason="current_self_pixels_and_bounded_view_anchors",
+                                origin="temporal_inference",
+                            )
+                            target[domain].update(
+                                uncertainty="unqualified_report_view_continuation",
+                                forward_estimate=before,
+                            )
+                            history.append({
+                                "sample": target["sample"], "domain": domain,
+                                "before": before, "after": deepcopy(target[domain]),
+                                "lower_sample": anchor["sample"], "upper_sample": frame["sample"],
+                                "kind": "view_estimate_revision_not_event", "qualified": False,
+                                "Map_authority": False,
+                            })
+                anchor, pending, score = frame, [], current_score
+                continue
+            compatible, supported = self._report_view_support(frame)
+            if not compatible or any(
+                frame[d]["value"] not in {"UNKNOWN", value}
+                or (frame[d]["value"] == "UNKNOWN" and frame[d]["reason"] not in {
+                    "unobserved", "unresolved_report_and_missing_hud"
+                })
+                for d, value in [("life", "ALIVE"), ("camera", "SELF")]
+            ) or frame["round"]["value"] in {"ENDED", "INTERMISSION"} or (
+                frame["round"]["reason"] == "conflicting_observations"
+            ):
+                anchor, pending, score = None, [], None
+            elif anchor:
+                pending.append((frame, supported))
+                if current_score is not None:
+                    score = current_score
+        return history
 
     def _reconcile(self, states: list[dict[str, Any]]) -> None:
         for domain in DOMAINS:

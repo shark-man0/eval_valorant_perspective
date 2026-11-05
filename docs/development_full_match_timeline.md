@@ -335,3 +335,27 @@ seconds per decode batch. This preserves exact PTS/pixel verification without
 decoding minutes of intervening footage for two sparse references. Receipts
 record batch count and limits. These audit references remain optional and
 cannot carry expected states or initialize recognition.
+
+`DevelopmentGameTimeline(report_view_bridge=True)` optionally reconciles a
+report-blocked current SELF candidate between two directly observed ALIVE/SELF
+anchors in the same observed Round token, within ten native seconds. Every
+intermediate frame needs compatible current SELF/HUD evidence; a frame is
+revised only with accepted current HP. Missing HP stays unfilled. Explicit
+spectator/remote/death/downed/revival/elimination/phase evidence, score change,
+or source/epoch/fingerprint/decode break rejects the span. Life-edge evidence at
+the future anchor also prevents rewriting the preceding gap.
+
+The option defaults off and requires offline inference. Revisions retain the
+previous estimate, competing DEAD/UNKNOWN and SPECTATOR/REMOTE/UNKNOWN
+hypotheses, current evidence and both native anchors in
+`report_view_projection_history`. They do not advance rule tokens, lifecycle
+events, Map authority or qualification. Updating/retracting future observations
+rebuilds these hypotheses in the same shared engine.
+
+The acquisition API and CLI expose `report_view_bridge=True` and
+`--report-view-bridge`. Receipts bind engine configuration and a
+`state_reconstruction_fingerprint` over observer fingerprint, engine source and
+configuration, independent of acquisition epoch. The existing observer binding
+also hashes shared-state code, so fresh-acquisition primary fingerprints change
+even when pixel model weights do not. Keep the archived observation producer
+fingerprints; do not replace old fingerprints or reuse qualification evidence.
