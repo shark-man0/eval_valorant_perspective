@@ -359,3 +359,8 @@ configuration, independent of acquisition epoch. The existing observer binding
 also hashes shared-state code, so fresh-acquisition primary fingerprints change
 even when pixel model weights do not. Keep the archived observation producer
 fingerprints; do not replace old fingerprints or reuse qualification evidence.
+
+Source and artifact checksums use complete SHA-256 with bounded 1 MiB binary
+reads. This avoids allocating an entire full-match recording solely to verify
+its identity. Source admission still requires the same exact registered digest
+before and after acquisition; bounded hashing does not sample or weaken it.

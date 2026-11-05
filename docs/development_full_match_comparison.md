@@ -648,3 +648,74 @@ hashes and gives distinct mode-bound reconstruction fingerprints. Smoke is
 transport/configuration evidence; semantic improvement is measured by the
 fixed-input replay and scoped reviews above. Current-head platform CI and
 packaged smoke remain unverified.
+
+## Wider context on the same nine view controls
+
+The same nine existing native centers across five additional DEVELOPMENT
+matches were acquired with fixed offsets from -10 to +10 seconds. The earlier
+five-frame condition is retained alongside this new 21-frame condition; its
+windows and labels are unchanged. Every reader uses the same weights, Profile,
+configuration and shared engine. Acquisition and prediction receive no expected
+state. All 189 native frames and nine original center pixels are verified.
+
+An initial strict archived-measurement comparison aborts on a changed shape
+producer fingerprint: the producer binds base_primary, which includes the
+updated shared-state code. The failed attempt is retained. Before the successful
+attempt, an exact old/new producer correspondence is declared and unchanged
+pixel feature code/model binding verified. All 45 common pixels and measurement
+fields then match under that one correspondence. Raw archived fingerprints are
+retained; raw whole-measurement byte equality is not claimed. A second harness
+attempt aborts on an exclusive plan write before media access and is also kept.
+
+| Native center cohort | Forward | Ordinary offline | Offline report-view bridge |
+| --- | --- | --- | --- |
+| Same nine, +/-2 seconds | 5 correct, 4 abstained | 5 correct, 4 abstained | 5 correct, 4 abstained |
+| Same nine, +/-10 seconds | 5 correct, 4 abstained | 5 correct, 4 abstained | 6 correct, 3 abstained |
+
+Life and camera have identical counts in this table. On the wider input, one
+previously abstained center in another physical match becomes ALIVE/SELF only
+with the offline bridge. There are no reviewed incorrect values or lost prior
+correct values. This is a new, explicitly wider condition on all nine centers,
+not a substitution of an unrelated full-match frame into the old denominator.
+
+| Additional match | Centers | Short life/camera correct | Wide bridge life/camera correct | Wide bridge abstained |
+| --- | ---: | ---: | ---: | ---: |
+| A | 2 | 1 | 2 | 0 |
+| B | 2 | 1 | 1 | 1 |
+| C | 2 | 1 | 1 | 1 |
+| D | 1 | 0 | 0 | 1 |
+| E | 2 | 2 | 2 | 0 |
+
+Micro agreement on these selected points is 5/9 to 6/9; the unweighted mean of
+the five match-specific rates is 50% to 60%. Match D remains worst at 0/1. These
+are exposed development controls, not population or unseen-match accuracy.
+Remaining misses have some direct anchors in their wider windows but lack the
+required compatible bracketing at the center. Current SELF/HUD/accepted HP
+alone does not resolve report age or current victim identity. No threshold,
+ten-second bridge bound, event rule, Map authority or default setting changes.
+
+The acquisition/comparison takes 138.64 seconds with six inference modes
+retained; Python peak RSS is 4323.84 MiB and excludes child RSS. This experimental
+workload is not single-mode full-match throughput. Its resource audit exposes
+an eager complete-file allocation in the development source-hash helper.
+
+## Bounded source hashing
+
+`file_sha` now hashes all source bytes in 1 MiB binary reads. Empty, exact-block,
+multi-block and missing-file tests check complete digest parity, bounded reads
+and error propagation. No source checksum is weakened or sampled.
+
+One paired fresh-process measurement hashes the same 4,120,558,744-byte allowed
+DEVELOPMENT source with the archived helper and the streaming helper. Both
+exactly match its registered full SHA-256. Process peak RSS is 3958.64 MiB before
+and 62.14 MiB after; wall time is 3.831 and 1.992 seconds. This single ordered
+measurement establishes the workload's memory reduction, not an isolated
+throughput effect or a whole-video recognition improvement. No decoder or pixel
+model runs in this benchmark.
+
+A native 10-second CLI smoke after the change reproduces all ten pixels and
+complete measurements, primary observer and state-reconstruction fingerprints,
+and verifies source/output hashes. Related 1091 tests, Ruff src/tests, mypy 152
+and classified Text I/O (653 files/1859 sites) pass. Platform/package CI at the
+new head remains unverified. The Goal, independent validation, historical four
+Map-role losses and other unresolved recognition metrics remain open.
