@@ -499,3 +499,64 @@ After adding the opt-in adapter, 659 focused shared/native/Text I/O tests,
 Ruff src/tests, mypy152 and the classified Text I/O gate pass. Current-head full
 platform CI and packaged smoke remain unverified; historical full-suite results
 must not be described as new-head CI.
+
+## Adaptive observation on the additional five matches
+
+All five fixed DEVELOPMENT prefixes were acquired again with the same current
+recognizer and generic change-triggered refinement policy. The original 300
+coarse native pixels and base HUD measurements reproduce exactly. Refinement
+adds 995 native points (1,295 total); those additions are not new GT.
+
+Ten transition-display frames were selected by one rule in every match before
+image recovery: the last predicted BUY before the first predicted ACTIVE, and
+that first ACTIVE. Predictions were generated before the actual human response.
+The response labels only those ten native Round displays, with no interval,
+internal boundary-time, life/camera, training or formal labels.
+
+| Same-engine method | Correct | Incorrect | Abstained | Lost coarse correct |
+|---|---:|---:|---:|---:|
+| Coarse forward/offline | 9 | 1 | 0 | 0 |
+| Coarse transition brackets | 8 | 1 | 1 | 1 |
+| Adaptive forward/offline/brackets | 10 | 0 | 0 | 0 |
+
+Each additional match has two controls. Four retain 2/2; the worst coarse match
+improves 1/2 to 2/2. Means across matches and across points are 90% to 100% on
+these selected controls only, not full-match accuracy. The error is unreadable
+timer/score foreground touching the ROI border, followed by bounded BUY carry.
+A newly observed earlier ACTIVE frame corrects that carry. No Source/time/agent
+condition or recognizer threshold was added. Future-only additional correct
+points with adaptive observations: zero. The coarse bracket mode loses a
+reviewed correct BUY to abstention; future context is not uniformly beneficial.
+
+UNKNOWN Round seconds are 93 to 83 across the five prefixes; one match increases
+25 to 26. These are coverage counts, not accuracy. Acquisition seconds are
+67.92/57.78/79.18/79.76/76.50, and Python peaks are
+193.80/190.58/194.28/179.94/188.89 MiB. Full acquisition overlapped these runs;
+these are not isolated performance comparisons. Child-process memory is excluded.
+
+## Additional full acquisition and remaining risks
+
+The worst additional life/camera match also completed full-file acquisition:
+2,635.066 seconds, 2,636 observed second bins and 3,742 native points, with one
+exact existing audit frame verified. Source bytes, frozen runtime, primary
+fingerprint, outputs and the parent timeline are verified. Its one reviewed
+ALIVE/SELF control still abstains in both domains, before and after the new rule.
+Full context does not resolve that known miss.
+
+Parent/current UNKNOWN bins are Round966/966, life1187/841 and camera931/601.
+Current inferred-only known bins are Round439, life968 and camera427. None of
+these unlabeled coverage changes establishes correctness. In particular, 34
+parent SPECTATOR points change to SELF and remain unreviewed; they require
+recorder-attribution checks rather than a zero-regression claim. The remaining
+489 changed camera points are UNKNOWN to SELF; all 523 changed life points are
+UNKNOWN to ALIVE. Round values and death/return/spectator candidate counts are
+unchanged, which does not establish event accuracy.
+
+Elapsed acquisition is 1,248.75 seconds and Python peak is 853.375 MiB, excluding
+children. The 240-second refinement budget is exhausted near the beginning;
+131 windows are deferred. Budget distribution across the full match is an
+unresolved observation-selection issue. Formal outputs and current strong Map
+owner evidence remain zero. This is a fourth completed physical-match full run;
+the five additional matches have completed short acquisition pilots. It is not
+independent unseen validation or a full-match recognition pass. Map losses,
+population false events/attribution and the Goal remain unresolved.

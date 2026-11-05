@@ -306,3 +306,17 @@ the unmodified parent view model. A native smoke and the 45-point contextual
 study verify the same derived recognizer fingerprint. The new pipeline is not
 covered by the historical full-video runtime receipt; keep the frozen parent
 full acquisitions and the new cached/native bounded evidence separate.
+
+The opt-in pipeline subsequently completed one additional registered full
+match, with its own frozen-code/source/output receipts and exact native audit.
+The known ALIVE/SELF miss remains unresolved. Five uniform adaptive prefixes
+also reproduce all 300 coarse native pixels/base measurements and add 995
+observations. Sparse human Round-display comparison improves 9/10 to 10/10;
+future-only correct gain is zero. These metrics do not qualify unseen matches,
+continuous intervals, internal event times, actor identity or Map paths.
+
+Refinement is bounded to 40 windows and 240 seconds by default. The current
+chronological selection can exhaust that budget near the beginning of a full
+recording, leaving later changes unrefined. Completion of coarse acquisition
+does not mean all important transitions received dense observations. Report
+deferred windows explicitly; do not solve this with Source or known-time cases.
