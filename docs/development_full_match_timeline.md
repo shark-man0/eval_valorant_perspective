@@ -259,3 +259,50 @@ work. No qualified Fact/Event is produced.
 Keep protected recordings, canonical GT, fixed evaluation windows, schemas and
 Production gates unchanged. All resulting PRs remain Draft; main merging and
 HUD/Map task redistribution require separate coordination approval.
+
+## Primary-only intake and additional DEVELOPMENT comparisons
+
+A new registered source does not require an audit file, roster, known map/agent,
+initial state or known Round times. Use `run_match` with the same frozen
+image-only observer factory and a primary-only configuration; omit
+`audit_sample_plan`. Physical Source identity remains an intake/provenance key,
+not an argument to `inspect(image)`. Cross-validation sidecars belong to the
+separate comparison workflow and are not required for inference.
+
+The private reproducible CLI `run_general_timeline.py` exposes policy, source,
+configuration and new output directory, with optional audit/pilot bounds. It
+uses the existing shared `run_match` API and state engine. A ten-second native
+smoke without audit references verified the same primary recognizer fingerprint,
+Source/output integrity and lifecycle-evidence parity. Five additional admitted
+DEVELOPMENT recordings then completed sixty-second pilots with that recipe.
+These checks verify intake and transport; they do not qualify recognition.
+
+The current three-match full comparison and forward/offline controls are
+reported in `development_full_match_comparison.md`. All exact-frame human
+responses keep their original scope. Repeated acquisitions at one physical
+native frame must agree for a selected evaluation value; conflicting views are
+an abstention, never resolved by dictionary insertion order. Interrupted outputs
+remain separate from later completed runs.
+
+Existing DEVELOPMENT exposure is not erased by creating a new comparison
+policy. Freeze source selection and input/configuration hashes before new pixel
+access, retain old registry/split/GT policies, exclude all protected or
+exposure-unknown material, and report parameter exclusion separately from
+whole-model independence. New private policies do not change Production gates
+or authorize holdout reuse.
+
+`valorant_ai_coach.temporal.current_view_claims.project_purchase_self_claim`
+provides the opt-in report-overlay observation projection. It takes current
+supplier measurements, returns a derived copy and a changed-claim count, and
+keeps original constraints and a new producer fingerprint. It stores no game
+state or history. Reapplying it is idempotent. Current BUY alone, spectated HP100,
+missing HP, an owned-death relation and competing view cues do not restore SELF.
+
+The private primary-only CLI exposes `--purchase-self-report` for experimental
+acquisition. It preserves the unmodified parent supplier rows and separately
+replays their timeline for comparison. Its ordinary baseline excludes only the
+shape supplier; that lifecycle parity check is distinct from comparison against
+the unmodified parent view model. A native smoke and the 45-point contextual
+study verify the same derived recognizer fingerprint. The new pipeline is not
+covered by the historical full-video runtime receipt; keep the frozen parent
+full acquisitions and the new cached/native bounded evidence separate.

@@ -393,3 +393,109 @@ and per-match comparison. Keep old methods and rejected models for comparison.
 
 The Goal remains open. Draft/main/Production/GT/fixed-window/protected-recording
 boundaries and the hold on HUD/Map redistribution remain in effect.
+
+## Verified full weak-Round comparison
+
+The `a8887d8` runtime completed the three full DEVELOPMENT matches with one
+primary recognizer: 6,203.949 recorded seconds, 9,537 native points and 6,206
+second rows. The two completed acquisitions were retained; the interrupted
+third acquisition was preserved and rerun into a new directory. All Source
+before/after hashes, native audit references, output hashes and unchanged
+runtime bindings were verified before scoring.
+
+| Match | Native points / bins | Fixed Round baseline -> shape | Life / camera, both methods | UNKNOWN R/L/C after shape |
+|---|---|---|---|---|
+| A | 3164 / 2054 | 2/2 -> 2/2 | each 2/2 | 569 / 913 / 803 |
+| B | 3650 / 2542 | 8/8 -> 8/8 | each 3/3 | 994 / 885 / 765 |
+| C | 2723 / 1610 | 2 correct + 1 abstained / 3 -> 3/3 | each 7/7 | 620 / 592 / 491 |
+
+Fixed-point Round agreement is 12/13 -> 13/13; per-match macro agreement is
+88.9% -> 100%. Life/camera remain 12/12 each and reviewed correct losses are
+zero in these domains. Map's four previously correct role selections remain
+lost and are not included in that zero. Physical-match-excluded role/shape
+parameter controls reproduce the fixed-point gain; whole-model independence
+remains unestablished because UI/Profile and method selection were exposed.
+
+Same-native Round UNKNOWN bins decrease 2,302 -> 2,183. That is coverage, not
+119 new correct seconds. Life/camera/Map/continuity/token fields and transition
+and boundary candidates, including evidence, are identical before/after the
+new supplier. The reviewed timer-replacement native point gains an unqualified
+ACTIVE/UNKNOWN alternative, while its common second remains UNKNOWN.
+
+A separate sparse audit fixed each of two matches' lowest accepted shape-score
+proposals before recovering images. Both were human-confirmed post-plant ACTIVE
+versus baseline abstentions; one camera was confirmed SPECTATOR and matched.
+These selected-candidate audits do not alter the fixed 13-point denominator or
+establish population false-positive rates. A viewed player's death is not a new
+recorder death. No interval, internal event-time, training or formal labels were
+added.
+
+The current forward/offline/bracket replay on identical full evidence scores
+Round13/13, life12/12 and camera12/12 in all modes. Extra reviewed correct labels
+from future context: zero. Unlabeled state revisions remain unscored. Current
+full-run wall seconds are 1380.43/1334.31/1390.82; Python peaks are
+607.95/731.95/568.83 MiB, excluding decoder/OCR children. Parallel jobs and the
+rerun's partial overlap with tests prevent an isolated speed comparison.
+
+The frozen full-acquisition source completed the local suite: 4,371 passed, 9 skipped,
+85.72% coverage against the 75% gate. This supersedes the historical full-suite
+count for local source validation; platform CI and packaged smoke remain
+unverified. The later opt-in adapter has separate focused validation below.
+
+Five additional already-registered DEVELOPMENT matches were fixed by metadata
+before new pixel access. All five completed 60-second, audit-free acquisition
+pilots with the same primary recognizer. Their prior training/review exposure
+prevents untouched independent-evaluation claims. Protected and
+UNKNOWN_EXPOSURE media remain excluded. Pilot coverage is not full-match or
+recognition accuracy evidence. Independent event/Map/Zone metrics and the Goal
+remain incomplete.
+
+## Additional five-match report-overlay failure
+
+The five acquisition pilots are not recognition success. Replaying nine existing
+human-confirmed ALIVE/SELF native frames from those five matches made the HUD,
+view and shape routes abstain on all nine in each domain. Every frame had a
+visible combat report; eight already had an accepted SELF pixel hypothesis,
+readable HP100 and current HUD support. The blanket report blocker discarded
+the current view. The old human scope allows SELF_LIVE during purchase, but does
+not turn the separate PURCHASE menu label into Round or life GT.
+
+An opt-in shared `project_purchase_self_claim` adapter now retains a weak owner
+claim only with current positive BUY evidence, accepted SELF/HP/HUD measurements,
+the report as the sole blocker, no read owned-death relation and no conflicting
+view/death cue. It preserves the report and parent producer constraints. The
+shared engine owns all state and history; the observation remains unqualified
+and cannot authorize current Map ownership or formal output.
+
+On the same nine isolated native points, the candidate gives 3 correct/6
+abstained versus 9 baseline abstentions in life and camera. A fixed native
++/-2-second context around every center (45 total native points) gives:
+
+| Additional match | Parent life/camera | Current life/camera, each |
+|---|---|---|
+| D | 0 correct / 2 abstained | 1 correct / 1 abstained |
+| E | 0 correct / 2 abstained | 1 correct / 1 abstained |
+| F | 0 correct / 2 abstained | 1 correct / 1 abstained |
+| G | 0 correct / 1 abstained | 0 correct / 1 abstained |
+| H | 0 correct / 2 abstained | 2 correct / 0 abstained |
+
+The current forward and offline methods both give 5 correct/4 abstained per
+domain. The two extra correct points relative to isolated observations are not
+an effect of future information alone. Only the original nine centers are GT;
+neighbor frames are unlabeled. Match G is the worst with 0/1, not omitted from
+an average. Sparse same-native replay is not a new full-match recognition run.
+
+The original three-match fixed controls retain Round13/13, life12/12 and
+camera12/12 under the new proposal. No previous reviewed correct value is lost.
+Unqualified death/return candidate counts are unchanged in those cached full
+replays; population event accuracy is still unavailable. The remaining four
+additional controls abstain; broader report handling, actor identity, REMOTE,
+revival, Map roles and independent generalization remain unresolved. This
+known-DEVELOPMENT rule design is an experimental candidate, not Production
+adoption. Model weights and existing GT/splits are unchanged.
+
+The frozen `a8887d8` full source passed 4,371 tests/9 skips at 85.72% coverage.
+After adding the opt-in adapter, 659 focused shared/native/Text I/O tests,
+Ruff src/tests, mypy152 and the classified Text I/O gate pass. Current-head full
+platform CI and packaged smoke remain unverified; historical full-suite results
+must not be described as new-head CI.
