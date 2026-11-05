@@ -150,6 +150,15 @@ candidate preservation, malformed evidence and unavailable fields. Browser
 verification additionally checks real output selection and original-media seek.
 Linux/Windows CI results are recorded separately at the submitted exact head.
 
+The initial CI run passes repository tests and Ruff but its source mypy pass
+follows runtime-helper imports into unrelated legacy diagnostic CLIs. Two typed
+`.pyi` boundaries expose the existing result-text/structure helper signatures;
+their Python implementations, recognition bindings and thresholds stay byte
+identical. `mypy.stubtest` checks both interfaces against runtime exports, and
+clean source plus explicit diagnostic type checks pass locally. This is not a
+blanket error ignore or a change to qualification gates. Fresh exact-head CI is
+required after this typing repair; the earlier failed run remains recorded.
+
 HUD, Map, evaluation, GUI and learning work may continue against this interface;
 they need not wait for perfect recognition. Shared state remains owned solely by
 `DevelopmentGameTimeline`. Main merge and Production adoption remain supervisor
