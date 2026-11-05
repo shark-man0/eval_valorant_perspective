@@ -789,3 +789,76 @@ are unchanged under the explicit producer correspondence. Native smoke is
 configuration/provenance evidence, not full semantic E2E. Local 1105 related
 tests, Ruff, mypy152 and classified Text I/O653/1859 pass. Latest-head platform
 and packaged CI remain unverified. Default remains off; Goal remains open.
+
+## No-reference whole-file acquisition and audit isolation
+
+A fifth distinct physical match completes whole-file acquisition with no audit,
+review timestamps, expected states or initial-state inputs. The additional
+source is the first source-ordered remaining match after all five 180-second
+pilots, not a success-based selection. The frozen b140 runtime observes 3553
+native points over 2442.783 seconds and produces 2443 observed one-second bins.
+Source/runtime/output hashes and all 180 common coarse pixels/measurements are
+verified under the declared state-coupled shape binding. Acquisition takes
+1089.06 seconds with Python peak808.53MiB, excluding children. Nineteen dense
+windows use240seconds through recording second296;114 windows remain deferred.
+Coarse whole-file completion is not dense coverage of every transition.
+
+Five unique reviewed native frames supply eight domain labels. Historical
+comparison records repeat references across methods; they are deduplicated
+before scoring, not counted as independent labels. Current v2 exactly replays
+the original complete state result after observations are restored to native
+PTS order. Failed verification/counting outputs are retained and superseded.
+
+| Scoped cohort | Exact native evaluation | Practical one-second view at the reviewed time |
+| --- | --- | --- |
+| Two existing ALIVE/SELF frames | Each domain1correct/1not automatically observed | Default/forward1correct1abstained; bridgev1/v2 both2correct |
+| One actual DEAD/SPECTATOR frame | All methods correct in each domain | All methods correct in each domain |
+| Two existing Round frames | All methods2correct | All methods1correct1abstained |
+
+The one-second prediction is queried at the scoped native time; the human answer
+is not extended to the rest of that second. The unobserved native reference is
+not a native recognition success or a negative. Life/camera practical totals
+are2correct1abstained for forward/default and3correct for both bridges. V2 does
+not add a scoped correct over v1 on this full input. The Round abstention mixes
+BUY and ACTIVE within the same second while preserving the exact correct BUY
+frame. Against the earlier coarse180-second display, one reviewed Round correct
+becomes abstained, with no new wrong value. Sampling/context differ, so this is
+a display loss to report, not an isolated rule regression or internal-time GT.
+
+V2 full-input UNKNOWN bins are Round793/life601/camera459; inferred-only known
+bins are427/859/342. These are coverage summaries, not accuracy on unlabelled
+seconds. Population events, attribution and internal boundary error remain
+unmeasured. The full source is DEVELOPMENT-exposed, not independently unseen.
+
+The audit contract audit finds additional v1 main-engine points in the old third
+full match (5), additional chronological full match (1), and its balanced
+repeat (2). The other two old full matches add0, so their audit references do
+not change the acquired evidence set. The new fifth whole-file run supplies no
+audit at all. Historical v1 receipt metadata incorrectly claimed audit frames
+were not recognition inputs; these conditions are now labelled explicitly and
+retained. Their identical-input method comparisons remain developmental
+evidence, not autonomous sampling validation.
+
+The API fix places extra audit measurements in a sidecar while keeping main
+state/CSV/observations automatic-only. A native synthetic regression first
+reproduces the defect using an off-grid red death/spectator frame, then verifies
+both ordinary and reused inspector buffers. A real paired10second run has10
+automatic observations in each mode, plus1 audit-only observation; automatic
+pixels, measurements, selected values and transition kinds match, as do the
+prior no-audit full input's corresponding measurements. Source/output hashes
+and the separate sidecar identity are verified. Primary/state recognition
+fingerprints remain unchanged; acquisition implementation/version changes.
+
+A read-only Map probe retains the four self-marker candidates and current weak
+ALIVE/SELF estimates at the reviewed points. Raw UI-score maximum matches all
+four targets but also selects a known SPIKE candidate as self. Current-state
+gating withholds that one nonself selection, but all five controls are from one
+physical match and the candidate-generation archive is profile/reference-bound.
+No generic role fallback is adopted; formal current-position abstentions remain
+four. Rejection by camera/life context is not SPIKE recognition, coordinate or
+Zone accuracy. This explains the remaining gate/recognition gaps without
+reintroducing Source-agent-specific selection.
+
+After isolation, local1107 related tests, Ruff src/tests, mypy152 and classified
+Text I/O653files/1864sites pass. Latest-head platform/package CI remains
+unverified. No Production, GT/windows/splits or protected-media changes.

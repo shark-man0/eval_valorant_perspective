@@ -14,10 +14,16 @@ from valorant_ai_coach.video.service import VideoProbeError
 
 
 @pytest.fixture
-def native_case(tmp_path):
+def native_case(tmp_path, request):
     if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
         pytest.skip("Optional development FFmpeg transport unavailable")
     video = tmp_path / "synthetic.mp4"
+    video_filter = "setpts=PTS+5/TB"
+    if getattr(request, "param", None) == "off_grid_red":
+        video_filter = (
+            "drawbox=x=0:y=0:w=96:h=64:color=red:t=fill:enable='eq(n,1)',"
+            "setpts=PTS+5/TB"
+        )
     subprocess.run(
         [
             shutil.which("ffmpeg"),
@@ -28,7 +34,7 @@ def native_case(tmp_path):
             "-i",
             "color=c=blue:s=96x64:r=2:d=2",
             "-vf",
-            "setpts=PTS+5/TB",
+            video_filter,
             "-copyts",
             "-c:v",
             "mpeg4",
@@ -265,6 +271,75 @@ def test_native_audit_adds_exact_off_grid_frame_and_preserves_reference_epoch(
         ]
     )
     assert alias["independent_confirmation"] is False
+
+
+@pytest.mark.parametrize("native_case", ["off_grid_red"], indirect=True)
+@pytest.mark.parametrize("reuse_measurement", [False, True])
+def test_audit_contrary_pixels_cannot_change_automatic_timeline(
+    tmp_path, native_case, reuse_measurement
+):
+    from fractions import Fraction
+
+    policy, config = native_case
+
+    class CurrentPixels(CompositePixels):
+        def inspect(self, image):
+            value = super().inspect(image)
+            if image[:, :, 2].mean() > image[:, :, 0].mean():
+                value["signals"] = ["active", "death", "spectator"]
+                value["supplier_observations"][0]["signals"] = value["signals"]
+                value["supplier_observations"][1]["signals"] = ["spectator"]
+            if reuse_measurement:
+                if not hasattr(self, "current"):
+                    self.current = {}
+                self.current.clear()
+                self.current.update(value)
+                return self.current
+            return value
+
+    reference_run = tmp_path / "reference_grid"
+    module.run_match(
+        policy_path=policy, source_id="registered-synthetic", reader_config=config,
+        output=reference_run, coarse_seconds=Fraction(1, 2),
+        max_refinement_windows=0, observer_factory=CurrentPixels,
+    )
+    reference_archive = json.loads((reference_run / "observations_PRIVATE.json").read_text(
+        encoding="utf-8"))
+    reference = reference_archive["records"][1]["sample"]
+    assert "death" in reference_archive["records"][1]["measurement"]["signals"]
+    audit = tmp_path / "audit_reference.json"
+    audit.write_text(json.dumps({"schema": "development_native_audit_v1", "samples": [reference]}),
+                     encoding="utf-8")
+    outputs = [tmp_path / "automatic", tmp_path / "with_audit"]
+    receipts = [module.run_match(
+        policy_path=policy, source_id="registered-synthetic", reader_config=config,
+        output=output, max_refinement_windows=0, observer_factory=CurrentPixels,
+        audit_sample_plan=audit if index else None,
+    ) for index, output in enumerate(outputs)]
+    timelines = [json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
+                 for output in outputs]
+
+    def selected_frames(data):
+        return [(f["sample"]["native_pts_tick"], f["sample"]["native_pixel_sha256"],
+                 *(f[d]["value"] for d in ["round", "life", "camera"])) for f in data["frames"]]
+
+    assert selected_frames(timelines[0]) == selected_frames(timelines[1])
+    assert len(timelines[1]["frames"]) == 2
+    assert [t["kind"] for t in timelines[0]["transitions"]] == [
+        t["kind"] for t in timelines[1]["transitions"]]
+    assert receipts[1]["observed_native_points"] == 2
+    assert receipts[1]["audit_only_native_points"] == 1
+    assert receipts[1]["total_decoded_native_points"] == 3
+    assert receipts[1]["native_audit"]["recognition_or_initialization_input"] is False
+    sidecar = json.loads((outputs[1] / "audit_observations_PRIVATE.json").read_text(
+        encoding="utf-8"))
+    assert len(sidecar["records"]) == 1
+    assert "death" in sidecar["records"][0]["measurement"]["signals"]
+    assert sidecar["records"][0]["sample"]["native_pts_tick"] == reference["native_pts_tick"]
+    archive = json.loads((outputs[1] / "observations_PRIVATE.json").read_text(encoding="utf-8"))
+    assert len(archive["records"]) == 2
+    assert all(not r["pass"].startswith("audit_") for r in archive["records"])
+    assert all(not d["qualified_facts"] and not d["qualified_events"] for d in timelines)
 
 
 def test_missing_baseline_supplier_never_writes_completion(tmp_path, native_case):

@@ -336,6 +336,25 @@ decoding minutes of intervening footage for two sparse references. Receipts
 record batch count and limits. These audit references remain optional and
 cannot carry expected states or initialize recognition.
 
+In `development_full_match_v2`, automatic coarse/dense records alone feed both
+state engines, the main observation archive and one-second output. Additional
+off-grid audit observations go to `audit_observations_PRIVATE.json`; aliases
+retain the original reference and actual acquisition identity. An audit frame
+already acquired automatically is reused and marked as such. Receipt counts
+separate `observed_native_points`, `audit_only_native_points` and
+`total_decoded_native_points`. All audit suppliers and pixel bindings are still
+validated. Inspector results are copied when captured, so a reused mutable
+return buffer cannot rewrite earlier observations.
+
+Historical v1 clarification: additional audit frames were inserted into the
+main engine despite the receipt's `recognition_or_initialization_input=false`.
+That statement was incorrect when additional frames existed. Preserve those
+archives as audit-augmented sampling conditions and their same-input method
+comparisons; do not describe them as autonomous sampling without review times.
+The current implementation isolates these references and has a native regression
+where an off-grid red frame emits death/spectator evidence while automatic blue
+frames remain unchanged with or without the audit.
+
 `DevelopmentGameTimeline(report_view_bridge=True)` optionally reconciles a
 report-blocked current SELF candidate between two directly observed ALIVE/SELF
 anchors in the same observed Round token, within ten native seconds. A frame

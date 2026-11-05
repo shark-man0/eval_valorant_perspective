@@ -18,6 +18,7 @@ import subprocess
 import time
 import uuid
 from collections.abc import Callable, Iterator
+from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
 from typing import IO, Any, Protocol, cast
@@ -454,7 +455,8 @@ def run_match(
                     # Bind the decoded native pixels, before any supplier's
                     # in-place preprocessing can alter its analysis buffer.
                     native_pixel_sha = hashlib.sha256(image.tobytes()).hexdigest()
-                    measurement = observer.inspect(cast(np.typing.NDArray[np.uint8], image))
+                    measurement = deepcopy(observer.inspect(
+                        cast(np.typing.NDArray[np.uint8], image)))
                     item = {
                         "encoded_sha": hashlib.sha256(encoded).hexdigest(),
                         "pixel_sha": native_pixel_sha,
@@ -527,6 +529,9 @@ def run_match(
     )
     for index, (lower, upper) in enumerate(windows):
         decode(lower, min(upper, exclusive_end), dense_seconds, f"dense_{index:04d}")
+    # Evaluation references never change automatic acquisition or inference.
+    # Keep their extra observations, exact PTS and pixels in a separate sidecar.
+    automatic_ticks = set(records)
     needed = sorted(set(audit_requests) - set(records))
     audit_batches = list(_native_audit_batches(needed, base))
     for index, batch in enumerate(audit_batches):
@@ -549,6 +554,7 @@ def run_match(
                     "observed_sample": actual,
                     "criterion": "same_Source_native_PTS_timebase_size_pixels",
                     "independent_confirmation": False,
+                    "already_automatically_observed": tick in automatic_ticks,
                 }
             )
     if _sha256(video) != source["source_sha256"]:
@@ -583,6 +589,8 @@ def run_match(
             raise ValueError("Unbound supplier fingerprint at native frame")
         if set(baseline_producers) - {s["producer_fingerprint"] for s in suppliers}:
             raise ValueError("Baseline supplier missing at an observed native frame")
+        if tick not in automatic_ticks:
+            continue
         for supplied in suppliers:
             engine.add(supplied)
             if (
@@ -594,7 +602,7 @@ def run_match(
     write_private(
         output / "observations_PRIVATE.json",
         {
-            "records": list(records.values()),
+            "records": [records[t] for t in sorted(automatic_ticks)],
             "reader_bindings": observer.bindings,
             "reader_fingerprint": observer.fingerprint,
         },
@@ -604,6 +612,14 @@ def run_match(
         write_private(output / "baseline_timeline_PRIVATE.json", baseline_engine.rebuild())
     if audit_sample_plan is not None:
         write_private(output / "native_audit_aliases_PRIVATE.json", {"records": aliases})
+        write_private(output / "audit_observations_PRIVATE.json", {
+            "schema": "development_native_audit_sidecar_v1",
+            "records": [records[t] for t in sorted(set(records) - automatic_ticks)],
+            "reader_bindings": observer.bindings,
+            "reader_fingerprint": observer.fingerprint,
+            "recognition_or_initialization_input": False,
+            "qualified_facts": [], "qualified_events": [],
+        })
     # Seconds outside observed endpoints remain explicit unobserved rows.
     relative_bins: dict[int, list[dict[str, Any]]] = {}
     for frame in timeline["frames"]:
@@ -669,7 +685,7 @@ def run_match(
                 ]
             )
     receipt = {
-        "version": "development_full_match_v1",
+        "version": "development_full_match_v2",
         "source_id": source_id,
         "source_sha256": source["source_sha256"],
         "physical_match_id": source["physical_match_id"],
@@ -711,7 +727,9 @@ def run_match(
         "all_decoded_frame_PTS_audited": False,
         "epoch": epoch,
         "coarse_points": len(coarse),
-        "observed_native_points": len(records),
+        "observed_native_points": len(automatic_ticks),
+        "audit_only_native_points": len(set(records) - automatic_ticks),
+        "total_decoded_native_points": len(records),
         "refinement_windows": [[str(a), str(b)] for a, b in windows],
         "deferred_refinement_windows": deferred,
         "elapsed_seconds": time.perf_counter() - began,
@@ -737,6 +755,9 @@ def run_match(
     if audit_sample_plan is not None:
         receipt["artifact_sha256s"]["native_audit_aliases_PRIVATE.json"] = file_sha(
             output / "native_audit_aliases_PRIVATE.json"
+        )
+        receipt["artifact_sha256s"]["audit_observations_PRIVATE.json"] = file_sha(
+            output / "audit_observations_PRIVATE.json"
         )
     receipt["receipt_id"] = digest(receipt)
     write_private(output / "completion_PRIVATE.json", receipt)
