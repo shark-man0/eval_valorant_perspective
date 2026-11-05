@@ -862,3 +862,60 @@ reintroducing Source-agent-specific selection.
 After isolation, local1107 related tests, Ruff src/tests, mypy152 and classified
 Text I/O653files/1864sites pass. Latest-head platform/package CI remains
 unverified. No Production, GT/windows/splits or protected-media changes.
+
+## Sixth whole acquisition and frozen-model transfer comparison
+
+Another previously admitted DEVELOPMENT match completes without audit samples,
+known review times, expected/initial states or roster/map/agent initialization.
+The audit-isolated v2 acquisition yields3630 automatic native points and2523
+observed display bins over2522.883s, in1073.33s with810.75MiB Python peak RSS
+excluding children. Source/runtime/output hashes and all180 prior coarse native
+pixels and whole measurements match under the declared shape-producer binding
+correspondence; original fingerprints remain intact. Seventeen dense windows
+consume240s of planned coverage near the beginning;99 regions remain deferred.
+Six distinct physical matches now have whole acquisitions, with their original
+runtime/audit conditions retained. Two additional matches remain180s prefixes.
+All eight are development-exposed; unseen validation remains unestablished.
+
+Forward/default/bridge-v1/bridge-v2 consume the same3630 points. The current
+rebuild exactly equals the acquired complete timeline. Deduplicated labels cover
+five native frames/eight domain labels: two Round frames match exactly, one
+DEAD/SPECTATOR frame matches each domain, and two ALIVE/SELF reference frames
+are not automatically acquired. Practical1s queries at those native reference
+times yield two matches/one abstention per life/camera domain in every mode;
+Round yields two matches. There is no additional reviewed future/bridge gain
+on this acquisition. One abstaining bin mixes earlier carried states with later
+observed BUY/ALIVE/SELF; it is not assigned a single truth for the whole second.
+No prior correct display query is lost within the comparable180s prefix, and
+no new incorrect query appears. Sampling/context differences are explicit.
+
+The existing train-only C/D model is also applied without refitting to all five
+additional180s prefixes plus the previously fixed nine wider contexts. Its two
+training physical matches remain disjoint from these five comparison matches.
+Original heldout predictions reproduce exactly before transfer; all six new
+prediction files and scoped evaluation reproduce. Human comparison labels are
+read only after predictions are sealed; this experiment decodes no new media.
+
+| Separate fixed cohort | Forward A | Offline bridge B | C | D |
+| --- | --- | --- | --- | --- |
+| Ten Round display points across five matches |9correct/1wrong|9correct/1wrong|9correct/1wrong|9correct/1wrong|
+| Nine ALIVE/SELF points, per domain |5correct/4abstain|7correct/2abstain|9abstain: unavailable model|9abstain: unavailable model|
+| Three DEAD/SPECTATOR points, per domain |3correct|3correct|3abstain: unavailable model|3abstain: unavailable model|
+
+Round micro/macro reviewed fractions are both90%; the worst match has1/2
+matches versus2/2 in each other match. It combines unread clock/score near a
+BUY-to-ACTIVE change with bounded carry of the prior BUY. Adaptive denser input
+contains an intervening measured ACTIVE timer that uniform input lacks; C/D do
+not recover the missing evidence. No Source/time exception is introduced.
+Life/camera C/D classifiers lack sufficient teacher classes; unavailable models
+are not forced into labels or reported as established classifier error rates.
+Replacing the rule path would lose ten reviewed correct states per domain.
+C/D remain unadopted; the older9/11-versus10/11 cohort stays separate.
+
+One additional derived clip receives actual human confirmation of episode
+presence: recorder death, another player's spectator view, then next-Round self
+return. This adds no native-frame/interval/event-time/training/formal labels.
+Historical Map-role abstentions remain four. False-event population metrics,
+special lifecycle cases, generic Map/Zone/path accuracy and independent unseen
+validation remain unmet. This follow-up changes reports only; recognition
+runtime stays pinned and latest-head platform/package CI is still unverified.

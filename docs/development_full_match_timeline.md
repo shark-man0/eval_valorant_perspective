@@ -395,3 +395,12 @@ Source and artifact checksums use complete SHA-256 with bounded 1 MiB binary
 reads. This avoids allocating an entire full-match recording solely to verify
 its identity. Source admission still requires the same exact registered digest
 before and after acquisition; bounded hashing does not sample or weaken it.
+
+For fixed learned-model comparisons, retain the existing model, feature schema,
+physical training groups and transition weights before applying it to additional
+matches. Verify original heldout prediction parity and seal transferred
+predictions before reading scoped comparison labels. Missing teacher classes
+mean an unavailable domain model, not permission to manufacture labels. Keep
+each sampling/review cohort separate; an unsampled exact-native reference and
+a mixed one-second display bin are different evaluation outcomes. Clip-level
+episode-presence confirmation does not create frame or event-time truth.
