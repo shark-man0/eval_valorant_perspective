@@ -546,8 +546,11 @@ Full context does not resolve that known miss.
 Parent/current UNKNOWN bins are Round966/966, life1187/841 and camera931/601.
 Current inferred-only known bins are Round439, life968 and camera427. None of
 these unlabeled coverage changes establishes correctness. In particular, 34
-parent SPECTATOR points change to SELF and remain unreviewed; they require
-recorder-attribution checks rather than a zero-regression claim. The remaining
+parent SPECTATOR points change to SELF. A later sparse audit preselected the
+first, middle and last of eight change groups before image recovery. The actual
+human answer confirms ALIVE/SELF at those three native points: current3/3 in
+each domain, parent life3 abstentions and camera3 errors. The other31 changes
+remain unreviewed; this does not establish a population zero-regression claim. The remaining
 489 changed camera points are UNKNOWN to SELF; all 523 changed life points are
 UNKNOWN to ALIVE. Round values and death/return/spectator candidate counts are
 unchanged, which does not establish event accuracy.
@@ -560,3 +563,26 @@ owner evidence remain zero. This is a fourth completed physical-match full run;
 the five additional matches have completed short acquisition pilots. It is not
 independent unseen validation or a full-match recognition pass. Map losses,
 population false events/attribution and the Goal remain unresolved.
+
+## Opt-in balanced refinement candidate
+
+All four completed receipts exhaust chronological refinement in the first
+quarter. A source-blind balanced selector now divides the observed recording
+into temporal strata, preferring explicit measured Round/view/score changes to
+missing-value chatter within each stratum. Proposals are bounded to six seconds;
+the existing 40-window/240-second ceilings remain. The chronological default is
+retained. Selection creates no state, event, identity or qualification authority.
+
+On the same frozen coarse evidence from all four matches, the legacy plan is
+reproduced exactly. Balanced plans span all four recording quarters and request
+118 to120 dense seconds in39 to40 windows. Plan coverage is not recognition
+accuracy. Deferred counts still refer to original merged regions not fully
+refined, including partial regions; more distributed sampling need not reduce
+that count.
+
+Five balanced60s pilots verify source/runtime/output hashes and reproduce all300
+coarse pixels/base measurements. They retain the chronological-adaptive ten
+reviewed Round displays,10/10 with zero prior correct lost. Related864 unit
+tests, Ruff src/tests, mypy152 and classified Text I/O pass. Full-video balanced
+comparison and current-head platform CI remain pending; no full-match accuracy
+or performance improvement is claimed from the pilot or plan results.

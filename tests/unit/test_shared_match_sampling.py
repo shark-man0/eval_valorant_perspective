@@ -100,3 +100,67 @@ def test_refinement_respects_a_nonzero_native_origin():
         [point(6), point(7, signals=["active"])], max_windows=40, origin=Fraction(11, 2)
     )
     assert windows == [(Fraction(11, 2), Fraction(8))]
+
+
+def test_balanced_selection_retains_a_late_explicit_edge_after_early_flicker():
+    rows = [point(i, signals=["owner_hud"] if i % 2 else []) for i in range(100)]
+    rows += [point(i, signals=["buy"] if i < 201 else ["active"]) for i in range(100, 300)]
+    legacy, _ = refinement_windows(rows, max_windows=4, max_total_seconds=Fraction(24))
+    balanced, deferred = refinement_windows(
+        rows, max_windows=4, max_total_seconds=Fraction(24), selection_policy="balanced"
+    )
+    assert not any(a <= 201 <= b for a, b in legacy)
+    assert any(a <= 201 <= b for a, b in balanced)
+    assert sum(b - a for a, b in balanced) <= 24
+    assert deferred > 0  # the large flickering prefix was not fully refined
+
+
+def test_balanced_strata_cover_changes_across_the_recording():
+    rows = [point(i, signals=["buy"] if (i // 10) % 2 else ["active"]) for i in range(401)]
+    windows, _ = refinement_windows(rows, max_windows=4, selection_policy="balanced")
+    assert len(windows) == 4
+    for lower, upper in [(0, 100), (100, 200), (200, 300), (300, 401)]:
+        assert any(lower <= (a + b) / 2 < upper for a, b in windows)
+
+
+def test_balanced_prefers_measured_round_change_to_missing_value_chatter():
+    rows = [point(i, signals=["buy"] if i < 11 else ["active"],
+                  score=[0, 0] if i % 2 else None) for i in range(31)]
+    windows, _ = refinement_windows(rows, max_windows=1, selection_policy="balanced")
+    assert any(a <= 11 <= b for a, b in windows)
+    assert sum(b - a for a, b in windows) <= 6
+
+
+def test_balanced_tiny_budget_remains_bounded_and_reports_partial_regions():
+    rows = [point(i, signals=["buy"] if i % 2 else ["active"]) for i in range(30)]
+    windows, deferred = refinement_windows(
+        rows, max_windows=40, max_total_seconds=Fraction(1, 2), selection_policy="balanced"
+    )
+    assert sum(b - a for a, b in windows) <= Fraction(1, 2)
+    assert deferred == 1
+
+
+def test_balanced_selection_is_invariant_to_native_origin_and_identity_metadata():
+    rows = [point(i, signals=["buy"] if (i // 4) % 2 else ["active"]) for i in range(40)]
+    expected, count = refinement_windows(rows, max_windows=3, selection_policy="balanced")
+    shifted = []
+    for row in rows:
+        sample = {**row["sample"], "native_pts_tick": row["sample"]["native_pts_tick"] + 1230,
+                  "source_id": "different", "recorder_agent_id": "unused"}
+        shifted.append({**row, "sample": sample})
+    actual, shifted_count = refinement_windows(
+        shifted, max_windows=3, origin=Fraction(123), selection_policy="balanced"
+    )
+    assert actual == [(a + 123, b + 123) for a, b in expected]
+    assert count == shifted_count
+
+
+@pytest.mark.parametrize("rows", [[], [point(0)], [point(0), point(1)]])
+def test_balanced_empty_or_unchanging_input_requests_no_dense_frames(rows):
+    assert refinement_windows(rows, max_windows=40, selection_policy="balanced") == ([], 0)
+
+
+@pytest.mark.parametrize("policy", ["unknown", "", None])
+def test_unknown_refinement_policy_is_rejected(policy):
+    with pytest.raises(ValueError, match="selection policy"):
+        refinement_windows([point(0), point(1)], max_windows=40, selection_policy=policy)

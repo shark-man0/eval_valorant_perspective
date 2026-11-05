@@ -320,3 +320,12 @@ chronological selection can exhaust that budget near the beginning of a full
 recording, leaving later changes unrefined. Completion of coarse acquisition
 does not mean all important transitions received dense observations. Report
 deferred windows explicitly; do not solve this with Source or known-time cases.
+
+`refinement_windows(..., selection_policy="balanced")` and
+`run_match(..., refinement_selection_policy="balanced")` expose an opt-in
+distributed acquisition policy. The development CLI accepts
+`--refinement-policy balanced`; omission preserves chronological selection.
+Receipts bind the selected policy and deferred-count unit. Candidate selection
+uses current observation changes and temporal strata only, without labels,
+known Round times, Source conditions or a separate game-state model. Window
+coverage remains distinct from correct state/event recognition.

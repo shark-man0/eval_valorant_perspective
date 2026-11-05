@@ -129,9 +129,13 @@ def refinement_windows(
     padding: Fraction = Fraction(1),
     max_total_seconds: Fraction = Fraction(240),
     origin: Fraction = Fraction(0),
+    selection_policy: str = "chronological",
 ) -> tuple[list[tuple[Fraction, Fraction]], int]:
     """Select from observed changes only; no known Round times or Source cases."""
+    if selection_policy not in {"chronological", "balanced"}:
+        raise ValueError("Known development refinement selection policy required")
     windows: list[tuple[Fraction, Fraction]] = []
+    candidates: list[tuple[Fraction, Fraction, Fraction, int]] = []
     for before, after in zip(records, records[1:], strict=False):
         a, b = before["measurement"], after["measurement"]
         clocks = [v["context"].get("timer_seconds") for v in (a, b)]
@@ -146,10 +150,17 @@ def refinement_windows(
             continue
         lower = max(origin, native_time(before["sample"]) - padding)
         upper = native_time(after["sample"]) + padding
+        candidates.append((lower, upper, native_time(after["sample"]), _change_priority(a, b)))
         if windows and lower <= windows[-1][1]:
             windows[-1] = windows[-1][0], max(upper, windows[-1][1])
         else:
             windows.append((lower, upper))
+    if selection_policy == "balanced":
+        return _balanced_refinement(
+            candidates, windows, max_windows=max_windows,
+            max_total_seconds=max_total_seconds, origin=origin,
+            end=native_time(records[-1]["sample"]) if records else origin,
+        )
     chosen = []
     remaining = max_total_seconds
     deferred = max(0, len(windows) - max_windows)
@@ -161,6 +172,78 @@ def refinement_windows(
         chosen.append((lower, end))
         remaining -= end - lower
         deferred += int(end < upper)
+    return chosen, deferred
+
+
+def _change_priority(before: dict[str, Any], after: dict[str, Any]) -> int:
+    """Rank measured changes for acquisition, without interpreting an event."""
+    left, right = set(before["signals"]), set(after["signals"])
+    for vocabulary, rank in [
+        ({"buy", "active", "result", "intermission"}, 4),
+        ({"owner_hud", "spectator", "remote", "death", "downed"}, 3),
+    ]:
+        a, b = left & vocabulary, right & vocabulary
+        if len(a) == len(b) == 1 and a != b:
+            return rank
+    scores = [row["context"].get("score") for row in (before, after)]
+    if all(score is not None for score in scores) and scores[0] != scores[1]:
+        return 3
+    return 1
+
+
+def _balanced_refinement(
+    candidates: list[tuple[Fraction, Fraction, Fraction, int]],
+    regions: list[tuple[Fraction, Fraction]],
+    *,
+    max_windows: int,
+    max_total_seconds: Fraction,
+    origin: Fraction,
+    end: Fraction,
+) -> tuple[list[tuple[Fraction, Fraction]], int]:
+    """Cover temporal strata before spending unused slots on further changes.
+
+    Each proposal is at most six seconds, preventing merged OCR flicker from
+    spending the entire budget in one prefix. The returned deferred count keeps
+    the legacy unit: original merged regions not fully refined, including
+    partially refined regions. Neither a selection nor its priority is an event.
+    """
+    if max_windows <= 0 or max_total_seconds <= 0 or not candidates:
+        return [], len(regions)
+    width = min(Fraction(6), max_total_seconds)
+    slots = min(max_windows, max(1, int(max_total_seconds // width)), len(candidates))
+    span = max(end - origin, Fraction(1))
+    strata: dict[int, list[int]] = {}
+    for i, (_, _, anchor, _) in enumerate(candidates):
+        bucket = max(0, min(slots - 1, int((anchor - origin) * slots / span)))
+        strata.setdefault(bucket, []).append(i)
+    selected: set[int] = set()
+    for bucket, indices in strata.items():
+        center = origin + span * Fraction(2 * bucket + 1, 2 * slots)
+        selected.add(max(indices, key=lambda i: (
+            candidates[i][3], -abs(candidates[i][2] - center), -candidates[i][2]
+        )))
+    while len(selected) < slots:
+        remaining = set(range(len(candidates))) - selected
+        selected.add(max(remaining, key=lambda i: (
+            candidates[i][3],
+            min(abs(candidates[i][2] - candidates[j][2]) for j in selected),
+            -candidates[i][2],
+        )))
+    chosen: list[tuple[Fraction, Fraction]] = []
+    proposals = []
+    for i in selected:
+        lower, upper, anchor, _ = candidates[i]
+        if upper - lower > width:
+            lower = max(lower, min(anchor - width / 2, upper - width))
+            upper = lower + width
+        proposals.append((lower, upper))
+    for lower, upper in sorted(proposals):
+        if chosen and lower <= chosen[-1][1]:
+            chosen[-1] = chosen[-1][0], max(upper, chosen[-1][1])
+        else:
+            chosen.append((lower, upper))
+    deferred = sum(not any(a <= lower and upper <= b for a, b in chosen)
+                   for lower, upper in regions)
     return chosen, deferred
 
 
@@ -177,12 +260,15 @@ def run_match(
     retain_frames: bool = False,
     observer_factory: Callable[[Path], PixelObserver] | None = None,
     audit_sample_plan: Path | None = None,
+    refinement_selection_policy: str = "chronological",
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
     engine_sha = file_sha(Path(__file__).with_name("game.py"))
     if not 0 < dense_seconds < coarse_seconds <= 2 or max_refinement_windows < 0:
         raise ValueError("Bounded coarse/dense observation cadence required")
+    if refinement_selection_policy not in {"chronological", "balanced"}:
+        raise ValueError("Known development refinement selection policy required")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
     output = output.expanduser().resolve()
@@ -415,7 +501,8 @@ def run_match(
     decode(native_start, exclusive_end, coarse_seconds, "coarse")
     coarse = [records[k] for k in sorted(records)]
     windows, deferred = refinement_windows(
-        coarse, max_windows=max_refinement_windows, origin=native_start
+        coarse, max_windows=max_refinement_windows, origin=native_start,
+        selection_policy=refinement_selection_policy,
     )
     for index, (lower, upper) in enumerate(windows):
         decode(lower, min(upper, exclusive_end), dense_seconds, f"dense_{index:04d}")
@@ -567,6 +654,8 @@ def run_match(
             "dense_seconds": str(dense_seconds),
             "max_refinement_windows": max_refinement_windows,
             "max_refinement_seconds": 240,
+            "selection_policy": refinement_selection_policy,
+            "deferred_unit": "original_merged_regions_not_fully_refined",
         },
         "processed_limit_seconds": str(limit),
         "whole_file_completed": stop_after is None,
@@ -626,6 +715,9 @@ def main() -> None:
     parser.add_argument("--reader-config", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-refinement-windows", type=int, default=40)
+    parser.add_argument(
+        "--refinement-policy", choices=["chronological", "balanced"], default="chronological"
+    )
     parser.add_argument("--pilot-seconds", type=int)
     parser.add_argument("--retain-frames", action="store_true")
     parser.add_argument("--audit-sample-plan", type=Path)
@@ -636,6 +728,7 @@ def main() -> None:
         reader_config=args.reader_config,
         output=args.output,
         max_refinement_windows=args.max_refinement_windows,
+        refinement_selection_policy=args.refinement_policy,
         stop_after=args.pilot_seconds,
         retain_frames=args.retain_frames,
         audit_sample_plan=args.audit_sample_plan,
