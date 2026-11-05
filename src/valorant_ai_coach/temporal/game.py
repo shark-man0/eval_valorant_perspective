@@ -6,6 +6,7 @@ No path from this module issues Production Facts/Events or qualified ownership.
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from copy import deepcopy
 from enum import StrEnum
@@ -59,6 +60,10 @@ class MapState(TypedDict):
 
 
 DOMAINS = {"round": RoundState, "life": RecorderLife, "camera": CameraState}
+_REPORT_VIEW_BARRIERS = frozenset({
+    "spectator", "remote", "death", "downed", "revival",
+    "recorder_elimination_display", "result", "intermission",
+})
 SIGNALS = {
     "buy",
     "active",
@@ -91,6 +96,27 @@ def observation(
     frozen = freeze_native_sample(sample)
     if not is_sha(producer) or not isinstance(signals, list) or not set(signals) <= SIGNALS:
         raise ValueError("Known observation signals and producer fingerprint required")
+    if (
+        context
+        and "unqualified_view_model" in context
+        and type(context["unqualified_view_model"]) is not bool
+    ):
+        raise ValueError("unqualified_view_model must be a boolean")
+    if (
+        context
+        and "elimination_display_signature" in context
+        and not is_sha(context["elimination_display_signature"])
+    ):
+        raise ValueError("elimination_display_signature must be a SHA256")
+    if context and "unqualified_round_model" in context:
+        if type(context["unqualified_round_model"]) is not bool:
+            raise ValueError("unqualified_round_model must be a boolean")
+        if context["unqualified_round_model"] and (
+            not set(signals) <= {"active"}
+            or {"score", "timer_seconds"} & set(context)
+            or map_candidates
+        ):
+            raise ValueError("Round model supplies only an unqualified active display claim")
     row = {
         "sample": frozen,
         "producer_fingerprint": producer,
@@ -120,6 +146,100 @@ def _estimate(
         "evidence_ids": sorted(set(evidence or [])),
         "origin": origin,
         "uncertainty": "unresolved" if value == "UNKNOWN" else "development_unqualified",
+    }
+
+
+def _round_number(state: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Current score/phase candidates; no event count or previous-number carry."""
+    scores = []
+    for row in rows:
+        score = row["context"].get("score")
+        if score is None:
+            continue
+        valid = (
+            isinstance(score, (list, tuple))
+            and len(score) == 2
+            and all(type(v) is int and 0 <= v <= 99 for v in score)
+            and row["continuity"].get("decode_ok") is not False
+        )
+        scores.append(
+            {
+                "observation_id": row["observation_id"],
+                "sample": deepcopy(row["sample"]),
+                "producer_fingerprint": row["producer_fingerprint"],
+                "displayed_score": deepcopy(score),
+                "eligible": valid,
+            }
+        )
+    pairs = {tuple(r["displayed_score"]) for r in scores if r["eligible"]}
+    phase = state["round"]
+    current_phase = (
+        phase["value"] in {"BUY", "ACTIVE"}
+        and phase["origin"] == "observation_projection"
+        and phase["hypotheses"] == [phase["value"]]
+    )
+    unambiguous = bool(
+        len(pairs) == 1 and all(r["eligible"] for r in scores) and current_phase
+    )
+    candidates = sorted(
+        {
+            n
+            for pair in pairs
+            for n in ([sum(pair) + 1] if unambiguous else [sum(pair), sum(pair) + 1])
+            if n > 0
+        }
+    )
+    reason = (
+        "current_score_and_buy_or_active"
+        if unambiguous
+        else "score_unobserved"
+        if not scores
+        else "invalid_score_observation"
+        if not all(r["eligible"] for r in scores)
+        else "conflicting_current_scores"
+        if len(pairs) != 1
+        else "score_update_or_round_phase_unresolved"
+    )
+    return {
+        "contract": "development_round_number_v1",
+        "value": candidates[0] if unambiguous else None,
+        "candidates": candidates,
+        "status": "CANDIDATE" if unambiguous else "AMBIGUOUS" if candidates else "UNKNOWN",
+        "reason": reason,
+        "uncertainty": "unqualified_score_reading" if unambiguous else reason,
+        "unknown_possible": True,
+        "evidence_ids": sorted({r["observation_id"] for r in scores} | set(phase["evidence_ids"])),
+        "phase": phase["value"],
+        "phase_evidence_ids": list(phase["evidence_ids"]),
+        "score_observations": scores,
+        "qualification": "development_only",
+        "qualified": False,
+    }
+
+
+def round_number_summary(estimates: list[dict[str, Any]]) -> dict[str, Any]:
+    """Retain unknown samples and parallel acquisitions in a second-bin view."""
+    values = {e["value"] for e in estimates}
+    candidates = sorted({n for e in estimates for n in e["candidates"]})
+    resolved = len(values) == 1 and None not in values
+    reason = (
+        "unqualified_sample_consensus"
+        if resolved
+        else "unobserved_second_bin"
+        if not estimates
+        else "unresolved_or_conflicting_samples"
+    )
+    return {
+        "contract": "development_round_number_v1",
+        "value": next(iter(values)) if resolved else None,
+        "candidates": candidates,
+        "status": "CANDIDATE" if resolved else "AMBIGUOUS" if candidates else "UNKNOWN",
+        "reason": reason,
+        "uncertainty": "unqualified_score_reading" if resolved else reason,
+        "unknown_possible": True,
+        "evidence_ids": sorted({i for e in estimates for i in e["evidence_ids"]}),
+        "qualification": "development_only",
+        "qualified": False,
     }
 
 
@@ -178,6 +298,9 @@ class DevelopmentGameTimeline:
         max_carry_seconds: Fraction = Fraction(2),
         future_seconds: Fraction = Fraction(3),
         fuse_exact_native_evidence: bool = False,
+        forward_only: bool = False,
+        mark_round_transition_gaps: bool = False,
+        report_view_bridge: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -186,6 +309,15 @@ class DevelopmentGameTimeline:
         if type(fuse_exact_native_evidence) is not bool:
             raise ValueError("Explicit current-pixel fusion boolean required")
         self.fuse_exact_native_evidence = fuse_exact_native_evidence
+        if type(forward_only) is not bool or type(mark_round_transition_gaps) is not bool:
+            raise ValueError("Explicit temporal comparison flags required")
+        if forward_only and mark_round_transition_gaps:
+            raise ValueError("Transition brackets require offline future observations")
+        self.forward_only = forward_only
+        self.mark_round_transition_gaps = mark_round_transition_gaps
+        if type(report_view_bridge) is not bool or (forward_only and report_view_bridge):
+            raise ValueError("Report view reconciliation requires explicit offline mode")
+        self.report_view_bridge = report_view_bridge
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -244,6 +376,34 @@ class DevelopmentGameTimeline:
         frames.sort(key=lambda f: (source_scope(f["sample"]), native_time(f["sample"])))
         if self.fuse_exact_native_evidence:
             self._fuse_current_pixels(frames)
+        if any(
+            r["context"].get("unqualified_round_model") is True
+            for frame in frames for r in frame["observations"]
+        ):
+            # Future-result/score helpers also inspect frame observations. Keep
+            # research Round claims out of that entire Rule evidence graph.
+            for frame in frames:
+                frame["all_observation_ids"] = [
+                    r["observation_id"] for r in frame["observations"]
+                ]
+                frame["observations"] = [
+                    r for r in frame["observations"]
+                    if r["context"].get("unqualified_round_model") is not True
+                ]
+                rows = frame["observations"]
+                frame["signals"] = sorted({s for r in rows for s in r["signals"]})
+                frame["fingerprints"] = {
+                    kind: sorted({
+                        (
+                            r["producer_fingerprint"],
+                            str(r["context"].get("profile_fingerprint", "")),
+                        )
+                        for r in rows if r["context"].get("stream_kind", "generic") == kind
+                    })
+                    for kind in {r["context"].get("stream_kind", "generic") for r in rows}
+                }
+            if self.fuse_exact_native_evidence:
+                self._fuse_current_pixels(frames)
         self._revision += 1
         states: list[dict[str, Any]] = []
         transitions: list[dict[str, Any]] = []
@@ -262,9 +422,18 @@ class DevelopmentGameTimeline:
         last_score_frame: dict[str, Any] | None = None
         last_clock: tuple[Fraction, int, tuple[int, int] | None] | None = None
         last_round_support: dict[str, Any] | None = None
+        seen_elimination_displays: set[str] = set()
         for i, frame in enumerate(frames):
             link = continuity_between(prior, frame, max_gap=self.max_carry)
             same = bool(prior and source_scope(prior["sample"]) == source_scope(frame["sample"]))
+            # Display identity survives unread gaps and Round changes. It is
+            # not physical-event identity; identical later cards stay ambiguous.
+            if not same or any(
+                r["continuity"].get(key) is True
+                for r in frame["observations"]
+                for key in ("content_break_confirmed", "source_discontinuity", "discontinuity")
+            ):
+                seen_elimination_displays = set()
             if link["carry_allowed"] and prior is not None:
                 frame["fingerprints"] = {**prior["fingerprints"], **frame["fingerprints"]}
             if not link["carry_allowed"]:
@@ -278,8 +447,46 @@ class DevelopmentGameTimeline:
                 death_round_token = None
                 pending_elimination = None
                 last_alive_evidence = []
-            ids = [r["observation_id"] for r in frame["observations"]]
-            signals = set(frame["signals"])
+            all_ids = frame.get("all_observation_ids", [
+                r["observation_id"] for r in frame["observations"]
+            ])
+            # Research Round claims are projected after lifecycle inference.
+            # They cannot advance Rule tokens, death/return context or Map gates.
+            rule_rows = [
+                r for r in frame["observations"]
+                if r["context"].get("unqualified_round_model") is not True
+            ]
+            ids = [r["observation_id"] for r in rule_rows]
+            signals = {s for r in rule_rows for s in r["signals"]}
+            display_ids = {
+                r["context"]["elimination_display_signature"]
+                for r in frame["observations"]
+                if "recorder_elimination_display" in r["signals"]
+                and "elimination_display_signature" in r["context"]
+            }
+            fresh_display_ids = display_ids - seen_elimination_displays
+            unbound_legacy_display = any(
+                "recorder_elimination_display" in r["signals"]
+                and r["context"].get("unqualified_view_model") is not True
+                and "elimination_display_signature" not in r["context"]
+                for r in frame["observations"]
+            )
+            strong_owner_rows = [
+                r
+                for r in frame["observations"]
+                if "owner_hud" in r["signals"]
+                and r["context"].get("unqualified_view_model") is not True
+            ]
+            weak_owner_only = "owner_hud" in signals and not strong_owner_rows
+            weak_camera_only = any(
+                r["context"].get("unqualified_view_model") is True
+                and set(r["signals"]) & {"owner_hud", "spectator", "remote"}
+                for r in frame["observations"]
+            ) and not any(
+                r["context"].get("unqualified_view_model") is not True
+                and set(r["signals"]) & {"owner_hud", "spectator", "remote"}
+                for r in frame["observations"]
+            )
             now = native_time(frame["sample"])
             current = {domain: _estimate() for domain in DOMAINS}
             choices: dict[str, list[str]] = {
@@ -357,6 +564,8 @@ class DevelopmentGameTimeline:
                 confirmation = None
                 forward_prior = frame
                 for j in range(i, len(frames)):
+                    if self.forward_only and j > i:
+                        break
                     later = frames[j]
                     if (
                         source_scope(later["sample"]) != source_scope(frame["sample"])
@@ -424,6 +633,18 @@ class DevelopmentGameTimeline:
                         if end_support and domain == "round"
                         else "observation_projection",
                     )
+                    if (
+                        domain == "life"
+                        and values[0] == "ALIVE"
+                        and weak_owner_only
+                        or domain == "camera"
+                        and weak_camera_only
+                    ):
+                        current[domain]["hypotheses"] = sorted(
+                            {values[0], "UNKNOWN"}
+                            | ({"REMOTE"} if domain == "camera" and values[0] == "SELF" else set())
+                        )
+                        current[domain]["uncertainty"] = "unqualified_learned_view_candidate"
                     last_direct[domain] = now, deepcopy(current[domain])
                 elif domain in last_direct and now - last_direct[domain][0] <= self.max_carry:
                     current[domain] = deepcopy(last_direct[domain][1])
@@ -512,6 +733,7 @@ class DevelopmentGameTimeline:
                 pending_elimination is None
                 and not death_latch
                 and "recorder_elimination_display" in signals
+                and (fresh_display_ids or unbound_legacy_display)
                 and current["camera"]["value"] == "SPECTATOR"
                 and last_alive is not None
                 and round_token is not None
@@ -520,6 +742,8 @@ class DevelopmentGameTimeline:
                 later_downed_ids: list[str] = []
                 forward_prior = frame
                 for later in frames[i + 1 :]:
+                    if self.forward_only:
+                        break
                     if (
                         source_scope(later["sample"]) != source_scope(frame["sample"])
                         or native_time(later["sample"]) - now > self.future
@@ -555,6 +779,9 @@ class DevelopmentGameTimeline:
                         "upper_sample": frame["sample"],
                     }
                 )
+                if display_ids:
+                    candidate["display_signatures"] = sorted(fresh_display_ids)
+                    candidate["display_identity_semantics"] = "not_physical_event_identity"
                 transitions.append(candidate)
                 pending_elimination = {
                     "candidate": candidate,
@@ -619,7 +846,7 @@ class DevelopmentGameTimeline:
                 "sample": frame["sample"],
                 **current,
                 "continuity": link,
-                "observation_ids": ids,
+                "observation_ids": all_ids,
                 "current_pixel_evidence_links": deepcopy(
                     frame.get("current_pixel_evidence_links", [])
                 ),
@@ -733,7 +960,7 @@ class DevelopmentGameTimeline:
             gate = (
                 current["life"]["value"] == "ALIVE"
                 and current["camera"]["value"] == "SELF"
-                and "owner_hud" in signals
+                and bool(strong_owner_rows)
                 and not signals
                 & {"spectator", "remote", "death", "downed", "result", "intermission"}
                 and not set(current["round"]["hypotheses"]) & {"ENDED", "INTERMISSION"}
@@ -747,7 +974,9 @@ class DevelopmentGameTimeline:
             current_owner_evidence = sorted(
                 r["observation_id"]
                 for r in frame["observations"]
-                if gate and "owner_hud" in r["signals"]
+                if gate
+                and "owner_hud" in r["signals"]
+                and r["context"].get("unqualified_view_model") is not True
             )
             self_candidates = []
             if gate:
@@ -770,7 +999,8 @@ class DevelopmentGameTimeline:
                         supplied.append(value)
                 map_zones.extend(deepcopy(supplied))
             viewed_zones = [
-                zone_candidate for row in frame["observations"]
+                zone_candidate
+                for row in frame["observations"]
                 if (zone_candidate := viewed_zone_candidate(row)) is not None
             ]
             current_zones = []
@@ -788,15 +1018,15 @@ class DevelopmentGameTimeline:
                 "observation_present": bool(candidates)
                 or bool(viewed_zones)
                 or any(
-                    r["raw"].get("schema") in {
-                        "map_consumer_provisional_v1", "development_hud_zone_measurement_v1"
-                    }
+                    r["raw"].get("schema")
+                    in {"map_consumer_provisional_v1", "development_hud_zone_measurement_v1"}
                     for r in frame["observations"]
                 ),
                 "zone_candidates": map_zones + viewed_zones,
                 "current_recorder_zone_candidates": current_zones,
                 "zone_observation_ids": sorted(
-                    r["observation_id"] for r in frame["observations"]
+                    r["observation_id"]
+                    for r in frame["observations"]
                     if r["raw"].get("schema") == "development_hud_zone_measurement_v1"
                 ),
                 "zone_context_contract": ZONE_CONTEXT_CONTRACT,
@@ -817,19 +1047,59 @@ class DevelopmentGameTimeline:
                 "ownership": "UNKNOWN",
                 "qualified": False,
             }
+            if display_ids & seen_elimination_displays:
+                frame_state["previously_seen_elimination_display_signatures"] = sorted(
+                    display_ids & seen_elimination_displays
+                )
+            seen_elimination_displays.update(display_ids)
             states.append(frame_state)
             if len(set(choices["round"])) == 1:
-                last_round_support = {
-                    "value": current["round"]["value"], "sample": frame["sample"]
-                }
+                last_round_support = {"value": current["round"]["value"], "sample": frame["sample"]}
             elif choices["round"]:
                 last_round_support = None
             prior = frame
         # Bounded bidirectional reconciliation: only fill a missing same-state hypothesis.
         # No smoothing across a conflict, reset, life edge or camera edge.
-        self._reconcile(states)
+        if not self.forward_only:
+            self._reconcile(states)
+        if self.mark_round_transition_gaps:
+            self._mark_round_transition_gaps(states, transitions)
+        view_projections = self._reconcile_report_views(states) if self.report_view_bridge else []
+        round_projections = []
+        for state in states:
+            rows = [self._observations[i] for i in state["observation_ids"]]
+            weak = [
+                r for r in rows
+                if r["context"].get("unqualified_round_model") is True
+                and "active" in r["signals"]
+            ]
+            if weak:
+                before = deepcopy(state["round"])
+                evidence = sorted({r["observation_id"] for r in weak})
+                state["round_model_hypotheses"] = {
+                    "value": "ACTIVE", "hypotheses": ["ACTIVE", "UNKNOWN"],
+                    "evidence_ids": evidence, "qualified": False,
+                    "input_samples": [r["sample"] for r in weak],
+                    "scope": "current_pixels_only_no_lifecycle_authority",
+                }
+                if before["value"] == "UNKNOWN" and before["reason"] == "unobserved":
+                    state["round"] = _estimate(
+                        "ACTIVE", alternatives=["ACTIVE", "UNKNOWN"],
+                        reason="unqualified_round_shape_candidate", evidence=evidence,
+                        origin="observation_projection",
+                    )
+                    state["round"]["uncertainty"] = "unqualified_learned_round_candidate"
+                    state["round"]["rule_estimate"] = before
+                round_projections.append({
+                    "sample": state["sample"], "before": before,
+                    "after": deepcopy(state["round"]), "evidence_ids": evidence,
+                    "kind": "current_round_estimate_revision_not_event", "qualified": False,
+                })
+            state["round_number"] = _round_number(
+                state, rows
+            )
         acquisition_seconds = self._seconds(states)
-        result = {
+        result: dict[str, Any] = {
             "version": VERSION,
             "configuration": {"fuse_exact_native_evidence": self.fuse_exact_native_evidence},
             "revision": self._revision,
@@ -844,6 +1114,18 @@ class DevelopmentGameTimeline:
             "qualified_events": [],
             "formal_outputs": 0,
         }
+        if self.forward_only or self.mark_round_transition_gaps:
+            result["configuration"].update(
+                forward_only=self.forward_only,
+                mark_round_transition_gaps=self.mark_round_transition_gaps,
+            )
+        if round_projections:
+            result["round_model_projection_history"] = round_projections
+        if self.report_view_bridge:
+            result["configuration"]["report_view_bridge"] = "development_report_view_bridge_v2"
+            result["configuration"]["max_report_bridge_seconds"] = "10"
+            result["configuration"]["max_abstaining_view_gap_seconds"] = str(self.max_carry)
+            result["report_view_projection_history"] = view_projections
         changed = []
         if self._last:
             old = {s["sample"]["sample_sha256"]: s for s in self._last["frames"]}
@@ -945,6 +1227,188 @@ class DevelopmentGameTimeline:
         )
         return next(iter(scores)) if len(scores) == 1 else None
 
+    @staticmethod
+    def _mark_round_transition_gaps(
+        states: list[dict[str, Any]], transitions: list[dict[str, Any]]
+    ) -> None:
+        """Replace an unverified carry within a measured edge with alternatives.
+
+        Neither side is selected as the true state of an unread native frame.
+        Existing direct observations, candidate brackets and all life/camera
+        states are retained. The original forward estimate remains inspectable.
+        """
+        for transition in transitions:
+            pair = {"round_start": ("BUY", "ACTIVE"), "round_end": ("ACTIVE", "ENDED")}.get(
+                transition["kind"]
+            )
+            if pair is None:
+                continue
+            lower, upper = transition["lower_sample"], transition["upper_sample"]
+            for frame in states:
+                if (
+                    source_scope(frame["sample"]) != source_scope(lower)
+                    or source_scope(upper) != source_scope(lower)
+                    or not native_time(lower) < native_time(frame["sample"]) < native_time(upper)
+                    or frame["round"]["reason"] != "bounded_missing_observation"
+                ):
+                    continue
+                original = deepcopy(frame["round"])
+                frame["round"] = _estimate(
+                    alternatives=list(pair),
+                    reason="bracketed_round_transition_candidate",
+                    evidence=transition["evidence_ids"],
+                )
+                frame["round"].update(
+                    uncertainty="boundary_within_observation_gap",
+                    forward_estimate=original,
+                    transition_bracket={
+                        "lower_sample": lower,
+                        "upper_sample": upper,
+                        "internal_game_event_time": None,
+                    },
+                )
+
+    def _report_view_support(self, frame: dict[str, Any]) -> tuple[bool, bool]:
+        """Current pixels may support a weak view; report age stays unresolved."""
+        rows = [self._observations[i] for i in frame["observation_ids"]]
+        signals = {s for r in rows for s in r["signals"]}
+        if signals & _REPORT_VIEW_BARRIERS:
+            return False, False
+        views = [r for r in rows if r["context"].get("unqualified_view_model") is True]
+        if len(views) != 1:
+            return False, False
+        raw = views[0]["raw"]
+        if not (
+            raw.get("current_HUD_component_supported") is True
+            and raw.get("owner_hypothesis_exclusions") == ["combat_report_visible"]
+            and raw.get("owned_verb_phrase") is None
+        ):
+            return False, False
+        hp = raw.get("view_hp") or {}
+        if not isinstance(hp, dict):
+            hp = {}
+        value, confidence = hp.get("display"), hp.get("confidence")
+        accepted = (isinstance(confidence, (float, int)) and not isinstance(confidence, bool)
+                    and math.isfinite(confidence) and confidence >= .90)
+        parsed_hp = (int(value) if isinstance(value, str) and value.isascii()
+                     and value.isdigit() and accepted else None)
+        if parsed_hp is not None and not 1 <= parsed_hp <= 150:
+            return False, False
+        camera = raw.get("camera_hypothesis")
+        if camera == "UNKNOWN":
+            classifiers = raw.get("classifiers")
+            if not isinstance(classifiers, dict) or not all(
+                isinstance(classifiers.get(name), dict)
+                and classifiers[name].get("value") == "UNKNOWN"
+                for name in ["centroid", "three_prototypes"]
+            ):
+                return False, False
+            # An explicit classifier abstention is missing evidence. It may
+            # preserve bounded context, but must never support filling itself.
+            return True, False
+        return (True, parsed_hp is not None) if camera == "SELF" else (False, False)
+
+    def _reconcile_report_views(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Reconcile current report-blocked SELF pixels between direct anchors.
+
+        This post-inference candidate cannot advance lifecycle rules or Map
+        attribution. Missing HP stays unfilled; explicit contrary evidence
+        rejects the span. Native proximity alone never authorizes a revision.
+        """
+        history: list[dict[str, Any]] = []
+        anchor: dict[str, Any] | None = None
+        pending: list[tuple[dict[str, Any], bool]] = []
+        score: tuple[int, int] | None = None
+        last_current_self: Fraction | None = None
+        for frame in states:
+            rows = [self._observations[i] for i in frame["observation_ids"]]
+            current_score = self._score({"observations": rows})
+            if anchor and (
+                not frame["continuity"]["carry_allowed"]
+                or source_scope(frame["sample"]) != source_scope(anchor["sample"])
+                or native_time(frame["sample"]) - native_time(anchor["sample"]) > 10
+                or frame["round_token"] != anchor["round_token"]
+                or (score is not None and current_score is not None and current_score != score)
+            ):
+                anchor, pending, score, last_current_self = None, [], None, None
+            barrier = any(set(r["signals"]) & _REPORT_VIEW_BARRIERS for r in rows)
+            direct = not barrier and bool(frame["round_token"]) and frame["round"]["value"] in {
+                "BUY", "ACTIVE"
+            } and all(
+                frame[d]["value"] == value and frame[d]["origin"] == "observation_projection"
+                for d, value in [("life", "ALIVE"), ("camera", "SELF")]
+            )
+            if direct:
+                if anchor:
+                    abstaining = [deepcopy(target["sample"]) for target, _ in pending if any(
+                        self._observations[i]["context"].get("unqualified_view_model") is True
+                        and self._observations[i]["raw"].get("camera_hypothesis") == "UNKNOWN"
+                        for i in target["observation_ids"]
+                    )]
+                    for target, hp_supported in pending:
+                        if not hp_supported:
+                            continue
+                        current_ids = [i for i in target["observation_ids"]
+                                       if self._observations[i]["context"].get(
+                                           "unqualified_view_model") is True]
+                        evidence = sorted(set(current_ids
+                            + anchor["life"]["evidence_ids"] + anchor["camera"]["evidence_ids"]
+                            + frame["life"]["evidence_ids"] + frame["camera"]["evidence_ids"]))
+                        for domain, value, alternatives in [
+                            ("life", "ALIVE", ["ALIVE", "DEAD", "UNKNOWN"]),
+                            ("camera", "SELF", ["SELF", "SPECTATOR", "REMOTE", "UNKNOWN"]),
+                        ]:
+                            if target[domain]["value"] != "UNKNOWN":
+                                continue
+                            before = deepcopy(target[domain])
+                            target[domain] = _estimate(
+                                value, alternatives=alternatives, evidence=evidence,
+                                reason="current_self_pixels_and_bounded_view_anchors",
+                                origin="temporal_inference",
+                            )
+                            target[domain].update(
+                                uncertainty="unqualified_report_view_continuation",
+                                forward_estimate=before,
+                            )
+                            history.append({
+                                "sample": target["sample"], "domain": domain,
+                                "before": before, "after": deepcopy(target[domain]),
+                                "lower_sample": anchor["sample"], "upper_sample": frame["sample"],
+                                "abstaining_view_samples": deepcopy(abstaining),
+                                "kind": "view_estimate_revision_not_event", "qualified": False,
+                                "Map_authority": False,
+                            })
+                anchor, pending, score = frame, [], current_score
+                last_current_self = native_time(frame["sample"])
+                continue
+            compatible, supported = self._report_view_support(frame)
+            current_self = any(
+                r["context"].get("unqualified_view_model") is True
+                and r["raw"].get("camera_hypothesis") == "SELF" for r in rows
+            )
+            if not compatible or any(
+                frame[d]["value"] not in {"UNKNOWN", value}
+                or (frame[d]["value"] == "UNKNOWN" and frame[d]["reason"] not in {
+                    "unobserved", "unresolved_report_and_missing_hud"
+                })
+                for d, value in [("life", "ALIVE"), ("camera", "SELF")]
+            ) or frame["round"]["value"] in {"ENDED", "INTERMISSION"} or (
+                frame["round"]["reason"] == "conflicting_observations"
+            ) or (
+                anchor is not None and not current_self and (
+                    last_current_self is None
+                    or native_time(frame["sample"]) - last_current_self > self.max_carry
+                )
+            ):
+                anchor, pending, score, last_current_self = None, [], None, None
+            elif anchor:
+                pending.append((frame, supported))
+                if current_self:
+                    last_current_self = native_time(frame["sample"])
+                if current_score is not None:
+                    score = current_score
+        return history
+
     def _reconcile(self, states: list[dict[str, Any]]) -> None:
         for domain in DOMAINS:
             anchor: dict[str, Any] | None = None
@@ -974,6 +1438,14 @@ class DevelopmentGameTimeline:
                                 evidence=anchor[domain]["evidence_ids"] + est["evidence_ids"],
                             )
                             item[domain]["uncertainty"] = "continuation_unverified"
+                            if (
+                                anchor[domain]["uncertainty"]
+                                == "unqualified_learned_view_candidate"
+                                or est["uncertainty"] == "unqualified_learned_view_candidate"
+                            ):
+                                item[domain]["hypotheses"] = sorted(
+                                    set(anchor[domain]["hypotheses"]) | set(est["hypotheses"])
+                                )
                     anchor, missing = state, []
 
     @staticmethod
@@ -1014,6 +1486,7 @@ class DevelopmentGameTimeline:
                             {e for r in items for e in r[domain]["evidence_ids"]}
                         ),
                     }
+                summary["round_number"] = round_number_summary([r["round_number"] for r in items])
                 seconds.append(summary)
         return seconds
 
@@ -1098,6 +1571,7 @@ class DevelopmentGameTimeline:
                             {e for v in views for e in v[domain]["evidence_ids"]}
                         ),
                     }
+                row["round_number"] = round_number_summary([v["round_number"] for v in views])
                 result.append(row)
         return result
 
@@ -1119,7 +1593,10 @@ def map_context(
         "recorder_life": frame_state["life"]["value"],
         "camera": frame_state["camera"]["value"],
         "recorder_correspondence": "supported"
-        if frame_state["life"]["value"] == "ALIVE" and frame_state["camera"]["value"] == "SELF"
+        if frame_state["life"]["value"] == "ALIVE"
+        and frame_state["camera"]["value"] == "SELF"
+        and frame_state["life"]["hypotheses"] == ["ALIVE"]
+        and frame_state["camera"]["hypotheses"] == ["SELF"]
         else "UNKNOWN",
         "source_continuity": "UNKNOWN",
         "round_token": frame_state["round_token"],

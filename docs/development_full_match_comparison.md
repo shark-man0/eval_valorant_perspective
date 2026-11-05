@@ -1,0 +1,921 @@
+# DEVELOPMENT full-recording comparison
+
+This is a Draft progress report for #121, using three previously exposed,
+registered, distinct physical matches. It does not establish unseen or
+all-match generalization. Private media, Profiles, exact native samples,
+review answers, and weights remain outside Git. No Production route is adopted.
+
+## Fixed automatic baseline
+
+One shared pixel observer configuration processed all three files without a
+recorder roster, human initial state, Source ID, map, agent or timestamp as
+recognition inputs. Match identity is used only for intake, provenance and
+physical-match partitions. Original observations and source bytes are preserved.
+
+| Match | Recorded seconds | Observed second bins | Native points | Round UNKNOWN bins | Inferred-only known Round bins | Wall seconds | Python peak MiB |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| A | 2053.40 | 2054 | 3163 | 604 | 324 | 992.12 | 281.44 |
+| B | 2541.47 | 2542 | 3648 | 1039 | 459 | 1109.60 | 315.47 |
+| C | 1609.08 | 1610 | 2717 | 648 | 322 | 875.92 | 256.38 |
+
+Partial final seconds are bins, not extra recording duration. Each bin contains
+at least one selected video point; this is not continuous semantic observation.
+Life/camera are UNKNOWN throughout this automatic baseline. Map is UNCONFIGURED.
+The three processes ran concurrently. Wall time includes source hashing, native
+decode, observation and state/output work. Python peak excludes child processes.
+The adaptive budget deferred 115/156/93 windows, respectively, and is not
+exhaustive boundary coverage. Selected PTS/pixels were checked, not all frames.
+
+## Clock component correction on the same native points
+
+The known wrong Round point was carried BUY because one seconds glyph failed
+the unchanged 0.90 full-clock threshold. The minute glyph independently passed.
+The opt-in `clock_prefix` observer preserves all ten competing glyph classes,
+0.90 acceptance, 0.04 margin, colon and clipping checks. Accepted minute >= 1
+supports the existing ACTIVE range rule only with current Round geometry and
+without a current BUY/Result conflict. Numeric clock seconds stay unknown.
+There is no Source/time-specific correction or chosen internal event time.
+
+For a fixed-input comparison, all 9,528 original observations were retained
+unchanged. Only automatically eligible unread-clock points were redecoded:
+757/980/734 points, with exact Source/native PTS/timebase/size/pixel checks.
+Clock evidence was added as a separately fingerprinted stream to the same state
+engine. This is a fixed-observation add-on comparison, not another full execution
+of every observer. The full-recording CLI separately exposes the same optional
+pixel component rule. The option remains off by default.
+
+| Match | Reviewed Round points | Baseline correct / wrong / abstained | Clock add-on correct / wrong / abstained | Previously correct lost |
+|---|---:|---|---|---:|
+| A | 2 | 2 / 0 / 0 | 2 / 0 / 0 | 0 |
+| B | 7 | 6 / 1 / 0 | 7 / 0 / 0 | 0 |
+| C | 2 | 2 / 0 / 0 | 2 / 0 / 0 | 0 |
+
+Micro reviewed-point correctness: 10/11 -> 11/11. Mean of per-match reviewed
+fractions: 95.24% -> 100%. These are boundary-selected development points,
+not random full-match accuracy. Match B was the worst labeled baseline match;
+its incomplete-clock evidence explains the measured error. Round UNKNOWN bins
+become 604/1039/645; the three-bin reduction is unreviewed and is not scored as
+accuracy improvement. Inferred-only known Round bins become 318/455/319.
+All life/camera values at all 9,528 native points are unchanged by this add-on.
+
+## Forward, offline and learning controls
+
+On the same 11 reviewed Round points, forward and the previous offline rule
+both score 10 correct/1 wrong. Offline transition brackets score 10 correct,
+0 wrong/1 abstained; this represents uncertainty, not a recovered correct state.
+Future information has not added a correct reviewed label in that control.
+The forward-only control now also excludes future DOWNED evidence; its real-data
+predictions were reproduced byte-for-byte, alongside a regression test of the
+previously leaking branch. Default engine behavior is retained.
+
+Weak-label temporal reranking C and self-supervised-feature-plus-reranking D
+were fitted with the held-out physical match excluded. Both score 9/11, against
+the rule's 10/11, losing one previously correct point on Match B. Neither is
+adopted. Weights and all three fold outputs are private and reproducible. Existing
+visual calibration exposure is not an untouched model holdout. Human review
+labels were not fitted into these temporal models.
+
+A separate image-only camera candidate experiment compares broad spectator UI
+features with two shared tighter portrait/name/control regions. Broad features
+score 3/7 on the original reviewed points. Tight features score 7/7 there and
+4/4 on additional predictions sealed before the human answers: A 2/2, B 3/3,
+C 6/6. Held-out match samples are excluded from fitting; original comparison-only
+labels and the four new comparison replies are not training labels. Training-side
+human controls are used only in other physical-match folds. UI feature design
+is development-exposed. Models/predictions reproduce byte-for-byte; the report
+has identical JSON values with key-order-only differences. At that image-only
+stage it was not integrated into timeline inference. A later reviewed SPECTATOR
+negative increases the denominator to 12: the centroid gives 11 correct/1
+abstained. Three prototypes alone give 8 correct/4 abstained and are rejected.
+The bounded shared-engine follow-up is below. REMOTE and full negative episodes
+remain unmeasured. Classifier point counts do not establish safe attribution.
+
+## Bounded view and persistent-report follow-up
+
+Replay a fixed first 150 seconds per match, including the already fixed native
+review controls: 2,109 native points / 450 second bins. This cohort includes
+older exact controls absent from the full cadence and a newly reviewed frame;
+its 12 life/camera points must not be compared with the full run's seven-point
+denominator. Per-fold learned weights exclude the held-out physical match.
+The inference procedure is shared; these are not identical weights in all folds.
+New comparison replies are not fitted or used for initialization. Existing
+Profile/UI design exposure still prevents untouched whole-model claims.
+
+The private pixel observer proposes view claims, HP displays and an exact
+Japanese owned-victim verb phrase. It receives no Source, timestamp, previous
+state or roster. The existing shared engine alone infers life and transitions.
+The raw phrase is an unqualified observation, not an imputed complete header,
+normal-death certificate or event time. Existing competing-view exclusions
+veto learned owner claims. SELF retains REMOTE/UNKNOWN alternatives; weak
+view claims cannot sponsor current Map evidence or recorder correspondence.
+
+| Match | Reviewed life | Baseline correct / abstained | Constrained candidate correct / abstained | Reviewed camera / candidate correct | Round correct retained |
+|---|---:|---|---|---|---|
+| A | 2 | 0 / 2 | 2 / 0 | 2 / 2 | 2 / 2 |
+| B | 3 | 0 / 3 | 3 / 0 | 3 / 3 | 7 / 7 |
+| C | 7 | 0 / 7 | 7 / 0 | 7 / 7 | 2 / 2 |
+
+An initial integration scored 11 correct/1 abstained on life, with one known
+return left unresolved. Reusing a persistent report as fresh evidence created
+another elimination hypothesis. The common engine now remembers bound display
+signatures across Round changes, occlusion/unread gaps and reappearance. A weak
+elimination claim without a readable signature cannot establish freshness. A
+signature still needs prior owned-alive/round/spectator context. It identifies
+display attributes, not physical events; genuinely different identical cards
+can remain ambiguous. This retains the original candidate rather than inferring
+a new death solely from its old display.
+
+With the view exclusions and display-identity rule, reviewed life and camera
+both score 12 correct/0 wrong/0 abstained; Round stays 11/11. Both per-match mean
+and pooled reviewed-point fractions are 100%, with no baseline-correct point
+lost. The six older correct Match B life/camera values are retained in this
+bounded experiment. No wrong SELF is observed at the two reviewed SPECTATOR
+points; this is not a population false-attribution estimate. Unlabeled candidate
+events, including later candidates, are unscored. No internal event-time error
+or independent full-episode accuracy is inferred from these point labels.
+These counts compare the selected estimate with the human label; DEAD still
+retains DOWNED/UNKNOWN alternatives and SELF retains REMOTE/UNKNOWN. They do not
+establish reliable normal-death/down/remote separation.
+
+This bounded experiment remains unadopted. The following full-recording stage
+connects the same inference procedure through bound native suppliers. The older
+runs are retained unchanged. Full-match REMOTE/negative coverage, unseen
+generalization and Round numbers remain open. No formal Fact/Event or current
+Map-owner evidence is issued by the weak model.
+
+## Completed automatic composite runs
+
+Three new full-recording runs completed with source bytes checked before/after,
+selected native PTS/pixels checked, output hashes verified and 19 predeclared
+native review references matched. Five references required additional native
+points; all 19 retained their original/new epoch aliases. The frozen audit plan
+contains no labels or initialization and is not given to the pixel observer.
+There are 9,536 native points and 6,206 second bins across 6,203.949 recorded
+seconds. All bins have a selected video observation; semantic support is sparse.
+
+One primary recognizer uses identical frozen weights and rules on all three
+matches. It is role-weight-held-out on A and training-side regression on B/C;
+it is **not** a three-match independent model test. The separate LOMO role
+weight comparison excludes the evaluated physical match from fit and uses only
+the fixed coarse grid plus predeclared controls, excluding primary-selected
+dense frames. Whole-model UI/Profile design exposure remains known DEVELOPMENT.
+
+| Match | Native points | Round reviewed / correct | Life reviewed / correct | Camera reviewed / correct | Old source-bound correct lost |
+|---|---:|---|---|---|---:|
+| A | 3164 | 2 / 2 | 2 / 2 | 2 / 2 | 0 |
+| B | 3650 | 7 / 7 | 3 / 3 | 3 / 3 | 0 |
+| C | 2722 | 2 / 2 | 7 / 7 | 7 / 7 | 0 |
+
+The baseline uses the same new native points, clock-prefix option and shared
+state engine, with only the original HUD supplier: Round 11 correct/0 wrong/0
+abstained, life 0/0/12, camera 0/0/12. Adding the unqualified view supplier gives
+Round 11/0/0, life 12/0/0 and camera 12/0/0. Pooled and per-match-mean selected
+label agreement are 100% in each domain, with zero baseline-correct losses.
+The LOMO fixed-grid control has the same reviewed counts, against life/camera
+abstentions in its own same-grid baseline. These are selected known-development
+point agreements, not full-match accuracy, untouched evaluation or qualification.
+The five additional life/camera review frames absent from the original cadence
+are present in both new methods; the original seven-point full cohort must not
+be used as the denominator for a 12-point improvement claim.
+
+The six older correct life/camera values on B are recovered in this full route.
+Across the enlarged reviewed cohort all seven source-bound correct domain
+values are retained. No wrong SELF occurs at the two reviewed SPECTATOR points;
+population false attribution and unreviewed death/return events remain unscored.
+Forward, legacy offline and transition-bracket controls all agree at the same
+11/12/12 reviewed domain points: no extra correct label from future context was
+measured. The corrected comparison CLI reproduces every primary domain estimate
+at all 9,536 native points from the original separate supplier archives.
+
+| Match | Round UNKNOWN bins | Life UNKNOWN bins | Camera UNKNOWN bins | Inferred-only known Round / life / camera bins | Wall seconds | Python peak MiB | Deferred refinement windows |
+|---|---:|---:|---:|---|---:|---:|---:|
+| A | 613 | 913 | 804 | 322 / 415 / 325 | 1437.03 | 512.19 | 107 |
+| B | 1035 | 885 | 765 | 458 / 1051 / 323 | 1729.76 | 578.59 | 121 |
+| C | 649 | 592 | 491 | 318 / 527 / 228 | 1448.55 | 467.66 | 69 |
+
+The original HUD-only same-native baseline has the same Round UNKNOWN counts
+and UNKNOWN life/camera in all bins. Unlabeled UNKNOWN reductions are not scored
+as accuracy gains. Native UNKNOWN Round reasons are unsupported observations;
+life additionally lacks owned-death context or current return confirmation.
+These domain-support gaps differ from absent video frames. Match B has the most
+Round-UNKNOWN bins, but reviewed recognition is tied; there is no justified
+worst full-match accuracy ranking. The known old B clock error was addressed
+without a Source/time exception.
+
+The three jobs ran concurrently, with a local test run overlapping part of the
+measurement. Receipts include hashing, native acquisition, primary/sidecar image
+inspection and shared primary/baseline state/output work, but exclude the later
+fixed-grid LOMO replay. Python peaks exclude children and later replay; no total
+system-memory or isolated speed comparison is claimed. The refinement budget
+still leaves uninspected candidate windows. Learned role weights and report
+signatures remain unadopted research; DEAD/DOWNED and SELF/REMOTE alternatives
+and qualified-output suppression remain intact.
+
+An additional replay joins 22/140 archived Map packets at exact full-run pixels
+without altering their original epochs. All joined pools are retained in the
+original full acquisition, with zero Round/life/camera selected-value changes.
+The other 118 packets have no exact current full-run counterpart and are not
+interpolated. Parallel epoch estimates remain separate: the first diagnostic
+mistakenly collapsed four such comparisons by physical-key dictionary order;
+the corrected comparison keys the original acquisition sample. This is archived
+supplier reuse, not a generic full-video Map recognizer. Known self-role outputs
+remain 0 correct/4 abstained; raw candidate retention is not role recovery.
+
+Final local regression for this stage: 4,327 passed/9 skipped; Ruff, mypy (151
+source modules) and Text I/O audit pass. Exact new-head Linux/Windows/package
+CI is unverified and is not inferred from these local results. The Goal remains
+open: independent Round-number validation, full Map/Zone processing, event/REMOTE/negative
+coverage and unseen generalization are incomplete.
+
+## Additive Round-number and UNKNOWN diagnosis
+
+The shared engine now exposes current-score/phase Round-number candidates in
+native frames, acquisition seconds and common seconds. The full CLI appends
+numeric/candidate/uncertainty CSV columns. It does not count start candidates,
+reuse unread previous scores, choose an ENDED score-update side, or resolve a
+carried phase. Invalid/conflicting scores and parallel acquisition uncertainty
+remain explicit. This is development inference, with no qualified number Fact.
+
+Before editing the engine, code and input/output hashes from the completed
+stage were frozen. Replaying the same cached observations for all four methods
+on each match plus the exact archived Map replay produces 13 timelines. Removing
+only the additive `round_number` fields gives the complete original outputs
+unchanged, including observations, native samples, all previous state fields,
+transitions, Map pools, second views and qualification suppression. This is a
+state/output replay, not new full-length pixel recognition or improved accuracy.
+
+| Match | Second bins | Selected unqualified number | Ambiguous number | No number candidates |
+|---|---:|---:|---:|---:|
+| A | 2054 | 825 | 667 | 562 |
+| B | 2542 | 684 | 905 | 953 |
+| C | 1610 | 408 | 508 | 694 |
+
+No independent Round-number accuracy is inferred from those coverage counts.
+Three frozen exact review points currently abstain on number selection: two
+lack a complete accepted score, and the third has a score but no current phase.
+Those display score/phase answers were pending at that stage; their later
+exact-frame comparison is recorded below.
+Three new 60-second native CLI pilots verify the new JSON/CSV path with the
+same new primary fingerprint; they are explicitly partial and do not replace
+the earlier full-run receipts. Focused shared/codec/Text I/O regression: 284
+passed; Ruff and mypy (151 source modules) passed. The 4,327-test full-suite result
+above belongs to the preceding head, not this new field's exact-head CI.
+
+For UNKNOWN diagnosis, a source-blind top-HUD pixel probe acquired the same
+fixed first 180 seconds on all three sources: 180/180/185 exact native points,
+each matched to prior full-run pixels, with one probe fingerprint. It records
+HSV/contours and content-addressed native crops without a state claim. Centered
+wide/tall red geometry gives 28/9/21 proposals, including 5/7/0 points with an
+already readable timer. Visual diagnosis of the first proposals shows red world
+backgrounds as well as a possible timer-replacement icon. Color/geometry alone
+therefore is not adopted as ACTIVE or a spike event. The icon's semantic label
+was pending at that stage; the later reply and separate weak-prototype
+comparison are recorded below.
+Candidate counts and UNKNOWN reduction are not recognition improvements.
+
+## Exact display reply and bounded weak-shape follow-up
+
+The human confirmed three exact display score/phase frames, including one
+post-plant ACTIVE display. This adds two Round labels; the third re-confirms an
+existing point and is not counted twice. The enlarged fixed cohort is Round
+12 correct/0 wrong/1 abstained out of 13, life 12/12 and camera 12/12. Display
+scores give 1 correct/2 abstained out of 3. All three score/phase-derived number
+references remain abstentions; these references are not internal-counter GT.
+No interval, precise event time, training, life/camera or Zone labels are added.
+
+Three literal-header OCR variants on the same 180 native images each accepted
+zero numbers at the fixed word threshold. They are not connected to the current
+recognizer. A weak centered-shape centroid also fails to recover the reviewed
+abstention and is rejected. The private three-prototype comparison retains
+fixed 0.90 similarity / 0.04 competitor-gap gates and fits only automatic pixel
+teachers. All 19 exact comparison references are excluded from fit. Source IDs
+partition physical matches; they never enter the classifier.
+
+Three fresh native prefixes of 180 seconds each, using one frozen primary
+recognizer, completed at 180/180/185 points. Source before/after hashes, selected
+native samples, output hashes and audit references were checked. Each run also
+saves a same-native baseline and a fixed-grid comparison whose learned view and
+shape parameters exclude the evaluated physical match. Main weights exclude A
+and train on B/C. UI/feature design and method selection are known-DEVELOPMENT
+exposed, so these parameter splits do not establish untouched generalization.
+
+| Match | Reviewed Round | Baseline correct / wrong / abstained | Weak current-shape candidate | Life/camera correct retained |
+|---|---:|---|---|---|
+| A | 2 | 2 / 0 / 0 | 2 / 0 / 0 | 2 / 2 each |
+| B | 8 | 8 / 0 / 0 | 8 / 0 / 0 | 3 / 3 each |
+| C | 3 | 2 / 0 / 1 | 3 / 0 / 0 | 7 / 7 each |
+
+The current-frame selected Round estimate recovers one reviewed abstention:
+12/13 -> 13/13. The parameter-held-out comparison gives the same result; no
+previously correct reviewed point is lost. This is one positive post-plant
+display control, not a full-match false-ACTIVE or event-accuracy estimate.
+The recovered estimate retains ACTIVE/UNKNOWN alternatives. In its one-second
+bin other samples remain unresolved, so that bin still reports UNKNOWN. The
+point label is not extended to a whole-second label. Number selection remains
+unresolved and strict Fact/Event qualification remains absent.
+
+Weak Round rows are isolated from all Rule calculations before a bounded
+current-pixel projection. Native before/after life, camera, Map, continuity,
+Round/self-view tokens and rule-generated transition/boundary evidence match
+exactly in all three runs and their parameter-held-out controls. An initial
+prototype leaked weak observation IDs into future-result evidence; its failed
+executions are retained. The corrected separation and fresh native runs verify
+that fix. All 13 untagged cached full-observation outputs also remain identical.
+No weak cue creates a Round/spike/death/return event or authorizes current Map
+ownership. This remains an optional, unadopted research supplier.
+
+Final related shared/native/Text I/O regression at this stage: 303 passed;
+Ruff and mypy (151 source modules) passed. New-head Linux/Windows/package-smoke
+CI and new full-recording runs of this optional supplier are unverified. The
+earlier complete full runs remain separate evidence rather than being relabeled
+as this version's E2E result. The Goal remains open.
+
+## Remaining failures and unavailable metrics
+
+The original automatic baseline abstains on all seven available reviewed life points
+and all seven available reviewed camera points across the three matches. Eight
+older life/camera domain points lack exact native counterparts in its cadence
+and are excluded, not counted as incorrect or negative. Compared with the older
+source-bound route, six previously correct life/camera values on Match B are
+lost in that archived baseline. The clock add-on alone does not recover them;
+the completed composite stage above reports recovery on its enlarged fixed
+cohort. HP is readable in a reviewed
+spectator view, so positive view HP cannot independently establish recorder life.
+
+The four known legacy Map-role selections remain lost in the shared path.
+Raw marker pools are retained. Missing recorder/view/slot correspondence blocks
+attribution; an observed candidate must not disappear merely because recorder
+life is uncertain. The full-video route has not connected its Map reader, so it
+has no full-match Map/Zone accuracy denominator. This limitation is not a
+measurement of no markers or no movement.
+
+An exact archived audit revalidates the original review packet/response hashes,
+candidate IDs and previous predictions. All 140 Map observations and candidate
+pools are unchanged. Each of the four reviewed self-marker objects remains in
+its pool, and its initial selection index still agrees with the reviewed marker.
+All four common consumers abstain at `external_self_or_round_support_incomplete`:
+the old common Round, life, camera, recorder correspondence and semantic
+continuity were UNKNOWN. Candidate preservation is not recovery of the four
+correct role selections: correct 4 -> 0, abstained 0 -> 4. The separately reviewed
+spike UI is blocked by a SPECTATOR context. The old initial selector requires a
+Source/agent-supported appearance reference, so restoring that selector alone
+would not establish source-independent recorder identity. No coordinate, Zone,
+path or population Map-role accuracy is inferred from these exact-image roles.
+
+There is no complete independent event inventory or internal boundary-time GT.
+Correct/false/missed Round starts/ends, event precision/recall, boundary-time
+error, population false death/SELF attribution and full-match Map-role accuracy
+are therefore **unavailable**, not zero. Candidate starts/ends remain unqualified.
+Independent Round-number validation, generic death/down/remote/revival handling,
+Map routing and major-regression acceptance remain open. No formal Fact/Event
+is produced.
+
+## Validation and reproduction
+
+The full composite stage's local suite passed 4,327 tests with 9 skipped. The
+subsequent Round-number change passed 284 focused shared/codec/Text I/O tests,
+Ruff src/tests and mypy on 151 source files. These supersede the earlier UTF-8
+fixture inventory failure; historical results remain retained. Exact new-head
+Linux/Windows/package-smoke CI is unverified.
+
+The original 11,402 native-frame Round/life/camera/Map/continuity/token fields,
+transitions and second rows are unchanged under the new optional view contract.
+All three full-recording temporal-control prediction files reproduce byte-for-byte.
+
+The API/CLI, intake and temporal-control commands are in
+[development_full_match_timeline.md](development_full_match_timeline.md).
+Private receipts bind the original full runs, frozen comparison plan, physical
+splits, exact review equivalence, clock add-on, model reproduction and exposure
+journal. Repeating experiments requires those admitted private assets and new
+output directories. Adding a recording requires predeclared use/physical split,
+registry acceptance, a pilot, the same observer configuration, then full processing
+and per-match comparison. Keep old methods and rejected models for comparison.
+
+The Goal remains open. Draft/main/Production/GT/fixed-window/protected-recording
+boundaries and the hold on HUD/Map redistribution remain in effect.
+
+## Verified full weak-Round comparison
+
+The `a8887d8` runtime completed the three full DEVELOPMENT matches with one
+primary recognizer: 6,203.949 recorded seconds, 9,537 native points and 6,206
+second rows. The two completed acquisitions were retained; the interrupted
+third acquisition was preserved and rerun into a new directory. All Source
+before/after hashes, native audit references, output hashes and unchanged
+runtime bindings were verified before scoring.
+
+| Match | Native points / bins | Fixed Round baseline -> shape | Life / camera, both methods | UNKNOWN R/L/C after shape |
+|---|---|---|---|---|
+| A | 3164 / 2054 | 2/2 -> 2/2 | each 2/2 | 569 / 913 / 803 |
+| B | 3650 / 2542 | 8/8 -> 8/8 | each 3/3 | 994 / 885 / 765 |
+| C | 2723 / 1610 | 2 correct + 1 abstained / 3 -> 3/3 | each 7/7 | 620 / 592 / 491 |
+
+Fixed-point Round agreement is 12/13 -> 13/13; per-match macro agreement is
+88.9% -> 100%. Life/camera remain 12/12 each and reviewed correct losses are
+zero in these domains. Map's four previously correct role selections remain
+lost and are not included in that zero. Physical-match-excluded role/shape
+parameter controls reproduce the fixed-point gain; whole-model independence
+remains unestablished because UI/Profile and method selection were exposed.
+
+Same-native Round UNKNOWN bins decrease 2,302 -> 2,183. That is coverage, not
+119 new correct seconds. Life/camera/Map/continuity/token fields and transition
+and boundary candidates, including evidence, are identical before/after the
+new supplier. The reviewed timer-replacement native point gains an unqualified
+ACTIVE/UNKNOWN alternative, while its common second remains UNKNOWN.
+
+A separate sparse audit fixed each of two matches' lowest accepted shape-score
+proposals before recovering images. Both were human-confirmed post-plant ACTIVE
+versus baseline abstentions; one camera was confirmed SPECTATOR and matched.
+These selected-candidate audits do not alter the fixed 13-point denominator or
+establish population false-positive rates. A viewed player's death is not a new
+recorder death. No interval, internal event-time, training or formal labels were
+added.
+
+The current forward/offline/bracket replay on identical full evidence scores
+Round13/13, life12/12 and camera12/12 in all modes. Extra reviewed correct labels
+from future context: zero. Unlabeled state revisions remain unscored. Current
+full-run wall seconds are 1380.43/1334.31/1390.82; Python peaks are
+607.95/731.95/568.83 MiB, excluding decoder/OCR children. Parallel jobs and the
+rerun's partial overlap with tests prevent an isolated speed comparison.
+
+The frozen full-acquisition source completed the local suite: 4,371 passed, 9 skipped,
+85.72% coverage against the 75% gate. This supersedes the historical full-suite
+count for local source validation; platform CI and packaged smoke remain
+unverified. The later opt-in adapter has separate focused validation below.
+
+Five additional already-registered DEVELOPMENT matches were fixed by metadata
+before new pixel access. All five completed 60-second, audit-free acquisition
+pilots with the same primary recognizer. Their prior training/review exposure
+prevents untouched independent-evaluation claims. Protected and
+UNKNOWN_EXPOSURE media remain excluded. Pilot coverage is not full-match or
+recognition accuracy evidence. Independent event/Map/Zone metrics and the Goal
+remain incomplete.
+
+## Additional five-match report-overlay failure
+
+The five acquisition pilots are not recognition success. Replaying nine existing
+human-confirmed ALIVE/SELF native frames from those five matches made the HUD,
+view and shape routes abstain on all nine in each domain. Every frame had a
+visible combat report; eight already had an accepted SELF pixel hypothesis,
+readable HP100 and current HUD support. The blanket report blocker discarded
+the current view. The old human scope allows SELF_LIVE during purchase, but does
+not turn the separate PURCHASE menu label into Round or life GT.
+
+An opt-in shared `project_purchase_self_claim` adapter now retains a weak owner
+claim only with current positive BUY evidence, accepted SELF/HP/HUD measurements,
+the report as the sole blocker, no read owned-death relation and no conflicting
+view/death cue. It preserves the report and parent producer constraints. The
+shared engine owns all state and history; the observation remains unqualified
+and cannot authorize current Map ownership or formal output.
+
+On the same nine isolated native points, the candidate gives 3 correct/6
+abstained versus 9 baseline abstentions in life and camera. A fixed native
++/-2-second context around every center (45 total native points) gives:
+
+| Additional match | Parent life/camera | Current life/camera, each |
+|---|---|---|
+| D | 0 correct / 2 abstained | 1 correct / 1 abstained |
+| E | 0 correct / 2 abstained | 1 correct / 1 abstained |
+| F | 0 correct / 2 abstained | 1 correct / 1 abstained |
+| G | 0 correct / 1 abstained | 0 correct / 1 abstained |
+| H | 0 correct / 2 abstained | 2 correct / 0 abstained |
+
+The current forward and offline methods both give 5 correct/4 abstained per
+domain. The two extra correct points relative to isolated observations are not
+an effect of future information alone. Only the original nine centers are GT;
+neighbor frames are unlabeled. Match G is the worst with 0/1, not omitted from
+an average. Sparse same-native replay is not a new full-match recognition run.
+
+The original three-match fixed controls retain Round13/13, life12/12 and
+camera12/12 under the new proposal. No previous reviewed correct value is lost.
+Unqualified death/return candidate counts are unchanged in those cached full
+replays; population event accuracy is still unavailable. The remaining four
+additional controls abstain; broader report handling, actor identity, REMOTE,
+revival, Map roles and independent generalization remain unresolved. This
+known-DEVELOPMENT rule design is an experimental candidate, not Production
+adoption. Model weights and existing GT/splits are unchanged.
+
+The frozen `a8887d8` full source passed 4,371 tests/9 skips at 85.72% coverage.
+After adding the opt-in adapter, 659 focused shared/native/Text I/O tests,
+Ruff src/tests, mypy152 and the classified Text I/O gate pass. Current-head full
+platform CI and packaged smoke remain unverified; historical full-suite results
+must not be described as new-head CI.
+
+## Adaptive observation on the additional five matches
+
+All five fixed DEVELOPMENT prefixes were acquired again with the same current
+recognizer and generic change-triggered refinement policy. The original 300
+coarse native pixels and base HUD measurements reproduce exactly. Refinement
+adds 995 native points (1,295 total); those additions are not new GT.
+
+Ten transition-display frames were selected by one rule in every match before
+image recovery: the last predicted BUY before the first predicted ACTIVE, and
+that first ACTIVE. Predictions were generated before the actual human response.
+The response labels only those ten native Round displays, with no interval,
+internal boundary-time, life/camera, training or formal labels.
+
+| Same-engine method | Correct | Incorrect | Abstained | Lost coarse correct |
+|---|---:|---:|---:|---:|
+| Coarse forward/offline | 9 | 1 | 0 | 0 |
+| Coarse transition brackets | 8 | 1 | 1 | 1 |
+| Adaptive forward/offline/brackets | 10 | 0 | 0 | 0 |
+
+Each additional match has two controls. Four retain 2/2; the worst coarse match
+improves 1/2 to 2/2. Means across matches and across points are 90% to 100% on
+these selected controls only, not full-match accuracy. The error is unreadable
+timer/score foreground touching the ROI border, followed by bounded BUY carry.
+A newly observed earlier ACTIVE frame corrects that carry. No Source/time/agent
+condition or recognizer threshold was added. Future-only additional correct
+points with adaptive observations: zero. The coarse bracket mode loses a
+reviewed correct BUY to abstention; future context is not uniformly beneficial.
+
+UNKNOWN Round seconds are 93 to 83 across the five prefixes; one match increases
+25 to 26. These are coverage counts, not accuracy. Acquisition seconds are
+67.92/57.78/79.18/79.76/76.50, and Python peaks are
+193.80/190.58/194.28/179.94/188.89 MiB. Full acquisition overlapped these runs;
+these are not isolated performance comparisons. Child-process memory is excluded.
+
+## Additional full acquisition and remaining risks
+
+The worst additional life/camera match also completed full-file acquisition:
+2,635.066 seconds, 2,636 observed second bins and 3,742 native points, with one
+exact existing audit frame verified. Source bytes, frozen runtime, primary
+fingerprint, outputs and the parent timeline are verified. Its one reviewed
+ALIVE/SELF control still abstains in both domains, before and after the new rule.
+Full context does not resolve that known miss.
+
+Parent/current UNKNOWN bins are Round966/966, life1187/841 and camera931/601.
+Current inferred-only known bins are Round439, life968 and camera427. None of
+these unlabeled coverage changes establishes correctness. In particular, 34
+parent SPECTATOR points change to SELF. A later sparse audit preselected the
+first, middle and last of eight change groups before image recovery. The actual
+human answer confirms ALIVE/SELF at those three native points: current3/3 in
+each domain, parent life3 abstentions and camera3 errors. The other31 changes
+remain unreviewed; this does not establish a population zero-regression claim. The remaining
+489 changed camera points are UNKNOWN to SELF; all 523 changed life points are
+UNKNOWN to ALIVE. Round values and death/return/spectator candidate counts are
+unchanged, which does not establish event accuracy.
+
+Elapsed acquisition is 1,248.75 seconds and Python peak is 853.375 MiB, excluding
+children. The 240-second refinement budget is exhausted near the beginning;
+131 windows are deferred. Budget distribution across the full match is an
+unresolved observation-selection issue. Formal outputs and current strong Map
+owner evidence remain zero. This is a fourth completed physical-match full run;
+the five additional matches have completed short acquisition pilots. It is not
+independent unseen validation or a full-match recognition pass. Map losses,
+population false events/attribution and the Goal remain unresolved.
+
+## Opt-in balanced refinement candidate
+
+All four completed receipts exhaust chronological refinement in the first
+quarter. A source-blind balanced selector now divides the observed recording
+into temporal strata, preferring explicit measured Round/view/score changes to
+missing-value chatter within each stratum. Proposals are bounded to six seconds;
+the existing 40-window/240-second ceilings remain. The chronological default is
+retained. Selection creates no state, event, identity or qualification authority.
+
+On the same frozen coarse evidence from all four matches, the legacy plan is
+reproduced exactly. Balanced plans span all four recording quarters and request
+118 to120 dense seconds in39 to40 windows. Plan coverage is not recognition
+accuracy. Deferred counts still refer to original merged regions not fully
+refined, including partial regions; more distributed sampling need not reduce
+that count.
+
+Five balanced60s pilots verify source/runtime/output hashes and reproduce all300
+coarse pixels/base measurements. They retain the chronological-adaptive ten
+reviewed Round displays,10/10 with zero prior correct lost. Related864 unit
+tests, Ruff src/tests, mypy152 and classified Text I/O pass.
+
+The balanced full run subsequently completes with3,187 native points and
+reproduces all2,636 coarse pixels and complete pixel measurements exactly. The
+two Round controls and three separate ALIVE/SELF audits remain correct; the
+existing ALIVE/SELF miss remains abstained. No reviewed correct is lost, and no
+additional reviewed correct is gained in this full sampling comparison.
+UNKNOWN bins increase: Round966 to978, life841 to898, camera601 to604. Balanced
+allocation combines changed placement with half the dense duration (120 versus
+240 seconds); these coverage changes do not isolate placement at equal sampled
+volume. The chronological default is retained; balanced remains a development
+comparison option, without demonstrated recognition improvement.
+
+Acquisition elapsed is1,227.03 seconds and Python peak760.766 MiB. Runs have
+different workload overlap and audit requests, so this does not establish an
+isolated whole-pipeline speed or memory improvement. The full run's sparse
+audit spends148.43 decoder-reported seconds seeking two widely separated native
+points in one pass. Audit batching now caps each batch at512 points and six
+native seconds. Reacquiring the identical two PTS/pixel references in bounded
+batches takes0.84 subprocess-wall seconds, with source/binary hashes verified.
+The timing scopes differ; this is a sparse transport check, not recognition or
+whole-match throughput accuracy. Related870 tests, Ruff, mypy152 and classified
+Text I/O pass after this transport change. Current-head Linux/Windows/package
+smoke CI remains unverified.
+
+## Same-input report-view reconciliation
+
+An opt-in common-engine study uses the current SELF/HUD/HP pixels and direct
+view anchors before and after an unresolved report-overlay interval. The
+legacy default exactly reproduces the frozen engine on three old full inputs,
+two sampling variants of the additional full match and the fixed contextual
+observations. No new pixel recognition or model fitting is involved in that
+comparison. Rule transitions, boundary candidates, Round tokens, other frame
+fields, Map and formal authority remain unchanged.
+
+On the existing worst-match exact ALIVE/SELF control, forward and ordinary
+offline inference abstain; the new offline candidate matches ALIVE/SELF on the
+identical full input. This holds in both sampling variants of that same match
+and frame, counting as one reviewed improvement per domain. The fixed nine
+short-context controls remain5 correct/4 abstained; the full-context result must
+not be substituted into that denominator.
+
+A further audit preselects one previously unlabelled revision in each of three
+different physical matches, maximizing distance from the nearer direct anchor
+before image recovery. Actual human responses confirm all three exact native
+frames ALIVE/SELF. Default/forward inference abstains on all three; the candidate
+matches all three in each domain. This is a selected DEVELOPMENT audit, not
+population accuracy or independent unseen validation. Other revisions and
+intervening frames are unlabelled.
+
+Original fixed Round13/13, life12/12 and camera12/12, the separate three earlier
+view audits and the two additional prefix Round controls are retained. No
+reviewed correct is lost or newly incorrect in these comparisons. Their scope
+does not establish population false attribution, special lifecycle accuracy,
+normal death/return events or boundary-time error. All model weights and GT
+remain unchanged; formal outputs remain zero. The new option stays explicit
+and off by default.
+
+Final-source local validation passes902 related tests, Ruff src/tests, mypy152
+and classified Text I/O (652 files/1858 sites). Native CLI smoke with and without
+the option reproduces the same ten pixel measurements, verifies source/output
+hashes and gives distinct mode-bound reconstruction fingerprints. Smoke is
+transport/configuration evidence; semantic improvement is measured by the
+fixed-input replay and scoped reviews above. Current-head platform CI and
+packaged smoke remain unverified.
+
+## Wider context on the same nine view controls
+
+The same nine existing native centers across five additional DEVELOPMENT
+matches were acquired with fixed offsets from -10 to +10 seconds. The earlier
+five-frame condition is retained alongside this new 21-frame condition; its
+windows and labels are unchanged. Every reader uses the same weights, Profile,
+configuration and shared engine. Acquisition and prediction receive no expected
+state. All 189 native frames and nine original center pixels are verified.
+
+An initial strict archived-measurement comparison aborts on a changed shape
+producer fingerprint: the producer binds base_primary, which includes the
+updated shared-state code. The failed attempt is retained. Before the successful
+attempt, an exact old/new producer correspondence is declared and unchanged
+pixel feature code/model binding verified. All 45 common pixels and measurement
+fields then match under that one correspondence. Raw archived fingerprints are
+retained; raw whole-measurement byte equality is not claimed. A second harness
+attempt aborts on an exclusive plan write before media access and is also kept.
+
+| Native center cohort | Forward | Ordinary offline | Offline report-view bridge |
+| --- | --- | --- | --- |
+| Same nine, +/-2 seconds | 5 correct, 4 abstained | 5 correct, 4 abstained | 5 correct, 4 abstained |
+| Same nine, +/-10 seconds | 5 correct, 4 abstained | 5 correct, 4 abstained | 6 correct, 3 abstained |
+
+Life and camera have identical counts in this table. On the wider input, one
+previously abstained center in another physical match becomes ALIVE/SELF only
+with the offline bridge. There are no reviewed incorrect values or lost prior
+correct values. This is a new, explicitly wider condition on all nine centers,
+not a substitution of an unrelated full-match frame into the old denominator.
+
+| Additional match | Centers | Short life/camera correct | Wide bridge life/camera correct | Wide bridge abstained |
+| --- | ---: | ---: | ---: | ---: |
+| A | 2 | 1 | 2 | 0 |
+| B | 2 | 1 | 1 | 1 |
+| C | 2 | 1 | 1 | 1 |
+| D | 1 | 0 | 0 | 1 |
+| E | 2 | 2 | 2 | 0 |
+
+Micro agreement on these selected points is 5/9 to 6/9; the unweighted mean of
+the five match-specific rates is 50% to 60%. Match D remains worst at 0/1. These
+are exposed development controls, not population or unseen-match accuracy.
+Remaining misses have some direct anchors in their wider windows but lack the
+required compatible bracketing at the center. Current SELF/HUD/accepted HP
+alone does not resolve report age or current victim identity. No threshold,
+ten-second bridge bound, event rule, Map authority or default setting changes.
+
+The acquisition/comparison takes 138.64 seconds with six inference modes
+retained; Python peak RSS is 4323.84 MiB and excludes child RSS. This experimental
+workload is not single-mode full-match throughput. Its resource audit exposes
+an eager complete-file allocation in the development source-hash helper.
+
+## Bounded source hashing
+
+`file_sha` now hashes all source bytes in 1 MiB binary reads. Empty, exact-block,
+multi-block and missing-file tests check complete digest parity, bounded reads
+and error propagation. No source checksum is weakened or sampled.
+
+One paired fresh-process measurement hashes the same 4,120,558,744-byte allowed
+DEVELOPMENT source with the archived helper and the streaming helper. Both
+exactly match its registered full SHA-256. Process peak RSS is 3958.64 MiB before
+and 62.14 MiB after; wall time is 3.831 and 1.992 seconds. This single ordered
+measurement establishes the workload's memory reduction, not an isolated
+throughput effect or a whole-video recognition improvement. No decoder or pixel
+model runs in this benchmark.
+
+A native 10-second CLI smoke after the change reproduces all ten pixels and
+complete measurements, primary observer and state-reconstruction fingerprints,
+and verifies source/output hashes. Related 1091 tests, Ruff src/tests, mypy 152
+and classified Text I/O (653 files/1859 sites) pass. Platform/package CI at the
+new head remains unverified. The Goal, independent validation, historical four
+Map-role losses and other unresolved recognition metrics remain open.
+
+## Classifier abstention versus contrary view evidence
+
+Uniform 180-second/one-second acquisitions now complete on all five additional
+DEVELOPMENT matches: 900 native points, with all 300 common coarse pixels and
+measurements matching the prior purchase-projection condition under the declared
+shape-producer correspondence. These are prefixes, not full matches. The first
+completed acquisition is reused after orchestration rejects string seconds
+against an integer and then compares against the earlier unprojected condition;
+both verification failures are preserved. The resumed verifier uses the exact
+60 coarse points of the prior projected adaptive runs. No reader, acquisition
+settings or earlier results are changed to repair those checks.
+
+Each prefix contains SPECTATOR candidates. Before recovering images, one middle
+frame from the first stable observed SPECTATOR run is selected in each of the
+first three qualifying matches. Actual human replies confirm all three native
+frames DEAD/SPECTATOR. Ordinary inference, bridge v1 and bridge v2 retain all
+three correctly in both domains. The surrounding runs, death times and return
+episodes remain unlabelled; these are selected audits, not event error rates.
+
+On the remaining three wide-context ALIVE/SELF abstentions, two have no past
+direct ALIVE/SELF anchor. The third has same-Round anchors nine seconds apart,
+but one intervening frame makes both classifiers abstain. The v1 bridge clears
+context for this missing view as it would for contrary evidence. The v2 option
+keeps bounded context without changing that unreadable frame. It continues to
+require current SELF/HUD/accepted HP at every revised frame, both direct
+same-Round anchors, and all original lifecycle/source barriers.
+
+On exactly the same nine wider inputs, v1 gives 6 correct/3 abstained and v2
+7 correct/2 abstained in each domain. Forward and ordinary offline stay 5/4;
+the preserved short condition stays 5/4 for all methods. Wide v2 per-match
+correct counts are 2/2, 1/2, 1/2, 1/1, 2/2: selected-point micro agreement 7/9,
+unweighted mean match rate 80%. The two worst matches tie at 1/2 because they
+still lack a past anchor. The newly matched point was already matched on a
+different full/dense input; this improves the fixed 21-point condition, not a
+new independent physical success or a truth label for the unreadable frame.
+
+Three further newly revised frames across three affected physical matches are
+preselected before image recovery, maximizing distance from the nearer direct
+anchor. Actual replies confirm Q1-Q3 ALIVE/SELF. V1/default/forward abstain on
+all three; v2 matches all three in each domain. Other revised frames remain
+unlabelled. These audits remain separate from the fixed nine-point denominator.
+
+Frozen/current default results exactly match on twelve saved input conditions
+(17,600 native points, including parallel sampling of the same match). Other
+frame fields, rules, tokens, boundary candidates and Map remain unchanged.
+Unreadable-view frames are not revised. All previously selected non-UNKNOWN
+life/camera values are retained mechanically; this alone does not make them
+correct. The scoped old Round13/13, life12/12, camera12/12, previous separate
+audits and both sampling variants' controls remain correct with no reviewed
+loss or new error. No new weights, thresholds, event or Map authority are added.
+
+The 180-second acquisitions take 54.56/53.62/51.53/60.69/53.68 seconds with Python
+peaks 193.80/193.81/183.80/185.50/184.05 MiB, excluding children. Acquisition runs
+use the v1 binding before the state change. Separate fresh-process cached-state
+pairs reproduce all five saved v1/v2 outputs: mean preparation/ingest/rebuild
+0.2915 versus 0.2982 seconds, RSS means119.12 versus119.07 MiB including input
+and output comparison. One run per mode, alternating pair order; these are not
+statistical throughput results or complete pipeline memory figures.
+
+New native ten-second CLI smoke verifies both default and v2 configuration,
+source/output hashes and identical pixel measurements across modes. The new
+primary binding is
+`ec874940634b98263501cdd414a409c00cf0dc90c5f6b96d9eea89a7dd5699ba`;
+archived `f483…`/`b146…` identities are retained. The changed shared-state code
+also changes the coupled shape producer; pixel weights and other measurements
+are unchanged under the explicit producer correspondence. Native smoke is
+configuration/provenance evidence, not full semantic E2E. Local 1105 related
+tests, Ruff, mypy152 and classified Text I/O653/1859 pass. Latest-head platform
+and packaged CI remain unverified. Default remains off; Goal remains open.
+
+## No-reference whole-file acquisition and audit isolation
+
+A fifth distinct physical match completes whole-file acquisition with no audit,
+review timestamps, expected states or initial-state inputs. The additional
+source is the first source-ordered remaining match after all five 180-second
+pilots, not a success-based selection. The frozen b140 runtime observes 3553
+native points over 2442.783 seconds and produces 2443 observed one-second bins.
+Source/runtime/output hashes and all 180 common coarse pixels/measurements are
+verified under the declared state-coupled shape binding. Acquisition takes
+1089.06 seconds with Python peak808.53MiB, excluding children. Nineteen dense
+windows use240seconds through recording second296;114 windows remain deferred.
+Coarse whole-file completion is not dense coverage of every transition.
+
+Five unique reviewed native frames supply eight domain labels. Historical
+comparison records repeat references across methods; they are deduplicated
+before scoring, not counted as independent labels. Current v2 exactly replays
+the original complete state result after observations are restored to native
+PTS order. Failed verification/counting outputs are retained and superseded.
+
+| Scoped cohort | Exact native evaluation | Practical one-second view at the reviewed time |
+| --- | --- | --- |
+| Two existing ALIVE/SELF frames | Each domain1correct/1not automatically observed | Default/forward1correct1abstained; bridgev1/v2 both2correct |
+| One actual DEAD/SPECTATOR frame | All methods correct in each domain | All methods correct in each domain |
+| Two existing Round frames | All methods2correct | All methods1correct1abstained |
+
+The one-second prediction is queried at the scoped native time; the human answer
+is not extended to the rest of that second. The unobserved native reference is
+not a native recognition success or a negative. Life/camera practical totals
+are2correct1abstained for forward/default and3correct for both bridges. V2 does
+not add a scoped correct over v1 on this full input. The Round abstention mixes
+BUY and ACTIVE within the same second while preserving the exact correct BUY
+frame. Against the earlier coarse180-second display, one reviewed Round correct
+becomes abstained, with no new wrong value. Sampling/context differ, so this is
+a display loss to report, not an isolated rule regression or internal-time GT.
+
+V2 full-input UNKNOWN bins are Round793/life601/camera459; inferred-only known
+bins are427/859/342. These are coverage summaries, not accuracy on unlabelled
+seconds. Population events, attribution and internal boundary error remain
+unmeasured. The full source is DEVELOPMENT-exposed, not independently unseen.
+
+The audit contract audit finds additional v1 main-engine points in the old third
+full match (5), additional chronological full match (1), and its balanced
+repeat (2). The other two old full matches add0, so their audit references do
+not change the acquired evidence set. The new fifth whole-file run supplies no
+audit at all. Historical v1 receipt metadata incorrectly claimed audit frames
+were not recognition inputs; these conditions are now labelled explicitly and
+retained. Their identical-input method comparisons remain developmental
+evidence, not autonomous sampling validation.
+
+The API fix places extra audit measurements in a sidecar while keeping main
+state/CSV/observations automatic-only. A native synthetic regression first
+reproduces the defect using an off-grid red death/spectator frame, then verifies
+both ordinary and reused inspector buffers. A real paired10second run has10
+automatic observations in each mode, plus1 audit-only observation; automatic
+pixels, measurements, selected values and transition kinds match, as do the
+prior no-audit full input's corresponding measurements. Source/output hashes
+and the separate sidecar identity are verified. Primary/state recognition
+fingerprints remain unchanged; acquisition implementation/version changes.
+
+A read-only Map probe retains the four self-marker candidates and current weak
+ALIVE/SELF estimates at the reviewed points. Raw UI-score maximum matches all
+four targets but also selects a known SPIKE candidate as self. Current-state
+gating withholds that one nonself selection, but all five controls are from one
+physical match and the candidate-generation archive is profile/reference-bound.
+No generic role fallback is adopted; formal current-position abstentions remain
+four. Rejection by camera/life context is not SPIKE recognition, coordinate or
+Zone accuracy. This explains the remaining gate/recognition gaps without
+reintroducing Source-agent-specific selection.
+
+After isolation, local1107 related tests, Ruff src/tests, mypy152 and classified
+Text I/O653files/1864sites pass. Latest-head platform/package CI remains
+unverified. No Production, GT/windows/splits or protected-media changes.
+
+## Sixth whole acquisition and frozen-model transfer comparison
+
+Another previously admitted DEVELOPMENT match completes without audit samples,
+known review times, expected/initial states or roster/map/agent initialization.
+The audit-isolated v2 acquisition yields3630 automatic native points and2523
+observed display bins over2522.883s, in1073.33s with810.75MiB Python peak RSS
+excluding children. Source/runtime/output hashes and all180 prior coarse native
+pixels and whole measurements match under the declared shape-producer binding
+correspondence; original fingerprints remain intact. Seventeen dense windows
+consume240s of planned coverage near the beginning;99 regions remain deferred.
+Six distinct physical matches now have whole acquisitions, with their original
+runtime/audit conditions retained. Two additional matches remain180s prefixes.
+All eight are development-exposed; unseen validation remains unestablished.
+
+Forward/default/bridge-v1/bridge-v2 consume the same3630 points. The current
+rebuild exactly equals the acquired complete timeline. Deduplicated labels cover
+five native frames/eight domain labels: two Round frames match exactly, one
+DEAD/SPECTATOR frame matches each domain, and two ALIVE/SELF reference frames
+are not automatically acquired. Practical1s queries at those native reference
+times yield two matches/one abstention per life/camera domain in every mode;
+Round yields two matches. There is no additional reviewed future/bridge gain
+on this acquisition. One abstaining bin mixes earlier carried states with later
+observed BUY/ALIVE/SELF; it is not assigned a single truth for the whole second.
+No prior correct display query is lost within the comparable180s prefix, and
+no new incorrect query appears. Sampling/context differences are explicit.
+
+The existing train-only C/D model is also applied without refitting to all five
+additional180s prefixes plus the previously fixed nine wider contexts. Its two
+training physical matches remain disjoint from these five comparison matches.
+Original heldout predictions reproduce exactly before transfer; all six new
+prediction files and scoped evaluation reproduce. Human comparison labels are
+read only after predictions are sealed; this experiment decodes no new media.
+
+| Separate fixed cohort | Forward A | Offline bridge B | C | D |
+| --- | --- | --- | --- | --- |
+| Ten Round display points across five matches |9correct/1wrong|9correct/1wrong|9correct/1wrong|9correct/1wrong|
+| Nine ALIVE/SELF points, per domain |5correct/4abstain|7correct/2abstain|9abstain: unavailable model|9abstain: unavailable model|
+| Three DEAD/SPECTATOR points, per domain |3correct|3correct|3abstain: unavailable model|3abstain: unavailable model|
+
+Round micro/macro reviewed fractions are both90%; the worst match has1/2
+matches versus2/2 in each other match. It combines unread clock/score near a
+BUY-to-ACTIVE change with bounded carry of the prior BUY. Adaptive denser input
+contains an intervening measured ACTIVE timer that uniform input lacks; C/D do
+not recover the missing evidence. No Source/time exception is introduced.
+Life/camera C/D classifiers lack sufficient teacher classes; unavailable models
+are not forced into labels or reported as established classifier error rates.
+Replacing the rule path would lose ten reviewed correct states per domain.
+C/D remain unadopted; the older9/11-versus10/11 cohort stays separate.
+
+One additional derived clip receives actual human confirmation of episode
+presence: recorder death, another player's spectator view, then next-Round self
+return. This adds no native-frame/interval/event-time/training/formal labels.
+Historical Map-role abstentions remain four. False-event population metrics,
+special lifecycle cases, generic Map/Zone/path accuracy and independent unseen
+validation remain unmet. This follow-up changes reports only; recognition
+runtime stays pinned and latest-head platform/package CI is still unverified.

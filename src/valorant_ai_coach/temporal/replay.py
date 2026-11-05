@@ -25,7 +25,12 @@ def read_json(path: Path) -> Any:
 
 
 def file_sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """Hash complete sources without allocating their full recording size."""
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def write_private(path: Path, value: Any) -> None:

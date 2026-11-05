@@ -341,6 +341,12 @@ Source clock. Its CLI, [selective integration ledger](docs/development_shared_ti
 and comparison report remain development-only; they issue no qualified Facts or
 Events. Production adoption and main integration require supervisor review.
 
+The [automatic match experiment](docs/development_full_match_timeline.md) adds a
+registered-source whole-video CLI, adaptive native sampling and same-observation
+forward/offline controls. Its pixel observer uses one shared Profile without
+Source/time/roster initialization. Generic life/camera and Map recognition remain
+unfinished; this route is not adopted as a recognition improvement.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
