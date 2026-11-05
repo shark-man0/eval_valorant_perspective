@@ -1,0 +1,19 @@
+"""Typed runtime-helper boundary; standalone CLI implementation stays unchanged."""
+
+from pathlib import Path
+from typing import Any
+
+from valorant_ai_coach.hud.layout import HudLayout
+from valorant_ai_coach.hud.timer_glyphs import ImageU8
+
+def accepted_result(text: str | None, confidence: float) -> str | None: ...
+def accepted_report_text(text: str | None, confidence: float) -> str | None: ...
+def load_method(path: Path) -> dict[str, Any]: ...
+def text_region(
+    image: ImageU8, layout: HudLayout, method: dict[str, Any]
+) -> tuple[ImageU8 | None, dict[str, Any]]: ...
+def run(
+    video: Path, native_run: Path, layout_path: Path, method_path: Path,
+    output_dir: Path, tessdata_dir: Path,
+) -> dict[str, Any]: ...
+def main() -> None: ...

@@ -513,3 +513,68 @@ def test_native_identity_precedes_supplier_in_place_preprocessing(tmp_path, nati
     assert [r["sample"]["native_pixel_sha256"] for r in before["records"]] == [
         r["sample"]["native_pixel_sha256"] for r in after["records"]
     ]
+
+
+def test_native_application_export_and_original_video_http(tmp_path, native_case):
+    import threading
+    import urllib.error
+    import urllib.request
+
+    from valorant_ai_coach.temporal.application import export_application
+    from valorant_ai_coach.temporal.viewer import make_server
+
+    policy, config = native_case
+
+    class Pixels:
+        def __init__(self, config_path):
+            self.fingerprint, self.bindings = "a" * 64, {}
+
+        def inspect(self, image):
+            return {
+                "signals": ["owner_hud", "buy"],
+                "context": {"score": [0, 0]},
+                "raw": {"view_hp": {"display": "100", "confidence": 0.95}},
+                "map_candidates": [],
+            }
+
+    acquisition, output = tmp_path / "acquisition", tmp_path / "application"
+    module.run_match(
+        policy_path=policy,
+        source_id="registered-synthetic",
+        reader_config=config,
+        output=acquisition,
+        max_refinement_windows=0,
+        observer_factory=Pixels,
+    )
+    export_application(
+        timeline_path=acquisition / "timeline_PRIVATE.json",
+        receipt_path=acquisition / "completion_PRIVATE.json",
+        policy_path=policy,
+        output=output,
+    )
+    with (output / "timeline_1s_PRIVATE.csv").open(encoding="utf-8", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    assert [r["timestamp"] for r in rows] == ["0", "1"]
+    assert json.loads(rows[0]["hud_observations"])["hp"]["candidates"]
+    server = make_server(output / "timeline_PRIVATE.json", policy)
+    worker = threading.Thread(target=server.serve_forever, daemon=True)
+    worker.start()
+    try:
+        base = server.viewer_url
+        with urllib.request.urlopen(base + "api/second?n=0", timeout=5) as response:
+            row = json.load(response)
+        assert row["native_start_seconds"] == "5"
+        assert row["life_state"]["value"] == "ALIVE"
+        request = urllib.request.Request(base + "video", headers={"Range": "bytes=0-31"})
+        with urllib.request.urlopen(request, timeout=5) as response:
+            assert response.status == 206
+            assert response.read() == (tmp_path / "synthetic.mp4").read_bytes()[:32]
+        with pytest.raises(urllib.error.HTTPError) as denied:
+            urllib.request.urlopen(f"http://127.0.0.1:{server.server_port}/video", timeout=5)
+        assert denied.value.code == 404
+        with urllib.request.urlopen(base + "api/evaluation", timeout=5) as response:
+            assert json.load(response)["formal_outputs"] == 0
+    finally:
+        server.shutdown()
+        server.server_close()
+        worker.join(timeout=5)
