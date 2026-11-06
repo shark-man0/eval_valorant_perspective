@@ -391,6 +391,10 @@ The [remaining timeline review](docs/development_remaining_timeline_review.md)
 records the completed bounded candidate inspection and distinguishes strict Map
 ownership gaps from unconfigured Armor/Weapon providers.
 
+The optional [separate value provider](docs/development_value_providers.md) reads
+Armor and configured inventory labels without changing parent HP/state claims.
+Weapon selection and recorder ownership remain explicit uncertainties.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
