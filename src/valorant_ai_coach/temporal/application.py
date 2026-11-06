@@ -182,7 +182,7 @@ def build_application_timeline(
             max(0, math.floor(low)), min(math.ceil(duration), math.floor(high) + 1)
         ):
             event_bins[second].append(event_id)
-    seconds = []
+    seconds: list[dict[str, Any]] = []
     for second in range(math.ceil(duration)):
         current = sorted(bins[second], key=lambda f: native_time(f["sample"]))
         refs = sorted({ref for f in current for ref in f["observation_ids"]})
@@ -227,6 +227,10 @@ def build_application_timeline(
                 "uncertainty": "development_unqualified; no truth assigned to entire second",
             }
         )
+        if timeline["configuration"].get("provisional_map_roles"):
+            seconds[-1]["map_observations"]["provisional_recorder_position_hypotheses"] = _unique(
+                [h for m in maps for h in m.get("provisional_recorder_position_hypotheses", [])]
+            )
     return {
         "version": VERSION,
         "qualification": "development_only",
@@ -263,10 +267,13 @@ def export_application(
     policy_path: Path,
     output: Path,
     supplements: list[Path] | None = None,
+    provisional_map_roles: bool = False,
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
 
+    if type(provisional_map_roles) is not bool:
+        raise ValueError("Explicit development provisional Map role boolean required")
     if output.exists():
         raise ValueError("New output directory required")
     policy = SourcePolicy(read_json(policy_path))
@@ -290,7 +297,7 @@ def export_application(
             if row["sample"]["source_sha256"] == source["source_sha256"]:
                 policy.admit(row["sample"])
                 extra.append(row)
-    if extra:
+    if extra or provisional_map_roles:
         config = timeline["configuration"]
         engine = DevelopmentGameTimeline(
             fuse_exact_native_evidence=config.get("fuse_exact_native_evidence", False),
@@ -298,6 +305,9 @@ def export_application(
             forward_only=config.get("forward_only", False),
             mark_round_transition_gaps=config.get("mark_round_transition_gaps", False),
             buy_clock_expiry=bool(config.get("buy_clock_expiry")),
+            provisional_map_roles=(
+                provisional_map_roles or bool(config.get("provisional_map_roles"))
+            ),
         )
         for row in timeline["observations"] + extra:
             engine.add(row)
@@ -335,12 +345,15 @@ def export_application(
             for p in (
                 Path(__file__),
                 Path(__file__).with_name("game.py"),
+                Path(__file__).with_name("map_roles.py"),
                 Path(__file__).parent.parent / "rules" / "development_timeline.py",
             )
         },
         "inputs": input_bindings,
         "original_recording_sha256": source["source_sha256"],
         "supplement_observations_supplied": len(extra),
+        "provisional_map_roles_requested_for_export": provisional_map_roles,
+        "export_engine_configuration": timeline["configuration"],
         "output_sha256s": {p.name: file_sha(p) for p in output.iterdir()},
         "formal_outputs": 0,
     }
@@ -355,6 +368,7 @@ def main() -> None:
     for name in ("timeline", "receipt", "policy", "output"):
         export.add_argument("--" + name, type=Path, required=True)
     export.add_argument("--supplement", type=Path, action="append", default=[])
+    export.add_argument("--provisional-map-roles", action="store_true")
     generate = sub.add_parser("generate")
     for name in ("policy", "reader-config", "output"):
         generate.add_argument("--" + name, type=Path, required=True)
@@ -366,6 +380,7 @@ def main() -> None:
     generate.add_argument("--max-refinement-windows", type=int, default=40)
     generate.add_argument("--report-view-bridge", action="store_true")
     generate.add_argument("--buy-clock-expiry", action="store_true")
+    generate.add_argument("--provisional-map-roles", action="store_true")
     args = parser.parse_args()
     if args.command == "generate":
         from .match import run_match
@@ -383,6 +398,10 @@ def main() -> None:
                 acquisition / "timeline_PRIVATE.json"
             )["configuration"].get("buy_clock_expiry"):
                 raise ValueError("Reused acquisition does not contain BUY clock reconciliation")
+            if args.provisional_map_roles and not read_json(
+                acquisition / "timeline_PRIVATE.json"
+            )["configuration"].get("provisional_map_roles"):
+                raise ValueError("Reused acquisition does not contain provisional Map roles")
         else:
             run_match(
                 policy_path=args.policy,
@@ -393,6 +412,7 @@ def main() -> None:
                 max_refinement_windows=args.max_refinement_windows,
                 report_view_bridge=args.report_view_bridge,
                 buy_clock_expiry=args.buy_clock_expiry,
+                provisional_map_roles=args.provisional_map_roles,
             )
         result = export_application(
             timeline_path=acquisition / "timeline_PRIVATE.json",
@@ -407,6 +427,7 @@ def main() -> None:
             policy_path=args.policy,
             output=args.output,
             supplements=args.supplement,
+            provisional_map_roles=args.provisional_map_roles,
         )
     print(json.dumps({"version": result["version"], "formal_outputs": 0}))
 

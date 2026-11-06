@@ -364,6 +364,10 @@ the same native observations across eight development-exposed physical matches,
 reducing a known carried-BUY error while retaining uncertainty and the existing
 default behavior. Unseen verification is a separate follow-up.
 
+The opt-in [current Map role hypotheses](docs/development_provisional_map_roles.md)
+connect measured highlights to current weak SELF evidence in a separate research
+channel. Strong owner gates and formal outputs remain unchanged.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)

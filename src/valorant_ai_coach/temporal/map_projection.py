@@ -16,6 +16,8 @@ from typing import Any
 
 from .evidence import digest, freeze_native_sample, native_time
 from .game import observation
+from .map_roles import CONTRACT as MAP_ROLE_CONTRACT
+from .map_roles import provisional_map_roles
 from .replay import SourcePolicy, file_sha, read_json, write_private
 from .zone_contract import ZONE_CONTEXT_CONTRACT, ZONE_KIND, viewed_zone_candidate
 
@@ -60,6 +62,15 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
         if not exact_map:
             continue
         state = frame["map"]
+        provisional = state.get("provisional_recorder_position_hypotheses", [])
+        if provisional or timeline["configuration"].get("provisional_map_roles"):
+            if timeline["configuration"].get("provisional_map_roles") != MAP_ROLE_CONTRACT:
+                raise ValueError("Known provisional Map role contract required")
+            expected_roles = provisional_map_roles(
+                frame, [observations[i] for i in frame["observation_ids"]]
+            )
+            if provisional != expected_roles:
+                raise ValueError("Original current Map role evidence required")
         if (
             state.get("temporal_path_eligible") is not False
             or state.get("current_view_contract") != "development_current_map_v1"
@@ -132,6 +143,8 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
             "formal_outputs": 0,
         }
         rows.append(result)
+        if timeline["configuration"].get("provisional_map_roles"):
+            result["provisional_recorder_position_hypotheses"] = deepcopy(provisional)
         key = sample["source_id"], sample["source_sha256"], sample["native_time_base"], int(
             native_time(sample) // 1
         )
@@ -170,6 +183,11 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
                 "path": None,
             }
         )
+        if timeline["configuration"].get("provisional_map_roles"):
+            seconds[-1]["provisional_recorder_position_hypotheses"] = [
+                deepcopy(h) for r in current
+                for h in r.get("provisional_recorder_position_hypotheses", [])
+            ]
     return {
         "version": VERSION,
         "shared_timeline_revision": timeline["revision"],
