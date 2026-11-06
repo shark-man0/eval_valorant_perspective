@@ -87,8 +87,9 @@ def native_case(tmp_path, request):
 
 
 @pytest.mark.parametrize("report_view_bridge", [False, True])
+@pytest.mark.parametrize("buy_clock_expiry", [False, True])
 def test_full_file_native_origin_and_recording_second_grid(
-    tmp_path, monkeypatch, native_case, report_view_bridge
+    tmp_path, monkeypatch, native_case, report_view_bridge, buy_clock_expiry
 ):
     policy, config = native_case
 
@@ -109,6 +110,7 @@ def test_full_file_native_origin_and_recording_second_grid(
         output=output,
         max_refinement_windows=0,
         report_view_bridge=report_view_bridge,
+        buy_clock_expiry=buy_clock_expiry,
     )
     assert receipt["whole_file_completed"] is True
     assert receipt["source_bytes_verified_before_and_after"] is True
@@ -116,6 +118,7 @@ def test_full_file_native_origin_and_recording_second_grid(
     timeline = json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
     assert receipt["shared_engine_configuration"] == timeline["configuration"]
     assert ("report_view_bridge" in timeline["configuration"]) == report_view_bridge
+    assert ("buy_clock_expiry" in timeline["configuration"]) == buy_clock_expiry
     assert all(
         f["sample"]["native_pts_tick"] >= receipt["native_start_pts_tick"]
         for f in timeline["frames"]

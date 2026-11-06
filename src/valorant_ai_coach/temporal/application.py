@@ -297,6 +297,7 @@ def export_application(
             report_view_bridge=bool(config.get("report_view_bridge")),
             forward_only=config.get("forward_only", False),
             mark_round_transition_gaps=config.get("mark_round_transition_gaps", False),
+            buy_clock_expiry=bool(config.get("buy_clock_expiry")),
         )
         for row in timeline["observations"] + extra:
             engine.add(row)
@@ -364,6 +365,7 @@ def main() -> None:
     )
     generate.add_argument("--max-refinement-windows", type=int, default=40)
     generate.add_argument("--report-view-bridge", action="store_true")
+    generate.add_argument("--buy-clock-expiry", action="store_true")
     args = parser.parse_args()
     if args.command == "generate":
         from .match import run_match
@@ -377,6 +379,10 @@ def main() -> None:
         if args.reuse_acquisition:
             if read_json(acquisition / "completion_PRIVATE.json")["source_id"] != args.source_id:
                 raise ValueError("Reused acquisition belongs to another Source")
+            if args.buy_clock_expiry and not read_json(
+                acquisition / "timeline_PRIVATE.json"
+            )["configuration"].get("buy_clock_expiry"):
+                raise ValueError("Reused acquisition does not contain BUY clock reconciliation")
         else:
             run_match(
                 policy_path=args.policy,
@@ -386,6 +392,7 @@ def main() -> None:
                 observer_factory=factory,
                 max_refinement_windows=args.max_refinement_windows,
                 report_view_bridge=args.report_view_bridge,
+                buy_clock_expiry=args.buy_clock_expiry,
             )
         result = export_application(
             timeline_path=acquisition / "timeline_PRIVATE.json",
