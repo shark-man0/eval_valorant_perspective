@@ -88,8 +88,9 @@ def native_case(tmp_path, request):
 
 @pytest.mark.parametrize("report_view_bridge", [False, True])
 @pytest.mark.parametrize("buy_clock_expiry", [False, True])
+@pytest.mark.parametrize("provisional_map_roles", [False, True])
 def test_full_file_native_origin_and_recording_second_grid(
-    tmp_path, monkeypatch, native_case, report_view_bridge, buy_clock_expiry
+    tmp_path, monkeypatch, native_case, report_view_bridge, buy_clock_expiry, provisional_map_roles
 ):
     policy, config = native_case
 
@@ -111,6 +112,10 @@ def test_full_file_native_origin_and_recording_second_grid(
         max_refinement_windows=0,
         report_view_bridge=report_view_bridge,
         buy_clock_expiry=buy_clock_expiry,
+        provisional_map_roles=provisional_map_roles,
+    )
+    assert bool(receipt["shared_engine_configuration"].get("provisional_map_roles")) is (
+        provisional_map_roles
     )
     assert receipt["whole_file_completed"] is True
     assert receipt["source_bytes_verified_before_and_after"] is True
@@ -518,7 +523,10 @@ def test_native_identity_precedes_supplier_in_place_preprocessing(tmp_path, nati
     ]
 
 
-def test_native_application_export_and_original_video_http(tmp_path, native_case):
+@pytest.mark.parametrize("provisional_map_roles", [False, True])
+def test_native_application_export_and_original_video_http(
+    tmp_path, native_case, provisional_map_roles
+):
     import threading
     import urllib.error
     import urllib.request
@@ -554,6 +562,7 @@ def test_native_application_export_and_original_video_http(tmp_path, native_case
         receipt_path=acquisition / "completion_PRIVATE.json",
         policy_path=policy,
         output=output,
+        provisional_map_roles=provisional_map_roles,
     )
     with (output / "timeline_1s_PRIVATE.csv").open(encoding="utf-8", newline="") as stream:
         rows = list(csv.DictReader(stream))
@@ -568,6 +577,9 @@ def test_native_application_export_and_original_video_http(tmp_path, native_case
             row = json.load(response)
         assert row["native_start_seconds"] == "5"
         assert row["life_state"]["value"] == "ALIVE"
+        assert ("provisional_recorder_position_hypotheses" in row["map_observations"]) is (
+            provisional_map_roles
+        )
         request = urllib.request.Request(base + "video", headers={"Range": "bytes=0-31"})
         with urllib.request.urlopen(request, timeout=5) as response:
             assert response.status == 206

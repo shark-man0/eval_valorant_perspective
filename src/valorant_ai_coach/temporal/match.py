@@ -282,16 +282,20 @@ def run_match(
     refinement_selection_policy: str = "chronological",
     report_view_bridge: bool = False,
     buy_clock_expiry: bool = False,
+    provisional_map_roles: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
     engine_sha = file_sha(Path(__file__).with_name("game.py"))
+    map_role_sha = file_sha(Path(__file__).with_name("map_roles.py"))
     if not 0 < dense_seconds < coarse_seconds <= 2 or max_refinement_windows < 0:
         raise ValueError("Bounded coarse/dense observation cadence required")
     if refinement_selection_policy not in {"chronological", "balanced"}:
         raise ValueError("Known development refinement selection policy required")
     if type(report_view_bridge) is not bool:
         raise ValueError("Explicit development report-view reconciliation boolean required")
+    if type(provisional_map_roles) is not bool:
+        raise ValueError("Explicit development provisional Map role boolean required")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
     output = output.expanduser().resolve()
@@ -564,7 +568,8 @@ def run_match(
         raise ValueError("Native audit plan changed during execution")
     if file_sha(Path(__file__)) != implementation_sha:
         raise ValueError("Acquisition implementation changed during execution")
-    if file_sha(Path(__file__).with_name("game.py")) != engine_sha:
+    if (file_sha(Path(__file__).with_name("game.py")) != engine_sha
+            or file_sha(Path(__file__).with_name("map_roles.py")) != map_role_sha):
         raise ValueError("Shared engine changed during execution")
     if (
         digest(observer.bindings) != bindings_sha
@@ -576,11 +581,13 @@ def run_match(
     engine = DevelopmentGameTimeline(
         fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
         buy_clock_expiry=buy_clock_expiry,
+        provisional_map_roles=provisional_map_roles,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
             fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
             buy_clock_expiry=buy_clock_expiry,
+            provisional_map_roles=provisional_map_roles,
         )
         if baseline_producers else None
     )
@@ -782,6 +789,7 @@ def main() -> None:
     parser.add_argument("--audit-sample-plan", type=Path)
     parser.add_argument("--report-view-bridge", action="store_true")
     parser.add_argument("--buy-clock-expiry", action="store_true")
+    parser.add_argument("--provisional-map-roles", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -795,6 +803,7 @@ def main() -> None:
         audit_sample_plan=args.audit_sample_plan,
         report_view_bridge=args.report_view_bridge,
         buy_clock_expiry=args.buy_clock_expiry,
+        provisional_map_roles=args.provisional_map_roles,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

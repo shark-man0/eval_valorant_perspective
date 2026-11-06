@@ -14,6 +14,8 @@ from fractions import Fraction
 from typing import Any, Literal, TypedDict
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
+from .map_roles import CONTRACT as MAP_ROLE_CONTRACT
+from .map_roles import provisional_map_roles, rule_sha256
 from .zone_contract import ZONE_CONTEXT_CONTRACT, viewed_zone_candidate
 
 VERSION = "development_game_timeline_v2"
@@ -302,6 +304,7 @@ class DevelopmentGameTimeline:
         mark_round_transition_gaps: bool = False,
         report_view_bridge: bool = False,
         buy_clock_expiry: bool = False,
+        provisional_map_roles: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -322,6 +325,9 @@ class DevelopmentGameTimeline:
         if type(buy_clock_expiry) is not bool or (forward_only and buy_clock_expiry):
             raise ValueError("BUY clock reconciliation requires explicit offline mode")
         self.buy_clock_expiry = buy_clock_expiry
+        if type(provisional_map_roles) is not bool:
+            raise ValueError("Explicit provisional Map role mode required")
+        self.provisional_map_roles = provisional_map_roles
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -1105,6 +1111,10 @@ class DevelopmentGameTimeline:
             state["round_number"] = _round_number(
                 state, rows
             )
+            if self.provisional_map_roles:
+                state["map"]["provisional_recorder_position_hypotheses"] = provisional_map_roles(
+                    state, rows
+                )
         acquisition_seconds = self._seconds(states)
         result: dict[str, Any] = {
             "version": VERSION,
@@ -1131,6 +1141,9 @@ class DevelopmentGameTimeline:
         if self.buy_clock_expiry:
             result["configuration"]["buy_clock_expiry"] = "development_buy_clock_expiry_v1"
             result["buy_clock_projection_history"] = clock_projections
+        if self.provisional_map_roles:
+            result["configuration"]["provisional_map_roles"] = MAP_ROLE_CONTRACT
+            result["configuration"]["provisional_map_roles_rule_sha256"] = rule_sha256()
         if self.report_view_bridge:
             result["configuration"]["report_view_bridge"] = "development_report_view_bridge_v2"
             result["configuration"]["max_report_bridge_seconds"] = "10"
