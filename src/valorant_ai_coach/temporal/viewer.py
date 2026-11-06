@@ -53,6 +53,7 @@ padding:8px}
 <video id="video" controls preload="metadata"></video>
 <p id="playback" class="muted"></p>
 <h3>表示中のHUD候補（本人への帰属は未確定）</h3><pre id="hud"></pre>
+<h3>HUDの表示状況（ゲーム状態とは別の観測）</h3><pre id="visibility"></pre>
 <h3>Map・Zone候補</h3><pre id="map"></pre>
 </section><section><h2>イベント候補</h2><div id="events"></div>
 <details><summary>状態・不確実性・native参照</summary><pre id="detail"></pre></details>
@@ -120,6 +121,12 @@ JSON.stringify(c.value)))).join(' / ')+'（表示値の候補）':'UNKNOWN'+
 ((value.unavailable_reasons||[]).length?'（'+Array.from(new Set(value.unavailable_reasons.map(r=>
 hudReasons[r.reason]||'読取不能'))).join(' / ')+'）':''))).join('\n');
 const map=row.map_observations;
+const visibility=row.hud_visibility_observations;
+const visibilityNames={BUY_MENU:'購入メニュー候補',TRACKER:'Trackerウィンドウ候補'};
+el('visibility').textContent=visibility?.analysis_present?
+(visibility.candidates.length?Array.from(new Set(visibility.candidates.map(c=>
+visibilityNames[c.kind]||c.kind))).join(' / '):'UNKNOWN（確認処理あり・対象表示を特定できず）')+
+'\n生死・視点・Roundの根拠には使用しません':'NOT_ANALYSED（表示状況の観測なし）';
 el('map').textContent='Map名: '+
 (map.map_name_candidates.length?fmt(map.map_name_candidates):'UNKNOWN')+
 '\n位置候補: '+map.position_candidates.length+' / 本人対応候補: '+

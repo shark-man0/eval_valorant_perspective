@@ -383,6 +383,10 @@ reuses unchanged image-only measurements for matched acquisition experiments.
 Native decoding/admission remain mandatory, and cache warmth is reported
 separately from sampling effects.
 
+[Advisory HUD visibility](docs/development_hud_visibility.md) connects current
+purchase-menu/Tracker candidates to exact native evidence and the local viewer.
+Display context remains separate from game-state and recorder ownership inference.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
