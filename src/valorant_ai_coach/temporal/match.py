@@ -151,6 +151,8 @@ def refinement_windows(
     selection_policy: str = "chronological",
 ) -> tuple[list[tuple[Fraction, Fraction]], int]:
     """Select from observed changes only; no known Round times or Source cases."""
+    if type(padding) is not Fraction or not 0 <= padding <= 10:
+        raise ValueError("Exact refinement padding between zero and ten seconds required")
     if selection_policy not in {"chronological", "balanced"}:
         raise ValueError("Known development refinement selection policy required")
     windows: list[tuple[Fraction, Fraction]] = []
@@ -179,6 +181,7 @@ def refinement_windows(
             candidates, windows, max_windows=max_windows,
             max_total_seconds=max_total_seconds, origin=origin,
             end=native_time(records[-1]["sample"]) if records else origin,
+            proposal_seconds=max(Fraction(6), padding * 2 + 2),
         )
     chosen = []
     remaining = max_total_seconds
@@ -218,17 +221,18 @@ def _balanced_refinement(
     max_total_seconds: Fraction,
     origin: Fraction,
     end: Fraction,
+    proposal_seconds: Fraction = Fraction(6),
 ) -> tuple[list[tuple[Fraction, Fraction]], int]:
     """Cover temporal strata before spending unused slots on further changes.
 
-    Each proposal is at most six seconds, preventing merged OCR flicker from
+    Each proposal has a bounded configured width, preventing merged OCR flicker from
     spending the entire budget in one prefix. The returned deferred count keeps
     the legacy unit: original merged regions not fully refined, including
     partially refined regions. Neither a selection nor its priority is an event.
     """
     if max_windows <= 0 or max_total_seconds <= 0 or not candidates:
         return [], len(regions)
-    width = min(Fraction(6), max_total_seconds)
+    width = min(proposal_seconds, max_total_seconds)
     slots = min(max_windows, max(1, int(max_total_seconds // width)), len(candidates))
     span = max(end - origin, Fraction(1))
     strata: dict[int, list[int]] = {}
@@ -280,6 +284,7 @@ def run_match(
     observer_factory: Callable[[Path], PixelObserver] | None = None,
     audit_sample_plan: Path | None = None,
     refinement_selection_policy: str = "chronological",
+    refinement_padding_seconds: Fraction = Fraction(1),
     report_view_bridge: bool = False,
     buy_clock_expiry: bool = False,
     provisional_map_roles: bool = False,
@@ -293,6 +298,9 @@ def run_match(
         raise ValueError("Bounded coarse/dense observation cadence required")
     if refinement_selection_policy not in {"chronological", "balanced"}:
         raise ValueError("Known development refinement selection policy required")
+    if (type(refinement_padding_seconds) is not Fraction
+            or not 0 <= refinement_padding_seconds <= 10):
+        raise ValueError("Exact refinement padding between zero and ten seconds required")
     if type(report_view_bridge) is not bool:
         raise ValueError("Explicit development report-view reconciliation boolean required")
     if type(provisional_map_roles) is not bool:
@@ -534,6 +542,7 @@ def run_match(
     windows, deferred = refinement_windows(
         coarse, max_windows=max_refinement_windows, origin=native_start,
         selection_policy=refinement_selection_policy,
+        padding=refinement_padding_seconds,
     )
     for index, (lower, upper) in enumerate(windows):
         decode(lower, min(upper, exclusive_end), dense_seconds, f"dense_{index:04d}")
@@ -712,6 +721,8 @@ def run_match(
             "max_refinement_windows": max_refinement_windows,
             "max_refinement_seconds": 240,
             "selection_policy": refinement_selection_policy,
+            "refinement_padding_seconds": str(refinement_padding_seconds),
+            "balanced_proposal_seconds": str(max(Fraction(6), refinement_padding_seconds * 2 + 2)),
             "deferred_unit": "original_merged_regions_not_fully_refined",
         },
         "processed_limit_seconds": str(limit),
@@ -789,6 +800,7 @@ def main() -> None:
     parser.add_argument(
         "--refinement-policy", choices=["chronological", "balanced"], default="chronological"
     )
+    parser.add_argument("--refinement-padding-seconds", type=Fraction, default=Fraction(1))
     parser.add_argument("--pilot-seconds", type=int)
     parser.add_argument("--retain-frames", action="store_true")
     parser.add_argument("--audit-sample-plan", type=Path)
@@ -804,6 +816,7 @@ def main() -> None:
         output=args.output,
         max_refinement_windows=args.max_refinement_windows,
         refinement_selection_policy=args.refinement_policy,
+        refinement_padding_seconds=args.refinement_padding_seconds,
         stop_after=args.pilot_seconds,
         retain_frames=args.retain_frames,
         audit_sample_plan=args.audit_sample_plan,

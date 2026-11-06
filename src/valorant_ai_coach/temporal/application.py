@@ -421,6 +421,8 @@ def main() -> None:
         "--reuse-acquisition", type=Path, help="Reuse a completed, hash-verified whole acquisition"
     )
     generate.add_argument("--max-refinement-windows", type=int, default=40)
+    generate.add_argument("--refinement-policy", choices=["chronological", "balanced"])
+    generate.add_argument("--refinement-padding-seconds", type=Fraction)
     generate.add_argument("--report-view-bridge", action="store_true")
     generate.add_argument("--buy-clock-expiry", action="store_true")
     generate.add_argument("--provisional-map-roles", action="store_true")
@@ -437,8 +439,18 @@ def main() -> None:
             factory = getattr(importlib.import_module(module), name)
         acquisition = args.reuse_acquisition or args.output / "acquisition"
         if args.reuse_acquisition:
-            if read_json(acquisition / "completion_PRIVATE.json")["source_id"] != args.source_id:
+            receipt = read_json(acquisition / "completion_PRIVATE.json")
+            if receipt["source_id"] != args.source_id:
                 raise ValueError("Reused acquisition belongs to another Source")
+            sampling = receipt.get("sampling", {})
+            if args.refinement_padding_seconds is not None and Fraction(
+                sampling.get("refinement_padding_seconds", "1")
+            ) != args.refinement_padding_seconds:
+                raise ValueError("Reused acquisition has different refinement padding")
+            if args.refinement_policy is not None and sampling.get(
+                "selection_policy", "chronological"
+            ) != args.refinement_policy:
+                raise ValueError("Reused acquisition has different refinement selection")
             if args.buy_clock_expiry and not read_json(
                 acquisition / "timeline_PRIVATE.json"
             )["configuration"].get("buy_clock_expiry"):
@@ -459,6 +471,10 @@ def main() -> None:
                 output=acquisition,
                 observer_factory=factory,
                 max_refinement_windows=args.max_refinement_windows,
+                refinement_selection_policy=args.refinement_policy or "chronological",
+                refinement_padding_seconds=(args.refinement_padding_seconds
+                                            if args.refinement_padding_seconds is not None
+                                            else Fraction(1)),
                 report_view_bridge=args.report_view_bridge,
                 buy_clock_expiry=args.buy_clock_expiry,
                 provisional_map_roles=args.provisional_map_roles,
