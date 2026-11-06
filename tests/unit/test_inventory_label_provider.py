@@ -38,6 +38,8 @@ def test_factory_declares_every_native_supplier_for_transport(tmp_path, monkeypa
     assert observer.bindings["baseline_producer_fingerprints"] == ["a"*64, "b"*64]
     assert observer.bindings["supplier_producer_fingerprints"] == [
         "a"*64, "b"*64, observer.value_fingerprint]
+    assert observer.bindings["fields"] == [
+        "armor", "weapon", "ammo_current", "ammo_reserve", "credits"]
 
 
 def image():
@@ -98,3 +100,21 @@ def test_composite_does_not_mutate_parent_or_add_state_claims():
     candidate = _hud(rows)["weapon"]["candidates"][0]
     assert candidate["current_weapon_selection"] == "UNKNOWN"
     assert candidate["subject"] == "viewed_HUD; recorder_ownership_unresolved"
+
+
+def test_supplement_retains_missing_ammo_and_credits_without_inventing_values():
+    observer = object.__new__(ValueSupplementObserver)
+    observer.inventory = SimpleNamespace(last_attempts=[])
+    measured = [
+        {"name": name, "status": "UNKNOWN", "value": None,
+         "reason": "unconfigured_reader_or_roi"}
+        for name in ("hp", "armor", "weapon", "ammo_current", "ammo_reserve", "credits")
+    ]
+    observer.values = SimpleNamespace(inspect_values=lambda _: {
+        "raw": {"hud_value_measurements": measured}})
+    result = observer.inspect_values(image())
+    assert [m["name"] for m in result["raw"]["hud_value_measurements"]] == [
+        "armor", "weapon", "ammo_current", "ammo_reserve", "credits"]
+    assert all(m["status"] == "UNKNOWN" and m["value"] is None
+               for m in result["raw"]["hud_value_measurements"])
+    assert observer.inventory.last_attempts == []

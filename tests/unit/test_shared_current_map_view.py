@@ -77,6 +77,12 @@ def test_projection_keeps_native_candidates_and_missing_seconds_without_a_path()
     original = deepcopy(timeline)
     result = project_current_map(timeline)
     assert result["summary"]["current_candidate_samples"] == 1
+    review = result["rows"][0]["correspondence_review"]
+    assert review["status"] == "CURRENT_VIEW_ASSOCIATED_CANDIDATES"
+    assert review["current_view_associated_indices"] == [0]
+    assert review["strict_recorder_marker_count"] == 0
+    assert result["summary"]["marker_candidate_samples"] == 2
+    assert result["summary"]["unassigned_marker_samples"] == 1
     assert result["seconds"][0]["position_status"] == "CANDIDATES"
     assert result["seconds"][1]["position_status"] == "UNKNOWN"
     assert result["seconds"][1]["native_Map_views"] == []

@@ -7,6 +7,7 @@ import json
 import mimetypes
 import re
 import secrets
+from fractions import Fraction
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
@@ -88,9 +89,15 @@ g.fillRect(i*c.width/overview.seconds.length,j*32,Math.max(1,c.width/overview.se
 
 g.fillStyle='#fff';
 g.fillRect(selected*c.width/overview.seconds.length,0,2,96)}
-async function evidence(){if(!el('evidence').value){el('raw').textContent='根拠なし';
+async function evidence(seek=false){if(!el('evidence').value){el('raw').textContent='根拠なし';
 return}
-el('raw').textContent=fmt(await api('/api/evidence?id='+encodeURIComponent(el('evidence').value)))}
+const row=await api('/api/evidence?id='+encodeURIComponent(el('evidence').value));
+el('raw').textContent=fmt(row);
+if(seek){const s=row.sample,parts=s.native_time_base.split('/').map(Number);
+const second=s.native_pts_tick*parts[0]/(parts[1]||1)-overview.native_origin_seconds;
+const v=el('video'),offset=v.seekable.length?v.seekable.start(0):0;
+if(Number.isFinite(second)&&second>=0&&second<=Number(overview.duration_float_seconds))
+v.currentTime=offset+second}}
 async function select(second,seek=true){
 second=Math.max(0,Math.min(overview.seconds.length-1,Math.floor(second)));
 
@@ -164,7 +171,7 @@ el('slider').oninput=e=>select(Number(e.target.value));
 
 el('chart').onclick=e=>select((e.clientX-e.target.getBoundingClientRect().left)/e.target.clientWidth*overview.seconds.length);
 
-el('evidence').onchange=evidence;
+el('evidence').onchange=()=>evidence(true);
 el('round').onchange=e=>{roundFilter=e.target.value;
 draw();
 
@@ -200,7 +207,11 @@ el('json').href=base+'/download.json';
 el('csv').href=base+'/download.csv';
 
 el('evaluation').textContent=fmt(await api('/api/evaluation'));
-await select(0,false);
+const requested=Number(new URLSearchParams(location.search).get('second')||0);
+const initial=Number.isFinite(requested)?
+Math.max(0,Math.min(overview.seconds.length-1,requested)):0;
+el('video').addEventListener('loadedmetadata',()=>select(initial,true),{once:true});
+await select(initial,false);
 
 })().catch(e=>{el('summary').textContent=e.message;
 el('summary').className='error'});
@@ -243,6 +254,8 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
     seconds = bundle["seconds"]
     overview = {
         "duration_seconds": bundle["recording"]["duration_seconds"],
+        "duration_float_seconds": float(Fraction(bundle["recording"]["duration_seconds"])),
+        "native_origin_seconds": float(Fraction(bundle["recording"]["native_origin_seconds"])),
         "observed_seconds": sum(r["observation_present"] for r in seconds),
         "round_candidates": sorted({n for r in seconds for n in r["round_number"]["candidates"]}),
         "event_candidates": [

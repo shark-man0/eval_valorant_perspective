@@ -16,6 +16,7 @@ from typing import Any
 
 from .evidence import digest, freeze_native_sample, native_time
 from .game import observation
+from .map_correspondence import correspondence_review
 from .map_roles import CONTRACT as MAP_ROLE_CONTRACT
 from .map_roles import provisional_map_roles
 from .replay import SourcePolicy, file_sha, read_json, write_private
@@ -135,6 +136,9 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
             "Map_observation_ids": [r["observation_id"] for r in exact_map],
             "common_states": {d: deepcopy(frame[d]) for d in ("round", "life", "camera")},
             "reason": state["reason"],
+            "correspondence_review": correspondence_review(
+                pool, state["current_self_position_candidates"], provisional, owner_ids
+            ),
             "semantic_continuity": "UNKNOWN",
             "temporal_path_eligible": False,
             "path": None,
@@ -204,6 +208,19 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
             "current_recorder_zone_candidate_samples": sum(
                 bool(r["current_recorder_zone_hypotheses"]) for r in rows
             ),
+            "marker_candidate_samples": sum(
+                bool(r["marker_candidate_pool"]) for r in rows
+            ),
+            "unassigned_marker_samples": sum(
+                r["correspondence_review"]["status"] == "UNASSIGNED_MARKER_CANDIDATES"
+                for r in rows
+            ),
+            "provisional_highlight_samples": sum(
+                r["correspondence_review"]["status"]
+                == "PROVISIONAL_HIGHLIGHT_WITH_WEAK_VIEW"
+                for r in rows
+            ),
+            "strict_recorder_marker_samples": 0,
         },
         "ownership": "UNKNOWN",
         "qualification": "development_only",

@@ -3,11 +3,12 @@ from __future__ import annotations
 import logging
 import threading
 import uuid
+from http.server import ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import QObject, QRunnable, Qt, QThreadPool, QTimer, QUrl, Signal, Slot
-from PySide6.QtGui import QAction, QCloseEvent
+from PySide6.QtGui import QAction, QCloseEvent, QDesktopServices
 from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtWidgets import (
@@ -108,6 +109,7 @@ class MainWindow(QMainWindow):
         self._audio_track_combos: list[QComboBox] = []
         self._close_after_worker = False
         self._allow_close = False
+        self._development_viewer: ThreadingHTTPServer | None = None
         self.current_evaluations: list[Any] = []
         self._current_match_id: str | None = None
         self.pool = QThreadPool.globalInstance()
@@ -146,6 +148,12 @@ class MainWindow(QMainWindow):
         tools_action = QAction("履歴・統計ツール", self)
         tools_action.triggered.connect(self._open_non_video_tools)
         self.menuBar().addAction(tools_action)
+        timeline_action = QAction("開発用: 共通タイムライン", self)
+        timeline_action.triggered.connect(self._open_development_timeline)
+        self.menuBar().addAction(timeline_action)
+        comparison_action = QAction("開発用: 試合横断比較", self)
+        comparison_action.triggered.connect(self._open_development_comparison)
+        self.menuBar().addAction(comparison_action)
         self.statusBar().showMessage("準備完了")
         self._load_history()
         self._show_page(self.home_page)
@@ -1197,9 +1205,63 @@ class MainWindow(QMainWindow):
         hud_mode = "Mock HUD" if settings.hud_mode == "mock" else "実HUD"
         self.mode_label.setText(f"{ai_mode} / {hud_mode}")
 
+    def _open_development_timeline(self) -> None:
+        bundle, _ = QFileDialog.getOpenFileName(
+            self, "開発用タイムライン JSON を選択", "", "JSON (*.json)"
+        )
+        if not bundle:
+            return
+        policy, _ = QFileDialog.getOpenFileName(
+            self, "録画の Source policy JSON を選択", "", "JSON (*.json)"
+        )
+        if not policy:
+            return
+        try:
+            from valorant_ai_coach.temporal.viewer import make_server
+
+            server = make_server(Path(bundle), Path(policy))
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            QMessageBox.warning(self, "開発用タイムラインを開けません", sanitize_text(str(exc)))
+            return
+        self._start_development_viewer(server)
+
+    def _open_development_comparison(self) -> None:
+        manifest, _ = QFileDialog.getOpenFileName(
+            self, "開発用の試合横断比較 manifest JSON を選択", "", "JSON (*.json)"
+        )
+        if not manifest:
+            return
+        try:
+            from valorant_ai_coach.temporal.comparison_viewer import make_comparison_server
+
+            server = make_comparison_server(Path(manifest))
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            QMessageBox.warning(self, "試合横断比較を開けません", sanitize_text(str(exc)))
+            return
+        self._start_development_viewer(server)
+
+    def _start_development_viewer(self, server: ThreadingHTTPServer) -> None:
+        self._stop_development_viewer()
+        self._development_viewer = server
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        url = QUrl(str(server.viewer_url))  # type: ignore[attr-defined]
+        if not QDesktopServices.openUrl(url):
+            self._stop_development_viewer()
+            QMessageBox.warning(self, "開発用ビューア", "ブラウザを開けませんでした")
+            return
+        self.statusBar().showMessage("開発用タイムラインをローカルブラウザで開きました")
+
+    def _stop_development_viewer(self) -> None:
+        server = self._development_viewer
+        self._development_viewer = None
+        if server is not None:
+            server.shutdown()
+            server.server_close()
+
     def closeEvent(self, event: QCloseEvent) -> None:  # noqa: N802 - Qt API
         if self._allow_close:
             self.player.stop()
+            self._stop_development_viewer()
             event.accept()
             return
         if (
@@ -1229,6 +1291,7 @@ class MainWindow(QMainWindow):
             event.ignore()
             return
         self.player.stop()
+        self._stop_development_viewer()
         event.accept()
 
     def _finish_pending_close(self) -> bool:
