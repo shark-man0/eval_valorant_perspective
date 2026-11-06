@@ -378,6 +378,11 @@ compares fixed native contexts across the exposed matches and exposes optional
 before/after padding in the existing acquisition CLI. Wider windows keep the
 global dense budget and do not imply interval labels or qualified events.
 
+An optional [private pixel observation cache](docs/development_pixel_observation_cache.md)
+reuses unchanged image-only measurements for matched acquisition experiments.
+Native decoding/admission remain mandatory, and cache warmth is reported
+separately from sampling effects.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
