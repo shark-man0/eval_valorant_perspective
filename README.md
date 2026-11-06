@@ -373,6 +373,11 @@ adds an opt-in measured ACTIVE clock-chain candidate and exact-native value-only
 HUD joins. Unread gaps stay uncertain; viewed HP/Armor/Weapon never establish
 recorder life or ownership.
 
+The [bounded context sampling review](docs/development_context_sampling_review.md)
+compares fixed native contexts across the exposed matches and exposes optional
+before/after padding in the existing acquisition CLI. Wider windows keep the
+global dense budget and do not imply interval labels or qualified events.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
