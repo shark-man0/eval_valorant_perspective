@@ -22,6 +22,8 @@ from valorant_ai_coach.hud.timer_glyphs import StrictTimerGlyphReader
 
 from .clock_components import clock_components
 from .evidence import digest
+from .hud_values import VERSION as HUD_VALUES_VERSION
+from .hud_values import configured_hud_values
 from .replay import file_sha, read_json
 from .round_scope import PixelRoundScope
 
@@ -60,13 +62,16 @@ class ProfileHudObserver:
 
     def __init__(self, config_path: Path) -> None:
         config = read_json(config_path)
-        keys = set(config) - {"clock_prefix"}
+        keys = set(config) - {"clock_prefix", "optional_hud_values"}
         if keys not in (
             {"layout", "profile"},
             {"layout", "profile", "structural_bank", "result_method"},
         ):
             raise ValueError("Common pixel reader configuration required")
         self.clock_prefix = config.get("clock_prefix", False)
+        self.optional_hud_values = config.get("optional_hud_values", False)
+        if type(self.optional_hud_values) is not bool:
+            raise ValueError("optional_hud_values must be a boolean")
         if type(self.clock_prefix) is not bool:
             raise ValueError("clock_prefix must be a boolean")
         layout, profile = (Path(config[k]).expanduser().resolve() for k in ("layout", "profile"))
@@ -140,6 +145,15 @@ class ProfileHudObserver:
             else "white200_rowcontrast_v1",
         }
         self.fingerprint = digest(self.bindings)
+        self.value_bindings = {
+            "base_reader_fingerprint": self.fingerprint,
+            "value_contract": HUD_VALUES_VERSION,
+            "value_code_sha256": file_sha(Path(__file__).with_name("hud_values.py")),
+        }
+        self.value_fingerprint = digest(self.value_bindings)
+        if self.optional_hud_values:
+            self.bindings["optional_hud_values"] = self.value_bindings
+            self.fingerprint = digest(self.bindings)
 
     def inspect(self, image: NDArray[np.uint8]) -> dict[str, Any]:
         assert self.profile is not None
@@ -222,7 +236,7 @@ class ProfileHudObserver:
             signals.append("remote")
         if ui.get("combat_report_visible") is True:
             signals.append("report")
-        return {
+        result: dict[str, Any] = {
             "signals": sorted(set(signals)),
             "context": {
                 "timer_seconds": timer,
@@ -246,6 +260,28 @@ class ProfileHudObserver:
             },
             "map_candidates": [],
             "map_observation_status": "UNCONFIGURED",
+        }
+        if getattr(self, "optional_hud_values", False):
+            result["raw"]["hud_value_measurements"] = self._hud_values(image, result["raw"])
+        return result
+
+    def _hud_values(self, image: NDArray[np.uint8], raw: dict[str, Any]) -> list[dict[str, Any]]:
+        return configured_hud_values(
+            image, layout=self.layout, readers=self.analyzer.readers,
+            ui=raw["ui"], calibrated=raw["calibration"]["calibrated"],
+        )
+
+    def inspect_values(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        """Value-only supplier for exact-native joins; cannot change game state."""
+        base = self.inspect(image)
+        measured = base["raw"].get("hud_value_measurements")
+        if measured is None:
+            measured = self._hud_values(image, base["raw"])
+        return {
+            "signals": [], "context": {"stream_kind": "hud_values",
+                                       "profile_fingerprint": self.bindings["profile"]},
+            "raw": {"schema": HUD_VALUES_VERSION, "hud_value_measurements": measured,
+                    "ownership": "UNKNOWN", "formal_outputs": 0}, "map_candidates": [],
         }
 
     def _observe_clock_prefix(

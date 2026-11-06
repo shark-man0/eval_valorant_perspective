@@ -52,7 +52,8 @@ padding:8px}
 <main><section><h2 id="state"></h2><p id="coverage"></p>
 <video id="video" controls preload="metadata"></video>
 <p id="playback" class="muted"></p>
-<h3>HUD候補</h3><pre id="hud"></pre><h3>Map・Zone候補</h3><pre id="map"></pre>
+<h3>表示中のHUD候補（本人への帰属は未確定）</h3><pre id="hud"></pre>
+<h3>Map・Zone候補</h3><pre id="map"></pre>
 </section><section><h2>イベント候補</h2><div id="events"></div>
 <details><summary>状態・不確実性・native参照</summary><pre id="detail"></pre></details>
 <details open><summary>根拠を選択</summary><select id="evidence"></select>
@@ -111,9 +112,13 @@ el('state').textContent=second+'秒  Round '+(row.round_number.value??'?')+
 el('coverage').textContent=(row.observation_present?'映像観測あり（サンプル点のみ）':'未観測')+
 ' — '+row.uncertainty;
 
+const hudReasons={unconfigured_reader_or_roi:'読取器未設定',geometry_unsupported:'HUD配置未確認',
+unread_or_unaccepted:'読取不能',reader_error:'読取器エラー'};
 el('hud').textContent=Object.entries(row.hud_observations).map(([key,value])=>
 key+': '+(value.candidates.length?Array.from(new Set(value.candidates.map(c=>
-JSON.stringify(c.value)))).join(' / ')+'（候補）':'UNKNOWN')).join('\n');
+JSON.stringify(c.value)))).join(' / ')+'（表示値の候補）':'UNKNOWN'+
+((value.unavailable_reasons||[]).length?'（'+Array.from(new Set(value.unavailable_reasons.map(r=>
+hudReasons[r.reason]||'読取不能'))).join(' / ')+'）':''))).join('\n');
 const map=row.map_observations;
 el('map').textContent='Map名: '+
 (map.map_name_candidates.length?fmt(map.map_name_candidates):'UNKNOWN')+
