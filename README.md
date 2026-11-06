@@ -387,6 +387,10 @@ separately from sampling effects.
 purchase-menu/Tracker candidates to exact native evidence and the local viewer.
 Display context remains separate from game-state and recorder ownership inference.
 
+The [remaining timeline review](docs/development_remaining_timeline_review.md)
+records the completed bounded candidate inspection and distinguishes strict Map
+ownership gaps from unconfigured Armor/Weapon providers.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
