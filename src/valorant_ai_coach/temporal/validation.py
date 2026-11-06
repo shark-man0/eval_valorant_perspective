@@ -162,6 +162,8 @@ def prior_catalog(registries: list[Path]) -> dict[str, Any]:
     anchors = {}
     files = list((ROOT / "datasets/manifests").glob("*.json"))
     for registry in registries:
+        if not registry.is_dir():
+            raise ValueError("Prior registry root missing; cannot exclude reserved Sources")
         files.extend(registry.glob("*/allocation.json"))
     for path in sorted(set(files)):
         data = read_json(path)

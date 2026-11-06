@@ -138,6 +138,11 @@ def test_protected_known_path_is_not_even_hashed(admission, tmp_path, monkeypatc
     assert not (registry / "one/policy_PRIVATE.json").exists()
 
 
+def test_missing_prior_registry_cannot_silently_clear_history(tmp_path):
+    with pytest.raises(ValueError, match="Prior registry root missing"):
+        v.prior_catalog([tmp_path / "misspelled-registry"])
+
+
 def test_duplicate_bytes_rejected_before_probe_and_reservations_survive(
     admission, tmp_path, monkeypatch
 ):
