@@ -33,7 +33,7 @@ class ValueSupplementObserver:
         if self.inventory.reader.diagnostics or self.inventory.reader.executable is None:
             raise ValueError("Configured inventory OCR languages required")
         self.values.analyzer.readers["weapon_inventory"] = self.inventory
-        self.bindings = {"schema": "development_value_supplement_v1",
+        self.bindings = {"schema": "development_value_supplement_v2",
             "parent": self.parent.bindings, "parent_fingerprint": self.parent.fingerprint,
             "values": self.values.bindings, "configuration_sha256": file_sha(path),
             "aliases_sha256": digest(cfg["inventory_labels"]),
@@ -42,7 +42,8 @@ class ValueSupplementObserver:
                                         for n in ("jpn", "eng")},
             "code_sha256": file_sha(Path(__file__)),
             "inventory_code_sha256": file_sha(Path(__file__).with_name("inventory_labels.py")),
-            "fields": ["armor", "weapon"], "state_authority": False}
+            "fields": ["armor", "weapon", "ammo_current", "ammo_reserve", "credits"],
+            "state_authority": False}
         self.value_fingerprint = digest({k: v for k, v in self.bindings.items()
                                          if k not in {"parent", "parent_fingerprint"}})
         parent_suppliers = self.parent.bindings.get(
@@ -56,7 +57,8 @@ class ValueSupplementObserver:
         self.inventory.last_attempts = []
         result = self.values.inspect_values(image)
         result["raw"]["hud_value_measurements"] = [
-            m for m in result["raw"]["hud_value_measurements"] if m["name"] in {"armor", "weapon"}]
+            m for m in result["raw"]["hud_value_measurements"]
+            if m["name"] in {"armor", "weapon", "ammo_current", "ammo_reserve", "credits"}]
         for measured in result["raw"]["hud_value_measurements"]:
             if measured["name"] == "weapon":
                 measured.update(value_scope="visible_inventory_label",

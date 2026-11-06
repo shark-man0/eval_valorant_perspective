@@ -22,6 +22,7 @@ from .hud_value_projection import attach_hud_values
 from .hud_visibility import visibility_summary
 from .replay import SourcePolicy, file_sha, read_json, write_private
 from .visibility_projection import attach_visibility
+from .zone_projection import attach_viewed_zones
 
 VERSION = "development_application_timeline_v1"
 HUD_FIELDS = ("hp", "armor", "weapon", "ammo", "timer", "score", "credits")
@@ -135,6 +136,7 @@ def build_application_timeline(
     origin: Fraction,
     hud_value_observations: list[dict[str, Any]] | None = None,
     hud_visibility_observations: list[dict[str, Any]] | None = None,
+    zone_observations: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Project one registered recording, without interpreting raw claims as facts."""
     if (
@@ -293,6 +295,8 @@ def build_application_timeline(
         attach_hud_values(result, hud_value_observations, _hud)
     if hud_visibility_observations:
         attach_visibility(result, hud_visibility_observations)
+    if zone_observations:
+        attach_viewed_zones(result, zone_observations)
     return result
 
 
@@ -307,6 +311,7 @@ def export_application(
     active_clock_bridge: bool = False,
     hud_values: list[Path] | None = None,
     hud_visibility: list[Path] | None = None,
+    zone_observations: list[Path] | None = None,
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
@@ -328,7 +333,8 @@ def export_application(
     input_bindings = {
         str(p.resolve()): file_sha(p)
         for p in [timeline_path, receipt_path, policy_path,
-                  *(supplements or []), *(hud_values or []), *(hud_visibility or [])]
+                  *(supplements or []), *(hud_values or []), *(hud_visibility or []),
+                  *(zone_observations or [])]
     }
     extra = []
     for path in supplements or []:
@@ -368,6 +374,12 @@ def export_application(
             if row["sample"]["source_sha256"] == source["source_sha256"]:
                 policy.admit(row["sample"])
                 visibility_rows.append(row)
+    zone_rows = []
+    for path in zone_observations or []:
+        for row in read_json(path)["observations"]:
+            if row["sample"]["source_sha256"] == source["source_sha256"]:
+                policy.admit(row["sample"])
+                zone_rows.append(row)
     bundle = build_application_timeline(
         timeline,
         source=source,
@@ -375,6 +387,7 @@ def export_application(
         origin=receipt["native_start_pts_tick"] * base,
         hud_value_observations=value_rows,
         hud_visibility_observations=visibility_rows,
+        zone_observations=zone_rows,
     )
     output.mkdir(parents=True, mode=0o700)
     write_private(output / "timeline_PRIVATE.json", bundle)
@@ -405,6 +418,8 @@ def export_application(
                 Path(__file__).with_name("pixel_projection.py"),
                 Path(__file__).with_name("visibility_projection.py"),
                 Path(__file__).with_name("hud_visibility.py"),
+                Path(__file__).with_name("zone_projection.py"),
+                Path(__file__).with_name("zone_contract.py"),
                 Path(__file__).parent.parent / "rules" / "development_timeline.py",
             )
         },
@@ -413,6 +428,7 @@ def export_application(
         "supplement_observations_supplied": len(extra),
         "HUD_value_observations_supplied": len(value_rows),
         "HUD_visibility_observations_supplied": len(visibility_rows),
+        "HUD_zone_observations_supplied": len(zone_rows),
         "provisional_map_roles_requested_for_export": provisional_map_roles,
         "active_clock_bridge_requested_for_export": active_clock_bridge,
         "export_engine_configuration": timeline["configuration"],
@@ -434,6 +450,7 @@ def main() -> None:
     export.add_argument("--active-clock-bridge", action="store_true")
     export.add_argument("--hud-values", type=Path, action="append", default=[])
     export.add_argument("--hud-visibility", type=Path, action="append", default=[])
+    export.add_argument("--zone-observations", type=Path, action="append", default=[])
     generate = sub.add_parser("generate")
     for name in ("policy", "reader-config", "output"):
         generate.add_argument("--" + name, type=Path, required=True)
@@ -451,6 +468,7 @@ def main() -> None:
     generate.add_argument("--active-clock-bridge", action="store_true")
     generate.add_argument("--hud-values", type=Path, action="append", default=[])
     generate.add_argument("--hud-visibility", type=Path, action="append", default=[])
+    generate.add_argument("--zone-observations", type=Path, action="append", default=[])
     args = parser.parse_args()
     if args.command == "generate":
         from .match import run_match
@@ -510,6 +528,7 @@ def main() -> None:
             output=args.output / "application",
             hud_values=args.hud_values,
             hud_visibility=args.hud_visibility,
+            zone_observations=args.zone_observations,
         )
     else:
         result = export_application(
@@ -522,6 +541,7 @@ def main() -> None:
             active_clock_bridge=args.active_clock_bridge,
             hud_values=args.hud_values,
             hud_visibility=args.hud_visibility,
+            zone_observations=args.zone_observations,
         )
     print(json.dumps({"version": result["version"], "formal_outputs": 0}))
 

@@ -405,3 +405,10 @@ current native position hypotheses from temporal continuity and paths.
 The [HUD location adapter](docs/development_hud_zone_context.md) retains viewed
 names on that same timeline and requires current shared SELF evidence before
 associating a name with the recorder.
+## Development cross-match review
+
+The optional [cross-match timeline consumer](docs/development_cross_match_timeline.md)
+compares registered development bundles, extracts evidence-linked review intervals,
+and opens the existing original-video viewer. It includes JSON/CSV and evaluation
+handoff plus desktop menu entry points. Coverage and research candidates are kept
+separate from accuracy and formal scoring.
