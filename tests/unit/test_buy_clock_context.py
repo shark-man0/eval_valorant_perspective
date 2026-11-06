@@ -12,7 +12,7 @@ def inputs():
         obs(10, ["buy", "owner_hud"], context={"score": [0, 0], "timer_seconds": 2}),
         obs(20, ["buy", "owner_hud"], context={"score": [0, 0]}),
         obs(30, ["owner_hud"]),
-        obs(40, ["owner_hud"]),
+        obs(40, ["owner_hud"], maps=[{"candidate_id": "unqualified-marker", "point": [1, 2]}]),
         obs(50, ["active", "owner_hud"], context={"score": [0, 0], "timer_seconds": 96}),
     ]
 
@@ -22,6 +22,7 @@ def test_two_clock_displays_and_future_active_revise_only_stale_round_candidate(
     baseline = replay(rows)
     result = replay(rows, buy_clock_expiry=True)
     target = result["frames"][4]
+    assert target["map"]["candidates"]
     assert baseline["frames"][4]["round"]["value"] == "BUY"
     assert target["round"]["value"] == "ACTIVE"
     assert target["round"]["hypotheses"] == ["ACTIVE", "BUY", "UNKNOWN"]
