@@ -55,7 +55,8 @@ def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
     unavailable: dict[str, list[dict[str, Any]]] = defaultdict(list)
     aliases = {"round_timer": "timer", "weapon_text": "weapon"}
 
-    def add(name: str, value: Any, row: dict[str, Any], confidence: Any = None) -> None:
+    def add(name: str, value: Any, row: dict[str, Any], confidence: Any = None,
+            scope: dict[str, Any] | None = None) -> None:
         if value is None or value == "":
             return
         fields.setdefault(name, []).append(
@@ -66,6 +67,8 @@ def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "confidence": confidence,
                 "evidence_ref": row["observation_id"],
                 "sample_ref": row["sample"]["sample_sha256"],
+                **({k: scope[k] for k in ("value_scope", "current_weapon_selection")
+                    if isinstance(scope.get(k), str)} if scope else {}),
             }
         )
 
@@ -77,7 +80,7 @@ def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 if name in {*HUD_FIELDS, "ammo_current", "ammo_reserve"}:
                     value_only = measured in raw.get("hud_value_measurements", [])
                     if not value_only or measured.get("status") == "CANDIDATE":
-                        add(name, measured.get("value"), row, measured.get("confidence"))
+                        add(name, measured.get("value"), row, measured.get("confidence"), measured)
                     if value_only:
                         fields.setdefault(name, [])
                         if measured.get("status") == "UNKNOWN":

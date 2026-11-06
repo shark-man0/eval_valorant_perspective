@@ -117,7 +117,8 @@ const hudReasons={unconfigured_reader_or_roi:'読取器未設定',geometry_unsup
 unread_or_unaccepted:'読取不能',reader_error:'読取器エラー'};
 el('hud').textContent=Object.entries(row.hud_observations).map(([key,value])=>
 key+': '+(value.candidates.length?Array.from(new Set(value.candidates.map(c=>
-JSON.stringify(c.value)))).join(' / ')+'（表示値の候補）':'UNKNOWN'+
+JSON.stringify(c.value)+(c.current_weapon_selection==='UNKNOWN'?'〔選択中の武器は未確定〕':''))))
+.join(' / ')+'（表示値の候補）':'UNKNOWN'+
 ((value.unavailable_reasons||[]).length?'（'+Array.from(new Set(value.unavailable_reasons.map(r=>
 hudReasons[r.reason]||'読取不能'))).join(' / ')+'）':''))).join('\n');
 const map=row.map_observations;
