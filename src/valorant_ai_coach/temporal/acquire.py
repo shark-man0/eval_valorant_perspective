@@ -38,11 +38,18 @@ def acquire(
     start: int,
     end: int,
     output: Path,
+    retention_seconds: Fraction = Fraction(1),
     max_png_bytes: int = 512 * 1024**2,
 ) -> dict[str, Any]:
     output = output.expanduser().resolve()
     if type(start) is not int or type(end) is not int or start < 0 or not 0 < end - start <= 180:
         raise ValueError("Explicit development window of at most 180 seconds required")
+    if (
+        type(retention_seconds) is not Fraction
+        or not Fraction(1, 5) <= retention_seconds <= 1
+        or Fraction(end - start, 1) / retention_seconds > 300
+    ):
+        raise ValueError("Exact 1/5–1 second cadence and at most 300 retained points required")
     if output.exists() or any((p / ".git").exists() for p in output.resolve().parents):
         raise ValueError("New private directory outside Git required")
     policy = SourcePolicy(read_json(policy_path))
@@ -110,7 +117,7 @@ def acquire(
     ):
         raise ValueError("Native probe must cover the explicit window")
     expected = tuple(t for t in probed if lower <= t <= upper)
-    step = math.ceil(Fraction(1) / base)
+    step = math.ceil(retention_seconds / base)
     retained: list[int] = []
     for tick in expected:
         if not retained or tick - retained[-1] >= step:
@@ -197,6 +204,7 @@ def acquire(
             "all_native_pts_ticks": list(actual),
             "native_time_base": str(base),
             "window_seconds": [start, end],
+            "retention_seconds": str(retention_seconds),
             "retention_step_ticks": step,
             "policy_sha256": file_sha(policy_path),
             "implementation_sha256": file_sha(Path(__file__)),
@@ -216,6 +224,7 @@ def main() -> None:
     parser.add_argument("--source-id", required=True)
     parser.add_argument("--start", type=int, required=True)
     parser.add_argument("--end", type=int, required=True)
+    parser.add_argument("--retention-seconds", type=Fraction, default=Fraction(1))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = acquire(
@@ -224,6 +233,7 @@ def main() -> None:
         start=args.start,
         end=args.end,
         output=args.output,
+        retention_seconds=args.retention_seconds,
     )
     print(
         json.dumps(

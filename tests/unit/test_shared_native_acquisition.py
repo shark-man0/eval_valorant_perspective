@@ -1,6 +1,8 @@
+import math
 import os
 import shutil
 import subprocess
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
@@ -64,10 +66,46 @@ def test_sparse_pngs_retain_exact_native_pts_after_complete_decoder_check(tmp_pa
             policy_path=policy_path, source_id="a", start=0, end=2, output=tmp_path / "acquired"
         )
 
+    dense = acquire(
+        policy_path=policy_path,
+        source_id="a",
+        start=0,
+        end=2,
+        retention_seconds=Fraction(1, 5),
+        output=tmp_path / "dense",
+    )
+    assert dense["retention_seconds"] == "1/5"
+    assert dense["retention_step_ticks"] == math.ceil(
+        Fraction(1, 5) / Fraction(dense["native_time_base"])
+    )
+    assert [row["sample"]["native_pts_tick"] for row in dense["frames"]] == list(
+        dense["all_native_pts_ticks"][index] for index in range(0, 25, 3)
+    )
+    assert dense["source_bytes_verified_before_and_after"] is True
+    original_pixels = {
+        row["sample"]["native_pts_tick"]: row["sample"]["native_pixel_sha256"]
+        for row in result["frames"]
+    }
+    assert {
+        row["sample"]["native_pts_tick"]: row["sample"]["native_pixel_sha256"]
+        for row in dense["frames"]
+        if row["sample"]["native_pts_tick"] in original_pixels
+    } == original_pixels
+
 
 def test_invalid_interval_or_protected_source_is_rejected_before_decode(tmp_path):
     path = write(tmp_path / "policy.json", policy_fixture(tmp_path, split="FINAL_HOLDOUT"))
     with pytest.raises(ValueError, match="180"):
         acquire(policy_path=path, source_id="a", start=0, end=181, output=tmp_path / "output")
+    with pytest.raises(ValueError, match="cadence"):
+        acquire(
+            policy_path=path, source_id="a", start=0, end=2,
+            retention_seconds=Fraction(1, 10), output=tmp_path / "output",
+        )
+    with pytest.raises(ValueError, match="300 retained"):
+        acquire(
+            policy_path=path, source_id="a", start=0, end=61,
+            retention_seconds=Fraction(1, 5), output=tmp_path / "output",
+        )
     with pytest.raises(ValueError, match="Protected"):
         acquire(policy_path=path, source_id="a", start=0, end=2, output=tmp_path / "output")
