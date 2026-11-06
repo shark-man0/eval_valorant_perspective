@@ -352,6 +352,12 @@ connects whole-recording generation, unified JSON/CSV, a local viewer with
 original-video seek, and a development evaluation/review handoff. UNKNOWN and
 unqualified candidates remain usable without being promoted to formal outputs.
 
+The [frozen transfer validation harness](docs/development_frozen_timeline_validation.md)
+fixes the existing recognizer/configuration before new-source intake, retains
+failed and repeated attempts, and checks whole JSON/CSV/evaluation outputs.
+No authorized unseen recordings are currently available; unseen real-match
+validation remains incomplete.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
