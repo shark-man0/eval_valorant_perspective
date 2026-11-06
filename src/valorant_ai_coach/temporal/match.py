@@ -281,6 +281,7 @@ def run_match(
     audit_sample_plan: Path | None = None,
     refinement_selection_policy: str = "chronological",
     report_view_bridge: bool = False,
+    buy_clock_expiry: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
@@ -573,11 +574,13 @@ def run_match(
     if decoder_shas != {"ffmpeg": file_sha(Path(ffmpeg)), "ffprobe": file_sha(Path(ffprobe))}:
         raise ValueError("Native decoder binaries changed during execution")
     engine = DevelopmentGameTimeline(
-        fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge
+        fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
+        buy_clock_expiry=buy_clock_expiry,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
-            fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge
+            fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
+            buy_clock_expiry=buy_clock_expiry,
         )
         if baseline_producers else None
     )
@@ -778,6 +781,7 @@ def main() -> None:
     parser.add_argument("--retain-frames", action="store_true")
     parser.add_argument("--audit-sample-plan", type=Path)
     parser.add_argument("--report-view-bridge", action="store_true")
+    parser.add_argument("--buy-clock-expiry", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -790,6 +794,7 @@ def main() -> None:
         retain_frames=args.retain_frames,
         audit_sample_plan=args.audit_sample_plan,
         report_view_bridge=args.report_view_bridge,
+        buy_clock_expiry=args.buy_clock_expiry,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

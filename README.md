@@ -358,6 +358,12 @@ failed and repeated attempts, and checks whole JSON/CSV/evaluation outputs.
 No authorized unseen recordings are currently available; unseen real-match
 validation remains incomplete.
 
+Development can continue on the existing authorized recordings. The opt-in
+[BUY clock context experiment](docs/development_buy_clock_context.md) compares
+the same native observations across eight development-exposed physical matches,
+reducing a known carried-BUY error while retaining uncertainty and the existing
+default behavior. Unseen verification is a separate follow-up.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)

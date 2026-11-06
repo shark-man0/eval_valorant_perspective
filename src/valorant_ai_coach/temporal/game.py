@@ -301,6 +301,7 @@ class DevelopmentGameTimeline:
         forward_only: bool = False,
         mark_round_transition_gaps: bool = False,
         report_view_bridge: bool = False,
+        buy_clock_expiry: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -318,6 +319,9 @@ class DevelopmentGameTimeline:
         if type(report_view_bridge) is not bool or (forward_only and report_view_bridge):
             raise ValueError("Report view reconciliation requires explicit offline mode")
         self.report_view_bridge = report_view_bridge
+        if type(buy_clock_expiry) is not bool or (forward_only and buy_clock_expiry):
+            raise ValueError("BUY clock reconciliation requires explicit offline mode")
+        self.buy_clock_expiry = buy_clock_expiry
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -1065,6 +1069,9 @@ class DevelopmentGameTimeline:
         if self.mark_round_transition_gaps:
             self._mark_round_transition_gaps(states, transitions)
         view_projections = self._reconcile_report_views(states) if self.report_view_bridge else []
+        clock_projections = (
+            self._reconcile_buy_clock_expiry(states) if self.buy_clock_expiry else []
+        )
         round_projections = []
         for state in states:
             rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1121,6 +1128,9 @@ class DevelopmentGameTimeline:
             )
         if round_projections:
             result["round_model_projection_history"] = round_projections
+        if self.buy_clock_expiry:
+            result["configuration"]["buy_clock_expiry"] = "development_buy_clock_expiry_v1"
+            result["buy_clock_projection_history"] = clock_projections
         if self.report_view_bridge:
             result["configuration"]["report_view_bridge"] = "development_report_view_bridge_v2"
             result["configuration"]["max_report_bridge_seconds"] = "10"
@@ -1226,6 +1236,105 @@ class DevelopmentGameTimeline:
             else set()
         )
         return next(iter(scores)) if len(scores) == 1 else None
+
+    def _reconcile_buy_clock_expiry(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """A post-inference phase hypothesis, without event/token/Map authority.
+
+        Two observed decreasing BUY clocks bound an expected expiry, allowing
+        one second for display quantization. A nearby direct ACTIVE witness is
+        still required. Native time is not proof that the game clock ran; BUY
+        and UNKNOWN remain explicit alternatives (for pauses/unread evidence).
+        """
+        history = []
+        clocks: list[tuple[dict[str, Any], int, tuple[int, ...]]] = []
+        last_buy: dict[str, Any] | None = None
+
+        def rows_of(frame: dict[str, Any]) -> list[dict[str, Any]]:
+            return [self._observations[i] for i in frame["observation_ids"]
+                    if self._observations[i]["context"].get("unqualified_round_model") is not True]
+
+        def score_of(rows: list[dict[str, Any]]) -> tuple[int, ...] | None:
+            scores = {tuple(r["context"]["score"]) for r in rows
+                      if isinstance(r["context"].get("score"), (list, tuple))}
+            if len(scores) != 1:
+                return None
+            score = next(iter(scores))
+            return score if len(score) == 2 and all(type(v) is int and 0 <= v <= 99
+                                                  for v in score) else None
+
+        for index, frame in enumerate(states):
+            rows = rows_of(frame)
+            signals = {s for row in rows for s in row["signals"]}
+            score = score_of(rows)
+            if not frame["continuity"]["carry_allowed"] or signals & {
+                "active", "result", "intermission"
+            } or (clocks and score is not None and score != clocks[-1][2]):
+                clocks, last_buy = [], None
+            if "buy" in signals:
+                if frame["round"]["reason"] != "current_observation":
+                    clocks, last_buy = [], None
+                    continue
+                last_buy = frame
+                values = {r["context"]["timer_seconds"] for r in rows if "buy" in r["signals"]
+                          and type(r["context"].get("timer_seconds")) is int
+                          and r["context"]["timer_seconds"] >= 0}
+                if len(values) == 1 and score is not None:
+                    clocks.append((frame, next(iter(values)), score))
+                    clocks = clocks[-2:]
+                continue
+            if (frame["round"]["value"] != "BUY"
+                    or frame["round"]["reason"] != "bounded_missing_observation"
+                    or len(clocks) != 2 or last_buy is None):
+                continue
+            (a, av, ascore), (b, bv, bscore) = clocks
+            now = native_time(frame["sample"])
+            clock_gap = native_time(b["sample"]) - native_time(a["sample"])
+            elapsed = now - native_time(b["sample"])
+            if not (ascore == bscore and 0 < clock_gap <= self.max_carry
+                    and av > bv and abs(Fraction(av - bv) - clock_gap) <= 1
+                    and bv + 1 <= elapsed <= self.max_carry + self.future):
+                continue
+            confirmation = None
+            for later in states[index + 1:]:
+                if (source_scope(later["sample"]) != source_scope(frame["sample"])
+                        or native_time(later["sample"]) - now > self.future
+                        or not later["continuity"]["carry_allowed"]):
+                    break
+                later_rows = rows_of(later)
+                later_signals = {s for row in later_rows for s in row["signals"]}
+                later_score = score_of(later_rows)
+                if (later_signals & {"buy", "result", "intermission"}
+                        or later_score is not None and later_score != bscore
+                        or later["round"]["reason"] == "conflicting_observations"):
+                    break
+                if ("active" in later_signals and later_score == bscore
+                        and later["round"]["origin"] == "observation_projection"
+                        and later["round"]["reason"] == "current_observation"
+                        and later["round"]["value"] == "ACTIVE"):
+                    confirmation = later
+                    break
+            if confirmation is None:
+                continue
+            before = deepcopy(frame["round"])
+            ids = sorted({i for witness in [a, b, last_buy, frame, confirmation]
+                          for i in witness["observation_ids"]})
+            frame["round"] = _estimate(
+                "ACTIVE", alternatives=["ACTIVE", "BUY", "UNKNOWN"],
+                reason="expired_buy_clock_and_later_active_candidate", evidence=ids,
+            )
+            frame["round"].update(
+                uncertainty="game_clock_progress_and_pause_unverified",
+                forward_estimate=before,
+            )
+            history.append({
+                "sample": frame["sample"], "before": before, "after": deepcopy(frame["round"]),
+                "clock_samples": [a["sample"], b["sample"]],
+                "clock_display_seconds": [av, bv], "confirmation_sample": confirmation["sample"],
+                "kind": "round_clock_estimate_revision_not_event", "qualified": False,
+                "internal_game_event_time": None, "lifecycle_authority": False,
+                "Map_authority": False,
+            })
+        return history
 
     @staticmethod
     def _mark_round_transition_gaps(
