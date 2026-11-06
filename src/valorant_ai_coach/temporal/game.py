@@ -305,6 +305,7 @@ class DevelopmentGameTimeline:
         report_view_bridge: bool = False,
         buy_clock_expiry: bool = False,
         provisional_map_roles: bool = False,
+        active_clock_bridge: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -328,6 +329,9 @@ class DevelopmentGameTimeline:
         if type(provisional_map_roles) is not bool:
             raise ValueError("Explicit provisional Map role mode required")
         self.provisional_map_roles = provisional_map_roles
+        if type(active_clock_bridge) is not bool or (forward_only and active_clock_bridge):
+            raise ValueError("ACTIVE clock bridge requires explicit offline mode")
+        self.active_clock_bridge = active_clock_bridge
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -1078,6 +1082,7 @@ class DevelopmentGameTimeline:
         clock_projections = (
             self._reconcile_buy_clock_expiry(states) if self.buy_clock_expiry else []
         )
+        active_clocks = self._reconcile_active_clocks(states) if self.active_clock_bridge else []
         round_projections = []
         for state in states:
             rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1141,6 +1146,9 @@ class DevelopmentGameTimeline:
         if self.buy_clock_expiry:
             result["configuration"]["buy_clock_expiry"] = "development_buy_clock_expiry_v1"
             result["buy_clock_projection_history"] = clock_projections
+        if self.active_clock_bridge:
+            result["configuration"]["active_clock_bridge"] = "development_active_clock_chain_v1"
+            result["active_clock_projection_history"] = active_clocks
         if self.provisional_map_roles:
             result["configuration"]["provisional_map_roles"] = MAP_ROLE_CONTRACT
             result["configuration"]["provisional_map_roles_rule_sha256"] = rule_sha256()
@@ -1249,6 +1257,114 @@ class DevelopmentGameTimeline:
             else set()
         )
         return next(iter(scores)) if len(scores) == 1 else None
+
+    def _reconcile_active_clocks(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Recover a phase candidate from an anchored, measured countdown chain.
+
+        Missing displays never become clock measurements. Revisions need a
+        current numeric clock and a later decreasing measurement; they have no
+        lifecycle/Map/event authority. Score and native continuity alone are
+        insufficient to establish that the game clock ran without a pause.
+        """
+        def scores_of(frame: dict[str, Any]) -> set[tuple[int, ...]]:
+            return {tuple(self._observations[i]["context"]["score"])
+                    for i in frame["observation_ids"]
+                    if self._observations[i]["context"].get("unqualified_round_model") is not True
+                    and isinstance(self._observations[i]["context"].get("score"), (tuple, list))}
+
+        def measured(frame: dict[str, Any]) -> tuple[int, tuple[int, ...]] | None:
+            rows = [self._observations[i] for i in frame["observation_ids"]
+                    if self._observations[i]["context"].get("unqualified_round_model") is not True]
+            clocks = {r["context"]["timer_seconds"] for r in rows
+                      if type(r["context"].get("timer_seconds")) is int}
+            scores = scores_of(frame)
+            if len(clocks) != 1 or len(scores) != 1:
+                return None
+            clock, score = next(iter(clocks)), next(iter(scores))
+            return (clock, score) if (0 < clock < 600 and len(score) == 2
+                and all(type(v) is int and 0 <= v <= 99 for v in score)) else None
+
+        def barrier(frame: dict[str, Any]) -> bool:
+            return (not frame["continuity"]["carry_allowed"]
+                    or frame["round"]["reason"] == "conflicting_observations"
+                    or any(set(self._observations[i]["signals"]) & {"buy", "result", "intermission"}
+                           for i in frame["observation_ids"]))
+
+        chain: list[dict[str, Any]] = []
+        history = []
+        for index, frame in enumerate(states):
+            now, value = native_time(frame["sample"]), measured(frame)
+            prior_value = measured(chain[-1]) if chain else None
+            expected_score = prior_value[1] if prior_value is not None else None
+            if chain and (source_scope(chain[-1]["sample"]) != source_scope(frame["sample"])
+                          or barrier(frame)
+                          or any(s != expected_score for s in scores_of(frame))
+                          or (prior_value is not None
+                              and now - native_time(chain[-1]["sample"]) > prior_value[0] + 1)):
+                chain = []
+            direct = (frame["round"]["value"] == "ACTIVE"
+                      and frame["round"]["origin"] == "observation_projection"
+                      and frame["round"]["reason"] == "current_observation"
+                      and any("active" in self._observations[i]["signals"]
+                              and self._observations[i]["context"].get(
+                                  "unqualified_round_model") is not True
+                              for i in frame["observation_ids"]))
+            if direct and value and not barrier(frame):
+                chain = [frame]
+                continue
+            if not chain or value is None:
+                continue
+            prior = chain[-1]
+            previous = measured(prior)
+            assert previous is not None
+            gap = now - native_time(prior["sample"])
+            if value[1] != previous[1] or value[0] > previous[0]:
+                chain = []
+                continue
+            if value[0] == previous[0] and gap <= 1:
+                continue
+            if not (gap > 0
+                    and previous[0] - value[0] > 0 and abs(previous[0] - value[0] - gap) <= 1):
+                chain = []
+                continue
+            chain.append(frame)
+            if frame["round"]["value"] != "UNKNOWN" or frame["round"]["reason"] != "unobserved":
+                continue
+            confirmation = None
+            for later in states[index + 1:]:
+                elapsed = native_time(later["sample"]) - now
+                if (source_scope(later["sample"]) != source_scope(frame["sample"])
+                        or elapsed > self.future or barrier(later)
+                        or any(s != value[1] for s in scores_of(later))):
+                    break
+                observed = measured(later)
+                if observed is None:
+                    continue
+                if observed[1] != value[1] or observed[0] > value[0]:
+                    break
+                if value[0] - observed[0] > 0 and abs(value[0] - observed[0] - elapsed) <= 1:
+                    confirmation = later
+                    break
+            if confirmation is None:
+                continue
+            before = deepcopy(frame["round"])
+            evidence = sorted({i for f in chain + [confirmation] for i in f["observation_ids"]})
+            frame["round"] = _estimate(
+                "ACTIVE", alternatives=["ACTIVE", "BUY", "UNKNOWN"], evidence=evidence,
+                reason="measured_active_clock_chain_candidate",
+            )
+            frame["round"].update(forward_estimate=before,
+                                  uncertainty="clock_chain_phase_and_pause_unverified")
+            history.append({"sample": frame["sample"], "before": before,
+                            "after": deepcopy(frame["round"]),
+                            "anchor_sample": chain[0]["sample"],
+                            "previous_clock_sample": prior["sample"],
+                            "clock_seconds": value[0],
+                            "confirmation_sample": confirmation["sample"],
+                            "chain_evidence_ids": evidence, "qualified": False,
+                            "internal_game_event_time": None,
+                            "lifecycle_authority": False, "Map_authority": False})
+        return history
 
     def _reconcile_buy_clock_expiry(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """A post-inference phase hypothesis, without event/token/Map authority.

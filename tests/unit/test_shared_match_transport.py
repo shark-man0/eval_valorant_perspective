@@ -89,8 +89,10 @@ def native_case(tmp_path, request):
 @pytest.mark.parametrize("report_view_bridge", [False, True])
 @pytest.mark.parametrize("buy_clock_expiry", [False, True])
 @pytest.mark.parametrize("provisional_map_roles", [False, True])
+@pytest.mark.parametrize("active_clock_bridge", [False, True])
 def test_full_file_native_origin_and_recording_second_grid(
-    tmp_path, monkeypatch, native_case, report_view_bridge, buy_clock_expiry, provisional_map_roles
+    tmp_path, monkeypatch, native_case, report_view_bridge, buy_clock_expiry, provisional_map_roles,
+    active_clock_bridge,
 ):
     policy, config = native_case
 
@@ -113,11 +115,15 @@ def test_full_file_native_origin_and_recording_second_grid(
         report_view_bridge=report_view_bridge,
         buy_clock_expiry=buy_clock_expiry,
         provisional_map_roles=provisional_map_roles,
+        active_clock_bridge=active_clock_bridge,
     )
     assert bool(receipt["shared_engine_configuration"].get("provisional_map_roles")) is (
         provisional_map_roles
     )
     assert receipt["whole_file_completed"] is True
+    assert bool(receipt["shared_engine_configuration"].get("active_clock_bridge")) is (
+        active_clock_bridge
+    )
     assert receipt["source_bytes_verified_before_and_after"] is True
     assert receipt["native_start_pts_tick"] > 0
     timeline = json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
@@ -524,8 +530,9 @@ def test_native_identity_precedes_supplier_in_place_preprocessing(tmp_path, nati
 
 
 @pytest.mark.parametrize("provisional_map_roles", [False, True])
+@pytest.mark.parametrize("hud_value_sidecar", [False, True])
 def test_native_application_export_and_original_video_http(
-    tmp_path, native_case, provisional_map_roles
+    tmp_path, native_case, provisional_map_roles, hud_value_sidecar
 ):
     import threading
     import urllib.error
@@ -557,12 +564,31 @@ def test_native_application_export_and_original_video_http(
         max_refinement_windows=0,
         observer_factory=Pixels,
     )
+    value_paths = []
+    if hud_value_sidecar:
+        from valorant_ai_coach.temporal.evidence import freeze_native_sample
+        from valorant_ai_coach.temporal.game import observation
+        sample = json.loads((acquisition / "timeline_PRIVATE.json").read_text(encoding="utf-8"))[
+            "frames"][0]["sample"]
+        sample = {k: v for k, v in sample.items() if k != "sample_sha256"}
+        sample.update(acquisition_id="value-only", native_epoch="value-only")
+        row = observation(
+            sample=freeze_native_sample(sample), producer="d" * 64, signals=[],
+            context={"stream_kind": "hud_values"},
+            raw={"schema": "development_configured_hud_values_v1", "formal_outputs": 0,
+                 "ownership": "UNKNOWN", "hud_value_measurements": [
+                     {"name": "armor", "value": 25, "confidence": .95, "status": "CANDIDATE"}]},
+        )
+        sidecar = tmp_path / "HUD-values.json"
+        sidecar.write_text(json.dumps({"observations": [row]}), encoding="utf-8")
+        value_paths.append(sidecar)
     export_application(
         timeline_path=acquisition / "timeline_PRIVATE.json",
         receipt_path=acquisition / "completion_PRIVATE.json",
         policy_path=policy,
         output=output,
         provisional_map_roles=provisional_map_roles,
+        hud_values=value_paths,
     )
     with (output / "timeline_1s_PRIVATE.csv").open(encoding="utf-8", newline="") as stream:
         rows = list(csv.DictReader(stream))
@@ -577,6 +603,9 @@ def test_native_application_export_and_original_video_http(
             row = json.load(response)
         assert row["native_start_seconds"] == "5"
         assert row["life_state"]["value"] == "ALIVE"
+        if hud_value_sidecar:
+            assert row["hud_observations"]["armor"]["candidates"][0]["value"] == 25
+            assert len(row["HUD_value_sample_refs"]) == 1
         assert ("provisional_recorder_position_hypotheses" in row["map_observations"]) is (
             provisional_map_roles
         )

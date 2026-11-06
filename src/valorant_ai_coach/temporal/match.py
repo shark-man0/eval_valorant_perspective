@@ -283,6 +283,7 @@ def run_match(
     report_view_bridge: bool = False,
     buy_clock_expiry: bool = False,
     provisional_map_roles: bool = False,
+    active_clock_bridge: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
@@ -296,6 +297,8 @@ def run_match(
         raise ValueError("Explicit development report-view reconciliation boolean required")
     if type(provisional_map_roles) is not bool:
         raise ValueError("Explicit development provisional Map role boolean required")
+    if type(active_clock_bridge) is not bool:
+        raise ValueError("Explicit development ACTIVE clock bridge boolean required")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
     output = output.expanduser().resolve()
@@ -582,12 +585,14 @@ def run_match(
         fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
         buy_clock_expiry=buy_clock_expiry,
         provisional_map_roles=provisional_map_roles,
+        active_clock_bridge=active_clock_bridge,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
             fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
             buy_clock_expiry=buy_clock_expiry,
             provisional_map_roles=provisional_map_roles,
+            active_clock_bridge=active_clock_bridge,
         )
         if baseline_producers else None
     )
@@ -790,6 +795,7 @@ def main() -> None:
     parser.add_argument("--report-view-bridge", action="store_true")
     parser.add_argument("--buy-clock-expiry", action="store_true")
     parser.add_argument("--provisional-map-roles", action="store_true")
+    parser.add_argument("--active-clock-bridge", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -804,6 +810,7 @@ def main() -> None:
         report_view_bridge=args.report_view_bridge,
         buy_clock_expiry=args.buy_clock_expiry,
         provisional_map_roles=args.provisional_map_roles,
+        active_clock_bridge=args.active_clock_bridge,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

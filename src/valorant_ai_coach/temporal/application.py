@@ -18,6 +18,7 @@ from typing import Any
 
 from .evidence import digest, native_time
 from .game import DevelopmentGameTimeline, observation, round_number_summary
+from .hud_value_projection import attach_hud_values
 from .replay import SourcePolicy, file_sha, read_json, write_private
 
 VERSION = "development_application_timeline_v1"
@@ -49,6 +50,8 @@ def _state(frames: list[dict[str, Any]], domain: str) -> dict[str, Any]:
 
 def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
     fields: dict[str, list[dict[str, Any]]] = {k: [] for k in HUD_FIELDS}
+    unavailable: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    aliases = {"round_timer": "timer", "weapon_text": "weapon"}
 
     def add(name: str, value: Any, row: dict[str, Any], confidence: Any = None) -> None:
         if value is None or value == "":
@@ -66,15 +69,34 @@ def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
     for row in rows:
         raw, context = row["raw"], row["context"]
-        for measured in raw.get("measurements", []):
+        for measured in raw.get("measurements", []) + raw.get("hud_value_measurements", []):
             if isinstance(measured, dict) and isinstance(measured.get("name"), str):
-                name = {"round_timer": "timer"}.get(measured["name"], measured["name"])
-                if name in HUD_FIELDS:
-                    add(name, measured.get("value"), row, measured.get("confidence"))
+                name = aliases.get(measured["name"], measured["name"])
+                if name in {*HUD_FIELDS, "ammo_current", "ammo_reserve"}:
+                    value_only = measured in raw.get("hud_value_measurements", [])
+                    if not value_only or measured.get("status") == "CANDIDATE":
+                        add(name, measured.get("value"), row, measured.get("confidence"))
+                    if value_only:
+                        fields.setdefault(name, [])
+                        if measured.get("status") == "UNKNOWN":
+                            unavailable[name].append({
+                                "reason": measured.get("reason", "unread"),
+                                "reader_roi": measured.get("reader_roi"),
+                                "evidence_ref": row["observation_id"],
+                                "sample_ref": row["sample"]["sample_sha256"],
+                            })
         for key, value in raw.get("values", {}).items():
-            name = {"round_timer": "timer"}.get(key, key)
+            name = aliases.get(key, key)
             if isinstance(value, dict):
-                add(name, value.get("value"), row, value.get("confidence"))
+                item = value.get("value")
+                if key in {"player_hp_armor", "ammo_current_weapon", "weapon_inventory"}:
+                    if isinstance(item, dict):
+                        for component, observed in item.items():
+                            target = aliases.get(component, component)
+                            if target in {*HUD_FIELDS, "ammo_current", "ammo_reserve"}:
+                                add(target, observed, row, value.get("confidence"))
+                else:
+                    add(name, item, row, value.get("confidence"))
         hp = raw.get("view_hp")
         if isinstance(hp, dict):
             add("hp", hp.get("display"), row, hp.get("confidence"))
@@ -94,7 +116,8 @@ def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
         add("timer", context.get("timer_seconds"), row)
         add("score", context.get("score"), row)
     return {
-        k: {"status": "CANDIDATES" if v else "UNKNOWN", "candidates": _unique(v)}
+        k: {"status": "CANDIDATES" if v else "UNKNOWN", "candidates": _unique(v),
+            **({"unavailable_reasons": _unique(unavailable[k])} if unavailable[k] else {})}
         for k, v in fields.items()
     }
 
@@ -105,6 +128,7 @@ def build_application_timeline(
     source: dict[str, Any],
     duration: Fraction,
     origin: Fraction,
+    hud_value_observations: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Project one registered recording, without interpreting raw claims as facts."""
     if (
@@ -231,7 +255,7 @@ def build_application_timeline(
             seconds[-1]["map_observations"]["provisional_recorder_position_hypotheses"] = _unique(
                 [h for m in maps for h in m.get("provisional_recorder_position_hypotheses", [])]
             )
-    return {
+    result: dict[str, Any] = {
         "version": VERSION,
         "qualification": "development_only",
         "formal_outputs": 0,
@@ -258,6 +282,9 @@ def build_application_timeline(
             "unsupported_HUD": "UNKNOWN; raw supplier output retained",
         },
     }
+    if hud_value_observations:
+        attach_hud_values(result, hud_value_observations, _hud)
+    return result
 
 
 def export_application(
@@ -268,12 +295,14 @@ def export_application(
     output: Path,
     supplements: list[Path] | None = None,
     provisional_map_roles: bool = False,
+    active_clock_bridge: bool = False,
+    hud_values: list[Path] | None = None,
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
 
-    if type(provisional_map_roles) is not bool:
-        raise ValueError("Explicit development provisional Map role boolean required")
+    if type(provisional_map_roles) is not bool or type(active_clock_bridge) is not bool:
+        raise ValueError("Explicit development Map/clock booleans required")
     if output.exists():
         raise ValueError("New output directory required")
     policy = SourcePolicy(read_json(policy_path))
@@ -288,7 +317,8 @@ def export_application(
         raise ValueError("Registered original recording changed")
     input_bindings = {
         str(p.resolve()): file_sha(p)
-        for p in [timeline_path, receipt_path, policy_path, *(supplements or [])]
+        for p in [timeline_path, receipt_path, policy_path,
+                  *(supplements or []), *(hud_values or [])]
     }
     extra = []
     for path in supplements or []:
@@ -297,7 +327,7 @@ def export_application(
             if row["sample"]["source_sha256"] == source["source_sha256"]:
                 policy.admit(row["sample"])
                 extra.append(row)
-    if extra or provisional_map_roles:
+    if extra or provisional_map_roles or active_clock_bridge:
         config = timeline["configuration"]
         engine = DevelopmentGameTimeline(
             fuse_exact_native_evidence=config.get("fuse_exact_native_evidence", False),
@@ -308,18 +338,26 @@ def export_application(
             provisional_map_roles=(
                 provisional_map_roles or bool(config.get("provisional_map_roles"))
             ),
+            active_clock_bridge=active_clock_bridge or bool(config.get("active_clock_bridge")),
         )
         for row in timeline["observations"] + extra:
             engine.add(row)
         timeline = engine.rebuild()
     for row in timeline["observations"]:
         policy.admit(row["sample"])
+    value_rows = []
+    for path in hud_values or []:
+        for row in read_json(path)["observations"]:
+            if row["sample"]["source_sha256"] == source["source_sha256"]:
+                policy.admit(row["sample"])
+                value_rows.append(row)
     base = Fraction(timeline["frames"][0]["sample"]["native_time_base"])
     bundle = build_application_timeline(
         timeline,
         source=source,
         duration=Fraction(receipt["duration_seconds"]),
         origin=receipt["native_start_pts_tick"] * base,
+        hud_value_observations=value_rows,
     )
     output.mkdir(parents=True, mode=0o700)
     write_private(output / "timeline_PRIVATE.json", bundle)
@@ -346,13 +384,16 @@ def export_application(
                 Path(__file__),
                 Path(__file__).with_name("game.py"),
                 Path(__file__).with_name("map_roles.py"),
+                Path(__file__).with_name("hud_value_projection.py"),
                 Path(__file__).parent.parent / "rules" / "development_timeline.py",
             )
         },
         "inputs": input_bindings,
         "original_recording_sha256": source["source_sha256"],
         "supplement_observations_supplied": len(extra),
+        "HUD_value_observations_supplied": len(value_rows),
         "provisional_map_roles_requested_for_export": provisional_map_roles,
+        "active_clock_bridge_requested_for_export": active_clock_bridge,
         "export_engine_configuration": timeline["configuration"],
         "output_sha256s": {p.name: file_sha(p) for p in output.iterdir()},
         "formal_outputs": 0,
@@ -369,6 +410,8 @@ def main() -> None:
         export.add_argument("--" + name, type=Path, required=True)
     export.add_argument("--supplement", type=Path, action="append", default=[])
     export.add_argument("--provisional-map-roles", action="store_true")
+    export.add_argument("--active-clock-bridge", action="store_true")
+    export.add_argument("--hud-values", type=Path, action="append", default=[])
     generate = sub.add_parser("generate")
     for name in ("policy", "reader-config", "output"):
         generate.add_argument("--" + name, type=Path, required=True)
@@ -381,6 +424,8 @@ def main() -> None:
     generate.add_argument("--report-view-bridge", action="store_true")
     generate.add_argument("--buy-clock-expiry", action="store_true")
     generate.add_argument("--provisional-map-roles", action="store_true")
+    generate.add_argument("--active-clock-bridge", action="store_true")
+    generate.add_argument("--hud-values", type=Path, action="append", default=[])
     args = parser.parse_args()
     if args.command == "generate":
         from .match import run_match
@@ -402,6 +447,10 @@ def main() -> None:
                 acquisition / "timeline_PRIVATE.json"
             )["configuration"].get("provisional_map_roles"):
                 raise ValueError("Reused acquisition does not contain provisional Map roles")
+            if args.active_clock_bridge and not read_json(
+                acquisition / "timeline_PRIVATE.json"
+            )["configuration"].get("active_clock_bridge"):
+                raise ValueError("Reused acquisition does not contain ACTIVE clock bridge")
         else:
             run_match(
                 policy_path=args.policy,
@@ -413,12 +462,14 @@ def main() -> None:
                 report_view_bridge=args.report_view_bridge,
                 buy_clock_expiry=args.buy_clock_expiry,
                 provisional_map_roles=args.provisional_map_roles,
+                active_clock_bridge=args.active_clock_bridge,
             )
         result = export_application(
             timeline_path=acquisition / "timeline_PRIVATE.json",
             receipt_path=acquisition / "completion_PRIVATE.json",
             policy_path=args.policy,
             output=args.output / "application",
+            hud_values=args.hud_values,
         )
     else:
         result = export_application(
@@ -428,6 +479,8 @@ def main() -> None:
             output=args.output,
             supplements=args.supplement,
             provisional_map_roles=args.provisional_map_roles,
+            active_clock_bridge=args.active_clock_bridge,
+            hud_values=args.hud_values,
         )
     print(json.dumps({"version": result["version"], "formal_outputs": 0}))
 

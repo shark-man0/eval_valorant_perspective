@@ -368,6 +368,11 @@ The opt-in [current Map role hypotheses](docs/development_provisional_map_roles.
 connect measured highlights to current weak SELF evidence in a separate research
 channel. Strong owner gates and formal outputs remain unchanged.
 
+[UNKNOWN diagnosis and configured HUD values](docs/development_unknown_clock_and_hud.md)
+adds an opt-in measured ACTIVE clock-chain candidate and exact-native value-only
+HUD joins. Unread gaps stay uncertain; viewed HP/Armor/Weapon never establish
+recorder life or ownership.
+
 Development measurements and restart tasks are in the
 [shared timeline comparison](docs/development_shared_timeline_results.md).
 The dependent [recorder episode experiment](docs/development_recorder_episode.md)
