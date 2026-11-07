@@ -135,7 +135,19 @@ def context_window(
     if not 0 <= second < len(bundle["seconds"]):
         raise ValueError("Second outside recording")
     paired = entry.get("compare_to")
-    if not paired:
+    current_child = next(
+        (
+            e["id"]
+            for e in entries.values()
+            if e.get("compare_to") == result_id and e.get("primary")
+        ),
+        None,
+    )
+    # Historical issues target a baseline that may itself have an older parent.
+    # Prefer its current primary revision; selecting the revision still shows its parent.
+    if current_child is not None and not entry.get("primary"):
+        paired = current_child
+    elif not paired:
         paired = next((e["id"] for e in entries.values() if e.get("compare_to") == result_id), None)
     versions = []
     for current in [entry, entries[paired]] if paired else [entry]:

@@ -149,3 +149,16 @@ def test_bound_sidecar_pagination_and_before_after_context(tmp_path):
     changed["bundle_sha256"] = "changed"
     with pytest.raises(ValueError, match="baseline.*changed"):
         load_review_sidecars(manifest, {"one": changed})
+
+
+def test_historical_issue_compares_with_current_revision_instead_of_older_parent(tmp_path):
+    _, entry = comparison_fixture(tmp_path)
+    before = {**entry, "id": "before", "primary": False}
+    baseline = {**entry, "primary": False, "compare_to": "before"}
+    current = {**entry, "id": "current", "primary": True, "compare_to": "one"}
+    entries = {"before": before, "one": baseline, "current": current}
+    assert [v["id"] for v in context_window(entries, "one", 0)["versions"]] == ["one", "current"]
+    assert [v["id"] for v in context_window(entries, "current", 0)["versions"]] == [
+        "current",
+        "one",
+    ]
