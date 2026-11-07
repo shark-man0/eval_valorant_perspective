@@ -138,7 +138,13 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
             "common_states": {d: deepcopy(frame[d]) for d in ("round", "life", "camera")},
             "reason": state["reason"],
             "correspondence_review": correspondence_review(
-                pool, state["current_self_position_candidates"], provisional, owner_ids
+                pool,
+                state["current_self_position_candidates"],
+                provisional,
+                owner_ids,
+                ui_rows=exact_map[0]["raw"].get("ui", {}).get("rows", [])
+                if len(exact_map) == 1
+                else None,
             ),
             "semantic_continuity": "UNKNOWN",
             "temporal_path_eligible": False,

@@ -68,6 +68,33 @@ def test_wrong_resolution_and_invalid_profile_fail_closed():
         CreditsCandidateReader(changed)
 
 
+def test_research_contrast_read_never_enters_ordinary_observer(monkeypatch):
+    from valorant_ai_coach.temporal import credits_provider
+
+    seen = []
+
+    def fake_ocr(**kwargs):
+        seen.append(kwargs)
+        return SimpleNamespace(
+            read=lambda _image, _crop: SimpleNamespace(
+                value="5,250", confidence=0.94, sources=("same_ocr_engine",)
+            )
+        )
+
+    reader = CreditsCandidateReader(profile())
+    reader.ocr = SimpleNamespace(
+        read=lambda _image, _crop: SimpleNamespace(value=None, confidence=0.0, sources=())
+    )
+    monkeypatch.setattr(credits_provider, "TesseractDigitsReader", fake_ocr)
+    image = np.zeros((1080, 1920, 3), np.uint8)
+    assert reader.measure(image)["status"] == "UNKNOWN"
+    research = reader.measure_research_inverted(image)
+    assert research["value"] == 5250 and research["status"] == "CANDIDATE"
+    assert research["independent_value_witness"] is False
+    assert research["state_authority"] is False
+    assert seen == [{"psm": 7, "whitelist": "0123456789,", "white_text_threshold": 160}]
+
+
 def test_supplement_keeps_parent_suppliers_and_adds_only_value_evidence():
     parent_result = {
         "signals": ["spectator"],
@@ -121,7 +148,8 @@ def test_default_language_asset_is_bound_and_unresolvable_directory_rejected(tmp
     text = f'List of available languages in "{tmp_path}" (1):\neng\n'
     encoded = text.encode("utf-8")  # noqa: UP012 - explicit Text I/O contract
     monkeypatch.setattr(
-        credits_provider.subprocess, "run",
+        credits_provider.subprocess,
+        "run",
         lambda *a, **k: SimpleNamespace(stdout=encoded, stderr=b""),
     )
     first = credits_provider.default_language_binding("synthetic")
