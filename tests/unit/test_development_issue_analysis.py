@@ -89,7 +89,9 @@ def test_bound_sidecar_pagination_and_before_after_context(tmp_path):
     catalog = build_catalog(manifest)
     catalog_path = tmp_path / "catalog.json"
     write_private(catalog_path, catalog)
-    analysis = analyze_catalog(manifest, catalog_path)
+    baseline_manifest = tmp_path / "baseline.json"
+    baseline_manifest.write_bytes(manifest.read_bytes())
+    analysis = analyze_catalog(baseline_manifest, catalog_path)
     analysis_path = tmp_path / "analysis.json"
     write_private(analysis_path, analysis)
     history_path = tmp_path / "history.json"
@@ -123,6 +125,17 @@ def test_bound_sidecar_pagination_and_before_after_context(tmp_path):
     assert len(page["records"]) <= 1
     assert all("sample_refs" not in r for r in page["records"])
     assert review["history"][0]["gained_controls"] == 0
+    # New primary choices may be displayed alongside the explicitly bound old cohort.
+    alternate = deepcopy(entry)
+    alternate["primary"] = False
+    assert (
+        load_review_sidecars(manifest, {"one": alternate})["analysis"]["intervals"]
+        == analysis["intervals"]
+    )
+    altered = deepcopy(entry)
+    altered["conditions"] = {"different_density": True}
+    with pytest.raises(ValueError, match="cohort conditions changed"):
+        load_review_sidecars(manifest, {"one": altered})
     assert context_window({"one": entry}, "one", 0)["versions"][0]["seconds"][0]["sample_refs"]
     with pytest.raises(ValueError):
         context_window({"one": entry}, "one", 4)
@@ -134,5 +147,5 @@ def test_bound_sidecar_pagination_and_before_after_context(tmp_path):
     assert "evidence_refs" not in presentation["results"][0]["review_intervals"][0]
     changed = deepcopy(entry)
     changed["bundle_sha256"] = "changed"
-    with pytest.raises(ValueError, match="baseline changed"):
+    with pytest.raises(ValueError, match="baseline.*changed"):
         load_review_sidecars(manifest, {"one": changed})

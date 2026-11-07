@@ -6,7 +6,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from .comparison import DOMAINS, load_result
+from .comparison import DOMAINS, load_manifest, load_result
 from .issue_analysis import VERSION as ANALYSIS_VERSION
 from .replay import file_sha, read_json
 
@@ -44,6 +44,15 @@ def load_review_sidecars(manifest: Path, entries: dict[str, dict[str, Any]]) -> 
         if name == "issue_analysis":
             if sidecar.get("version") != ANALYSIS_VERSION:
                 raise ValueError("Known issue analysis version required")
+            baseline = Path(sidecar["baseline_manifest"])
+            if file_sha(baseline) != sidecar["manifest_sha256"]:
+                raise ValueError("Analysis baseline manifest changed")
+            for original in load_manifest(baseline):
+                current = entries[original["id"]]
+                # New primary selections are allowed; the historical cohort stays explicit.
+                for key in ("bundle_sha256", "policy_sha256", "conditions", "compare_to"):
+                    if current.get(key) != original.get(key):
+                        raise ValueError("Analysis baseline cohort conditions changed")
             # A baseline analysis remains valid when additional result versions are added.
             for identifier, original in sidecar["result_bindings"].items():
                 entry = entries[identifier]
@@ -98,6 +107,9 @@ def issue_page(
     return {
         "total": len(rows),
         "records": compact,
+        "baseline_manifest_sha256": analysis["manifest_sha256"],
+        "baseline_result_ids": sorted(analysis["result_bindings"]),
+        "scope": "frozen_baseline_cohort_not_current_primary_errors",
         "cause_counts": analysis["cause_counts_multiple_labels"],
         "representatives": analysis["representatives"],
         "formal_outputs": 0,

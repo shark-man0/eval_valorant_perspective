@@ -316,6 +316,7 @@ def analyze_catalog(manifest: Path, catalog_path: Path) -> dict[str, Any]:
     return {
         "version": VERSION,
         "manifest_sha256": file_sha(manifest),
+        "baseline_manifest": str(manifest.resolve()),
         "catalog_sha256": file_sha(catalog_path),
         "result_bindings": bindings,
         "intervals": len(records),

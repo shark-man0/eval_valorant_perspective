@@ -105,8 +105,9 @@ font-weight:normal}
 <th>根拠</th>
 </tr></thead><tbody id="issues"></tbody></table>
 <button id="more">次の100候補</button></section>
-<section id="analysisPanel" hidden><h2>原因仮説・優先順位</h2>
-<p>未ラベルの原因仮説です。A8は秒内の表示曖昧性で、native情報は保持しています。</p>
+<section id="analysisPanel" hidden><h2>固定した基準結果の原因仮説・優先順位</h2>
+<p>現在の主結果とは別に、固定した旧結果を分析します。誤認識の断定ではありません。
+A8は秒内の表示曖昧性で、native情報は保持しています。</p>
 <select id="cause"><option value="">全原因</option></select>
 <button id="causeLoad">抽出</button><p id="causeCount"></p>
 <table><tbody id="causeRows"></tbody></table>
@@ -312,7 +313,8 @@ id:$('issueMatch').value,page:String(causePage)});
 const response=await fetch(base+'/api/issues?'+query);
 if(!response.ok)throw Error('原因分類の読込み失敗');
 const data=await response.json();
-$('causeCount').textContent=data.total+'原因候補 / 件数は複数分類';
+$('causeCount').textContent=data.total+'基準結果の原因候補 / 件数は複数分類。基準manifest SHA: '
++data.baseline_manifest_sha256;
 $('causeRows').replaceChildren();
 for(const row of data.records){
 const tr=document.createElement('tr');

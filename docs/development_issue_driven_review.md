@@ -69,9 +69,11 @@ result IDs and their immutable bundles in `results`):
 }
 ```
 
-The analysis binds baseline result bundle and policy hashes independently of the
-new manifest hash, allowing additional before/after versions without silently
-relabeling the original denominator. A changed baseline fails closed. Sidecar
+The analysis binds its original manifest, result bundle/policy hashes and original
+conditions/compare-to links. Additional before/after versions and a changed current
+primary selection are allowed: the cause panel explicitly describes the frozen
+baseline cohort, rather than the current primary results. Changed baseline files
+or acquisition conditions fail closed. Sidecar
 files themselves must match their declared digest. History schema is
 `development_timeline_improvement_history_v1`, `formal_outputs: 0`, with `records`
 containing `id`, `problem`, `cause_hypothesis`, `change`, `inputs`,
