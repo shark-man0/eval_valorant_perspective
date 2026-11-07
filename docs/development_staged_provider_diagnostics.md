@@ -24,6 +24,14 @@ independent confirmation that the selected marker belongs to the recorder.
 `ownership`, strict recorder marker count, Zone authority, and temporal path
 eligibility remain unchanged.
 
+A separate fixed pixel experiment used five exact archived Map control frames.
+It measured high-saturation directional support outside the appearance and UI
+rim footprint. The existing highlighted candidate ranked first among
+same-appearance alternatives in only one of four recorder-self controls; the
+nonself UI control had no highlight. The feature was rejected for candidate
+selection. All five controls came from one physical match, so this is a
+descriptive failure, with no held-out-match accuracy claim.
+
 ## Credits contrast experiment
 
 `CreditsCandidateReader.measure_research_inverted` reads the same fixed ROI
