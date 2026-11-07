@@ -307,6 +307,7 @@ class DevelopmentGameTimeline:
         provisional_map_roles: bool = False,
         active_clock_bridge: bool = False,
         return_display_tail: bool = False,
+        current_hp_return_candidate: bool = False,
         buy_clock_tail: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
@@ -337,6 +338,12 @@ class DevelopmentGameTimeline:
         if type(return_display_tail) is not bool or (forward_only and return_display_tail):
             raise ValueError("Return display tail requires explicit offline mode")
         self.return_display_tail = return_display_tail
+        if (
+            type(current_hp_return_candidate) is not bool
+            or current_hp_return_candidate and (forward_only or not return_display_tail)
+        ):
+            raise ValueError("Current HP return candidate requires offline return display tail")
+        self.current_hp_return_candidate = current_hp_return_candidate
         if type(buy_clock_tail) is not bool or (forward_only and buy_clock_tail):
             raise ValueError("BUY clock tail requires explicit offline mode")
         self.buy_clock_tail = buy_clock_tail
@@ -1166,6 +1173,10 @@ class DevelopmentGameTimeline:
         if self.return_display_tail:
             result["configuration"]["return_display_tail"] = "development_return_display_tail_v1"
             result["return_display_tail_projection_history"] = return_tails
+        if self.current_hp_return_candidate:
+            result["configuration"]["current_hp_return_candidate"] = (
+                "development_current_view_hp_return_candidate_v1"
+            )
         if self.buy_clock_tail:
             result["configuration"]["buy_clock_tail"] = "development_buy_clock_tail_v1"
             result["buy_clock_tail_projection_history"] = clock_tails
@@ -1282,9 +1293,11 @@ class DevelopmentGameTimeline:
         """Bracket a stale victim display with a later direct next-Round return.
 
         A current weak SELF view is only a competing camera hypothesis. The
-        later direct BUY/owner observation cannot establish when the return
-        happened, so the earlier Life value becomes UNKNOWN, not ALIVE.
-        This post-inference projection has no lifecycle or Map authority.
+        default return-tail option keeps the earlier values UNKNOWN. A second
+        explicit option may select an unqualified ALIVE/SELF candidate when a
+        current HP component and later direct return are both present. Neither
+        path establishes the return time or gains lifecycle, Map, or formal
+        ownership authority.
         """
         history = []
         for index, frame in enumerate(states):
@@ -1357,25 +1370,33 @@ class DevelopmentGameTimeline:
                     + confirmation["life"]["evidence_ids"]
                 )
             )
+            current_hp = self.current_hp_return_candidate and any(
+                self._current_view_hp_support(row) for row in weak_self
+            )
             frame["life"] = _estimate(
+                "ALIVE" if current_hp else "UNKNOWN",
                 alternatives=["ALIVE", "DEAD", "DOWNED", "UNKNOWN"],
-                reason="next_round_self_return_bracket_candidate",
+                reason="current_self_hp_and_next_round_return_candidate"
+                if current_hp else "next_round_self_return_bracket_candidate",
                 evidence=evidence,
             )
             frame["life"].update(
                 forward_estimate=before_life,
-                uncertainty="return_time_and_victim_display_age_unverified",
+                uncertainty="current_view_owner_and_return_time_unverified"
+                if current_hp else "return_time_and_victim_display_age_unverified",
             )
             frame["camera"] = _estimate(
+                "SELF" if current_hp else "UNKNOWN",
                 alternatives=["SELF", "SPECTATOR", "REMOTE", "UNKNOWN"],
-                reason="weak_current_self_and_next_round_return_candidate",
+                reason="current_self_hp_and_next_round_return_candidate"
+                if current_hp else "weak_current_self_and_next_round_return_candidate",
                 evidence=evidence,
             )
             frame["camera"].update(
-                forward_estimate=before_camera, uncertainty="current_view_owner_unverified"
+                forward_estimate=before_camera,
+                uncertainty="current_view_owner_unverified",
             )
-            history.append(
-                {
+            history_record = {
                     "sample": frame["sample"],
                     "before_life": before_life,
                     "after_life": deepcopy(frame["life"]),
@@ -1387,9 +1408,36 @@ class DevelopmentGameTimeline:
                     "internal_game_event_time": None,
                     "lifecycle_authority": False,
                     "Map_authority": False,
-                }
-            )
+            }
+            if self.current_hp_return_candidate:
+                history_record["current_view_hp_support"] = current_hp
+            history.append(history_record)
         return history
+
+    @staticmethod
+    def _current_view_hp_support(row: dict[str, Any]) -> bool:
+        """Require current HP and weak view components together."""
+        raw = row["raw"]
+        hp = raw.get("view_hp")
+        if not (
+            raw.get("camera_hypothesis") == "SELF"
+            and raw.get("current_HUD_component_supported") is True
+            and raw.get("owner_hypothesis_exclusions") == ["combat_report_visible"]
+            and raw.get("owned_verb_phrase") is None
+            and isinstance(hp, dict)
+        ):
+            return False
+        value, confidence = hp.get("display"), hp.get("confidence")
+        return bool(
+            isinstance(value, str)
+            and value.isascii()
+            and value.isdigit()
+            and 1 <= int(value) <= 150
+            and isinstance(confidence, (int, float))
+            and not isinstance(confidence, bool)
+            and math.isfinite(confidence)
+            and confidence >= .90
+        )
 
 
     def _reconcile_buy_clock_tail(
