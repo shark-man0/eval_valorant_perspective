@@ -62,8 +62,8 @@ def review_timeline(bundle: dict[str, Any]) -> dict[str, Any]:
         },
         "observed_seconds": sum(row["observation_present"] for row in rows),
         "hud_candidate_seconds": {
-            key: sum(bool(row["hud_observations"][key]["candidates"]) for row in rows)
-            for key in ("hp", "armor", "weapon", "timer", "score")
+            key: sum(bool(row["hud_observations"].get(key, {}).get("candidates")) for row in rows)
+            for key in sorted({k for row in rows for k in row["hud_observations"]})
         },
         "map_candidate_seconds": sum(
             row["map_observations"]["status"] == "CANDIDATES" for row in rows

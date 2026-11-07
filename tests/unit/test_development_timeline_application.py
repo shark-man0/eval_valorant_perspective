@@ -161,3 +161,15 @@ def test_original_video_byte_ranges(header, expected):
 def test_invalid_video_ranges(header):
     with pytest.raises(ValueError):
         byte_range(header, 100)
+
+
+def test_downstream_hud_review_keeps_sparse_new_value_fields():
+    from valorant_ai_coach.rules.development_timeline import review_timeline
+    bundle = build()
+    bundle["seconds"][0]["hud_observations"]["credits"]["candidates"] = [{"value": 500}]
+    bundle["seconds"][0]["hud_observations"]["ammo_current"] = {"candidates": [{"value": 12}]}
+    review = review_timeline(bundle)
+    assert review["hud_candidate_seconds"]["credits"] == 1
+    assert review["hud_candidate_seconds"]["ammo_current"] == 1
+    assert review["deterministic_engine_decision"] is None
+    assert review["formal_outputs"] == 0

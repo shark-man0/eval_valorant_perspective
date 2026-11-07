@@ -124,7 +124,8 @@ const hudReasons={unconfigured_reader_or_roi:'読取器未設定',geometry_unsup
 unread_or_unaccepted:'読取不能',reader_error:'読取器エラー'};
 el('hud').textContent=Object.entries(row.hud_observations).map(([key,value])=>
 key+': '+(value.candidates.length?Array.from(new Set(value.candidates.map(c=>
-JSON.stringify(c.value)+(c.current_weapon_selection==='UNKNOWN'?'〔選択中の武器は未確定〕':''))))
+JSON.stringify(c.value)+(c.current_weapon_selection==='UNKNOWN'?'〔選択中の武器は未確定〕':'')+
+(c.roi_geometry_qualification==='unqualified_fixed_profile'?'〔固定ROI・配置未資格〕':''))))
 .join(' / ')+'（表示値の候補）':'UNKNOWN'+
 ((value.unavailable_reasons||[]).length?'（'+Array.from(new Set(value.unavailable_reasons.map(r=>
 hudReasons[r.reason]||'読取不能'))).join(' / ')+'）':''))).join('\n');
@@ -143,6 +144,8 @@ map.current_self_position_candidates.length+'\n研究用本人位置仮説（本
 ' '+Array.from(new Set(map.zone_candidates.map(c=>c.label_text||c.zone||'?'))).join(' / ')+
 '\n座標候補（未対応は画像座標）: '+fmt(map.position_candidates.slice(0,12).map(c=>
 c.map_position_norm||c.center_frame_px||'UNKNOWN'))+
+'\n同appearance代替があるnative仮説: '+(map.correspondence_reviews||[]).filter(
+r=>r.provisional_highlight_ambiguous).length+'（本人確定には使いません）'+
 '\n移動候補: '+map.movement_candidates.length+'（未取得区間は移動と解釈しません）';
 
 el('detail').textContent=fmt(row);
