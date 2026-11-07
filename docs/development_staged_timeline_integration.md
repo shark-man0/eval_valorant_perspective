@@ -1,10 +1,11 @@
 # Staged integration plan for the development timeline
 
-Audit basis: fetched main `ef4eec3`, Draft #115–#134 latest heads through
-`4ae23d7` (#134), checked on 2026-11-07. The eighteen Drafts are open and
-stacked in order; #121 and #124 are Issues. A local merge-tree of current main
-and #134 is clean. This does not validate semantic behavior on a future
-integration commit. Preserve the Draft histories and do not merge main yet.
+Audit basis: GitHub main `ef4eec3`, Draft #115–#134 latest heads through
+`4ae23d7` (#134), checked again on 2026-11-07. All eighteen Draft head and
+base SHAs remained unchanged, open and Draft; #121 and #124 are Issues. A local
+merge-tree of current main and #134 is clean. This does not validate semantic
+behavior on a future integration commit. Preserve the Draft histories and do
+not merge main yet.
 
 ## Function map and dependencies
 
@@ -38,7 +39,11 @@ selective integration commits on a new branch, not an out-of-order PR merge.
    output, then add #129's bounded sampling controls and #130's pixel cache as
    optional helpers. Source admission, original-video hashing, exact native PTS,
    dimensions, pixel hash, decoder fingerprints and separate audit sidecars
-   remain mandatory. One-second defaults and prior receipts stay readable.
+   remain mandatory. One-second defaults and prior receipts stay readable. A
+   new short-window `1/5`-second cadence has been exercised on five admitted
+   physical matches: 195 retained native points with byte/pixel checks and
+   exact-cache payload parity. It is a targeted evidence route, not a new
+   full-match accuracy claim or a replacement default.
 4. **Application and review.** Extract #123's application/CSV/evaluation
    handoff and viewer, #125's transfer validation, then #134's cross-match
    comparison and desktop launcher. The comparison consumer must use the same
@@ -51,6 +56,14 @@ selective integration commits on a new branch, not an out-of-order PR merge.
    context, #131 visibility and #133/#134 inventory/location values must not
    imply owner, current weapon or movement. Rejected #134 state experiments
    remain recorded but unadopted.
+
+The opt-in controls that require explicit review include `buy_clock_expiry`,
+`active_clock_bridge`, `provisional_map_roles`, `optional_hud_values`,
+`report_view_bridge`, `refinement_padding_seconds` and
+`refinement_selection_policy`. A new merge must not quietly turn these into
+the application default. Keep the sealed one-second and six-second acquisition
+conditions distinct; the latter changes some previously known state values
+that have not been adjudicated at whole-match scale.
 
 ## Compatibility and verification gates
 
