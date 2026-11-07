@@ -306,6 +306,8 @@ class DevelopmentGameTimeline:
         buy_clock_expiry: bool = False,
         provisional_map_roles: bool = False,
         active_clock_bridge: bool = False,
+        return_display_tail: bool = False,
+        buy_clock_tail: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -332,6 +334,12 @@ class DevelopmentGameTimeline:
         if type(active_clock_bridge) is not bool or (forward_only and active_clock_bridge):
             raise ValueError("ACTIVE clock bridge requires explicit offline mode")
         self.active_clock_bridge = active_clock_bridge
+        if type(return_display_tail) is not bool or (forward_only and return_display_tail):
+            raise ValueError("Return display tail requires explicit offline mode")
+        self.return_display_tail = return_display_tail
+        if type(buy_clock_tail) is not bool or (forward_only and buy_clock_tail):
+            raise ValueError("BUY clock tail requires explicit offline mode")
+        self.buy_clock_tail = buy_clock_tail
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -1082,7 +1090,13 @@ class DevelopmentGameTimeline:
         clock_projections = (
             self._reconcile_buy_clock_expiry(states) if self.buy_clock_expiry else []
         )
+        clock_tails = (
+            self._reconcile_buy_clock_tail(states, transitions) if self.buy_clock_tail else []
+        )
         active_clocks = self._reconcile_active_clocks(states) if self.active_clock_bridge else []
+        return_tails = (
+            self._reconcile_return_display_tails(states) if self.return_display_tail else []
+        )
         round_projections = []
         for state in states:
             rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1149,6 +1163,12 @@ class DevelopmentGameTimeline:
         if self.active_clock_bridge:
             result["configuration"]["active_clock_bridge"] = "development_active_clock_chain_v1"
             result["active_clock_projection_history"] = active_clocks
+        if self.return_display_tail:
+            result["configuration"]["return_display_tail"] = "development_return_display_tail_v1"
+            result["return_display_tail_projection_history"] = return_tails
+        if self.buy_clock_tail:
+            result["configuration"]["buy_clock_tail"] = "development_buy_clock_tail_v1"
+            result["buy_clock_tail_projection_history"] = clock_tails
         if self.provisional_map_roles:
             result["configuration"]["provisional_map_roles"] = MAP_ROLE_CONTRACT
             result["configuration"]["provisional_map_roles_rule_sha256"] = rule_sha256()
@@ -1257,6 +1277,227 @@ class DevelopmentGameTimeline:
             else set()
         )
         return next(iter(scores)) if len(scores) == 1 else None
+
+    def _reconcile_return_display_tails(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Bracket a stale victim display with a later direct next-Round return.
+
+        A current weak SELF view is only a competing camera hypothesis. The
+        later direct BUY/owner observation cannot establish when the return
+        happened, so the earlier Life value becomes UNKNOWN, not ALIVE.
+        This post-inference projection has no lifecycle or Map authority.
+        """
+        history = []
+        for index, frame in enumerate(states):
+            if (
+                frame["life"]["value"] != "DEAD"
+                or frame["life"]["reason"] != "victim_display_and_owned_spectator_hypothesis"
+                or frame["camera"]["value"] != "UNKNOWN"
+                or frame["round_token"] is None
+            ):
+                continue
+            rows = [self._observations[i] for i in frame["observation_ids"]]
+            signals = {s for row in rows for s in row["signals"]}
+            if signals & {"spectator", "remote", "death", "downed", "revival", "owner_hud"}:
+                continue
+            weak_self = [
+                row
+                for row in rows
+                if row["context"].get("unqualified_view_model") is True
+                and row["raw"].get("camera_hypothesis") == "SELF"
+            ]
+            if not weak_self:
+                continue
+            current_score = self._score({"observations": rows})
+            confirmation = None
+            for later in states[index + 1 :]:
+                elapsed = native_time(later["sample"]) - native_time(frame["sample"])
+                if (
+                    source_scope(later["sample"]) != source_scope(frame["sample"])
+                    or elapsed > self.future + 1
+                    or not later["continuity"]["carry_allowed"]
+                ):
+                    break
+                later_rows = [self._observations[i] for i in later["observation_ids"]]
+                later_signals = {s for row in later_rows for s in row["signals"]}
+                later_score = self._score({"observations": later_rows})
+                if (
+                    later_signals
+                    & {
+                        "spectator",
+                        "remote",
+                        "death",
+                        "downed",
+                        "revival",
+                        "result",
+                        "intermission",
+                    }
+                    or current_score is not None
+                    and later_score is not None
+                    and later_score != current_score
+                ):
+                    break
+                if (
+                    later["round_token"] != frame["round_token"]
+                    and later["round"]["value"] == "BUY"
+                    and later["round"]["reason"] == "current_observation"
+                    and later["life"]["value"] == "ALIVE"
+                    and later["camera"]["value"] == "SELF"
+                    and "buy" in later_signals
+                    and "owner_hud" in later_signals
+                ):
+                    confirmation = later
+                    break
+            if confirmation is None:
+                continue
+            before_life, before_camera = deepcopy(frame["life"]), deepcopy(frame["camera"])
+            evidence = sorted(
+                set(
+                    frame["life"]["evidence_ids"]
+                    + [row["observation_id"] for row in weak_self]
+                    + confirmation["life"]["evidence_ids"]
+                )
+            )
+            frame["life"] = _estimate(
+                alternatives=["ALIVE", "DEAD", "DOWNED", "UNKNOWN"],
+                reason="next_round_self_return_bracket_candidate",
+                evidence=evidence,
+            )
+            frame["life"].update(
+                forward_estimate=before_life,
+                uncertainty="return_time_and_victim_display_age_unverified",
+            )
+            frame["camera"] = _estimate(
+                alternatives=["SELF", "SPECTATOR", "REMOTE", "UNKNOWN"],
+                reason="weak_current_self_and_next_round_return_candidate",
+                evidence=evidence,
+            )
+            frame["camera"].update(
+                forward_estimate=before_camera, uncertainty="current_view_owner_unverified"
+            )
+            history.append(
+                {
+                    "sample": frame["sample"],
+                    "before_life": before_life,
+                    "after_life": deepcopy(frame["life"]),
+                    "before_camera": before_camera,
+                    "after_camera": deepcopy(frame["camera"]),
+                    "confirmation_sample": confirmation["sample"],
+                    "evidence_ids": evidence,
+                    "qualified": False,
+                    "internal_game_event_time": None,
+                    "lifecycle_authority": False,
+                    "Map_authority": False,
+                }
+            )
+        return history
+
+
+    def _reconcile_buy_clock_tail(
+        self, states: list[dict[str, Any]], transitions: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        """Expose a carried BUY at timer expiry inside a witnessed start gap.
+
+        Timer zero does not prove ACTIVE. A direct BUY/ACTIVE bracket and the
+        same current score narrow the question to a phase candidate only.
+        The original carry remains inspectable and no event bracket changes.
+        """
+        by_sample = {s["sample"]["sample_sha256"]: s for s in states}
+
+        def score(frame: dict[str, Any]) -> tuple[int, int] | None:
+            rows = [
+                self._observations[i]
+                for i in frame["observation_ids"]
+                if self._observations[i]["context"].get("unqualified_round_model") is not True
+            ]
+            value = self._score({"observations": rows})
+            return (
+                value
+                if (
+                    value is not None
+                    and len(value) == 2
+                    and all(type(v) is int and 0 <= v <= 99 for v in value)
+                )
+                else None
+            )
+
+        history = []
+        for transition in transitions:
+            if transition["kind"] != "round_start":
+                continue
+            lower = by_sample.get(transition["lower_sample"]["sample_sha256"])
+            upper = by_sample.get(transition["upper_sample"]["sample_sha256"])
+            if (
+                lower is None
+                or upper is None
+                or source_scope(lower["sample"]) != source_scope(upper["sample"])
+            ):
+                continue
+            lower_score, upper_score = score(lower), score(upper)
+            if lower_score is None or lower_score != upper_score:
+                continue
+            if (
+                native_time(upper["sample"]) - native_time(lower["sample"])
+                > self.max_carry + self.future
+            ):
+                continue
+            for frame in states:
+                if (
+                    source_scope(frame["sample"]) != source_scope(lower["sample"])
+                    or not native_time(lower["sample"])
+                    < native_time(frame["sample"])
+                    < native_time(upper["sample"])
+                    or frame["round"]["value"] != "BUY"
+                    or frame["round"]["reason"] != "bounded_missing_observation"
+                    or score(frame) != lower_score
+                ):
+                    continue
+                rows = [
+                    self._observations[i]
+                    for i in frame["observation_ids"]
+                    if self._observations[i]["context"].get("unqualified_round_model") is not True
+                ]
+                clocks = {
+                    r["context"]["timer_seconds"]
+                    for r in rows
+                    if type(r["context"].get("timer_seconds")) is int
+                }
+                if len(clocks) != 1 or next(iter(clocks)) not in {0, 1}:
+                    continue
+                before = deepcopy(frame["round"])
+                evidence = sorted(
+                    set(
+                        transition["evidence_ids"]
+                        + [
+                            r["observation_id"]
+                            for r in rows
+                            if r["context"].get("timer_seconds") in {0, 1}
+                        ]
+                    )
+                )
+                frame["round"] = _estimate(
+                    alternatives=["BUY", "ACTIVE", "UNKNOWN"],
+                    reason="buy_clock_expiry_inside_round_start_bracket",
+                    evidence=evidence,
+                )
+                frame["round"].update(
+                    forward_estimate=before, uncertainty="phase_at_clock_expiry_unverified"
+                )
+                history.append(
+                    {
+                        "sample": frame["sample"],
+                        "before": before,
+                        "after": deepcopy(frame["round"]),
+                        "lower_sample": lower["sample"],
+                        "upper_sample": upper["sample"],
+                        "evidence_ids": evidence,
+                        "qualified": False,
+                        "internal_game_event_time": None,
+                        "lifecycle_authority": False,
+                        "Map_authority": False,
+                    }
+                )
+        return history
+
 
     def _reconcile_active_clocks(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Recover a phase candidate from an anchored, measured countdown chain.

@@ -65,7 +65,9 @@ def test_return_tail_is_unqualified_candidate_and_disabled_by_default():
     assert after["camera"]["value"] == "UNKNOWN"
     assert "SELF" in after["camera"]["hypotheses"]
     assert after["life"]["forward_estimate"] == before["life"]
-    assert any(h["sample"] == after["sample"] for h in revised["return_display_tail_projection_history"])
+    assert any(
+        h["sample"] == after["sample"] for h in revised["return_display_tail_projection_history"]
+    )
     assert all(h["qualified"] is False for h in revised["return_display_tail_projection_history"])
     assert revised["qualified_facts"] == revised["qualified_events"] == []
     assert revised["frames"][-1]["life"]["value"] == "ALIVE"

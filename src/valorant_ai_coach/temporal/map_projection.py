@@ -101,7 +101,9 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
         current_zones = state.get("current_recorder_zone_candidates", [])
         if state.get("zone_context_contract") == ZONE_CONTEXT_CONTRACT:
             expected_zones = [
-                candidate for key in frame["observation_ids"] if key in observations
+                candidate
+                for key in frame["observation_ids"]
+                if key in observations
                 if (candidate := viewed_zone_candidate(observations[key])) is not None
             ]
             recorded_zones = [z for z in state["zone_candidates"] if z.get("kind") == ZONE_KIND]
@@ -116,9 +118,8 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
                         associated["current_recorder_view_evidence_ids"] = list(owner_ids)
                         expected_current.append(associated)
             if current_zones != expected_current or (
-                current_zones and (
-                    frame["life"]["value"] != "ALIVE" or frame["camera"]["value"] != "SELF"
-                )
+                current_zones
+                and (frame["life"]["value"] != "ALIVE" or frame["camera"]["value"] != "SELF")
             ):
                 raise ValueError(
                     "Current recorder Zone hypotheses require shared current SELF evidence"
@@ -149,8 +150,11 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
         rows.append(result)
         if timeline["configuration"].get("provisional_map_roles"):
             result["provisional_recorder_position_hypotheses"] = deepcopy(provisional)
-        key = sample["source_id"], sample["source_sha256"], sample["native_time_base"], int(
-            native_time(sample) // 1
+        key = (
+            sample["source_id"],
+            sample["source_sha256"],
+            sample["native_time_base"],
+            int(native_time(sample) // 1),
         )
         bins[key].append(result)
     seconds = []
@@ -173,11 +177,13 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
                 ],
                 "viewed_zone_candidates": [
                     {"sample": deepcopy(r["sample"]), "candidate": deepcopy(z)}
-                    for r in current for z in r["zone_candidates"]
+                    for r in current
+                    for z in r["zone_candidates"]
                 ],
                 "current_recorder_zone_hypotheses": [
                     {"sample": deepcopy(r["sample"]), "candidate": deepcopy(z)}
-                    for r in current for z in r["current_recorder_zone_hypotheses"]
+                    for r in current
+                    for z in r["current_recorder_zone_hypotheses"]
                 ],
                 "position_status": "CANDIDATES"
                 if any(r["current_position_hypotheses"] for r in current)
@@ -189,7 +195,8 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
         )
         if timeline["configuration"].get("provisional_map_roles"):
             seconds[-1]["provisional_recorder_position_hypotheses"] = [
-                deepcopy(h) for r in current
+                deepcopy(h)
+                for r in current
                 for h in r.get("provisional_recorder_position_hypotheses", [])
             ]
     return {
@@ -208,17 +215,16 @@ def project_current_map(timeline: dict[str, Any]) -> dict[str, Any]:
             "current_recorder_zone_candidate_samples": sum(
                 bool(r["current_recorder_zone_hypotheses"]) for r in rows
             ),
-            "marker_candidate_samples": sum(
-                bool(r["marker_candidate_pool"]) for r in rows
-            ),
+            "marker_candidate_samples": sum(bool(r["marker_candidate_pool"]) for r in rows),
             "unassigned_marker_samples": sum(
-                r["correspondence_review"]["status"] == "UNASSIGNED_MARKER_CANDIDATES"
-                for r in rows
+                r["correspondence_review"]["status"] == "UNASSIGNED_MARKER_CANDIDATES" for r in rows
             ),
             "provisional_highlight_samples": sum(
-                r["correspondence_review"]["status"]
-                == "PROVISIONAL_HIGHLIGHT_WITH_WEAK_VIEW"
+                r["correspondence_review"]["status"] == "PROVISIONAL_HIGHLIGHT_WITH_WEAK_VIEW"
                 for r in rows
+            ),
+            "provisional_with_same_appearance_competitors": sum(
+                r["correspondence_review"]["provisional_highlight_ambiguous"] for r in rows
             ),
             "strict_recorder_marker_samples": 0,
         },

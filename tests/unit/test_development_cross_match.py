@@ -250,6 +250,9 @@ def test_local_server_token_download_query_bounds_and_lazy_drilldown(tmp_path, m
             calls.append("close")
 
     monkeypatch.setattr(comparison_viewer, "make_server", lambda *a: Child())
+    monkeypatch.setattr(
+        comparison_viewer, "load_review_sidecars", lambda *a: {"analysis": None, "history": []}
+    )
     server = comparison_viewer.make_comparison_server(tmp_path / "manifest.json")
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()

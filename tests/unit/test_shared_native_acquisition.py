@@ -99,13 +99,21 @@ def test_invalid_interval_or_protected_source_is_rejected_before_decode(tmp_path
         acquire(policy_path=path, source_id="a", start=0, end=181, output=tmp_path / "output")
     with pytest.raises(ValueError, match="cadence"):
         acquire(
-            policy_path=path, source_id="a", start=0, end=2,
-            retention_seconds=Fraction(1, 10), output=tmp_path / "output",
+            policy_path=path,
+            source_id="a",
+            start=0,
+            end=2,
+            retention_seconds=Fraction(1, 10),
+            output=tmp_path / "output",
         )
     with pytest.raises(ValueError, match="300 retained"):
         acquire(
-            policy_path=path, source_id="a", start=0, end=61,
-            retention_seconds=Fraction(1, 5), output=tmp_path / "output",
+            policy_path=path,
+            source_id="a",
+            start=0,
+            end=60,
+            retention_seconds=Fraction(1, 5),
+            output=tmp_path / "output",
         )
     with pytest.raises(ValueError, match="Protected"):
         acquire(policy_path=path, source_id="a", start=0, end=2, output=tmp_path / "output")

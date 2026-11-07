@@ -178,8 +178,11 @@ def refinement_windows(
             windows.append((lower, upper))
     if selection_policy == "balanced":
         return _balanced_refinement(
-            candidates, windows, max_windows=max_windows,
-            max_total_seconds=max_total_seconds, origin=origin,
+            candidates,
+            windows,
+            max_windows=max_windows,
+            max_total_seconds=max_total_seconds,
+            origin=origin,
             end=native_time(records[-1]["sample"]) if records else origin,
             proposal_seconds=max(Fraction(6), padding * 2 + 2),
         )
@@ -242,16 +245,28 @@ def _balanced_refinement(
     selected: set[int] = set()
     for bucket, indices in strata.items():
         center = origin + span * Fraction(2 * bucket + 1, 2 * slots)
-        selected.add(max(indices, key=lambda i: (
-            candidates[i][3], -abs(candidates[i][2] - center), -candidates[i][2]
-        )))
+        selected.add(
+            max(
+                indices,
+                key=lambda i: (
+                    candidates[i][3],
+                    -abs(candidates[i][2] - center),
+                    -candidates[i][2],
+                ),
+            )
+        )
     while len(selected) < slots:
         remaining = set(range(len(candidates))) - selected
-        selected.add(max(remaining, key=lambda i: (
-            candidates[i][3],
-            min(abs(candidates[i][2] - candidates[j][2]) for j in selected),
-            -candidates[i][2],
-        )))
+        selected.add(
+            max(
+                remaining,
+                key=lambda i: (
+                    candidates[i][3],
+                    min(abs(candidates[i][2] - candidates[j][2]) for j in selected),
+                    -candidates[i][2],
+                ),
+            )
+        )
     chosen: list[tuple[Fraction, Fraction]] = []
     proposals = []
     for i in selected:
@@ -265,8 +280,9 @@ def _balanced_refinement(
             chosen[-1] = chosen[-1][0], max(upper, chosen[-1][1])
         else:
             chosen.append((lower, upper))
-    deferred = sum(not any(a <= lower and upper <= b for a, b in chosen)
-                   for lower, upper in regions)
+    deferred = sum(
+        not any(a <= lower and upper <= b for a, b in chosen) for lower, upper in regions
+    )
     return chosen, deferred
 
 
@@ -289,6 +305,8 @@ def run_match(
     buy_clock_expiry: bool = False,
     provisional_map_roles: bool = False,
     active_clock_bridge: bool = False,
+    return_display_tail: bool = False,
+    buy_clock_tail: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
@@ -298,14 +316,16 @@ def run_match(
         raise ValueError("Bounded coarse/dense observation cadence required")
     if refinement_selection_policy not in {"chronological", "balanced"}:
         raise ValueError("Known development refinement selection policy required")
-    if (type(refinement_padding_seconds) is not Fraction
-            or not 0 <= refinement_padding_seconds <= 10):
+    if (
+        type(refinement_padding_seconds) is not Fraction
+        or not 0 <= refinement_padding_seconds <= 10
+    ):
         raise ValueError("Exact refinement padding between zero and ten seconds required")
     if type(report_view_bridge) is not bool:
         raise ValueError("Explicit development report-view reconciliation boolean required")
     if type(provisional_map_roles) is not bool:
         raise ValueError("Explicit development provisional Map role boolean required")
-    if type(active_clock_bridge) is not bool:
+    if any(type(v) is not bool for v in (active_clock_bridge, return_display_tail, buy_clock_tail)):
         raise ValueError("Explicit development ACTIVE clock bridge boolean required")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
@@ -471,8 +491,9 @@ def run_match(
                     # Bind the decoded native pixels, before any supplier's
                     # in-place preprocessing can alter its analysis buffer.
                     native_pixel_sha = hashlib.sha256(image.tobytes()).hexdigest()
-                    measurement = deepcopy(observer.inspect(
-                        cast(np.typing.NDArray[np.uint8], image)))
+                    measurement = deepcopy(
+                        observer.inspect(cast(np.typing.NDArray[np.uint8], image))
+                    )
                     item = {
                         "encoded_sha": hashlib.sha256(encoded).hexdigest(),
                         "pixel_sha": native_pixel_sha,
@@ -540,7 +561,9 @@ def run_match(
     decode(native_start, exclusive_end, coarse_seconds, "coarse")
     coarse = [records[k] for k in sorted(records)]
     windows, deferred = refinement_windows(
-        coarse, max_windows=max_refinement_windows, origin=native_start,
+        coarse,
+        max_windows=max_refinement_windows,
+        origin=native_start,
         selection_policy=refinement_selection_policy,
         padding=refinement_padding_seconds,
     )
@@ -580,8 +603,10 @@ def run_match(
         raise ValueError("Native audit plan changed during execution")
     if file_sha(Path(__file__)) != implementation_sha:
         raise ValueError("Acquisition implementation changed during execution")
-    if (file_sha(Path(__file__).with_name("game.py")) != engine_sha
-            or file_sha(Path(__file__).with_name("map_roles.py")) != map_role_sha):
+    if (
+        file_sha(Path(__file__).with_name("game.py")) != engine_sha
+        or file_sha(Path(__file__).with_name("map_roles.py")) != map_role_sha
+    ):
         raise ValueError("Shared engine changed during execution")
     if (
         digest(observer.bindings) != bindings_sha
@@ -591,19 +616,26 @@ def run_match(
     if decoder_shas != {"ffmpeg": file_sha(Path(ffmpeg)), "ffprobe": file_sha(Path(ffprobe))}:
         raise ValueError("Native decoder binaries changed during execution")
     engine = DevelopmentGameTimeline(
-        fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
+        fuse_exact_native_evidence=True,
+        report_view_bridge=report_view_bridge,
         buy_clock_expiry=buy_clock_expiry,
         provisional_map_roles=provisional_map_roles,
         active_clock_bridge=active_clock_bridge,
+        return_display_tail=return_display_tail,
+        buy_clock_tail=buy_clock_tail,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
-            fuse_exact_native_evidence=True, report_view_bridge=report_view_bridge,
+            fuse_exact_native_evidence=True,
+            report_view_bridge=report_view_bridge,
             buy_clock_expiry=buy_clock_expiry,
             provisional_map_roles=provisional_map_roles,
             active_clock_bridge=active_clock_bridge,
+            return_display_tail=return_display_tail,
+            buy_clock_tail=buy_clock_tail,
         )
-        if baseline_producers else None
+        if baseline_producers
+        else None
     )
     for tick in sorted(records):
         r = records[tick]
@@ -636,14 +668,18 @@ def run_match(
         write_private(output / "baseline_timeline_PRIVATE.json", baseline_engine.rebuild())
     if audit_sample_plan is not None:
         write_private(output / "native_audit_aliases_PRIVATE.json", {"records": aliases})
-        write_private(output / "audit_observations_PRIVATE.json", {
-            "schema": "development_native_audit_sidecar_v1",
-            "records": [records[t] for t in sorted(set(records) - automatic_ticks)],
-            "reader_bindings": observer.bindings,
-            "reader_fingerprint": observer.fingerprint,
-            "recognition_or_initialization_input": False,
-            "qualified_facts": [], "qualified_events": [],
-        })
+        write_private(
+            output / "audit_observations_PRIVATE.json",
+            {
+                "schema": "development_native_audit_sidecar_v1",
+                "records": [records[t] for t in sorted(set(records) - automatic_ticks)],
+                "reader_bindings": observer.bindings,
+                "reader_fingerprint": observer.fingerprint,
+                "recognition_or_initialization_input": False,
+                "qualified_facts": [],
+                "qualified_events": [],
+            },
+        )
     # Seconds outside observed endpoints remain explicit unobserved rows.
     relative_bins: dict[int, list[dict[str, Any]]] = {}
     for frame in timeline["frames"]:
@@ -733,11 +769,13 @@ def run_match(
         "implementation_sha256": implementation_sha,
         "shared_engine_sha256": engine_sha,
         "shared_engine_configuration": timeline["configuration"],
-        "state_reconstruction_fingerprint": digest({
-            "pixel_observer_fingerprint": observer.fingerprint,
-            "shared_engine_sha256": engine_sha,
-            "configuration": timeline["configuration"],
-        }),
+        "state_reconstruction_fingerprint": digest(
+            {
+                "pixel_observer_fingerprint": observer.fingerprint,
+                "shared_engine_sha256": engine_sha,
+                "configuration": timeline["configuration"],
+            }
+        ),
         "decoder_binary_sha256s": decoder_shas,
         "same_native_baseline_producers": baseline_producers,
         "native_audit": {
@@ -808,6 +846,8 @@ def main() -> None:
     parser.add_argument("--buy-clock-expiry", action="store_true")
     parser.add_argument("--provisional-map-roles", action="store_true")
     parser.add_argument("--active-clock-bridge", action="store_true")
+    parser.add_argument("--return-display-tail", action="store_true")
+    parser.add_argument("--buy-clock-tail", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -824,6 +864,8 @@ def main() -> None:
         buy_clock_expiry=args.buy_clock_expiry,
         provisional_map_roles=args.provisional_map_roles,
         active_clock_bridge=args.active_clock_bridge,
+        return_display_tail=args.return_display_tail,
+        buy_clock_tail=args.buy_clock_tail,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

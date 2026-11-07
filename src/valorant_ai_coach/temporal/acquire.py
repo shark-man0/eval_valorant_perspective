@@ -47,7 +47,7 @@ def acquire(
     if (
         type(retention_seconds) is not Fraction
         or not Fraction(1, 5) <= retention_seconds <= 1
-        or Fraction(end - start, 1) / retention_seconds > 300
+        or math.floor(Fraction(end - start, 1) / retention_seconds) + 1 > 300
     ):
         raise ValueError("Exact 1/5–1 second cadence and at most 300 retained points required")
     if output.exists() or any((p / ".git").exists() for p in output.resolve().parents):

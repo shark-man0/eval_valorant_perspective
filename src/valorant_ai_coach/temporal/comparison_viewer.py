@@ -13,6 +13,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from .comparison import build_catalog, load_manifest
+from .issue_review import context_window, issue_page, load_review_sidecars, presentation_catalog
 from .viewer import make_server
 
 HTML = r"""<!doctype html><html lang="ja"><meta charset="utf-8">
@@ -88,6 +89,8 @@ font-weight:normal}
 <label>元動画の秒 <input id="time" type="number" min="0" value="0"></label>
 <button id="open">元動画・native根拠を開く</button><p id="openStatus"></p>
 
+<button id="context">前後・変更前後・native根拠を表示</button>
+<pre id="contextDetail"></pre>
 <details><summary>条件・認識器・集計</summary><pre id="detail"></pre></details></section>
 <section><h2>自動抽出したレビュー候補</h2>
 <p class="muted">未ラベル区間です。誤認識、死亡、欠落の発生を確定した一覧ではありません。</p>
@@ -102,6 +105,13 @@ font-weight:normal}
 <th>根拠</th>
 </tr></thead><tbody id="issues"></tbody></table>
 <button id="more">次の100候補</button></section>
+<section id="analysisPanel" hidden><h2>原因仮説・優先順位</h2>
+<p>未ラベルの原因仮説です。A8は秒内の表示曖昧性で、native情報は保持しています。</p>
+<select id="cause"><option value="">全原因</option></select>
+<button id="causeLoad">抽出</button><p id="causeCount"></p>
+<table><tbody id="causeRows"></tbody></table>
+<button id="causeMore">次の100件</button></section>
+<section><h2>改善・不採用履歴</h2><pre id="history"></pre></section>
 <p><a id="json">比較JSON</a>
  / <a id="csv">比較CSV</a></p>
 
@@ -290,10 +300,39 @@ b.onclick=()=>select(i.result,
 i.start);
 td.append(b);
 cell(tr,
-i.evidence_refs.length+' native観測参照 / '+i.sample_refs.length+'点');
+(i.evidence_refs_count??i.evidence_refs?.length??0)+' native観測参照 / '
++(i.sample_refs_count??i.sample_refs?.length??0)+'点');
 $('issues').append(tr)}
 $('more').disabled=(page+1)*100>=issues.length}
 
+let causePage=0;
+async function causes(){
+const query=new URLSearchParams({cause:$('cause').value,
+id:$('issueMatch').value,page:String(causePage)});
+const response=await fetch(base+'/api/issues?'+query);
+if(!response.ok)throw Error('原因分類の読込み失敗');
+const data=await response.json();
+$('causeCount').textContent=data.total+'原因候補 / 件数は複数分類';
+$('causeRows').replaceChildren();
+for(const row of data.records){
+const tr=document.createElement('tr');
+cell(tr,row.result_id+(row.representative?'〔代表〕':''));
+cell(tr,row.causes.map(c=>c.code+' '+c.label).join(' / '));
+cell(tr,'優先度 '+row.priority.score+' / '+row.start+'–'+row.end);
+const td=cell(tr,'');const b=document.createElement('button');
+b.textContent='前後・変更比較';
+b.onclick=()=>{select(row.result_id,row.inspection_window.anchor);showContext()};
+td.append(b);$('causeRows').append(tr)}
+$('causeMore').disabled=(causePage+1)*100>=data.total}
+async function showContext(){
+$('contextDetail').textContent='native根拠と前後5秒を検証中…';
+const response=await fetch(base+'/api/context?'+new URLSearchParams({
+id:$('result').value,second:String(Math.floor(Number($('time').value)))}));
+$('contextDetail').textContent=response.ok?
+JSON.stringify(await response.json(),null,2):'比較の入力検証に失敗';}
+$('context').onclick=showContext;
+$('causeLoad').onclick=()=>{causePage=0;causes()};
+$('causeMore').onclick=()=>{causePage++;causes()};
 $('result').onchange=()=>select($('result').value);
 $('alternate').onchange=render;
 $('kind').onchange=$('issueMatch').onchange=()=>{
@@ -344,7 +383,14 @@ $('kind').append(o)}
 $('json').href=base+'/download.json';
 $('csv').href=base+'/download.csv';
 render();
-select((catalog.results.find(r=>r.primary)||catalog.results[0]).id)}
+select((catalog.results.find(r=>r.primary)||catalog.results[0]).id);
+if(catalog.review_analysis_available){
+$('analysisPanel').hidden=false;
+for(let i=1;i<=10;i++){const o=document.createElement('option');
+o.value='A'+i;o.textContent=o.value;$('cause').append(o)}
+await causes()}
+const history=await fetch(base+'/api/history');
+$('history').textContent=JSON.stringify(await history.json(),null,2)}
 )().catch(e=>{
 $('summary').textContent=e.message;
 $('summary').className='error'}
@@ -376,6 +422,9 @@ def make_comparison_server(manifest_path: Path, *, port: int = 0) -> ComparisonS
     entries = {e["id"]: e for e in load_manifest(manifest_path)}
     catalog = build_catalog(manifest_path)
     summaries = {r["id"]: r for r in catalog["results"]}
+    review = load_review_sidecars(manifest_path, entries)
+    presentation = presentation_catalog(catalog)
+    presentation["review_analysis_available"] = review["analysis"] is not None
     token = secrets.token_urlsafe(24)
 
     class Handler(BaseHTTPRequestHandler):
@@ -417,10 +466,30 @@ def make_comparison_server(manifest_path: Path, *, port: int = 0) -> ComparisonS
                     return
                 if route == "/":
                     payload, kind = HTML.encode("utf-8"), "text/html; charset=utf-8"
-                elif route in {"/api/catalog", "/download.json"}:
-                    payload = json.dumps(catalog, ensure_ascii=False, allow_nan=False).encode(
-                        "utf-8"
+                elif route == "/api/issues":
+                    query = parse_qs(parsed.query)
+                    data = issue_page(
+                        review,
+                        cause=query.get("cause", [""])[0],
+                        result_id=query.get("id", [""])[0],
+                        page=int(query.get("page", ["0"])[0]),
                     )
+                    payload = json.dumps(data, ensure_ascii=False, allow_nan=False).encode("utf-8")
+                    kind = "application/json; charset=utf-8"
+                elif route == "/api/context":
+                    query = parse_qs(parsed.query)
+                    data = context_window(entries, query["id"][0], int(query["second"][0]))
+                    payload = json.dumps(data, ensure_ascii=False, allow_nan=False).encode("utf-8")
+                    kind = "application/json; charset=utf-8"
+                elif route == "/api/history":
+                    payload = json.dumps(review["history"], ensure_ascii=False).encode("utf-8")
+                    kind = "application/json; charset=utf-8"
+                elif route in {"/api/catalog", "/download.json"}:
+                    payload = json.dumps(
+                        presentation if route == "/api/catalog" else catalog,
+                        ensure_ascii=False,
+                        allow_nan=False,
+                    ).encode("utf-8")
                     kind = "application/json; charset=utf-8"
                 elif route == "/download.csv":
                     import csv
