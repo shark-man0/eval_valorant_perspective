@@ -118,13 +118,11 @@ def test_default_language_asset_is_bound_and_unresolvable_directory_rejected(tmp
 
     asset = tmp_path / "eng.traineddata"
     asset.write_bytes(b"synthetic language data")
+    text = f'List of available languages in "{tmp_path}" (1):\neng\n'
+    encoded = text.encode("utf-8")  # noqa: UP012 - explicit Text I/O contract
     monkeypatch.setattr(
-        credits_provider.subprocess,
-        "run",
-        lambda *a, **k: SimpleNamespace(
-            stdout=(f'List of available languages in "{tmp_path}" (1):\neng\n'
-                    .encode("utf-8")),  # noqa: UP012 - explicit Text I/O contract stderr=b""
-        ),
+        credits_provider.subprocess, "run",
+        lambda *a, **k: SimpleNamespace(stdout=encoded, stderr=b""),
     )
     first = credits_provider.default_language_binding("synthetic")
     asset.write_bytes(b"changed language data")
