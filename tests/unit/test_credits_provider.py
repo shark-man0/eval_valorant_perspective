@@ -122,7 +122,7 @@ def test_default_language_asset_is_bound_and_unresolvable_directory_rejected(tmp
         credits_provider.subprocess,
         "run",
         lambda *a, **k: SimpleNamespace(
-            stdout=f'List of available languages in "{tmp_path}" (1):\neng\n'.encode(), stderr=b""
+            stdout=f'List of available languages in "{tmp_path}" (1):\neng\n'.encode('utf-8'), stderr=b""
         ),
     )
     first = credits_provider.default_language_binding("synthetic")
