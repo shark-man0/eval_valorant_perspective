@@ -90,6 +90,18 @@ candidate coverage across those cohorts is not a controlled accuracy gain.
   and new-recording value accuracy remain unmeasured or unresolved. Additional
   candidates, UNKNOWN reduction and successful CI do not establish them.
 
+## CI environment mitigation
+
+The floating Linux Qt 6.12.0 wheel repeatedly crashed at native `QAudioOutput`
+construction on the Ubuntu 26.04 runner, before the desktop viewer assertions.
+An earlier successful baseline used the same Qt version, so the underlying
+native failure is not fully diagnosed. Linux CI now constrains PySide6 to
+6.11.2, matching the existing Windows dependency set. This fixes the CI input
+version rather than skipping GUI tests or modifying Production audio behavior.
+The exact new head must pass the full Linux suite; prior local success does
+not substitute for that result. The newly introduced text-file test read also
+specifies UTF-8 explicitly and the viewer command below names its JSON file.
+
 ## Reproduction and next-stage order
 
 Use `development_staged_six_intake.md` for the private declaration and frozen
