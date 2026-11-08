@@ -164,6 +164,8 @@ def refinement_windows(
             a["signals"] != b["signals"]
             or a["context"].get("score") != b["context"].get("score")
             or bool(a.get("map_candidates")) != bool(b.get("map_candidates"))
+            or a["context"].get("menu_grid_candidate")
+            != b["context"].get("menu_grid_candidate")
             or all(v is not None for v in clocks)
             and abs(clocks[1] - clocks[0]) > 2
         )
@@ -308,6 +310,7 @@ def run_match(
     return_display_tail: bool = False,
     buy_clock_tail: bool = False,
     current_hp_return_candidate: bool = False,
+    current_menu_return_candidate: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
@@ -333,10 +336,11 @@ def run_match(
             return_display_tail,
             buy_clock_tail,
             current_hp_return_candidate,
+            current_menu_return_candidate,
         )
     ):
         raise ValueError("Explicit development ACTIVE clock bridge boolean required")
-    if current_hp_return_candidate and not return_display_tail:
+    if (current_hp_return_candidate or current_menu_return_candidate) and not return_display_tail:
         raise ValueError("Current HP return candidate requires offline return display tail")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
@@ -635,6 +639,7 @@ def run_match(
         return_display_tail=return_display_tail,
         buy_clock_tail=buy_clock_tail,
         current_hp_return_candidate=current_hp_return_candidate,
+        current_menu_return_candidate=current_menu_return_candidate,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
@@ -646,6 +651,7 @@ def run_match(
             return_display_tail=return_display_tail,
             buy_clock_tail=buy_clock_tail,
             current_hp_return_candidate=current_hp_return_candidate,
+            current_menu_return_candidate=current_menu_return_candidate,
         )
         if baseline_producers
         else None
@@ -814,7 +820,7 @@ def run_match(
         "semantic_continuity": "UNKNOWN",
         "native_frame_PTS_retained": True,
         "formal_outputs": 0,
-        "map_reader_status": "UNCONFIGURED",
+        "map_reader_status": observer.bindings.get("map_reader_status", "UNCONFIGURED"),
         "recognition_accuracy": None,
         "artifact_sha256s": {
             name: file_sha(output / name)
@@ -862,6 +868,7 @@ def main() -> None:
     parser.add_argument("--return-display-tail", action="store_true")
     parser.add_argument("--buy-clock-tail", action="store_true")
     parser.add_argument("--current-hp-return-candidate", action="store_true")
+    parser.add_argument("--current-menu-return-candidate", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -881,6 +888,7 @@ def main() -> None:
         return_display_tail=args.return_display_tail,
         buy_clock_tail=args.buy_clock_tail,
         current_hp_return_candidate=args.current_hp_return_candidate,
+        current_menu_return_candidate=args.current_menu_return_candidate,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

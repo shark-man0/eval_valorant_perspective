@@ -11,7 +11,7 @@ from collections import defaultdict
 from copy import deepcopy
 from enum import StrEnum
 from fractions import Fraction
-from typing import Any, Literal, TypedDict
+from typing import Any, Literal, NotRequired, TypedDict
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
 from .map_roles import CONTRACT as MAP_ROLE_CONTRACT
@@ -44,6 +44,8 @@ class CameraState(StrEnum):
 
 
 class MapState(TypedDict):
+    map_name_candidates: NotRequired[list[dict[str, Any]]]
+    generic_observation_ids: NotRequired[list[str]]
     observation_present: bool
     candidates: list[dict[str, Any]]
     current_self_position_candidates: list[dict[str, Any]]
@@ -308,6 +310,7 @@ class DevelopmentGameTimeline:
         active_clock_bridge: bool = False,
         return_display_tail: bool = False,
         current_hp_return_candidate: bool = False,
+        current_menu_return_candidate: bool = False,
         buy_clock_tail: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
@@ -344,6 +347,12 @@ class DevelopmentGameTimeline:
         ):
             raise ValueError("Current HP return candidate requires offline return display tail")
         self.current_hp_return_candidate = current_hp_return_candidate
+        if (
+            type(current_menu_return_candidate) is not bool
+            or current_menu_return_candidate and (forward_only or not return_display_tail)
+        ):
+            raise ValueError("Current menu return candidate requires offline return display tail")
+        self.current_menu_return_candidate = current_menu_return_candidate
         if type(buy_clock_tail) is not bool or (forward_only and buy_clock_tail):
             raise ValueError("BUY clock tail requires explicit offline mode")
         self.buy_clock_tail = buy_clock_tail
@@ -1043,12 +1052,20 @@ class DevelopmentGameTimeline:
                     associated["zone_subject"] = "current_recorder_hypothesis"
                     associated["current_recorder_view_evidence_ids"] = current_owner_evidence
                     current_zones.append(associated)
+            generic_maps = [r for r in frame["observations"]
+                            if r["raw"].get("schema") == "development_generic_map_pixels_v1"]
+            map_zones.extend(
+                {**deepcopy(z), "sample": deepcopy(r["sample"]),
+                 "evidence_refs": [r["observation_id"]]}
+                for r in generic_maps for z in r["raw"].get("zone_candidates", [])
+            )
             frame_state["map"] = {
                 "observation_present": bool(candidates)
                 or bool(viewed_zones)
                 or any(
                     r["raw"].get("schema")
-                    in {"map_consumer_provisional_v1", "development_hud_zone_measurement_v1"}
+                    in {"map_consumer_provisional_v1", "development_hud_zone_measurement_v1",
+                        "development_generic_map_pixels_v1"}
                     for r in frame["observations"]
                 ),
                 "zone_candidates": map_zones + viewed_zones,
@@ -1076,6 +1093,16 @@ class DevelopmentGameTimeline:
                 "ownership": "UNKNOWN",
                 "qualified": False,
             }
+            if generic_maps:
+                frame_state["map"]["map_name_candidates"] = [
+                    {**deepcopy(c), "sample": deepcopy(r["sample"]),
+                     "evidence_refs": [r["observation_id"]]}
+                    for r in generic_maps for c in r["raw"].get("map_name_candidates", [])
+                ]
+                frame_state["map"]["generic_observation_ids"] = [
+                    r["observation_id"] for r in generic_maps
+                ]
+
             if display_ids & seen_elimination_displays:
                 frame_state["previously_seen_elimination_display_signatures"] = sorted(
                     display_ids & seen_elimination_displays
@@ -1176,6 +1203,10 @@ class DevelopmentGameTimeline:
         if self.current_hp_return_candidate:
             result["configuration"]["current_hp_return_candidate"] = (
                 "development_current_view_hp_return_candidate_v1"
+            )
+        if self.current_menu_return_candidate:
+            result["configuration"]["current_menu_return_candidate"] = (
+                "development_current_menu_return_candidate_v1"
             )
         if self.buy_clock_tail:
             result["configuration"]["buy_clock_tail"] = "development_buy_clock_tail_v1"
@@ -1373,23 +1404,34 @@ class DevelopmentGameTimeline:
             current_hp = self.current_hp_return_candidate and any(
                 self._current_view_hp_support(row) for row in weak_self
             )
+            menu_rows = [
+                row for row in rows
+                if self.current_menu_return_candidate
+                and self._current_menu_support(row, frame["sample"])
+            ]
+            positive = current_hp or bool(menu_rows)
+            if menu_rows:
+                evidence = sorted(set(evidence) | {r["observation_id"] for r in menu_rows})
+            positive_reason = (
+                "current_self_hp_and_next_round_return_candidate" if current_hp
+                else "current_menu_and_next_round_return_candidate"
+            )
             frame["life"] = _estimate(
-                "ALIVE" if current_hp else "UNKNOWN",
+                "ALIVE" if positive else "UNKNOWN",
                 alternatives=["ALIVE", "DEAD", "DOWNED", "UNKNOWN"],
-                reason="current_self_hp_and_next_round_return_candidate"
-                if current_hp else "next_round_self_return_bracket_candidate",
+                reason=positive_reason if positive else "next_round_self_return_bracket_candidate",
                 evidence=evidence,
             )
             frame["life"].update(
                 forward_estimate=before_life,
                 uncertainty="current_view_owner_and_return_time_unverified"
-                if current_hp else "return_time_and_victim_display_age_unverified",
+                if positive else "return_time_and_victim_display_age_unverified",
             )
             frame["camera"] = _estimate(
-                "SELF" if current_hp else "UNKNOWN",
+                "SELF" if positive else "UNKNOWN",
                 alternatives=["SELF", "SPECTATOR", "REMOTE", "UNKNOWN"],
-                reason="current_self_hp_and_next_round_return_candidate"
-                if current_hp else "weak_current_self_and_next_round_return_candidate",
+                reason=positive_reason
+                if positive else "weak_current_self_and_next_round_return_candidate",
                 evidence=evidence,
             )
             frame["camera"].update(
@@ -1411,8 +1453,45 @@ class DevelopmentGameTimeline:
             }
             if self.current_hp_return_candidate:
                 history_record["current_view_hp_support"] = current_hp
+            if self.current_menu_return_candidate:
+                history_record["current_menu_geometry_evidence_ids"] = [
+                    row["observation_id"] for row in menu_rows
+                ]
             history.append(history_record)
         return history
+
+    @staticmethod
+    def _current_menu_support(row: dict[str, Any], sample: dict[str, Any]) -> bool:
+        """Consume current image geometry only; it never certifies an owner.
+
+        The image observer owns detection thresholds. A native pixel alias may
+        supply current evidence, but it cannot supply temporal continuity.
+        """
+        raw = row["raw"]
+        measurement = raw.get("menu_grid_measurement")
+        if not isinstance(measurement, dict):
+            return False
+        keys = (
+            "source_id", "source_sha256", "native_pts_tick", "native_time_base",
+            "native_pixel_sha256", "frame_size_px",
+        )
+        score = measurement.get("score")
+        return bool(
+            row["context"].get("stream_kind") == "hud_menu_geometry"
+            and raw.get("schema") == "development_buy_menu_grid_geometry_v1"
+            and measurement.get("schema") == raw["schema"]
+            and measurement.get("supported") is True
+            and measurement.get("status") == "CANDIDATE"
+            and measurement.get("geometry_scope") == "current_pixel_menu_overlay_only"
+            and all(measurement.get(k) is False for k in (
+                "owner_authority", "camera_authority", "phase_authority", "qualified"
+            ))
+            and all(row["sample"][k] == sample[k] for k in keys)
+            and isinstance(score, (int, float))
+            and not isinstance(score, bool)
+            and math.isfinite(score)
+            and 0 <= score <= 1
+        )
 
     @staticmethod
     def _current_view_hp_support(row: dict[str, Any]) -> bool:
