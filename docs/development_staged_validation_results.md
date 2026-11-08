@@ -108,7 +108,7 @@ PYTHONPATH=.:src python -m valorant_ai_coach.temporal.application export \
   --output /PRIVATE/positive-application \
   --return-display-tail --current-hp-return-candidate
 PYTHONPATH=.:src python -m valorant_ai_coach.temporal.viewer \
-  --bundle /PRIVATE/positive-application --policy /PRIVATE/first-development/policy_PRIVATE.json
+  --bundle /PRIVATE/positive-application/timeline_PRIVATE.json --policy /PRIVATE/first-development/policy_PRIVATE.json
 ```
 
 The viewer references the original full-match video; candidate-only evaluation

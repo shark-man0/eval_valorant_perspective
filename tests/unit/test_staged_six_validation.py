@@ -281,6 +281,8 @@ def test_pilot_preserves_first_prediction_and_gates_full(setup, monkeypatch):
     assert (batch / "first_full_prediction_receipt_PRIVATE.json").exists()
     assert [
         e["phase"]
-        for e in map(json.loads, (batch / "attempts_PRIVATE.jsonl").read_text().splitlines())
+        for e in map(
+            json.loads, (batch / "attempts_PRIVATE.jsonl").read_text(encoding="utf-8").splitlines()
+        )
         if e["kind"] == "recognition_attempt_started"
     ] == ["pilot", "full"]
