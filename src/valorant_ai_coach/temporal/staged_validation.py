@@ -263,7 +263,7 @@ def register_six(
 
 def _load_batch(batch: Path) -> dict[str, Any]:
     batch = _private(batch)
-    allocation = read_json(batch / "allocation.json")
+    allocation: dict[str, Any] = read_json(batch / "allocation.json")
     if allocation.get("version") != VERSION or len(allocation["records"]) != 6:
         raise ValueError("Staged six-source allocation required")
     protocol = Path(allocation["protocol"])
@@ -364,7 +364,7 @@ def confirm_pilot(
     ):
         raise ValueError("Explicit positive pilot inspection required")
     with _exclusive(batch / ".first_use.lock"):
-        _load_batch(batch)
+        allocation = _load_batch(batch)
         receipt = batch / "first_pilot_prediction_receipt_PRIVATE.json"
         if not receipt.exists() or file_sha(receipt) != pilot_receipt_sha256:
             raise ValueError("Exact preserved pilot receipt required")
@@ -375,6 +375,16 @@ def confirm_pilot(
         ):
             raise ValueError("Pilot prediction or completion changed")
         checked = read_json(pilot_check)
+        expected_source_sha = next(
+            r["source_sha256"] for r in allocation["records"] if r["video_id"] == value["source_id"]
+        )
+        if (
+            checked.get("source_id") != value["source_id"]
+            or checked.get("source_sha256") != expected_source_sha
+            or checked.get("first_pilot_receipt_sha256") != pilot_receipt_sha256
+            or checked.get("acquisition_receipt_sha256") != value["completion_sha256"]
+        ):
+            raise ValueError("Pilot check must bind the same Source and preserved prediction")
         if (
             checked.get("processing") != "COMPLETE_WITH_INFORMATION"
             or checked.get("structural_pass") is not True

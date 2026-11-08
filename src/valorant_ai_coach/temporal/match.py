@@ -307,6 +307,7 @@ def run_match(
     active_clock_bridge: bool = False,
     return_display_tail: bool = False,
     buy_clock_tail: bool = False,
+    current_hp_return_candidate: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     implementation_sha = file_sha(Path(__file__))
@@ -325,8 +326,18 @@ def run_match(
         raise ValueError("Explicit development report-view reconciliation boolean required")
     if type(provisional_map_roles) is not bool:
         raise ValueError("Explicit development provisional Map role boolean required")
-    if any(type(v) is not bool for v in (active_clock_bridge, return_display_tail, buy_clock_tail)):
+    if any(
+        type(v) is not bool
+        for v in (
+            active_clock_bridge,
+            return_display_tail,
+            buy_clock_tail,
+            current_hp_return_candidate,
+        )
+    ):
         raise ValueError("Explicit development ACTIVE clock bridge boolean required")
+    if current_hp_return_candidate and not return_display_tail:
+        raise ValueError("Current HP return candidate requires offline return display tail")
     if stop_after is not None and (type(stop_after) is not int or not 0 < stop_after <= 180):
         raise ValueError("Pilot limit must be at most 180 seconds")
     output = output.expanduser().resolve()
@@ -623,6 +634,7 @@ def run_match(
         active_clock_bridge=active_clock_bridge,
         return_display_tail=return_display_tail,
         buy_clock_tail=buy_clock_tail,
+        current_hp_return_candidate=current_hp_return_candidate,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
@@ -633,6 +645,7 @@ def run_match(
             active_clock_bridge=active_clock_bridge,
             return_display_tail=return_display_tail,
             buy_clock_tail=buy_clock_tail,
+            current_hp_return_candidate=current_hp_return_candidate,
         )
         if baseline_producers
         else None
@@ -848,6 +861,7 @@ def main() -> None:
     parser.add_argument("--active-clock-bridge", action="store_true")
     parser.add_argument("--return-display-tail", action="store_true")
     parser.add_argument("--buy-clock-tail", action="store_true")
+    parser.add_argument("--current-hp-return-candidate", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -866,6 +880,7 @@ def main() -> None:
         active_clock_bridge=args.active_clock_bridge,
         return_display_tail=args.return_display_tail,
         buy_clock_tail=args.buy_clock_tail,
+        current_hp_return_candidate=args.current_hp_return_candidate,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

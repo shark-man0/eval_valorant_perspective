@@ -1,9 +1,10 @@
 # Staged integration plan for the development timeline
 
-Audit basis: GitHub main `ef4eec3`, Draft #115–#134 latest heads through
-`4ae23d7` (#134), checked again on 2026-11-07. All eighteen Draft head and
-base SHAs remained unchanged, open and Draft; #121 and #124 are Issues. A local
-merge-tree of current main and #134 is clean. This does not validate semantic
+Audit basis: GitHub main `ef4eec3`, Draft #115–#135 latest heads through
+`4be4910` (#135), checked again on 2026-11-08 JST. All nineteen Drafts are open,
+Draft and unmerged; #121 and #124 are Issues. The existing eighteen head/base
+pairs remain unchanged and #135 depends on #134. A prior local merge-tree of
+main and #134 was clean. This does not validate semantic
 behavior on a future integration commit. Preserve the Draft histories and do
 not merge main yet.
 
@@ -17,9 +18,10 @@ not merge main yet.
 | D. Round/life/camera research | #116, #117, #126, part of #128, #132, part of #134 | Retain owner/episode and clock-context candidate methods behind development flags; do not adopt blanket death demotion or Round-gap marking from #134. |
 | E. Map/HUD research | #118, #119, #127, part of #128, #131, #133, part of #134 | Keep strict current ownership separate from provisional Map roles, and displayed HUD values separate from held weapon or recorder facts. |
 | F. Verification and comparison | #122, #125, #129, #130, #132, #134 | Retain source-binding validation, replay controls, cross-match review and decision history with each responsible slice. |
+| G. Issue-driven review | #135 | Split issue/history bindings and context pagination from optional return-display/BUY-tail projections and the Credits supplier. Keep rejected state and recognition experiments excluded. |
 
 The parent chain is
-`#115 → #116 → #117 → #118 → #119 → #120 → #122 → #123 → #125 → #126 → #127 → #128 → #129 → #130 → #131 → #132 → #133 → #134`.
+`#115 → #116 → #117 → #118 → #119 → #120 → #122 → #123 → #125 → #126 → #127 → #128 → #129 → #130 → #131 → #132 → #133 → #134 → #135`.
 Every listed base SHA equals its predecessor's head SHA. Directly merging an
 upper Draft includes all lower Drafts. Function grouping therefore requires
 selective integration commits on a new branch, not an out-of-order PR merge.
@@ -64,6 +66,18 @@ The opt-in controls that require explicit review include `buy_clock_expiry`,
 the application default. Keep the sealed one-second and six-second acquisition
 conditions distinct; the latter changes some previously known state values
 that have not been adjudicated at whole-match scale.
+
+The subsequent staged-source work adds a metadata-only reservation and a
+first-DEVELOPMENT pilot/full-use guard. This is an intake slice, separate from
+recognition. Its allocation leaves the other five Sources protected and does
+not expose a qualification or final-holdout runner. The new
+`current_hp_return_candidate` research projection also remains opt-in and
+requires offline `return_display_tail`. Current viewed HP is not proof of
+recorder identity. It must not enable strict Map ownership or formal lifecycle
+events. Archived Map UI rankings are review diagnostics; they reuse the same
+rim scores that selected the provisional highlight and are not independent
+owner evidence. See `development_staged_six_intake.md` and
+`development_staged_provider_diagnostics.md` for the separate slices.
 
 ## Compatibility and verification gates
 

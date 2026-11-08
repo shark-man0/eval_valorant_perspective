@@ -55,6 +55,7 @@ def independent_ui_ranking(
             and index in indices
             and index not in scores
             and type(score) in (int, float)
+            and isinstance(score, (int, float))
             and math.isfinite(score)
         ):
             scores[index] = float(score)

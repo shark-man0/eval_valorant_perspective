@@ -126,6 +126,16 @@ build any pilot preview with an explicit `PILOT_ONLY` scope; the existing
 whole-file application export gate remains unchanged. Actual source bytes are
 checked by the existing `run_match` source-hash admission at first use.
 
+The structural report must bind `source_id`, `source_sha256`,
+`first_pilot_receipt_sha256` and `acquisition_receipt_sha256` to this exact pilot.
+A successful report from another Source or prediction cannot authorize full
+processing. Build the bounded preview with `build_application_timeline`, the
+receipt's native origin and `processed_limit_seconds`, then write JSON, CSV and
+`review_timeline` outputs before calling `validation.check_output`. Mark it
+`coverage_scope=PILOT_ONLY` and retain the original full recording duration
+separately. This uses the existing application projection and candidate-only
+evaluation consumer; do not bypass the whole-file gate in `export_application`.
+
 No stage output establishes recognition accuracy, formal Facts/Events,
 qualification, Production readiness, or independence from previous physical
 matches without the explicit prior-match declaration. Keep real paths,

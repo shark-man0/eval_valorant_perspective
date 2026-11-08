@@ -228,6 +228,12 @@ def test_pilot_preserves_first_prediction_and_gates_full(setup, monkeypatch):
     write_private(
         pilot_check,
         {
+            "source_id": first,
+            "source_sha256": next(
+                r["source_sha256"] for r in allocation["records"] if r["video_id"] == first
+            ),
+            "first_pilot_receipt_sha256": staged.file_sha(pilot_receipt),
+            "acquisition_receipt_sha256": read_json(pilot_receipt)["completion_sha256"],
             "processing": "COMPLETE_WITH_INFORMATION",
             "structural_pass": True,
             "JSON_CSV_content_equal": True,
@@ -235,6 +241,30 @@ def test_pilot_preserves_first_prediction_and_gates_full(setup, monkeypatch):
             "formal_outputs": 0,
         },
     )
+    review = {
+        "input_integrity_checked": True,
+        "candidate_output_checked": True,
+        "pilot_timeline_checked": True,
+        "proceed_to_full": True,
+    }
+    for field in (
+        "source_id",
+        "source_sha256",
+        "first_pilot_receipt_sha256",
+        "acquisition_receipt_sha256",
+    ):
+        foreign = tmp / (field + "_foreign_check.json")
+        wrong = read_json(pilot_check)
+        wrong[field] = "foreign"
+        write_private(foreign, wrong)
+        with pytest.raises(ValueError, match="same Source and preserved prediction"):
+            staged.confirm_pilot(
+                batch=batch,
+                pilot_receipt_sha256=staged.file_sha(pilot_receipt),
+                pilot_check=foreign,
+                review=review,
+            )
+        assert not (batch / "pilot_review_PRIVATE.json").exists()
     staged.confirm_pilot(
         batch=batch,
         pilot_receipt_sha256=staged.file_sha(pilot_receipt),
