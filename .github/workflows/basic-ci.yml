@@ -23,7 +23,9 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: pyproject.toml
+          cache-dependency-path: |
+            pyproject.toml
+            constraints-linux.txt
       - name: Ensure FFmpeg and ffprobe
         shell: bash
         run: |
@@ -34,7 +36,7 @@ jobs:
           ffmpeg -version
           ffprobe -version
       - name: Install project dependencies
-        run: python -m pip install -e ".[gui,dev]"
+        run: python -m pip install -c constraints-linux.txt -e ".[gui,dev]"
       - name: Validate dataset contracts
         run: python tests/validate_dataset.py
       - name: Inventory Python text I/O (observational)

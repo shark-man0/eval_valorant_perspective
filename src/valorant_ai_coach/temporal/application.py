@@ -150,6 +150,23 @@ def _hud(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _exact_map_ui_rows(
+    frame: dict[str, Any], observations: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]] | None:
+    """Use scores only when their local indices address this exact Map pool."""
+    packets = [
+        observations[k]
+        for k in frame["observation_ids"]
+        if k in observations
+        and observations[k]["sample"] == frame["sample"]
+        and observations[k]["raw"].get("schema") == "map_consumer_provisional_v1"
+    ]
+    if len(packets) != 1 or packets[0]["map_candidates"] != frame["map"]["candidates"]:
+        return None
+    rows = packets[0]["raw"].get("ui", {}).get("rows", [])
+    return rows if isinstance(rows, list) else None
+
+
 def build_application_timeline(
     timeline: dict[str, Any],
     *,
@@ -277,6 +294,7 @@ def build_application_timeline(
                                 f["map"]["current_self_position_candidates"],
                                 f["map"].get("provisional_recorder_position_hypotheses", []),
                                 f["map"]["current_recorder_view_evidence_ids"],
+                                ui_rows=_exact_map_ui_rows(f, observations),
                             ),
                         }
                         for f in current
@@ -349,13 +367,20 @@ def export_application(
     zone_observations: list[Path] | None = None,
     return_display_tail: bool = False,
     buy_clock_tail: bool = False,
+    current_hp_return_candidate: bool = False,
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
 
     if any(
         type(v) is not bool
-        for v in (provisional_map_roles, active_clock_bridge, return_display_tail, buy_clock_tail)
+        for v in (
+            provisional_map_roles,
+            active_clock_bridge,
+            return_display_tail,
+            buy_clock_tail,
+            current_hp_return_candidate,
+        )
     ):
         raise ValueError("Explicit development Map/clock booleans required")
     if output.exists():
@@ -395,6 +420,7 @@ def export_application(
         or active_clock_bridge
         or return_display_tail
         or buy_clock_tail
+        or current_hp_return_candidate
     ):
         config = timeline["configuration"]
         engine = DevelopmentGameTimeline(
@@ -409,6 +435,8 @@ def export_application(
             active_clock_bridge=active_clock_bridge or bool(config.get("active_clock_bridge")),
             return_display_tail=return_display_tail or bool(config.get("return_display_tail")),
             buy_clock_tail=buy_clock_tail or bool(config.get("buy_clock_tail")),
+            current_hp_return_candidate=current_hp_return_candidate
+            or bool(config.get("current_hp_return_candidate")),
         )
         for row in timeline["observations"] + extra:
             engine.add(row)
@@ -487,6 +515,7 @@ def export_application(
         "active_clock_bridge_requested_for_export": active_clock_bridge,
         "return_display_tail_requested_for_export": return_display_tail,
         "buy_clock_tail_requested_for_export": buy_clock_tail,
+        "current_hp_return_candidate_requested_for_export": current_hp_return_candidate,
         "export_engine_configuration": timeline["configuration"],
         "output_sha256s": {p.name: file_sha(p) for p in output.iterdir()},
         "formal_outputs": 0,
@@ -509,6 +538,7 @@ def main() -> None:
     export.add_argument("--zone-observations", type=Path, action="append", default=[])
     export.add_argument("--return-display-tail", action="store_true")
     export.add_argument("--buy-clock-tail", action="store_true")
+    export.add_argument("--current-hp-return-candidate", action="store_true")
     generate = sub.add_parser("generate")
     for name in ("policy", "reader-config", "output"):
         generate.add_argument("--" + name, type=Path, required=True)
@@ -526,6 +556,7 @@ def main() -> None:
     generate.add_argument("--active-clock-bridge", action="store_true")
     generate.add_argument("--return-display-tail", action="store_true")
     generate.add_argument("--buy-clock-tail", action="store_true")
+    generate.add_argument("--current-hp-return-candidate", action="store_true")
     generate.add_argument("--hud-values", type=Path, action="append", default=[])
     generate.add_argument("--hud-visibility", type=Path, action="append", default=[])
     generate.add_argument("--zone-observations", type=Path, action="append", default=[])
@@ -563,7 +594,7 @@ def main() -> None:
                 "configuration"
             ].get("provisional_map_roles"):
                 raise ValueError("Reused acquisition does not contain provisional Map roles")
-            for flag in ("return_display_tail", "buy_clock_tail"):
+            for flag in ("return_display_tail", "buy_clock_tail", "current_hp_return_candidate"):
                 if getattr(args, flag) and not read_json(acquisition / "timeline_PRIVATE.json")[
                     "configuration"
                 ].get(flag):
@@ -592,6 +623,7 @@ def main() -> None:
                 active_clock_bridge=args.active_clock_bridge,
                 return_display_tail=args.return_display_tail,
                 buy_clock_tail=args.buy_clock_tail,
+                current_hp_return_candidate=args.current_hp_return_candidate,
             )
         result = export_application(
             timeline_path=acquisition / "timeline_PRIVATE.json",
@@ -613,6 +645,7 @@ def main() -> None:
             active_clock_bridge=args.active_clock_bridge,
             return_display_tail=args.return_display_tail,
             buy_clock_tail=args.buy_clock_tail,
+            current_hp_return_candidate=args.current_hp_return_candidate,
             hud_values=args.hud_values,
             hud_visibility=args.hud_visibility,
             zone_observations=args.zone_observations,

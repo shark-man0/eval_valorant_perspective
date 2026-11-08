@@ -1,0 +1,5 @@
+# Headless Linux CI uses the Qt version already fixed in the Windows build set.
+# Ubuntu 26.04 + the floating 6.12.0 wheel repeatedly crashed inside QAudioOutput
+# before the desktop viewer assertions. Keep the same tests and runtime path;
+# this is an environment mitigation, not a claim about all Qt 6.12 installations.
+PySide6==6.11.2

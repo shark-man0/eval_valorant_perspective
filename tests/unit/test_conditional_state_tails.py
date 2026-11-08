@@ -95,6 +95,73 @@ def test_direct_death_is_never_revised_by_return_tail():
     assert result["return_display_tail_projection_history"] == []
 
 
+def supported_return_rows(**raw_changes):
+    rows = [r for r in return_rows()
+            if not (r["sample"]["native_pts_tick"] == 6
+                    and r["context"].get("unqualified_view_model") is True)]
+    sample = row(6)["sample"]
+    raw = {
+        "camera_hypothesis": "SELF",
+        "current_HUD_component_supported": True,
+        "owner_hypothesis_exclusions": ["combat_report_visible"],
+        "owned_verb_phrase": None,
+        "view_hp": {"display": "100", "confidence": .96},
+    }
+    raw.update(raw_changes)
+    rows.append(observation(sample=sample, producer="c" * 64, signals=[], raw=raw,
+                            context={"unqualified_view_model": True}))
+    return rows
+
+
+def test_current_self_hp_and_later_return_supply_unqualified_positive_candidate():
+    rows = supported_return_rows()
+    baseline = replay(rows)
+    prior_tail = replay(rows, return_display_tail=True)
+    revised = replay(rows, return_display_tail=True, current_hp_return_candidate=True)
+    before = next(f for f in baseline["frames"] if f["sample"]["native_pts_tick"] == 6)
+    prior = next(f for f in prior_tail["frames"] if f["sample"]["native_pts_tick"] == 6)
+    after = next(f for f in revised["frames"] if f["sample"]["native_pts_tick"] == 6)
+    assert before["life"]["value"] == "DEAD"
+    assert prior["life"]["value"] == "UNKNOWN"
+    assert "current_view_hp_support" not in prior_tail["return_display_tail_projection_history"][0]
+    assert (after["life"]["value"], after["camera"]["value"]) == ("ALIVE", "SELF")
+    assert after["life"]["hypotheses"] == ["ALIVE", "DEAD", "DOWNED", "UNKNOWN"]
+    assert after["camera"]["hypotheses"] == ["REMOTE", "SELF", "SPECTATOR", "UNKNOWN"]
+    assert after["life"]["uncertainty"] == "current_view_owner_and_return_time_unverified"
+    assert after["life"]["forward_estimate"] == before["life"]
+    assert any(h["sample"] == after["sample"] and h["current_view_hp_support"]
+               for h in revised["return_display_tail_projection_history"])
+    assert revised["configuration"]["current_hp_return_candidate"] == (
+        "development_current_view_hp_return_candidate_v1"
+    )
+    assert revised["qualified_facts"] == revised["qualified_events"] == []
+
+
+@pytest.mark.parametrize("raw_change", [
+    {"current_HUD_component_supported": False},
+    {"owner_hypothesis_exclusions": []},
+    {"owned_verb_phrase": "owned"},
+    {"view_hp": {"display": None, "confidence": 0.0}},
+    {"view_hp": {"display": "100", "confidence": .89}},
+    {"view_hp": {"display": "0", "confidence": .99}},
+    {"camera_hypothesis": "UNKNOWN"},
+])
+def test_positive_return_requires_current_hp_and_self_view(raw_change):
+    revised = replay(supported_return_rows(**raw_change), return_display_tail=True,
+                     current_hp_return_candidate=True)
+    target = next(f for f in revised["frames"] if f["sample"]["native_pts_tick"] == 6)
+    assert target["life"]["value"] != "ALIVE"
+    assert target["camera"]["value"] != "SELF"
+
+
+def test_positive_return_requires_explicit_offline_return_tail():
+    with pytest.raises(ValueError, match="offline return display tail"):
+        DevelopmentGameTimeline(current_hp_return_candidate=True)
+    with pytest.raises(ValueError, match="offline"):
+        DevelopmentGameTimeline(return_display_tail=True, forward_only=True,
+                                current_hp_return_candidate=True)
+
+
 def test_buy_clock_tail_preserves_phase_alternatives_and_default():
     rows = [row(0, ["buy"], score=[1, 0], timer=1),
             row(1, score=[1, 0], timer=0),

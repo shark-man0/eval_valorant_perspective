@@ -93,6 +93,24 @@ class CreditsCandidateReader:
         self.profile = deepcopy(profile)
 
     def measure(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        return self._measure(image, self.ocr)
+
+    def measure_research_inverted(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        """Measure a fixed contrast variant for a separate development sidecar.
+
+        The ordinary observer never calls this method. The same OCR engine on a
+        second rendering is not an independent value or actor witness.
+        """
+        measurement = self._measure(
+            image,
+            TesseractDigitsReader(psm=7, whitelist="0123456789,", white_text_threshold=160),
+        )
+        measurement["research_variant"] = "inverted_threshold_160_v1"
+        measurement["independent_value_witness"] = False
+        measurement["state_authority"] = False
+        return measurement
+
+    def _measure(self, image: NDArray[np.uint8], ocr: Any) -> dict[str, Any]:
         result: dict[str, Any] = {
             "name": "credits",
             "value": None,
@@ -111,7 +129,7 @@ class CreditsCandidateReader:
         x, y, _, _ = self.roi
         dx, dy, dw, dh = self.digits
         crop = image[y + dy : y + dy + dh, x + dx : x + dx + dw]
-        read = self.ocr.read(image, crop)
+        read = ocr.read(image, crop)
         result.update(
             raw_ocr_text=read.value,
             confidence=read.confidence,
