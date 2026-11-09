@@ -124,7 +124,7 @@ def test_explicit_public_reference_assets_are_bound_and_not_recorder_identity(tm
     raw = measure_view(pixels, {})
     matcher.measure(pixels, raw)
     assert raw["viewed_agent_selection"] == "UNKNOWN"
-    assert raw["viewed_agent_candidates"][0]["ownership"] == "UNKNOWN"
+    assert raw["viewed_agent_candidates"] == []
     assert len(matcher.bindings["asset_sha256s"]) == 2
     agent["portrait_small"] = "../foreign.png"
     path.write_text(json.dumps({"characters": [agent]}), encoding="utf-8")

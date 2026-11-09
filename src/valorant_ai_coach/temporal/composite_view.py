@@ -124,7 +124,10 @@ class AgentCatalogMatcher:
                 qualified=False,
                 score_scope="template_similarity_not_probability",
             )
-        measurement["viewed_agent_candidates"] = ranked[:3]
+        # Do not label arbitrary names when a blank/occluded glyph patch gives
+        # only background-level correlations. Selection uses the unchanged
+        # full-ranking margin above; this floor prunes the advisory pool only.
+        measurement["viewed_agent_candidates"] = [r for r in ranked[:3] if r["score"] >= 0.40]
         measurement["viewed_agent_selection"] = ranked[0]["agent"] if accepted else "UNKNOWN"
         measurement["viewed_agent_selection_reason"] = (
             "three_glyph_appearance_margin" if accepted else "weak_or_ambiguous_templates"
@@ -132,6 +135,7 @@ class AgentCatalogMatcher:
         measurement["portrait_candidate"]["agent_candidates"] = [
             {"agent": n, "score": round(s, 4), "ownership": "UNKNOWN", "qualified": False}
             for n, s in sorted(portraits.items(), key=lambda item: (-item[1], item[0]))[:3]
+            if s >= 0.50
         ]
         measurement["reference_catalog"] = {
             "version": self.bindings["catalog_version"],

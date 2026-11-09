@@ -140,8 +140,8 @@ visibilityNames[c.kind]||c.kind))).join(' / '):'UNKNOWN（確認処理あり・�
 '\n生死・視点・Roundの根拠には使用しません':'NOT_ANALYSED（表示状況の観測なし）';
 el('viewedIdentity').textContent=(row.viewed_identity_observations||[]).length?
 fmt(row.viewed_identity_observations.map(v=>({
-viewed_agent_candidates:v.viewed_agent_candidates,
-portrait_candidates:v.portrait_candidate?.agent_candidates||[],
+viewed_agent_candidates:(v.viewed_agent_candidates||[]).filter(c=>c.score>=.40),
+portrait_candidates:(v.portrait_candidate?.agent_candidates||[]).filter(c=>c.score>=.50),
 recorder_anchor_present:Boolean(v.recording_player_anchor),
 ability_relation:v.agent_signature_relation,report_display:v.report_display_change,
 reason:v.reason,evidence_refs:v.evidence_ids

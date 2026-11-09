@@ -37,4 +37,7 @@ def test_public_catalog_map_reference_is_explicit_and_versioned(tmp_path):
     references = load_public_map_references(catalog, tmp_path)
     assert list(references) == ["Example"]
     assert references["Example"].catalog_version == "fixture-1"
-    assert references["Example"].world_to_minimap_normalized(10, 20) == (0.6, 0.39999999999999997)
+    assert references["Example"].catalog_axes_to_minimap_normalized(10, 20) == (
+        0.6,
+        0.39999999999999997,
+    )

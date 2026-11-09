@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import hashlib
+import importlib
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, cast
 
@@ -151,3 +153,44 @@ class PublicMapPixels:
                 "formal_outputs": 0,
             },
         }
+
+
+class PublicMapSupplementObserver:
+    """Explicit optional native supplier; original pools and signals stay intact."""
+
+    def __init__(self, config_path: Path) -> None:
+        cfg = read_json(config_path)
+        if set(cfg) != {"parent_observer", "parent_config", "catalog_index", "layout"}:
+            raise ValueError("Explicit parent and public Map reference config required")
+        module, name = cfg["parent_observer"].split(":", 1)
+        self.parent = getattr(importlib.import_module(module), name)(Path(cfg["parent_config"]))
+        self.map = PublicMapPixels(Path(cfg["catalog_index"]), Path(cfg["layout"]))
+        self.bindings = {
+            "parent": self.parent.bindings,
+            "parent_fingerprint": self.parent.fingerprint,
+            "public_map": self.map.bindings,
+            "config_sha256": file_sha(config_path),
+            "baseline_producer_fingerprints": self.parent.bindings.get(
+                "baseline_producer_fingerprints", [self.parent.fingerprint]
+            ),
+            "supplier_producer_fingerprints": [
+                *self.parent.bindings.get(
+                    "supplier_producer_fingerprints", [self.parent.fingerprint]
+                ),
+                self.map.fingerprint,
+            ],
+            "map_reader_status": "CONFIGURED_DEVELOPMENT_CANDIDATES",
+        }
+        self.fingerprint = digest(self.bindings)
+
+    def inspect(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        result: dict[str, Any] = deepcopy(self.parent.inspect(image))
+        suppliers = result.get("supplier_observations")
+        if suppliers is None:
+            suppliers = [
+                {k: deepcopy(result[k]) for k in ("signals", "raw", "context", "map_candidates")}
+            ]
+            suppliers[0]["producer_fingerprint"] = self.parent.fingerprint
+        suppliers.append({**self.map.inspect(image), "producer_fingerprint": self.map.fingerprint})
+        result["supplier_observations"] = suppliers
+        return result

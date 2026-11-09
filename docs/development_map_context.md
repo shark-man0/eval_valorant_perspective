@@ -27,7 +27,20 @@ image path, and supplied coordinate scalars. It does not bundle assets,
 silently select a map, generate Zones, or infer player identity. The catalog
 checked here was release 08.09 (version `08.09.00.2521387`, published in
 2024). It contains 15 map entries, including 10 with nonzero coordinate
-scalars, but it predates current maps such as Summit. Its coordinate formula
-is a geometry candidate and needs validation against actual observed
-minimaps before use. The existing Summit MapRegistry remains the active
-Zone source. Official reference images stay in private local storage.
+scalars, and does not establish coverage of later content. Catalog scalars accept
+explicit reference-axis coordinates; game-world axis order and camera rotation
+are not inferred. The existing Summit MapRegistry is a separate bundled
+reference, not proof of VALORANT Map or Zone coverage. Official reference images stay in private local storage.
+
+`public_map_pixels.PublicMapSupplementObserver` is an optional native supplier
+around an existing observer. Its private config names `parent_observer`,
+`parent_config`, `catalog_index`, and `layout`. It adds unqualified Map-name and
+similarity-transform candidates while preserving all earlier marker pools. The
+feature-only experiment first produced a collapsed high-inlier homography;
+one-to-one feature matching, a similarity model and distributed ROI support
+reject that degeneracy. The Map-name candidate is not a recorder position or
+Zone. Candidate confidence is uncalibrated; old-catalog mismatches abstain.
+
+Sparse scoring-only review confirmed three Map-name candidates on three native
+frames. Other accepted frames remain unlabelled. This is a small development
+comparison, not whole-match Map recognition accuracy or independent qualification.

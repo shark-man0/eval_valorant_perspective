@@ -23,11 +23,12 @@ class PublicMapReference:
     y_scalar_to_add: float
     y_multiplier: float
 
-    def world_to_minimap_normalized(self, x: float, y: float) -> tuple[float, float] | None:
-        """Apply catalog scalars when both axes are defined and finite.
+    def catalog_axes_to_minimap_normalized(self, x: float, y: float) -> tuple[float, float] | None:
+        """Apply catalog scalars to explicitly supplied reference-axis coordinates.
 
         The returned point is only reference-image geometry, not a marker or
-        player observation. A missing transform returns None.
+        player observation. This does not select or validate a game-world axis
+        convention. A missing transform returns None.
         """
         if not math.isfinite(x) or not math.isfinite(y):
             raise ValueError("Finite world coordinates required")
