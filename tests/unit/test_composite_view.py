@@ -6,7 +6,12 @@ import numpy as np
 import pytest
 
 from tests.unit.test_shared_game_timeline import obs
-from valorant_ai_coach.temporal.composite_view import VERSION, AgentCatalogMatcher, measure_view
+from valorant_ai_coach.temporal.composite_view import (
+    VERSION,
+    AgentCatalogMatcher,
+    CompositeViewObserver,
+    measure_view,
+)
 from valorant_ai_coach.temporal.game import DevelopmentGameTimeline, observation
 
 
@@ -125,3 +130,46 @@ def test_explicit_public_reference_assets_are_bound_and_not_recorder_identity(tm
     path.write_text(json.dumps({"characters": [agent]}), encoding="utf-8")
     with pytest.raises(ValueError, match="outside explicit catalog"):
         AgentCatalogMatcher(path)
+
+
+def test_wrapper_preserves_parent_measurements_and_only_ranks_unowned_pool(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal import composite_view as module
+
+    original = {
+        "signals": ["owner_hud"],
+        "raw": {"ui": {}},
+        "context": {},
+        "map_candidates": [{"center_frame_px": [60.0, 60.0]}],
+    }
+
+    class Parent:
+        def __init__(self, path):
+            self.fingerprint = "b" * 64
+            self.bindings = {}
+
+        def inspect(self, image):
+            return original
+
+    monkeypatch.setattr(module.importlib, "import_module", lambda _: SimpleNamespace(Pixels=Parent))
+    config = tmp_path / "config.json"
+    config.write_text(
+        json.dumps(
+            {
+                "parent_observer": "synthetic:Pixels",
+                "parent_config": "unused",
+                "marker_context": True,
+            }
+        ),
+        encoding="utf-8",
+    )
+    observer = CompositeViewObserver(config)
+    pixels = np.zeros((1080, 1920, 3), np.uint8)
+    result = observer.inspect(pixels)
+    assert result["supplier_observations"][0]["map_candidates"] == original["map_candidates"]
+    assert (
+        result["supplier_observations"][-1]["raw"]["marker_context_rankings"][0]["ownership"]
+        == "UNKNOWN"
+    )
+    assert "supplier_observations" not in original

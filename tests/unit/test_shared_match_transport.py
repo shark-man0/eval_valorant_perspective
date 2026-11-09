@@ -241,16 +241,20 @@ def test_checkpoint_recovers_interrupted_ffv1_coarse_pass_and_replays_same_engin
         dense_seconds=Fraction(1, 5),
     )
     fresh = module.run_match(**kwargs, output=tmp_path / "fresh")
-    fresh_rows = json.loads((tmp_path / "fresh" / "observations_PRIVATE.json").read_text())
+    fresh_rows = json.loads(
+        (tmp_path / "fresh" / "observations_PRIVATE.json").read_text(encoding="utf-8")
+    )
     calls, interrupt = 0, True
     checkpoint = tmp_path / "checkpoint_PRIVATE"
     with pytest.raises(RuntimeError, match="simulated interruption"):
         module.run_match(**kwargs, output=tmp_path / "interrupted", checkpoint_dir=checkpoint)
-    saved = json.loads((checkpoint / "coarse_PRIVATE.json").read_text())
+    saved = json.loads((checkpoint / "coarse_PRIVATE.json").read_text(encoding="utf-8"))
     assert saved["complete"] is False and len(saved["records"]) == 2
     calls, interrupt = 0, False
     resumed = module.run_match(**kwargs, output=tmp_path / "resumed", checkpoint_dir=checkpoint)
-    resumed_rows = json.loads((tmp_path / "resumed" / "observations_PRIVATE.json").read_text())
+    resumed_rows = json.loads(
+        (tmp_path / "resumed" / "observations_PRIVATE.json").read_text(encoding="utf-8")
+    )
     assert resumed["checkpoint"]["reused_unique_native_points"] == 2
     assert resumed["checkpoint"]["new_unique_native_points"] == 2
     assert resumed["checkpoint"]["storage_bytes"] > 0
@@ -262,8 +266,12 @@ def test_checkpoint_recovers_interrupted_ffv1_coarse_pass_and_replays_same_engin
         (r["sample"]["native_pts_tick"], r["sample"]["native_pixel_sha256"])
         for r in fresh_rows["records"]
     ]
-    fresh_timeline = json.loads((tmp_path / "fresh" / "timeline_PRIVATE.json").read_text())
-    resumed_timeline = json.loads((tmp_path / "resumed" / "timeline_PRIVATE.json").read_text())
+    fresh_timeline = json.loads(
+        (tmp_path / "fresh" / "timeline_PRIVATE.json").read_text(encoding="utf-8")
+    )
+    resumed_timeline = json.loads(
+        (tmp_path / "resumed" / "timeline_PRIVATE.json").read_text(encoding="utf-8")
+    )
     assert [r["round"]["value"] for r in fresh_timeline["frames"]] == [
         r["round"]["value"] for r in resumed_timeline["frames"]
     ]

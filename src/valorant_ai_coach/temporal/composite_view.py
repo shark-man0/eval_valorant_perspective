@@ -303,6 +303,17 @@ def attach_composite_views(states: list[dict[str, Any]], observations: dict[str,
             "qualified": False,
             "reason": "current_visual_compatibility_only" if anchor else "no_current_SELF_anchor",
         }
+        if "marker_context_rankings" in raw:
+            frame["map"]["marker_ranking_hypotheses"] = {
+                "rankings": deepcopy(raw["marker_context_rankings"]),
+                "camera_candidate": frame["camera"]["value"],
+                "map_supplier_fingerprint": raw["marker_candidate_supplier"],
+                "evidence_ids": [row["observation_id"]],
+                "position_subject": "viewed_candidates_not_recorder_positions",
+                "ownership": "UNKNOWN",
+                "position_authority": False,
+                "qualified": False,
+            }
         report = raw["report_or_log_visibility"]["combat_report"]
         previous = prior_reports.get(scope)
         frame["viewed_identity"]["report_display_change"] = (
@@ -327,6 +338,7 @@ class CompositeViewObserver:
             "parent_config",
             "agent_catalog",
             "visibility_tessdata",
+            "marker_context",
         } or not {
             "parent_observer",
             "parent_config",
@@ -334,6 +346,9 @@ class CompositeViewObserver:
             raise ValueError("Explicit parent observer/config required")
         module, name = cfg["parent_observer"].split(":", 1)
         self.parent = getattr(importlib.import_module(module), name)(Path(cfg["parent_config"]))
+        self.marker_context = cfg.get("marker_context", False)
+        if type(self.marker_context) is not bool:
+            raise ValueError("Explicit marker-context diagnostic boolean required")
         self.matcher = (
             AgentCatalogMatcher(Path(cfg["agent_catalog"])) if "agent_catalog" in cfg else None
         )
@@ -350,6 +365,14 @@ class CompositeViewObserver:
                 "portrait": PORTRAIT_ROI,
                 "references": self.matcher.bindings if self.matcher else None,
                 "visibility": self.visibility.bindings if self.visibility else None,
+                "marker_context": self.marker_context,
+                "marker_context_code_sha256": file_sha(
+                    Path(__file__).with_name("map_shape_ranking.py")
+                )
+                if self.marker_context
+                else None,
+                "opencv": cv2.__version__,
+                "numpy": np.__version__,
             }
         )
         self.bindings = {
@@ -385,6 +408,17 @@ class CompositeViewObserver:
             self.matcher.measure(image, raw)
         if self.visibility:
             raw["hud_visibility"] = self.visibility.inspect(image, ui)
+        if self.marker_context:
+            from .map_shape_ranking import rank_marker_context
+
+            mapped = [r for r in suppliers if r.get("map_candidates")]
+            raw["marker_context_rankings"] = []
+            raw["marker_candidate_supplier"] = None
+            if len(mapped) == 1:
+                raw["marker_context_rankings"] = rank_marker_context(
+                    image, mapped[0]["map_candidates"]
+                )[:10]
+                raw["marker_candidate_supplier"] = mapped[0]["producer_fingerprint"]
         suppliers.append(
             {
                 "producer_fingerprint": self.view_fingerprint,

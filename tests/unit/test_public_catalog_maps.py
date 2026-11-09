@@ -31,7 +31,8 @@ def test_public_catalog_map_reference_is_explicit_and_versioned(tmp_path):
                     },
                 ],
             }
-        )
+        ),
+        encoding="utf-8",
     )
     references = load_public_map_references(catalog, tmp_path)
     assert list(references) == ["Example"]

@@ -65,7 +65,7 @@ class ObservationCheckpoint:
         temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
         payload = json.dumps(
             value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-        ).encode()
+        ).encode("utf-8")
         try:
             with temporary.open("xb") as handle:
                 os.fchmod(handle.fileno(), 0o600)
