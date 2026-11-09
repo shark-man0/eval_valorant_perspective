@@ -1081,8 +1081,10 @@ def main() -> None:
     parser.add_argument("--coarse-seconds", type=Fraction, default=Fraction(1))
     parser.add_argument("--dense-seconds", type=Fraction, default=Fraction(1, 5))
     parser.add_argument("--max-refinement-seconds", type=Fraction, default=Fraction(240))
-    parser.add_argument("--full-density", action="store_true",
-                        help="Observe the whole recording at dense cadence, retaining coarse points")
+    parser.add_argument(
+        "--full-density", action="store_true",
+        help="Observe the whole recording at dense cadence and retain coarse points",
+    )
     parser.add_argument(
         "--refinement-policy", choices=["chronological", "balanced", "evidence"],
         default="chronological"
