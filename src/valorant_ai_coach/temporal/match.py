@@ -339,6 +339,8 @@ def run_match(
     coarse_seconds: Fraction = Fraction(1),
     dense_seconds: Fraction = Fraction(1, 5),
     max_refinement_windows: int = 40,
+    max_refinement_seconds: Fraction = Fraction(240),
+    full_density: bool = False,
     stop_after: int | None = None,
     retain_frames: bool = False,
     observer_factory: Callable[[Path], PixelObserver] | None = None,
@@ -364,6 +366,11 @@ def run_match(
     checkpoint_implementation_sha = file_sha(Path(__file__).with_name("checkpoint.py"))
     if not 0 < dense_seconds < coarse_seconds <= 2 or max_refinement_windows < 0:
         raise ValueError("Bounded coarse/dense observation cadence required")
+    if type(max_refinement_seconds) not in (int, Fraction) or max_refinement_seconds < 0:
+        raise ValueError("Nonnegative exact refinement duration required")
+    max_refinement_seconds = Fraction(max_refinement_seconds)
+    if type(full_density) is not bool:
+        raise ValueError("Explicit full-density observation mode required")
     if refinement_selection_policy not in {"chronological", "balanced", "evidence"}:
         raise ValueError("Known development refinement selection policy required")
     if (
@@ -512,6 +519,8 @@ def run_match(
                 "coarse_seconds": str(coarse_seconds),
                 "dense_seconds": str(dense_seconds),
                 "max_refinement_windows": max_refinement_windows,
+                "max_refinement_seconds": str(max_refinement_seconds),
+                "full_density": full_density,
                 "refinement_selection_policy": refinement_selection_policy,
                 "refinement_padding_seconds": str(refinement_padding_seconds),
                 "stop_after": stop_after,
@@ -766,13 +775,17 @@ def run_match(
     exclusive_end = native_start + limit - base
     decode(native_start, exclusive_end, coarse_seconds, "coarse")
     coarse = [records[k] for k in sorted(records)]
-    windows, deferred = refinement_windows(
-        coarse,
-        max_windows=max_refinement_windows,
-        origin=native_start,
-        selection_policy=refinement_selection_policy,
-        padding=refinement_padding_seconds,
-    )
+    if full_density:
+        windows, deferred = [(native_start, exclusive_end)], 0
+    else:
+        windows, deferred = refinement_windows(
+            coarse,
+            max_windows=max_refinement_windows,
+            max_total_seconds=max_refinement_seconds,
+            origin=native_start,
+            selection_policy=refinement_selection_policy,
+            padding=refinement_padding_seconds,
+        )
     for index, (lower, upper) in enumerate(windows):
         decode(lower, min(upper, exclusive_end), dense_seconds, f"dense_{index:04d}")
     # Evaluation references never change automatic acquisition or inference.
@@ -975,7 +988,9 @@ def run_match(
             "coarse_seconds": str(coarse_seconds),
             "dense_seconds": str(dense_seconds),
             "max_refinement_windows": max_refinement_windows,
-            "max_refinement_seconds": 240,
+            "max_refinement_seconds": str(max_refinement_seconds),
+            "full_density": full_density,
+            "refinement_budget_applied": not full_density,
             "selection_policy": refinement_selection_policy,
             "refinement_padding_seconds": str(refinement_padding_seconds),
             "balanced_proposal_seconds": str(max(Fraction(6), refinement_padding_seconds * 2 + 2)),
@@ -1063,6 +1078,11 @@ def main() -> None:
     parser.add_argument("--reader-config", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-refinement-windows", type=int, default=40)
+    parser.add_argument("--coarse-seconds", type=Fraction, default=Fraction(1))
+    parser.add_argument("--dense-seconds", type=Fraction, default=Fraction(1, 5))
+    parser.add_argument("--max-refinement-seconds", type=Fraction, default=Fraction(240))
+    parser.add_argument("--full-density", action="store_true",
+                        help="Observe the whole recording at dense cadence, retaining coarse points")
     parser.add_argument(
         "--refinement-policy", choices=["chronological", "balanced", "evidence"],
         default="chronological"
@@ -1087,6 +1107,10 @@ def main() -> None:
         reader_config=args.reader_config,
         output=args.output,
         max_refinement_windows=args.max_refinement_windows,
+        coarse_seconds=args.coarse_seconds,
+        dense_seconds=args.dense_seconds,
+        max_refinement_seconds=args.max_refinement_seconds,
+        full_density=args.full_density,
         refinement_selection_policy=args.refinement_policy,
         refinement_padding_seconds=args.refinement_padding_seconds,
         stop_after=args.pilot_seconds,

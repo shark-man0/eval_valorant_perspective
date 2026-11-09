@@ -576,6 +576,10 @@ def main() -> None:
         "--reuse-acquisition", type=Path, help="Reuse a completed, hash-verified whole acquisition"
     )
     generate.add_argument("--max-refinement-windows", type=int, default=40)
+    generate.add_argument("--coarse-seconds", type=Fraction)
+    generate.add_argument("--dense-seconds", type=Fraction)
+    generate.add_argument("--max-refinement-seconds", type=Fraction)
+    generate.add_argument("--full-density", action="store_true")
     generate.add_argument("--refinement-policy", choices=["chronological", "balanced", "evidence"])
     generate.add_argument("--refinement-padding-seconds", type=Fraction)
     generate.add_argument("--report-view-bridge", action="store_true")
@@ -606,6 +610,12 @@ def main() -> None:
             if receipt["source_id"] != args.source_id:
                 raise ValueError("Reused acquisition belongs to another Source")
             sampling = receipt.get("sampling", {})
+            if args.full_density and not sampling.get("full_density"):
+                raise ValueError("Reused acquisition is not full-density")
+            for field in ("coarse_seconds", "dense_seconds", "max_refinement_seconds"):
+                requested = getattr(args, field)
+                if requested is not None and Fraction(str(sampling.get(field))) != requested:
+                    raise ValueError("Reused acquisition has different " + field)
             if (
                 args.refinement_padding_seconds is not None
                 and Fraction(sampling.get("refinement_padding_seconds", "1"))
@@ -646,6 +656,15 @@ def main() -> None:
                 output=acquisition,
                 observer_factory=factory,
                 max_refinement_windows=args.max_refinement_windows,
+                coarse_seconds=(args.coarse_seconds
+                                if args.coarse_seconds is not None else Fraction(1)),
+                dense_seconds=(args.dense_seconds
+                               if args.dense_seconds is not None else Fraction(1, 5)),
+                max_refinement_seconds=(
+                    args.max_refinement_seconds
+                    if args.max_refinement_seconds is not None else Fraction(240)
+                ),
+                full_density=args.full_density,
                 refinement_selection_policy=args.refinement_policy or "chronological",
                 refinement_padding_seconds=(
                     args.refinement_padding_seconds
