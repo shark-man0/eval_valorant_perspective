@@ -68,7 +68,7 @@ class ObservationCheckpoint:
         ).encode("utf-8")
         try:
             with temporary.open("xb") as handle:
-                os.fchmod(handle.fileno(), 0o600)
+                os.chmod(temporary, 0o600)
                 handle.write(payload)
                 handle.flush()
                 os.fsync(handle.fileno())
