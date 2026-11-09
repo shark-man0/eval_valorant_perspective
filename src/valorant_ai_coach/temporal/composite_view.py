@@ -191,7 +191,11 @@ def measure_view(image: NDArray[np.uint8], ui: dict[str, Any]) -> dict[str, Any]
         "portrait_candidate": portrait,
         "viewed_agent_candidates": [],
         "report_or_log_visibility": {
-            "combat_report": "VISIBLE" if report is True else "NOT_DETECTED",
+            "combat_report": "VISIBLE"
+            if report is True
+            else "NOT_DETECTED"
+            if report is False
+            else "UNKNOWN",
             "killfeed": "NOT_ANALYSED",
             "chat_or_broadcast": "NOT_ANALYSED",
             "visibility_scope": "current_display_not_new_death",
@@ -324,9 +328,13 @@ def attach_composite_views(states: list[dict[str, Any]], observations: dict[str,
             "PERSISTING"
             if report == previous == "VISIBLE"
             else "VISIBLE_ONSET_CANDIDATE"
-            if report == "VISIBLE" and previous is not None
+            if report == "VISIBLE" and previous == "NOT_DETECTED"
+            else "VISIBLE_AFTER_UNKNOWN"
+            if report == "VISIBLE" and previous == "UNKNOWN"
             else "FIRST_OBSERVATION"
             if previous is None
+            else "UNKNOWN"
+            if report == "UNKNOWN"
             else "NOT_DETECTED"
         )
         prior_reports[scope] = report

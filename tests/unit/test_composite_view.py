@@ -94,6 +94,7 @@ def test_dark_hud_is_missing_not_matching_agent():
     result = measure_view(np.zeros((1080, 1920, 3), np.uint8), {})
     assert all(s["descriptor"] is None for s in result["ability_signature"])
     assert result["viewed_agent_candidates"] == []
+    assert result["report_or_log_visibility"]["combat_report"] == "UNKNOWN"
 
 
 def test_explicit_public_reference_assets_are_bound_and_not_recorder_identity(tmp_path):
