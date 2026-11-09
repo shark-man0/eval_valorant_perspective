@@ -191,7 +191,9 @@ if(!v.seeking&&n!==selected)select(n,false)};
 
 (async()=>{overview=await api('/api/overview');
 el('summary').textContent=overview.seconds.length+
-'秒行 / 映像観測 '+overview.observed_seconds+'秒 / 元動画 '+overview.duration_seconds+'秒';
+'秒行 / 映像観測 '+overview.observed_seconds+'秒 / 元動画 '+
+overview.original_duration_float_seconds+'秒'+
+(overview.coverage_scope==='PILOT_ONLY'?'（pilot出力）':'');
 
 el('slider').max=overview.seconds.length-1;
 el('time').max=overview.seconds.length-1;
@@ -241,6 +243,20 @@ def byte_range(header: str | None, size: int) -> tuple[int, int, int]:
     return start, end, 206
 
 
+def recording_view_metadata(bundle: dict[str, Any]) -> dict[str, Any]:
+    """Keep the selected timeline window separate from original recording length."""
+    duration = Fraction(bundle["recording"]["duration_seconds"])
+    original = Fraction(bundle.get("original_recording_duration_seconds", str(duration)))
+    if duration <= 0 or original < duration:
+        raise ValueError("Original recording cannot be shorter than the analysed window")
+    return {
+        "duration_seconds": str(duration),
+        "duration_float_seconds": float(duration),
+        "original_duration_float_seconds": float(original),
+        "coverage_scope": bundle.get("coverage_scope", "UNSPECIFIED"),
+    }
+
+
 def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> ThreadingHTTPServer:
     bundle = read_json(bundle_path)
     if bundle.get("version") != VERSION or bundle.get("formal_outputs") != 0:
@@ -256,8 +272,7 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
     token = secrets.token_urlsafe(24)
     seconds = bundle["seconds"]
     overview = {
-        "duration_seconds": bundle["recording"]["duration_seconds"],
-        "duration_float_seconds": float(Fraction(bundle["recording"]["duration_seconds"])),
+        **recording_view_metadata(bundle),
         "native_origin_seconds": float(Fraction(bundle["recording"]["native_origin_seconds"])),
         "observed_seconds": sum(r["observation_present"] for r in seconds),
         "round_candidates": sorted({n for r in seconds for n in r["round_number"]["candidates"]}),
