@@ -46,7 +46,9 @@ class ObservationCheckpoint:
 
     @property
     def epoch(self) -> str:
-        return self.manifest["epoch"]
+        value = self.manifest["epoch"]
+        assert isinstance(value, str)
+        return value
 
     @staticmethod
     def _read(path: Path) -> dict[str, Any]:

@@ -356,6 +356,8 @@ def run_match(
     checkpoint_dir: Path | None = None,
 ) -> dict[str, Any]:
     began = time.perf_counter()
+    if checkpoint_dir is not None and retain_frames:
+        raise ValueError("Observation checkpoint reuse excludes retained-image output")
     implementation_sha = file_sha(Path(__file__))
     engine_sha = file_sha(Path(__file__).with_name("game.py"))
     map_role_sha = file_sha(Path(__file__).with_name("map_roles.py"))
@@ -555,7 +557,9 @@ def run_match(
         for row in cached_rows:
             if not isinstance(row, dict) or row.get("pass") != name:
                 raise ValueError("Invalid checkpoint row")
-            sample = freeze_native_sample(row.get("sample"))
+            if not isinstance(row.get("sample"), dict):
+                raise ValueError("Invalid checkpoint sample")
+            sample = freeze_native_sample(row["sample"])
             tick = sample["native_pts_tick"]
             if (
                 sample["source_id"] != source_id
@@ -631,7 +635,7 @@ def run_match(
         verified = 0
         pass_rows = list(cached_rows)
 
-        def accept_verified(ticks: list[int], *, finished: bool) -> None:
+        def accept_verified(ticks: tuple[int, ...], *, finished: bool) -> None:
             nonlocal verified, fresh_points
             if len(ticks) < verified or len(ticks) > len(pending):
                 raise ValueError("Decoder output/native PTS correspondence failed")
@@ -683,6 +687,8 @@ def run_match(
                         "pass": name,
                         "measurement": item["measurement"],
                     }
+                    if "path" in item:
+                        records[tick]["path"] = item["path"]
                     fresh_points += 1
                 if not (cached_rows and tick == cached_rows[-1]["sample"]["native_pts_tick"]):
                     pass_rows.append(

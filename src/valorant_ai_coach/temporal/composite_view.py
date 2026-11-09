@@ -322,7 +322,12 @@ class CompositeViewObserver:
 
     def __init__(self, config_path: Path) -> None:
         cfg = read_json(config_path)
-        if set(cfg) - {"parent_observer", "parent_config", "agent_catalog"} or not {
+        if set(cfg) - {
+            "parent_observer",
+            "parent_config",
+            "agent_catalog",
+            "visibility_tessdata",
+        } or not {
             "parent_observer",
             "parent_config",
         } <= set(cfg):
@@ -332,6 +337,11 @@ class CompositeViewObserver:
         self.matcher = (
             AgentCatalogMatcher(Path(cfg["agent_catalog"])) if "agent_catalog" in cfg else None
         )
+        self.visibility = None
+        if "visibility_tessdata" in cfg:
+            from .hud_visibility import HUDVisibilityReader
+
+            self.visibility = HUDVisibilityReader(Path(cfg["visibility_tessdata"]))
         self.view_fingerprint = digest(
             {
                 "version": VERSION,
@@ -339,6 +349,7 @@ class CompositeViewObserver:
                 "centers": ABILITY_CENTERS,
                 "portrait": PORTRAIT_ROI,
                 "references": self.matcher.bindings if self.matcher else None,
+                "visibility": self.visibility.bindings if self.visibility else None,
             }
         )
         self.bindings = {
@@ -372,6 +383,8 @@ class CompositeViewObserver:
         raw = measure_view(image, ui)
         if self.matcher:
             self.matcher.measure(image, raw)
+        if self.visibility:
+            raw["hud_visibility"] = self.visibility.inspect(image, ui)
         suppliers.append(
             {
                 "producer_fingerprint": self.view_fingerprint,

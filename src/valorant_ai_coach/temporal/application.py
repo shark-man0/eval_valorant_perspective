@@ -361,6 +361,10 @@ def build_application_timeline(
         attach_visibility(result, hud_visibility_observations)
     if zone_observations:
         attach_viewed_zones(result, zone_observations)
+    if has_composite_views:
+        from .round_visual import attach_round_visual_candidates
+
+        attach_round_visual_candidates(result)
     return result
 
 
@@ -562,6 +566,8 @@ def main() -> None:
         generate.add_argument("--" + name, type=Path, required=True)
     generate.add_argument("--source-id", required=True)
     generate.add_argument("--observer", help="Optional image-only supplier module:class")
+    generate.add_argument("--checkpoint-dir", type=Path,
+                          help="Opt-in exact-binding partial native observation reuse")
     generate.add_argument(
         "--reuse-acquisition", type=Path, help="Reuse a completed, hash-verified whole acquisition"
     )
@@ -590,6 +596,8 @@ def main() -> None:
             factory = getattr(importlib.import_module(module), name)
         acquisition = args.reuse_acquisition or args.output / "acquisition"
         if args.reuse_acquisition:
+            if args.checkpoint_dir is not None:
+                raise ValueError("Completed acquisition reuse and checkpoint reuse are separate")
             receipt = read_json(acquisition / "completion_PRIVATE.json")
             if receipt["source_id"] != args.source_id:
                 raise ValueError("Reused acquisition belongs to another Source")
@@ -627,6 +635,7 @@ def main() -> None:
                 raise ValueError("Reused acquisition does not contain ACTIVE clock bridge")
         else:
             run_match(
+                checkpoint_dir=args.checkpoint_dir,
                 policy_path=args.policy,
                 source_id=args.source_id,
                 reader_config=args.reader_config,
