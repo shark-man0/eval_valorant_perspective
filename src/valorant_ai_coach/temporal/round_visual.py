@@ -29,6 +29,36 @@ def _score(rows: list[dict[str, Any]]) -> tuple[int, int] | None:
     return next(iter(pairs)) if len(pairs) == 1 else None
 
 
+def _explicit_purchase_absence(rows: list[dict[str, Any]]) -> bool:
+    """A separately positively matched absence structure, never a failed scan."""
+    supported = []
+    for row in rows:
+        raw = row.get("raw", {})
+        ui = raw.get("ui", {})
+        if not isinstance(ui, dict):
+            continue
+        semantic = raw.get("semantic_measurements", {}).get("phase_absence_template", {})
+        calibrated = raw.get("calibration", {}).get("calibrated") is True
+        structure = (
+            (raw.get("round_component_measurement") or {}).get("top_structure_supported") is True
+        )
+        visible = raw.get("hud_visibility", {})
+        occluded = (ui.get("buy_menu_close_anchor_present") is True
+                    or ui.get("combat_report_visible") is True
+                    or any(c.get("kind") in {"BUY_MENU", "TRACKER"}
+                           for c in visible.get("candidates", [])))
+        positive = (ui.get("phase_absence_template") is True
+                    and ui.get("phase_absence_template_scan_valid") is True
+                    and ui.get("phase_absence_template_matcher") == "semantic_text_ncc_v1"
+                    and isinstance(ui.get("phase_absence_template_confidence"), (int, float))
+                    and not isinstance(ui.get("phase_absence_template_confidence"), bool)
+                    and 0.90 <= ui["phase_absence_template_confidence"] <= 1
+                    and semantic.get("presence") is True
+                    and (calibrated or structure) and not occluded)
+        supported.append(positive)
+    return bool(supported) and any(supported)
+
+
 def _groups(observations: list[dict[str, Any]]) -> list[dict[str, Any]]:
     grouped: dict[tuple[Any, ...], list[dict[str, Any]]] = defaultdict(list)
     for row in observations:
@@ -41,14 +71,18 @@ def _groups(observations: list[dict[str, Any]]) -> list[dict[str, Any]]:
         grouped[key].append(row)
     result = []
     for rows in grouped.values():
-        if any(row.get("continuity", {}).get("decode_ok") is False for row in rows):
-            continue
         sample = rows[0]["sample"]
+        broken = any(any(row.get("continuity", {}).get(k) is True for k in
+                         ("content_break_confirmed", "source_discontinuity", "discontinuity"))
+                     or row.get("continuity", {}).get("decode_ok") is False
+                     for row in rows)
         result.append({"sample": sample, "time": native_time(sample), "rows": rows,
                        "signals": {s for row in rows for s in row.get("signals", [])},
-                       "score": _score(rows)})
+                       "score": _score(rows), "broken": broken,
+                       "purchase_absent": _explicit_purchase_absence(rows)})
     return sorted(result, key=lambda x: (x["sample"]["source_id"],
-                   x["sample"]["source_sha256"], x["sample"]["native_epoch"], x["time"]))
+                   x["sample"]["source_sha256"], x["sample"]["native_epoch"],
+                   x["sample"]["acquisition_id"], x["time"]))
 
 
 def round_visual_candidates(
@@ -57,8 +91,9 @@ def round_visual_candidates(
 ) -> dict[str, Any]:
     """Emit observed onset candidates; duplicate result/score support is folded.
 
-    A start needs an observed buy cue followed by positive active display. The
-    score cue is only a one-point monotonic increase; unread/conflicting scores
+    A start needs observed buy followed by positive active display or separately
+    positively matched purchase-caption absence. A failed presence scan alone is
+    UNKNOWN. The score cue is only a one-point monotonic increase; unread/conflicting scores
     are unknown, not zero. A new source/epoch or wide gap resets all context.
     """
     if origin < 0 or max_start_gap <= 0 or result_score_window <= 0:
@@ -70,23 +105,31 @@ def round_visual_candidates(
     for current in _groups(observations):
         sample = current["sample"]
         same = bool(prior and all(sample[k] == prior["sample"][k]
-                    for k in ("source_id", "source_sha256", "native_epoch")))
+                    for k in ("source_id", "source_sha256", "native_epoch",
+                              "acquisition_id", "native_time_base", "frame_size_px")))
         gap = current["time"] - prior["time"] if same and prior else None
-        if not same or gap is None or gap <= 0 or gap > max_start_gap:
+        if current["broken"] or not same or gap is None or gap <= 0 or gap > max_start_gap:
             last_buy = None
             if (not same or last_end is None
                     or current["time"] - last_end["time"] > result_score_window):
                 last_end = None
             prior = None
+        if current["broken"]:
+            continue
         if "buy" in current["signals"]:
             last_buy = current
             last_end = None
-        if ("active" in current["signals"] and "buy" not in current["signals"]
+        start_cue = ("purchase_display_to_active_display"
+                     if "active" in current["signals"] else
+                     "purchase_display_to_explicit_absence"
+                     if current["purchase_absent"] else None)
+        if (start_cue is not None and "buy" not in current["signals"]
+                and "result" not in current["signals"]
+                and not {"report", "spectator", "remote"} & current["signals"]
                 and last_buy is not None
                 and 0 < current["time"] - last_buy["time"] <= max_start_gap):
             previous = last_buy
-            candidates.append(_candidate("start", "purchase_display_to_active_display",
-                                         previous, current, origin))
+            candidates.append(_candidate("start", start_cue, previous, current, origin))
             last_buy = None
             last_end = None
         result_onset = "result" in current["signals"] and (

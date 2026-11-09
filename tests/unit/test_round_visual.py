@@ -7,7 +7,7 @@ from valorant_ai_coach.temporal.game import observation
 from valorant_ai_coach.temporal.round_visual import round_visual_candidates
 
 
-def observed(second, signals=(), score=None, source="a", epoch="one"):
+def observed(second, signals=(), score=None, source="a", epoch="one", raw=None, continuity=None):
     sample = freeze_native_sample({
         "source_id": source, "source_sha256": source * 64,
         "acquisition_id": epoch, "native_epoch": epoch,
@@ -16,7 +16,8 @@ def observed(second, signals=(), score=None, source="a", epoch="one"):
         "native_pixel_sha256": "c" * 64,
     })
     return observation(sample=sample, producer="d" * 64, signals=list(signals),
-                       raw={}, context={"score": score}, continuity={"decode_ok": True})
+                       raw=raw or {}, context={"score": score},
+                       continuity=continuity or {"decode_ok": True})
 
 
 def test_positive_buy_to_active_and_result_onset_deduplicate_score():
@@ -73,3 +74,52 @@ def test_attach_keeps_existing_application_fields():
         row.pop("round_visual_candidates")
     assert bundle == before
     assert sidecar["formal_outputs"] == 0
+
+
+def absence_raw(*, positive=True, valid=True, occluded=False):
+    return {"ui": {"phase_absence_template": True if positive else None,
+                   "phase_absence_template_scan_valid": valid,
+                   "phase_absence_template_matcher": "semantic_text_ncc_v1",
+                   "phase_absence_template_confidence": .96,
+                   "buy_menu_close_anchor_present": occluded},
+            "calibration": {"calibrated": True},
+            "semantic_measurements": {"phase_absence_template": {"presence": True}}}
+
+
+def test_explicit_purchase_absence_can_start_without_active_clock():
+    rows = [observed(1, ["buy"]), observed(2, raw=absence_raw())]
+    result = round_visual_candidates(rows)
+    assert [(c["kind"], c["support_cues"]) for c in result["candidates"]] == [
+        ("start", ["purchase_display_to_explicit_absence"])]
+
+
+def test_failed_scan_missing_ui_or_overlay_never_proves_purchase_absence():
+    for raw in ({}, absence_raw(positive=False), absence_raw(valid=False),
+                absence_raw(occluded=True)):
+        rows = [observed(1, ["buy"]), observed(2, raw=raw)]
+        assert round_visual_candidates(rows)["candidates"] == []
+
+
+def test_content_break_and_acquisition_change_stop_start_and_score_links():
+    for continuity in ({"content_break_confirmed": True},
+                       {"source_discontinuity": True},
+                       {"discontinuity": True}, {"decode_ok": False}):
+        rows = [observed(1, ["buy"], [0, 0]),
+                observed(2, ["active"], [1, 0], continuity=continuity)]
+        assert round_visual_candidates(rows)["candidates"] == []
+    rows = [observed(1, ["buy"]), observed(2, ["active"], epoch="two")]
+    assert round_visual_candidates(rows)["candidates"] == []
+
+
+def test_geometry_and_timebase_changes_break_context():
+    first = observed(1, ["buy"], [0, 0])
+    second = observed(2, ["active"], [1, 0])
+    for change in ({"frame_size_px": [128, 64]},
+                   {"native_time_base": "1/2", "native_pts_tick": 4}):
+        sample = {k: v for k, v in second["sample"].items() if k != "sample_sha256"}
+        sample.update(change)
+        changed = observation(sample=freeze_native_sample(sample),
+                              producer=second["producer_fingerprint"],
+                              signals=second["signals"], raw=second["raw"],
+                              context=second["context"], continuity=second["continuity"])
+        assert round_visual_candidates([first, changed])["candidates"] == []
