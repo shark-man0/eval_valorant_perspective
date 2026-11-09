@@ -69,3 +69,44 @@ def rank_white_arrow_shapes(
             }
         )
     return sorted(rows, key=lambda row: (-row["score"], row["candidate_index"]))
+
+
+def rank_marker_context(
+    image: NDArray[np.uint8], candidates: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Development-only marker ordering from shape and a nearby amber HUD accent.
+
+    A small amber component beside a portrait can indicate a current-view marker.
+    The same color can occur in the map or spike UI, so this is only a ranking
+    cue. Camera, agent identity and ownership must be supplied and checked by
+    another owner; this function never assigns them.
+    """
+    shape_rows = rank_white_arrow_shapes(image, candidates)
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    amber = (
+        (hsv[:, :, 0] >= 17) & (hsv[:, :, 0] <= 39) & (hsv[:, :, 1] >= 100) & (hsv[:, :, 2] >= 130)
+    ).astype(np.uint8)
+    count, _, stats, centroids = cv2.connectedComponentsWithStats(amber, connectivity=8)
+    # Large map fills and single compression pixels are poor marker accents.
+    accents = [centroids[i] for i in range(1, count) if 2 <= int(stats[i, 4]) <= 60]
+    scale = image.shape[1] / 1920
+    reach = max(8.0, 18.0 * scale)
+    rows = []
+    for shape in shape_rows:
+        index = shape["candidate_index"]
+        x, y = candidates[index]["center_frame_px"]
+        distance = min((math.hypot(x - a[0], y - a[1]) for a in accents), default=reach)
+        accent_score = max(0.0, 1.0 - distance / reach)
+        rows.append(
+            {
+                "candidate_index": index,
+                "score": shape["score"] + accent_score,
+                "shape_score": shape["score"],
+                "accent_score": accent_score,
+                "method": "development_marker_context_v1",
+                "ownership": "UNKNOWN",
+                "qualified": False,
+                "position_authority": False,
+            }
+        )
+    return sorted(rows, key=lambda row: (-row["score"], row["candidate_index"]))
