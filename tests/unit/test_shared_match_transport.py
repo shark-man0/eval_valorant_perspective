@@ -5,6 +5,7 @@ import hashlib
 import json
 import shutil
 import subprocess
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
@@ -20,10 +21,7 @@ def native_case(tmp_path, request):
     video = tmp_path / "synthetic.mp4"
     video_filter = "setpts=PTS+5/TB"
     if getattr(request, "param", None) == "off_grid_red":
-        video_filter = (
-            "drawbox=x=0:y=0:w=96:h=64:color=red:t=fill:enable='eq(n,1)',"
-            "setpts=PTS+5/TB"
-        )
+        video_filter = "drawbox=x=0:y=0:w=96:h=64:color=red:t=fill:enable='eq(n,1)',setpts=PTS+5/TB"
     subprocess.run(
         [
             shutil.which("ffmpeg"),
@@ -91,7 +89,12 @@ def native_case(tmp_path, request):
 @pytest.mark.parametrize("provisional_map_roles", [False, True])
 @pytest.mark.parametrize("active_clock_bridge", [False, True])
 def test_full_file_native_origin_and_recording_second_grid(
-    tmp_path, monkeypatch, native_case, report_view_bridge, buy_clock_expiry, provisional_map_roles,
+    tmp_path,
+    monkeypatch,
+    native_case,
+    report_view_bridge,
+    buy_clock_expiry,
+    provisional_map_roles,
     active_clock_bridge,
 ):
     policy, config = native_case
@@ -155,17 +158,152 @@ def test_reconstruction_fingerprint_binds_mode_but_not_acquisition_epoch(
             return {"signals": [], "context": {}, "raw": {}, "map_candidates": []}
 
     monkeypatch.setattr(module, "ProfileHudObserver", Pixels)
-    receipts = [module.run_match(
-        policy_path=policy, source_id="registered-synthetic", reader_config=config,
-        output=tmp_path / ("fingerprint_run" + str(i)), max_refinement_windows=0,
-        report_view_bridge=flag,
-    ) for i, flag in enumerate([False, False, True])]
+    receipts = [
+        module.run_match(
+            policy_path=policy,
+            source_id="registered-synthetic",
+            reader_config=config,
+            output=tmp_path / ("fingerprint_run" + str(i)),
+            max_refinement_windows=0,
+            report_view_bridge=flag,
+        )
+        for i, flag in enumerate([False, False, True])
+    ]
     assert len({r["epoch"] for r in receipts}) == 3
     assert len({r["reader_fingerprint"] for r in receipts}) == 1
-    assert receipts[0]["state_reconstruction_fingerprint"] == receipts[1][
-        "state_reconstruction_fingerprint"]
-    assert receipts[0]["state_reconstruction_fingerprint"] != receipts[2][
-        "state_reconstruction_fingerprint"]
+    assert (
+        receipts[0]["state_reconstruction_fingerprint"]
+        == receipts[1]["state_reconstruction_fingerprint"]
+    )
+    assert (
+        receipts[0]["state_reconstruction_fingerprint"]
+        != receipts[2]["state_reconstruction_fingerprint"]
+    )
+
+
+def _ffv1_policy(policy_path):
+    """Replace the fixture transport with a tiny real, lossless native stream."""
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    manifest_path = Path(policy["manifest"])
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    source = manifest["records"][0]
+    video = policy_path.parent / "checkpoint_ffv1.avi"
+    subprocess.run(
+        [
+            shutil.which("ffmpeg"),
+            "-v",
+            "error",
+            "-y",
+            "-i",
+            source["managed_path"],
+            "-c:v",
+            "ffv1",
+            str(video),
+        ],
+        check=True,
+        timeout=30,
+    )
+    source["managed_path"] = str(video)
+    source["source_sha256"] = hashlib.sha256(video.read_bytes()).hexdigest()
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    policy["manifest_sha256"] = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    policy["allowed_source_sha256s"] = [source["source_sha256"]]
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+
+
+def test_checkpoint_recovers_interrupted_ffv1_coarse_pass_and_replays_same_engine(
+    tmp_path, monkeypatch, native_case
+):
+    policy, config = native_case
+    _ffv1_policy(policy)
+    monkeypatch.setattr(module, "CHECKPOINT_FLUSH_POINTS", 2)
+    calls = 0
+    interrupt = False
+
+    class Pixels:
+        def __init__(self, path):
+            self.fingerprint, self.bindings = "a" * 64, {}
+
+        def inspect(self, image):
+            nonlocal calls
+            calls += 1
+            if interrupt and calls == 4:
+                raise RuntimeError("simulated interruption")
+            return {"signals": [], "context": {}, "raw": {}, "map_candidates": []}
+
+    kwargs = dict(
+        policy_path=policy,
+        source_id="registered-synthetic",
+        reader_config=config,
+        max_refinement_windows=0,
+        observer_factory=Pixels,
+        coarse_seconds=Fraction(1, 2),
+        dense_seconds=Fraction(1, 5),
+    )
+    fresh = module.run_match(**kwargs, output=tmp_path / "fresh")
+    fresh_rows = json.loads(
+        (tmp_path / "fresh" / "observations_PRIVATE.json").read_text(encoding="utf-8")
+    )
+    calls, interrupt = 0, True
+    checkpoint = tmp_path / "checkpoint_PRIVATE"
+    with pytest.raises(RuntimeError, match="simulated interruption"):
+        module.run_match(**kwargs, output=tmp_path / "interrupted", checkpoint_dir=checkpoint)
+    saved = json.loads((checkpoint / "coarse_PRIVATE.json").read_text(encoding="utf-8"))
+    assert saved["complete"] is False and len(saved["records"]) == 2
+    calls, interrupt = 0, False
+    resumed = module.run_match(**kwargs, output=tmp_path / "resumed", checkpoint_dir=checkpoint)
+    resumed_rows = json.loads(
+        (tmp_path / "resumed" / "observations_PRIVATE.json").read_text(encoding="utf-8")
+    )
+    assert resumed["checkpoint"]["reused_unique_native_points"] == 2
+    assert resumed["checkpoint"]["new_unique_native_points"] == 2
+    assert resumed["checkpoint"]["storage_bytes"] > 0
+    assert calls < fresh["observed_native_points"]
+    assert [
+        (r["sample"]["native_pts_tick"], r["sample"]["native_pixel_sha256"])
+        for r in resumed_rows["records"]
+    ] == [
+        (r["sample"]["native_pts_tick"], r["sample"]["native_pixel_sha256"])
+        for r in fresh_rows["records"]
+    ]
+    fresh_timeline = json.loads(
+        (tmp_path / "fresh" / "timeline_PRIVATE.json").read_text(encoding="utf-8")
+    )
+    resumed_timeline = json.loads(
+        (tmp_path / "resumed" / "timeline_PRIVATE.json").read_text(encoding="utf-8")
+    )
+    assert [r["round"]["value"] for r in fresh_timeline["frames"]] == [
+        r["round"]["value"] for r in resumed_timeline["frames"]
+    ]
+    assert resumed_timeline["qualified_facts"] == resumed_timeline["qualified_events"] == []
+
+
+def test_checkpoint_rejects_changed_settings_and_truncated_payload(tmp_path, native_case):
+    policy, config = native_case
+    _ffv1_policy(policy)
+
+    class Pixels:
+        def __init__(self, path):
+            self.fingerprint, self.bindings = "a" * 64, {}
+
+        def inspect(self, image):
+            return {"signals": [], "context": {}, "raw": {}, "map_candidates": []}
+
+    kwargs = dict(
+        policy_path=policy,
+        source_id="registered-synthetic",
+        reader_config=config,
+        max_refinement_windows=0,
+        observer_factory=Pixels,
+        checkpoint_dir=tmp_path / "checkpoint_PRIVATE",
+    )
+    module.run_match(**kwargs, output=tmp_path / "first")
+    with pytest.raises(ValueError, match="binding mismatch"):
+        module.run_match(**kwargs, output=tmp_path / "changed", report_view_bridge=True)
+    payload = tmp_path / "checkpoint_PRIVATE" / "coarse_PRIVATE.json"
+    payload.write_bytes(payload.read_bytes()[:-8])
+    with pytest.raises(ValueError, match="checksum mismatch"):
+        module.run_match(**kwargs, output=tmp_path / "truncated")
 
 
 class CompositePixels:
@@ -313,40 +451,64 @@ def test_audit_contrary_pixels_cannot_change_automatic_timeline(
 
     reference_run = tmp_path / "reference_grid"
     module.run_match(
-        policy_path=policy, source_id="registered-synthetic", reader_config=config,
-        output=reference_run, coarse_seconds=Fraction(1, 2),
-        max_refinement_windows=0, observer_factory=CurrentPixels,
+        policy_path=policy,
+        source_id="registered-synthetic",
+        reader_config=config,
+        output=reference_run,
+        coarse_seconds=Fraction(1, 2),
+        max_refinement_windows=0,
+        observer_factory=CurrentPixels,
     )
-    reference_archive = json.loads((reference_run / "observations_PRIVATE.json").read_text(
-        encoding="utf-8"))
+    reference_archive = json.loads(
+        (reference_run / "observations_PRIVATE.json").read_text(encoding="utf-8")
+    )
     reference = reference_archive["records"][1]["sample"]
     assert "death" in reference_archive["records"][1]["measurement"]["signals"]
     audit = tmp_path / "audit_reference.json"
-    audit.write_text(json.dumps({"schema": "development_native_audit_v1", "samples": [reference]}),
-                     encoding="utf-8")
+    audit.write_text(
+        json.dumps({"schema": "development_native_audit_v1", "samples": [reference]}),
+        encoding="utf-8",
+    )
     outputs = [tmp_path / "automatic", tmp_path / "with_audit"]
-    receipts = [module.run_match(
-        policy_path=policy, source_id="registered-synthetic", reader_config=config,
-        output=output, max_refinement_windows=0, observer_factory=CurrentPixels,
-        audit_sample_plan=audit if index else None,
-    ) for index, output in enumerate(outputs)]
-    timelines = [json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
-                 for output in outputs]
+    receipts = [
+        module.run_match(
+            policy_path=policy,
+            source_id="registered-synthetic",
+            reader_config=config,
+            output=output,
+            max_refinement_windows=0,
+            observer_factory=CurrentPixels,
+            audit_sample_plan=audit if index else None,
+        )
+        for index, output in enumerate(outputs)
+    ]
+    timelines = [
+        json.loads((output / "timeline_PRIVATE.json").read_text(encoding="utf-8"))
+        for output in outputs
+    ]
 
     def selected_frames(data):
-        return [(f["sample"]["native_pts_tick"], f["sample"]["native_pixel_sha256"],
-                 *(f[d]["value"] for d in ["round", "life", "camera"])) for f in data["frames"]]
+        return [
+            (
+                f["sample"]["native_pts_tick"],
+                f["sample"]["native_pixel_sha256"],
+                *(f[d]["value"] for d in ["round", "life", "camera"]),
+            )
+            for f in data["frames"]
+        ]
 
     assert selected_frames(timelines[0]) == selected_frames(timelines[1])
     assert len(timelines[1]["frames"]) == 2
     assert [t["kind"] for t in timelines[0]["transitions"]] == [
-        t["kind"] for t in timelines[1]["transitions"]]
+        t["kind"] for t in timelines[1]["transitions"]
+    ]
     assert receipts[1]["observed_native_points"] == 2
     assert receipts[1]["audit_only_native_points"] == 1
     assert receipts[1]["total_decoded_native_points"] == 3
     assert receipts[1]["native_audit"]["recognition_or_initialization_input"] is False
-    sidecar = json.loads((outputs[1] / "audit_observations_PRIVATE.json").read_text(
-        encoding="utf-8"))
+    sidecar = json.loads(
+        (outputs[1] / "audit_observations_PRIVATE.json").read_text(encoding="utf-8")
+    )
     assert len(sidecar["records"]) == 1
     assert "death" in sidecar["records"][0]["measurement"]["signals"]
     assert sidecar["records"][0]["sample"]["native_pts_tick"] == reference["native_pts_tick"]
@@ -568,16 +730,25 @@ def test_native_application_export_and_original_video_http(
     if hud_value_sidecar:
         from valorant_ai_coach.temporal.evidence import freeze_native_sample
         from valorant_ai_coach.temporal.game import observation
+
         sample = json.loads((acquisition / "timeline_PRIVATE.json").read_text(encoding="utf-8"))[
-            "frames"][0]["sample"]
+            "frames"
+        ][0]["sample"]
         sample = {k: v for k, v in sample.items() if k != "sample_sha256"}
         sample.update(acquisition_id="value-only", native_epoch="value-only")
         row = observation(
-            sample=freeze_native_sample(sample), producer="d" * 64, signals=[],
+            sample=freeze_native_sample(sample),
+            producer="d" * 64,
+            signals=[],
             context={"stream_kind": "hud_values"},
-            raw={"schema": "development_configured_hud_values_v1", "formal_outputs": 0,
-                 "ownership": "UNKNOWN", "hud_value_measurements": [
-                     {"name": "armor", "value": 25, "confidence": .95, "status": "CANDIDATE"}]},
+            raw={
+                "schema": "development_configured_hud_values_v1",
+                "formal_outputs": 0,
+                "ownership": "UNKNOWN",
+                "hud_value_measurements": [
+                    {"name": "armor", "value": 25, "confidence": 0.95, "status": "CANDIDATE"}
+                ],
+            },
         )
         sidecar = tmp_path / "HUD-values.json"
         sidecar.write_text(json.dumps({"observations": [row]}), encoding="utf-8")

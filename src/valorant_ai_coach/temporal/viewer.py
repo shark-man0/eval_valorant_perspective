@@ -55,6 +55,8 @@ padding:8px}
 <p id="playback" class="muted"></p>
 <h3>表示中のHUD候補（本人への帰属は未確定）</h3><pre id="hud"></pre>
 <h3>HUDの表示状況（ゲーム状態とは別の観測）</h3><pre id="visibility"></pre>
+<h3>視点対象・スキル構成の照合候補</h3><pre id="viewedIdentity"></pre>
+<h3>簡易Round境界候補</h3><pre id="visualRound"></pre>
 <h3>Map・Zone候補</h3><pre id="map"></pre>
 </section><section><h2>イベント候補</h2><div id="events"></div>
 <details><summary>状態・不確実性・native参照</summary><pre id="detail"></pre></details>
@@ -136,6 +138,16 @@ el('visibility').textContent=visibility?.analysis_present?
 (visibility.candidates.length?Array.from(new Set(visibility.candidates.map(c=>
 visibilityNames[c.kind]||c.kind))).join(' / '):'UNKNOWN（確認処理あり・対象表示を特定できず）')+
 '\n生死・視点・Roundの根拠には使用しません':'NOT_ANALYSED（表示状況の観測なし）';
+el('viewedIdentity').textContent=(row.viewed_identity_observations||[]).length?
+fmt(row.viewed_identity_observations.map(v=>({
+viewed_agent_candidates:(v.viewed_agent_candidates||[]).filter(c=>c.score>=.40),
+portrait_candidates:(v.portrait_candidate?.agent_candidates||[]).filter(c=>c.score>=.50),
+recorder_anchor_present:Boolean(v.recording_player_anchor),
+ability_relation:v.agent_signature_relation,report_display:v.report_display_change,
+reason:v.reason,evidence_refs:v.evidence_ids
+})))+'\n同じエージェントでも本人とは確定しません':'NOT_ANALYSED（複合視覚観測なし）';
+el('visualRound').textContent=(row.round_visual_candidates||[]).length?
+fmt(row.round_visual_candidates):'この秒に候補なし（境界不在の証明ではありません）';
 el('map').textContent='Map名: '+
 (map.map_name_candidates.length?fmt(map.map_name_candidates):'UNKNOWN')+
 '\n位置候補: '+map.position_candidates.length+' / 本人対応候補: '+

@@ -254,6 +254,7 @@ def build_application_timeline(
         ):
             event_bins[second].append(event_id)
     seconds: list[dict[str, Any]] = []
+    has_composite_views = any("viewed_identity" in f for f in timeline["frames"])
     for second in range(math.ceil(duration)):
         current = sorted(bins[second], key=lambda f: native_time(f["sample"]))
         refs = sorted({ref for f in current for ref in f["observation_ids"]})
@@ -319,6 +320,15 @@ def build_application_timeline(
             seconds[-1]["map_observations"]["provisional_recorder_position_hypotheses"] = _unique(
                 [h for m in maps for h in m.get("provisional_recorder_position_hypotheses", [])]
             )
+        if has_composite_views:
+            seconds[-1]["map_observations"]["marker_ranking_hypotheses"] = [
+                m["marker_ranking_hypotheses"] for m in maps
+                if "marker_ranking_hypotheses" in m
+            ]
+            seconds[-1]["viewed_identity_observations"] = [
+                {"sample_ref": f["sample"]["sample_sha256"], **f["viewed_identity"]}
+                for f in current if "viewed_identity" in f
+            ]
     result: dict[str, Any] = {
         "version": VERSION,
         "qualification": "development_only",
@@ -355,6 +365,10 @@ def build_application_timeline(
         attach_visibility(result, hud_visibility_observations)
     if zone_observations:
         attach_viewed_zones(result, zone_observations)
+    if has_composite_views:
+        from .round_visual import attach_round_visual_candidates
+
+        attach_round_visual_candidates(result)
     return result
 
 
@@ -556,11 +570,13 @@ def main() -> None:
         generate.add_argument("--" + name, type=Path, required=True)
     generate.add_argument("--source-id", required=True)
     generate.add_argument("--observer", help="Optional image-only supplier module:class")
+    generate.add_argument("--checkpoint-dir", type=Path,
+                          help="Opt-in exact-binding partial native observation reuse")
     generate.add_argument(
         "--reuse-acquisition", type=Path, help="Reuse a completed, hash-verified whole acquisition"
     )
     generate.add_argument("--max-refinement-windows", type=int, default=40)
-    generate.add_argument("--refinement-policy", choices=["chronological", "balanced"])
+    generate.add_argument("--refinement-policy", choices=["chronological", "balanced", "evidence"])
     generate.add_argument("--refinement-padding-seconds", type=Fraction)
     generate.add_argument("--report-view-bridge", action="store_true")
     generate.add_argument("--buy-clock-expiry", action="store_true")
@@ -584,6 +600,8 @@ def main() -> None:
             factory = getattr(importlib.import_module(module), name)
         acquisition = args.reuse_acquisition or args.output / "acquisition"
         if args.reuse_acquisition:
+            if args.checkpoint_dir is not None:
+                raise ValueError("Completed acquisition reuse and checkpoint reuse are separate")
             receipt = read_json(acquisition / "completion_PRIVATE.json")
             if receipt["source_id"] != args.source_id:
                 raise ValueError("Reused acquisition belongs to another Source")
@@ -621,6 +639,7 @@ def main() -> None:
                 raise ValueError("Reused acquisition does not contain ACTIVE clock bridge")
         else:
             run_match(
+                checkpoint_dir=args.checkpoint_dir,
                 policy_path=args.policy,
                 source_id=args.source_id,
                 reader_config=args.reader_config,

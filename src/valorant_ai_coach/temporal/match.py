@@ -29,6 +29,7 @@ import numpy as np
 from valorant_ai_coach.video.native import _sha256, decoded_source_ticks
 from valorant_ai_coach.video.service import _subprocess_environment
 
+from .checkpoint import ObservationCheckpoint
 from .evidence import digest, freeze_native_sample, is_sha, native_time
 from .game import DevelopmentGameTimeline, observation, round_number_summary
 from .match_observer import ProfileHudObserver
@@ -42,6 +43,9 @@ class PixelObserver(Protocol):
     bindings: dict[str, Any]
 
     def inspect(self, image: np.typing.NDArray[np.uint8]) -> dict[str, Any]: ...
+
+
+CHECKPOINT_FLUSH_POINTS = 120
 
 
 def _pts_expression(ticks: list[int]) -> str:
@@ -153,14 +157,18 @@ def refinement_windows(
     """Select from observed changes only; no known Round times or Source cases."""
     if type(padding) is not Fraction or not 0 <= padding <= 10:
         raise ValueError("Exact refinement padding between zero and ten seconds required")
-    if selection_policy not in {"chronological", "balanced"}:
+    if selection_policy not in {"chronological", "balanced", "evidence"}:
         raise ValueError("Known development refinement selection policy required")
     windows: list[tuple[Fraction, Fraction]] = []
     candidates: list[tuple[Fraction, Fraction, Fraction, int]] = []
     for before, after in zip(records, records[1:], strict=False):
         a, b = before["measurement"], after["measurement"]
         clocks = [v["context"].get("timer_seconds") for v in (a, b)]
-        changed = (
+        urgent = selection_policy == "evidence" and _unresolved_death_display(b) and (
+            not _unresolved_death_display(a)
+            or ("spectator" in b["signals"] and "spectator" not in a["signals"])
+        )
+        changed = urgent or (
             a["signals"] != b["signals"]
             or a["context"].get("score") != b["context"].get("score")
             or bool(a.get("map_candidates")) != bool(b.get("map_candidates"))
@@ -173,11 +181,37 @@ def refinement_windows(
             continue
         lower = max(origin, native_time(before["sample"]) - padding)
         upper = native_time(after["sample"]) + padding
-        candidates.append((lower, upper, native_time(after["sample"]), _change_priority(a, b)))
+        if urgent:
+            # Briefly inspect the report's appearance/settling and view switch.
+            # This is an acquisition priority, never a death assertion.
+            lower = max(origin, native_time(after["sample"]) - 2)
+            upper = native_time(after["sample"]) + 3
+        candidates.append((lower, upper, native_time(after["sample"]),
+                           6 if urgent else _change_priority(a, b)))
         if windows and lower <= windows[-1][1]:
             windows[-1] = windows[-1][0], max(upper, windows[-1][1])
         else:
             windows.append((lower, upper))
+    if selection_policy == "evidence":
+        urgent_candidates = [c for c in candidates if c[3] == 6]
+        # Spend at most half the bounded budget on unresolved report onsets;
+        # retain stratified coverage for Round/HUD and other changes.
+        reserved = min(len(urgent_candidates), (max_windows + 1)//2, int(max_total_seconds//6))
+        first = [(a, b) for a, b, _, _ in urgent_candidates[:reserved]]
+        spent = sum((b-a for a, b in first), Fraction(0))
+        rest, _ = _balanced_refinement(
+            [c for c in candidates if c[3] != 6], windows,
+            max_windows=max_windows-reserved, max_total_seconds=max_total_seconds-spent,
+            origin=origin, end=native_time(records[-1]["sample"]) if records else origin,
+            proposal_seconds=max(Fraction(6), padding*2+2))
+        chosen: list[tuple[Fraction, Fraction]] = []
+        for lower, upper in sorted(first+rest):
+            if chosen and lower <= chosen[-1][1]:
+                chosen[-1] = chosen[-1][0], max(upper, chosen[-1][1])
+            else:
+                chosen.append((lower, upper))
+        return chosen, sum(not any(a <= lo and hi <= b for a, b in chosen)
+                           for lo, hi in windows)
     if selection_policy == "balanced":
         return _balanced_refinement(
             candidates,
@@ -200,6 +234,14 @@ def refinement_windows(
         remaining -= end - lower
         deferred += int(end < upper)
     return chosen, deferred
+
+
+def _unresolved_death_display(measurement: dict[str, Any]) -> bool:
+    return any(
+        r.get("raw", {}).get("owned_verb_phrase")
+        and not r.get("context", {}).get("elimination_display_signature")
+        for r in measurement.get("supplier_observations", [measurement])
+    )
 
 
 def _change_priority(before: dict[str, Any], after: dict[str, Any]) -> int:
@@ -311,14 +353,18 @@ def run_match(
     buy_clock_tail: bool = False,
     current_hp_return_candidate: bool = False,
     current_menu_return_candidate: bool = False,
+    checkpoint_dir: Path | None = None,
 ) -> dict[str, Any]:
     began = time.perf_counter()
+    if checkpoint_dir is not None and retain_frames:
+        raise ValueError("Observation checkpoint reuse excludes retained-image output")
     implementation_sha = file_sha(Path(__file__))
     engine_sha = file_sha(Path(__file__).with_name("game.py"))
     map_role_sha = file_sha(Path(__file__).with_name("map_roles.py"))
+    checkpoint_implementation_sha = file_sha(Path(__file__).with_name("checkpoint.py"))
     if not 0 < dense_seconds < coarse_seconds <= 2 or max_refinement_windows < 0:
         raise ValueError("Bounded coarse/dense observation cadence required")
-    if refinement_selection_policy not in {"chronological", "balanced"}:
+    if refinement_selection_policy not in {"chronological", "balanced", "evidence"}:
         raise ValueError("Known development refinement selection policy required")
     if (
         type(refinement_padding_seconds) is not Fraction
@@ -347,6 +393,8 @@ def run_match(
     output = output.expanduser().resolve()
     if output.exists() or any((p / ".git").exists() for p in output.parents):
         raise ValueError("New private output directory outside Git required")
+    if checkpoint_dir is not None and retain_frames:
+        raise ValueError("Checkpoint reuse does not retain native PNG frames")
     policy_data = read_json(policy_path)
     policy = SourcePolicy(policy_data)
     candidates = [v for v in policy.allowed.values() if v["video_id"] == source_id]
@@ -437,9 +485,56 @@ def run_match(
     ):
         raise ValueError("Bound supplier fingerprints required")
     decoder_shas = {"ffmpeg": file_sha(Path(ffmpeg)), "ffprobe": file_sha(Path(ffprobe))}
-    epoch = uuid.uuid4().hex
+    checkpoint = (
+        None
+        if checkpoint_dir is None
+        else ObservationCheckpoint(
+            checkpoint_dir,
+            {
+                "source_id": source_id,
+                "source_sha256": source["source_sha256"],
+                "policy_sha256": file_sha(policy_path),
+                "reader_config_sha256": file_sha(reader_config),
+                "reader_fingerprint": observer.fingerprint,
+                "bindings_sha256": bindings_sha,
+                "implementation_sha256": implementation_sha,
+                "checkpoint_implementation_sha256": checkpoint_implementation_sha,
+                "engine_sha256": engine_sha,
+                "map_role_sha256": map_role_sha,
+                "decoder_sha256s": decoder_shas,
+                "stream": {
+                    "time_base": str(base),
+                    "width": stream["width"],
+                    "height": stream["height"],
+                    "duration": str(duration),
+                    "native_start": str(native_start),
+                },
+                "coarse_seconds": str(coarse_seconds),
+                "dense_seconds": str(dense_seconds),
+                "max_refinement_windows": max_refinement_windows,
+                "refinement_selection_policy": refinement_selection_policy,
+                "refinement_padding_seconds": str(refinement_padding_seconds),
+                "stop_after": stop_after,
+                "audit_plan_sha256": audit_plan_sha,
+                "engine_options": {
+                    "report_view_bridge": report_view_bridge,
+                    "buy_clock_expiry": buy_clock_expiry,
+                    "provisional_map_roles": provisional_map_roles,
+                    "active_clock_bridge": active_clock_bridge,
+                    "return_display_tail": return_display_tail,
+                    "buy_clock_tail": buy_clock_tail,
+                    "current_hp_return_candidate": current_hp_return_candidate,
+                    "current_menu_return_candidate": current_menu_return_candidate,
+                },
+            },
+        )
+    )
+    epoch = checkpoint.epoch if checkpoint is not None else uuid.uuid4().hex
     output.mkdir(parents=True, mode=0o700)
     records: dict[int, dict[str, Any]] = {}
+    reused_points = 0
+    fresh_points = 0
+    decoded_png_frames = 0
 
     def decode(
         lower: Fraction,
@@ -448,7 +543,54 @@ def run_match(
         name: str,
         expected: dict[int, list[dict[str, Any]]] | None = None,
     ) -> None:
+        nonlocal reused_points, fresh_points, decoded_png_frames
         tick_lower, tick_upper = math.ceil(lower / base), math.floor(upper / base)
+        request = {
+            "lower": str(lower),
+            "upper": str(upper),
+            "step": str(step),
+            "expected_ticks": sorted(expected) if expected is not None else None,
+        }
+        cached = checkpoint.load(name, request) if checkpoint is not None else None
+        cached_rows, complete = cached if cached is not None else ([], False)
+        prior_tick = None
+        for row in cached_rows:
+            if not isinstance(row, dict) or row.get("pass") != name:
+                raise ValueError("Invalid checkpoint row")
+            if not isinstance(row.get("sample"), dict):
+                raise ValueError("Invalid checkpoint sample")
+            sample = freeze_native_sample(row["sample"])
+            tick = sample["native_pts_tick"]
+            if (
+                sample["source_id"] != source_id
+                or sample["source_sha256"] != source["source_sha256"]
+                or sample["acquisition_id"] != epoch
+                or sample["native_epoch"] != epoch
+                or sample["native_time_base"] != str(base)
+                or sample["frame_size_px"] != [int(stream["width"]), int(stream["height"])]
+                or not tick_lower <= tick <= tick_upper
+                or (prior_tick is not None and tick <= prior_tick)
+                or not isinstance(row.get("measurement"), dict)
+            ):
+                raise ValueError("Checkpoint native sample mismatch")
+            prior_tick = tick
+            if tick in records:
+                if records[tick]["sample"]["native_pixel_sha256"] != sample["native_pixel_sha256"]:
+                    raise ValueError("Checkpoint repeated native pixel mismatch")
+            else:
+                records[tick] = row
+                reused_points += 1
+        if complete:
+            if expected is not None and [
+                r["sample"]["native_pts_tick"] for r in cached_rows
+            ] != sorted(expected):
+                raise ValueError("Checkpoint audit PTS mismatch")
+            return
+        if cached_rows:
+            # Include the last verified sample as the select cadence anchor.
+            # Its pixels must match before any new sample can be accepted.
+            tick_lower = cached_rows[-1]["sample"]["native_pts_tick"]
+            lower = tick_lower * base
         filters = (
             f"trim=end_pts={tick_upper + 1},select=between(pts\\,{tick_lower}\\,{tick_upper}),"
             f"select=isnan(prev_selected_pts)+gte(t-prev_selected_t\\,{float(step)}),"
@@ -490,6 +632,76 @@ def run_match(
         ]
         log_path = output / f"{name}_decode.log"
         pending: list[dict[str, Any]] = []
+        verified = 0
+        pass_rows = list(cached_rows)
+
+        def accept_verified(ticks: tuple[int, ...], *, finished: bool) -> None:
+            nonlocal verified, fresh_points
+            if len(ticks) < verified or len(ticks) > len(pending):
+                raise ValueError("Decoder output/native PTS correspondence failed")
+            if any(not tick_lower <= tick <= tick_upper for tick in ticks) or any(
+                b <= a for a, b in zip(ticks, ticks[1:], strict=False)
+            ):
+                raise ValueError("Decoder native PTS invalid")
+            if cached_rows and ticks and ticks[0] != cached_rows[-1]["sample"]["native_pts_tick"]:
+                raise ValueError("Checkpoint resume cadence anchor missing")
+            if finished and len(ticks) != len(pending):
+                raise ValueError("Decoder output/native PTS correspondence failed")
+            if (
+                expected is not None
+                and finished
+                and [r["sample"]["native_pts_tick"] for r in cached_rows[:-1]] + list(ticks)
+                != sorted(expected)
+            ):
+                raise ValueError("Audit native PTS missing or changed")
+            for tick, item in zip(ticks[verified:], pending[verified : len(ticks)], strict=True):
+                if expected is not None and any(
+                    s["native_pixel_sha256"] != item["pixel_sha"] for s in expected[tick]
+                ):
+                    raise ValueError("Audit native pixels changed")
+                if tick in records:
+                    if records[tick]["sample"]["native_pixel_sha256"] != item["pixel_sha"]:
+                        raise ValueError("Repeated decoding changed native pixels")
+                    if (
+                        cached_rows
+                        and tick == cached_rows[-1]["sample"]["native_pts_tick"]
+                        and records[tick]["sample"]["acquired_frame_sha256"] != item["encoded_sha"]
+                    ):
+                        raise ValueError("Checkpoint resume encoded frame changed")
+                else:
+                    sample = freeze_native_sample(
+                        {
+                            "source_id": source_id,
+                            "source_sha256": source["source_sha256"],
+                            "acquisition_id": epoch,
+                            "native_epoch": epoch,
+                            "native_pts_tick": tick,
+                            "native_time_base": str(base),
+                            "frame_size_px": [int(stream["width"]), int(stream["height"])],
+                            "acquired_frame_sha256": item["encoded_sha"],
+                            "native_pixel_sha256": item["pixel_sha"],
+                        }
+                    )
+                    records[tick] = {
+                        "sample": sample,
+                        "pass": name,
+                        "measurement": item["measurement"],
+                    }
+                    if "path" in item:
+                        records[tick]["path"] = item["path"]
+                    fresh_points += 1
+                if not (cached_rows and tick == cached_rows[-1]["sample"]["native_pts_tick"]):
+                    pass_rows.append(
+                        {
+                            "sample": records[tick]["sample"],
+                            "pass": name,
+                            "measurement": item["measurement"],
+                        }
+                    )
+            verified = len(ticks)
+            if checkpoint is not None and pass_rows:
+                checkpoint.save(name, request, pass_rows, complete=finished)
+
         with log_path.open("x", encoding="utf-8") as log:
             child = subprocess.Popen(
                 command, stdout=subprocess.PIPE, stderr=log, env=_subprocess_environment()
@@ -497,6 +709,7 @@ def run_match(
             assert child.stdout is not None
             try:
                 for encoded in png_frames(child.stdout):
+                    decoded_png_frames += 1
                     image = cv2.imdecode(np.frombuffer(encoded, dtype=np.uint8), cv2.IMREAD_COLOR)
                     if image is None or [image.shape[1], image.shape[0]] != [
                         int(stream["width"]),
@@ -520,6 +733,13 @@ def run_match(
                         path.chmod(0o600)
                         item["path"] = str(path)
                     pending.append(item)
+                    if checkpoint is not None and len(pending) % CHECKPOINT_FLUSH_POINTS == 0:
+                        observed_ticks = decoded_source_ticks(
+                            log_path.read_text(encoding="utf-8"), base
+                        )
+                        # stderr may still be writing the current showinfo line.
+                        if len(observed_ticks) >= len(pending):
+                            accept_verified(observed_ticks[: len(pending)], finished=False)
                     if len(pending) % 60 == 0:
                         print(
                             json.dumps(
@@ -539,38 +759,9 @@ def run_match(
                     child.kill()
                     child.wait(timeout=60)
         ticks = decoded_source_ticks(log_path.read_text(encoding="utf-8"), base)
-        if (
-            len(ticks) != len(pending)
-            or not ticks
-            or any(not tick_lower <= t <= tick_upper for t in ticks)
-            or any(b <= a for a, b in zip(ticks, ticks[1:], strict=False))
-        ):
+        if not ticks:
             raise ValueError("Decoder output/native PTS correspondence failed")
-        if expected is not None and list(ticks) != sorted(expected):
-            raise ValueError("Audit native PTS missing or changed")
-        for tick, item in zip(ticks, pending, strict=True):
-            if expected is not None and any(
-                s["native_pixel_sha256"] != item["pixel_sha"] for s in expected[tick]
-            ):
-                raise ValueError("Audit native pixels changed")
-            if tick in records:
-                if records[tick]["sample"]["native_pixel_sha256"] != item["pixel_sha"]:
-                    raise ValueError("Repeated decoding changed native pixels")
-                continue
-            sample = freeze_native_sample(
-                {
-                    "source_id": source_id,
-                    "source_sha256": source["source_sha256"],
-                    "acquisition_id": epoch,
-                    "native_epoch": epoch,
-                    "native_pts_tick": tick,
-                    "native_time_base": str(base),
-                    "frame_size_px": [int(stream["width"]), int(stream["height"])],
-                    "acquired_frame_sha256": item.pop("encoded_sha"),
-                    "native_pixel_sha256": item.pop("pixel_sha"),
-                }
-            )
-            records[tick] = {"sample": sample, "pass": name, **item}
+        accept_verified(ticks, finished=True)
 
     exclusive_end = native_start + limit - base
     decode(native_start, exclusive_end, coarse_seconds, "coarse")
@@ -618,6 +809,16 @@ def run_match(
         raise ValueError("Native audit plan changed during execution")
     if file_sha(Path(__file__)) != implementation_sha:
         raise ValueError("Acquisition implementation changed during execution")
+    if (
+        checkpoint is not None
+        and file_sha(Path(__file__).with_name("checkpoint.py")) != checkpoint_implementation_sha
+    ):
+        raise ValueError("Checkpoint implementation changed during execution")
+    if (
+        checkpoint is not None
+        and file_sha(reader_config) != checkpoint.manifest["binding"]["reader_config_sha256"]
+    ):
+        raise ValueError("Reader settings changed during execution")
     if (
         file_sha(Path(__file__).with_name("game.py")) != engine_sha
         or file_sha(Path(__file__).with_name("map_roles.py")) != map_role_sha
@@ -813,6 +1014,14 @@ def run_match(
         "observed_native_points": len(automatic_ticks),
         "audit_only_native_points": len(set(records) - automatic_ticks),
         "total_decoded_native_points": len(records),
+        "checkpoint": {
+            "enabled": checkpoint is not None,
+            "reused_unique_native_points": reused_points,
+            "new_unique_native_points": fresh_points,
+            "actual_decoded_png_frames": decoded_png_frames,
+            "storage_bytes": checkpoint.size_bytes() if checkpoint is not None else 0,
+            "replays_measurements_from_start": True,
+        },
         "refinement_windows": [[str(a), str(b)] for a, b in windows],
         "deferred_refinement_windows": deferred,
         "elapsed_seconds": time.perf_counter() - began,
@@ -855,11 +1064,13 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-refinement-windows", type=int, default=40)
     parser.add_argument(
-        "--refinement-policy", choices=["chronological", "balanced"], default="chronological"
+        "--refinement-policy", choices=["chronological", "balanced", "evidence"],
+        default="chronological"
     )
     parser.add_argument("--refinement-padding-seconds", type=Fraction, default=Fraction(1))
     parser.add_argument("--pilot-seconds", type=int)
     parser.add_argument("--retain-frames", action="store_true")
+    parser.add_argument("--checkpoint-dir", type=Path)
     parser.add_argument("--audit-sample-plan", type=Path)
     parser.add_argument("--report-view-bridge", action="store_true")
     parser.add_argument("--buy-clock-expiry", action="store_true")
@@ -889,6 +1100,7 @@ def main() -> None:
         buy_clock_tail=args.buy_clock_tail,
         current_hp_return_candidate=args.current_hp_return_candidate,
         current_menu_return_candidate=args.current_menu_return_candidate,
+        checkpoint_dir=args.checkpoint_dir,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 

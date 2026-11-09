@@ -1,0 +1,9 @@
+# Development native observation checkpoint
+
+`valorant_ai_coach.temporal.match --checkpoint-dir /private/path` enables an optional private checkpoint. Use a new output directory for every invocation and reuse the same checkpoint directory after interruption. The directory must be outside Git. Frame PNG retention is incompatible with this mode.
+
+The checkpoint stores pixel observer measurements and verified native sample identity. It flushes a verified PTS/pixel prefix every 120 decoded PNGs and after each completed decode pass. An interrupted pass resumes at the last stored native PTS. It decodes that anchor again, requires identical PNG and native pixels, and then continues the original sampling cadence. A completed pass skips decoding. The cache is never an engine state snapshot: all measurements are replayed in native PTS order through the same `DevelopmentGameTimeline` engine on every run. Audit-only observations remain outside automatic inference.
+
+The manifest binds the admitted DEVELOPMENT Source bytes, policy, reader configuration bytes and fingerprint/bindings, native stream geometry/time base, decoder binaries, acquisition and engine code, cadence/refinement settings, audit plan, and engine flags. Changed bindings, missing/truncated rows, checksum mismatch, and a changed resume anchor fail closed. Source bytes are checked before and after every run. The checkpoint retains only measured native samples; it does not claim intervening video continuity or recognition qualification.
+
+`completion_PRIVATE.json` reports unique reused/new samples, actual decoded PNG count, checkpoint storage bytes, elapsed time, and peak Python RSS. A hard kill may lose at most the currently unflushed prefix (normally fewer than 120 selected frames). If power loss interrupts the atomic manifest/pass replacement, the inconsistent cache is rejected; delete it and start a new checkpoint. Output and cache both contain private observation data.

@@ -172,6 +172,8 @@ def summary(result: dict[str, Any]) -> dict[str, Any]:
 
 
 def peak_rss_mib() -> float | None:
+    if sys.platform == "win32":
+        return None
     try:
         import resource
     except ImportError:
