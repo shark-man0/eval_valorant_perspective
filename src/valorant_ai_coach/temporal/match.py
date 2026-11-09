@@ -153,14 +153,18 @@ def refinement_windows(
     """Select from observed changes only; no known Round times or Source cases."""
     if type(padding) is not Fraction or not 0 <= padding <= 10:
         raise ValueError("Exact refinement padding between zero and ten seconds required")
-    if selection_policy not in {"chronological", "balanced"}:
+    if selection_policy not in {"chronological", "balanced", "evidence"}:
         raise ValueError("Known development refinement selection policy required")
     windows: list[tuple[Fraction, Fraction]] = []
     candidates: list[tuple[Fraction, Fraction, Fraction, int]] = []
     for before, after in zip(records, records[1:], strict=False):
         a, b = before["measurement"], after["measurement"]
         clocks = [v["context"].get("timer_seconds") for v in (a, b)]
-        changed = (
+        urgent = selection_policy == "evidence" and _unresolved_death_display(b) and (
+            not _unresolved_death_display(a)
+            or ("spectator" in b["signals"] and "spectator" not in a["signals"])
+        )
+        changed = urgent or (
             a["signals"] != b["signals"]
             or a["context"].get("score") != b["context"].get("score")
             or bool(a.get("map_candidates")) != bool(b.get("map_candidates"))
@@ -173,11 +177,37 @@ def refinement_windows(
             continue
         lower = max(origin, native_time(before["sample"]) - padding)
         upper = native_time(after["sample"]) + padding
-        candidates.append((lower, upper, native_time(after["sample"]), _change_priority(a, b)))
+        if urgent:
+            # Briefly inspect the report's appearance/settling and view switch.
+            # This is an acquisition priority, never a death assertion.
+            lower = max(origin, native_time(after["sample"]) - 2)
+            upper = native_time(after["sample"]) + 3
+        candidates.append((lower, upper, native_time(after["sample"]),
+                           6 if urgent else _change_priority(a, b)))
         if windows and lower <= windows[-1][1]:
             windows[-1] = windows[-1][0], max(upper, windows[-1][1])
         else:
             windows.append((lower, upper))
+    if selection_policy == "evidence":
+        urgent_candidates = [c for c in candidates if c[3] == 6]
+        # Spend at most half the bounded budget on unresolved report onsets;
+        # retain stratified coverage for Round/HUD and other changes.
+        reserved = min(len(urgent_candidates), (max_windows + 1)//2, int(max_total_seconds//6))
+        first = [(a, b) for a, b, _, _ in urgent_candidates[:reserved]]
+        spent = sum((b-a for a, b in first), Fraction(0))
+        rest, _ = _balanced_refinement(
+            [c for c in candidates if c[3] != 6], windows,
+            max_windows=max_windows-reserved, max_total_seconds=max_total_seconds-spent,
+            origin=origin, end=native_time(records[-1]["sample"]) if records else origin,
+            proposal_seconds=max(Fraction(6), padding*2+2))
+        chosen: list[tuple[Fraction, Fraction]] = []
+        for lower, upper in sorted(first+rest):
+            if chosen and lower <= chosen[-1][1]:
+                chosen[-1] = chosen[-1][0], max(upper, chosen[-1][1])
+            else:
+                chosen.append((lower, upper))
+        return chosen, sum(not any(a <= lo and hi <= b for a, b in chosen)
+                           for lo, hi in windows)
     if selection_policy == "balanced":
         return _balanced_refinement(
             candidates,
@@ -200,6 +230,14 @@ def refinement_windows(
         remaining -= end - lower
         deferred += int(end < upper)
     return chosen, deferred
+
+
+def _unresolved_death_display(measurement: dict[str, Any]) -> bool:
+    return any(
+        r.get("raw", {}).get("owned_verb_phrase")
+        and not r.get("context", {}).get("elimination_display_signature")
+        for r in measurement.get("supplier_observations", [measurement])
+    )
 
 
 def _change_priority(before: dict[str, Any], after: dict[str, Any]) -> int:
@@ -318,7 +356,7 @@ def run_match(
     map_role_sha = file_sha(Path(__file__).with_name("map_roles.py"))
     if not 0 < dense_seconds < coarse_seconds <= 2 or max_refinement_windows < 0:
         raise ValueError("Bounded coarse/dense observation cadence required")
-    if refinement_selection_policy not in {"chronological", "balanced"}:
+    if refinement_selection_policy not in {"chronological", "balanced", "evidence"}:
         raise ValueError("Known development refinement selection policy required")
     if (
         type(refinement_padding_seconds) is not Fraction
@@ -855,7 +893,8 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-refinement-windows", type=int, default=40)
     parser.add_argument(
-        "--refinement-policy", choices=["chronological", "balanced"], default="chronological"
+        "--refinement-policy", choices=["chronological", "balanced", "evidence"],
+        default="chronological"
     )
     parser.add_argument("--refinement-padding-seconds", type=Fraction, default=Fraction(1))
     parser.add_argument("--pilot-seconds", type=int)

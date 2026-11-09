@@ -254,6 +254,7 @@ def build_application_timeline(
         ):
             event_bins[second].append(event_id)
     seconds: list[dict[str, Any]] = []
+    has_composite_views = any("viewed_identity" in f for f in timeline["frames"])
     for second in range(math.ceil(duration)):
         current = sorted(bins[second], key=lambda f: native_time(f["sample"]))
         refs = sorted({ref for f in current for ref in f["observation_ids"]})
@@ -319,6 +320,11 @@ def build_application_timeline(
             seconds[-1]["map_observations"]["provisional_recorder_position_hypotheses"] = _unique(
                 [h for m in maps for h in m.get("provisional_recorder_position_hypotheses", [])]
             )
+        if has_composite_views:
+            seconds[-1]["viewed_identity_observations"] = [
+                {"sample_ref": f["sample"]["sample_sha256"], **f["viewed_identity"]}
+                for f in current if "viewed_identity" in f
+            ]
     result: dict[str, Any] = {
         "version": VERSION,
         "qualification": "development_only",
@@ -560,7 +566,7 @@ def main() -> None:
         "--reuse-acquisition", type=Path, help="Reuse a completed, hash-verified whole acquisition"
     )
     generate.add_argument("--max-refinement-windows", type=int, default=40)
-    generate.add_argument("--refinement-policy", choices=["chronological", "balanced"])
+    generate.add_argument("--refinement-policy", choices=["chronological", "balanced", "evidence"])
     generate.add_argument("--refinement-padding-seconds", type=Fraction)
     generate.add_argument("--report-view-bridge", action="store_true")
     generate.add_argument("--buy-clock-expiry", action="store_true")

@@ -1168,6 +1168,11 @@ class DevelopmentGameTimeline:
                 state["map"]["provisional_recorder_position_hypotheses"] = provisional_map_roles(
                     state, rows
                 )
+        if any(r["raw"].get("schema") == "development_composite_view_pixels_v1"
+               for r in self._observations.values()):
+            from .composite_view import attach_composite_views
+
+            attach_composite_views(states, self._observations)
         acquisition_seconds = self._seconds(states)
         result: dict[str, Any] = {
             "version": VERSION,
