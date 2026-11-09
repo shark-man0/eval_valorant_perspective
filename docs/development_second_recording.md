@@ -107,3 +107,27 @@ See `development_view_reranker.md` for the non-adopted learning experiment.
 
 All changes remain development opt-ins. Main integration, Production adoption,
 qualification and evaluation-contract changes require separate review.
+
+## Interrupted first attempts
+
+A started marker or stale lock is not proof that a process stopped. Check the
+actual worker/decoder process before recovery. Preserve the original output
+directory, start marker, pilot prediction, logs and their hashes; do not delete
+markers to make `second_validation run` accept another "first" attempt.
+
+If the initial full process was interrupted before writing a complete prediction,
+record that explicitly. A separately named recovery may reuse the same admitted
+Source, frozen code, observer, settings and pilot review. Use the existing
+`temporal.application generate` API/CLI with the explicit expanded observer and
+all frozen feature/sampling flags in a new private directory. Keep a separate
+exposure/recovery receipt binding the unchanged protocol and original partial
+artifacts. A recovered result is not an uninterrupted pristine first full
+prediction. Do not describe a missing initial full prediction as preserved or
+complete. The first pilot prediction and available partial output remain intact.
+
+The viewer separates an analysed pilot window from the original recording's
+length. This changes display metadata only. Generic Map field-limit descriptions
+also report the configured pixel reader without implying that map-name alignment
+succeeded. Diagnostic learning neighbors use the complete native Source scope,
+including acquisition, epoch, timebase and dimensions; malformed numeric
+confidence is excluded. These diagnostics remain unapplied to game state.

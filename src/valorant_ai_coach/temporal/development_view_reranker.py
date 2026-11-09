@@ -30,7 +30,11 @@ def _signed_margin(raw: dict[str, Any], name: str) -> float:
     if not isinstance(item, dict):
         return 0.0
     value, margin = item.get("raw"), item.get("margin")
-    if not isinstance(margin, (int, float)) or not math.isfinite(margin):
+    if (
+        not isinstance(margin, (int, float))
+        or isinstance(margin, bool)
+        or not math.isfinite(margin)
+    ):
         return 0.0
     sign = 1.0 if value == "SELF" else -1.0 if value == "SPECTATOR" else 0.0
     return sign * min(max(float(margin), 0.0), 1.0)
@@ -52,9 +56,11 @@ def margin_features(
         _signed_margin(raw, "centroid"),
         _signed_margin(raw, "three_prototypes"),
         sum(_signed_margin(item, "centroid") for item in neighbors) / len(neighbors)
-        if neighbors else 0.0,
+        if neighbors
+        else 0.0,
         sum(_signed_margin(item, "three_prototypes") for item in neighbors) / len(neighbors)
-        if neighbors else 0.0,
+        if neighbors
+        else 0.0,
         len(neighbors) / 2.0,
     )
 
@@ -69,8 +75,9 @@ def _credible_hp(raw: dict[str, Any]) -> int | None:
         or not value.isascii()
         or not value.isdigit()
         or not isinstance(confidence, (int, float))
+        or isinstance(confidence, bool)
         or not math.isfinite(confidence)
-        or confidence < 0.9
+        or not 0.9 <= confidence <= 1
     ):
         return None
     parsed = int(value)
@@ -97,7 +104,8 @@ def temporal_hp_correspondence(
         "current_hp_measured": current is not None,
         "measured_neighbor_count": sum(value is not None for value in measured),
         "matching_neighbor_count": sum(value == current for value in measured if value is not None)
-        if current is not None else 0,
+        if current is not None
+        else 0,
         "diagnostic_only": True,
         "formal_authority": False,
     }
@@ -114,19 +122,11 @@ def limited_current_ui_pseudo_label(observation: dict[str, Any]) -> int | None:
         return None
     raw = observation.get("raw", {})
     signals = set(observation.get("signals", []))
-    hp = raw.get("view_hp")
     if (
         "owner_hud" in signals
         and raw.get("current_HUD_component_supported") is True
         and raw.get("owner_hypothesis_exclusions") == []
-        and isinstance(hp, dict)
-        and isinstance(hp.get("display"), str)
-        and hp["display"].isascii()
-        and hp["display"].isdigit()
-        and 1 <= int(hp["display"]) <= 150
-        and isinstance(hp.get("confidence"), (int, float))
-        and math.isfinite(hp["confidence"])
-        and hp["confidence"] >= 0.9
+        and _credible_hp(raw) is not None
     ):
         return 1
     if {"recorder_elimination_display", "spectator"} <= signals:

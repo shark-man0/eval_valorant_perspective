@@ -48,6 +48,7 @@ def test_map_names_zones_and_pool_survive_without_recorder_promotion():
     current = app["seconds"][0]["map_observations"]
     assert current["map_name_candidates"][0]["map_id"] == "synthetic"
     assert current["zone_candidates"][0]["zone_id_candidate"] == "a"
+    assert "Generic pixel reader" in app["field_limits"]["map_name"]
     assert current["continuous_path"] is None
     assert timeline["qualified_facts"] == timeline["qualified_events"] == []
 

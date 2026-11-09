@@ -341,7 +341,10 @@ def build_application_timeline(
         "native_frames": frames,
         "revision_history": timeline["revision_history"],
         "field_limits": {
-            "map_name": "No current generic reader",
+            "map_name": "Generic pixel reader; bundled registry alignment candidates only"
+            if any(r["raw"].get("schema") == "development_generic_map_pixels_v1"
+                   for r in observations.values())
+            else "No current generic reader",
             "movement": "Not inferred",
             "unsupported_HUD": "UNKNOWN; raw supplier output retained",
         },

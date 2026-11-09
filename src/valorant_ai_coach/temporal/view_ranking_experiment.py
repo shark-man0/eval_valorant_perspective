@@ -16,7 +16,7 @@ from .development_view_reranker import (
     margin_features,
     temporal_hp_correspondence,
 )
-from .evidence import native_time
+from .evidence import native_time, source_scope
 from .replay import file_sha, read_json, write_private
 
 
@@ -40,11 +40,11 @@ def run(manifest: Path, output: Path) -> dict[str, Any]:
             r["sample"]["sample_sha256"]
             for r in timeline.get("return_display_tail_projection_history", [])
         }
-        groups: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+        groups: dict[tuple[str, ...], list[dict[str, Any]]] = defaultdict(list)
         for row in timeline["observations"]:
             if row["context"].get("unqualified_view_model") is True:
                 sample = row["sample"]
-                groups[(sample["source_sha256"], sample["native_epoch"])].append(row)
+                groups[source_scope(sample)].append(row)
         for rows in groups.values():
             rows.sort(key=lambda r: (native_time(r["sample"]), r["observation_id"]))
             for index, row in enumerate(rows):

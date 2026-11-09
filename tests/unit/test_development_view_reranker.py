@@ -82,7 +82,8 @@ def test_pseudo_model_enforces_match_split_and_only_scores() -> None:
         examples, train_matches={"train-a", "train-b"}, heldout_matches={"heldout"}
     )
     changed_heldout = [
-        *examples[:-1], PseudoExample("heldout", margin_features(_raw("SPECTATOR", 0.9)), 0)
+        *examples[:-1],
+        PseudoExample("heldout", margin_features(_raw("SPECTATOR", 0.9)), 0),
     ]
     unchanged = fit_pseudo_view_reranker(
         changed_heldout, train_matches={"train-a", "train-b"}, heldout_matches={"heldout"}
@@ -94,3 +95,18 @@ def test_pseudo_model_enforces_match_split_and_only_scores() -> None:
     assert positive["score"] > negative["score"]
     assert positive["diagnostic_only"] is True
     assert positive["formal_authority"] is False
+
+
+@pytest.mark.parametrize("confidence", [True, float("nan"), float("inf"), 1.1, -0.1])
+def test_invalid_confidence_cannot_supply_positive_pseudo_truth(confidence) -> None:
+    raw = _raw("SELF", 0.5, "100")
+    raw["view_hp"]["confidence"] = confidence
+    observation = {
+        "context": {"unqualified_view_model": True},
+        "raw": raw,
+        "signals": ["owner_hud"],
+    }
+    assert limited_current_ui_pseudo_label(observation) is None
+    assert temporal_hp_correspondence(raw, following=raw)["repeated_current_hp"] is False
+    raw["classifiers"]["centroid"]["margin"] = True
+    assert margin_features(raw)[0] == 0
