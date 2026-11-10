@@ -242,7 +242,7 @@ def _attach_map_view(frame: dict[str, Any], rows: list[dict[str, Any]]) -> None:
             "temporal_path_eligible": False, "qualified": False,
         })
     frame["map"]["research_view_position_hypotheses"] = hypotheses
-    from .map_correspondence import associate_generic_map
+    from .map_camera_bridge import associate_generic_map
 
     frame["map"]["research_map_correspondence_hypotheses"] = associate_generic_map(
         frame, rows, ranking, pool

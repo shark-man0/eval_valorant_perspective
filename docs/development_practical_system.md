@@ -104,7 +104,7 @@ The deterministic evaluation package remains empty
 of qualified Facts/Events while the development consumer uses state/candidate data.
 
 
-## Generic Map correspondence (research only)
+## Generic Map/Camera bridge (research only)
 
 The context ranker keeps the first 64 ordered native candidates instead of
 truncating at 10. Existing scores/Top-1/Top-5 ordering do not change. The

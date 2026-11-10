@@ -6,7 +6,7 @@ from tests.unit.test_composite_view import cue, visual
 from tests.unit.test_shared_game_timeline import obs
 from valorant_ai_coach.temporal.application import build_application_timeline
 from valorant_ai_coach.temporal.game import DevelopmentGameTimeline, observation
-from valorant_ai_coach.temporal.map_correspondence import associate_generic_map
+from valorant_ai_coach.temporal.map_camera_bridge import associate_generic_map
 from valorant_ai_coach.temporal.visual_state import _attach_map_view
 
 
