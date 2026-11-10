@@ -12,6 +12,7 @@ import importlib
 import json
 import math
 from collections import defaultdict
+from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -321,6 +322,9 @@ def build_application_timeline(
                 [h for m in maps for h in m.get("provisional_recorder_position_hypotheses", [])]
             )
         if has_composite_views:
+            seconds[-1]["map_observations"]["research_view_position_hypotheses"] = [
+                h for m in maps for h in m.get("research_view_position_hypotheses", [])
+            ]
             seconds[-1]["map_observations"]["marker_ranking_hypotheses"] = [
                 m["marker_ranking_hypotheses"] for m in maps
                 if "marker_ranking_hypotheses" in m
@@ -369,6 +373,10 @@ def build_application_timeline(
         from .round_visual import attach_round_visual_candidates
 
         attach_round_visual_candidates(result)
+    if "superseded_transition_candidates" in timeline:
+        result["superseded_transition_candidates"] = deepcopy(
+            timeline["superseded_transition_candidates"]
+        )
     return result
 
 
@@ -388,6 +396,7 @@ def export_application(
     buy_clock_tail: bool = False,
     current_hp_return_candidate: bool = False,
     current_menu_return_candidate: bool = False,
+    practical_visual_state: bool = False,
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
@@ -401,6 +410,7 @@ def export_application(
             buy_clock_tail,
             current_hp_return_candidate,
             current_menu_return_candidate,
+            practical_visual_state,
         )
     ):
         raise ValueError("Explicit development Map/clock booleans required")
@@ -443,6 +453,7 @@ def export_application(
         or buy_clock_tail
         or current_hp_return_candidate
         or current_menu_return_candidate
+        or practical_visual_state
     ):
         config = timeline["configuration"]
         engine = DevelopmentGameTimeline(
@@ -461,6 +472,8 @@ def export_application(
             or bool(config.get("current_hp_return_candidate")),
             current_menu_return_candidate=current_menu_return_candidate
             or bool(config.get("current_menu_return_candidate")),
+            practical_visual_state=practical_visual_state
+            or bool(config.get("practical_visual_state")),
         )
         for row in timeline["observations"] + extra:
             engine.add(row)
@@ -541,6 +554,7 @@ def export_application(
         "buy_clock_tail_requested_for_export": buy_clock_tail,
         "current_hp_return_candidate_requested_for_export": current_hp_return_candidate,
         "current_menu_return_candidate_requested_for_export": current_menu_return_candidate,
+        "practical_visual_state_requested_for_export": practical_visual_state,
         "export_engine_configuration": timeline["configuration"],
         "output_sha256s": {p.name: file_sha(p) for p in output.iterdir()},
         "formal_outputs": 0,
@@ -565,6 +579,7 @@ def main() -> None:
     export.add_argument("--buy-clock-tail", action="store_true")
     export.add_argument("--current-hp-return-candidate", action="store_true")
     export.add_argument("--current-menu-return-candidate", action="store_true")
+    export.add_argument("--practical-visual-state", action="store_true")
     generate = sub.add_parser("generate")
     for name in ("policy", "reader-config", "output"):
         generate.add_argument("--" + name, type=Path, required=True)
@@ -576,6 +591,10 @@ def main() -> None:
         "--reuse-acquisition", type=Path, help="Reuse a completed, hash-verified whole acquisition"
     )
     generate.add_argument("--max-refinement-windows", type=int, default=40)
+    generate.add_argument("--coarse-seconds", type=Fraction)
+    generate.add_argument("--dense-seconds", type=Fraction)
+    generate.add_argument("--max-refinement-seconds", type=Fraction)
+    generate.add_argument("--full-density", action="store_true")
     generate.add_argument("--refinement-policy", choices=["chronological", "balanced", "evidence"])
     generate.add_argument("--refinement-padding-seconds", type=Fraction)
     generate.add_argument("--report-view-bridge", action="store_true")
@@ -586,6 +605,7 @@ def main() -> None:
     generate.add_argument("--buy-clock-tail", action="store_true")
     generate.add_argument("--current-hp-return-candidate", action="store_true")
     generate.add_argument("--current-menu-return-candidate", action="store_true")
+    generate.add_argument("--practical-visual-state", action="store_true")
     generate.add_argument("--hud-values", type=Path, action="append", default=[])
     generate.add_argument("--hud-visibility", type=Path, action="append", default=[])
     generate.add_argument("--zone-observations", type=Path, action="append", default=[])
@@ -606,6 +626,12 @@ def main() -> None:
             if receipt["source_id"] != args.source_id:
                 raise ValueError("Reused acquisition belongs to another Source")
             sampling = receipt.get("sampling", {})
+            if args.full_density and not sampling.get("full_density"):
+                raise ValueError("Reused acquisition is not full-density")
+            for field in ("coarse_seconds", "dense_seconds", "max_refinement_seconds"):
+                requested = getattr(args, field)
+                if requested is not None and Fraction(str(sampling.get(field))) != requested:
+                    raise ValueError("Reused acquisition has different " + field)
             if (
                 args.refinement_padding_seconds is not None
                 and Fraction(sampling.get("refinement_padding_seconds", "1"))
@@ -646,6 +672,15 @@ def main() -> None:
                 output=acquisition,
                 observer_factory=factory,
                 max_refinement_windows=args.max_refinement_windows,
+                coarse_seconds=(args.coarse_seconds
+                                if args.coarse_seconds is not None else Fraction(1)),
+                dense_seconds=(args.dense_seconds
+                               if args.dense_seconds is not None else Fraction(1, 5)),
+                max_refinement_seconds=(
+                    args.max_refinement_seconds
+                    if args.max_refinement_seconds is not None else Fraction(240)
+                ),
+                full_density=args.full_density,
                 refinement_selection_policy=args.refinement_policy or "chronological",
                 refinement_padding_seconds=(
                     args.refinement_padding_seconds
@@ -660,12 +695,14 @@ def main() -> None:
                 buy_clock_tail=args.buy_clock_tail,
                 current_hp_return_candidate=args.current_hp_return_candidate,
                 current_menu_return_candidate=args.current_menu_return_candidate,
+                practical_visual_state=args.practical_visual_state,
             )
         result = export_application(
             timeline_path=acquisition / "timeline_PRIVATE.json",
             receipt_path=acquisition / "completion_PRIVATE.json",
             policy_path=args.policy,
             output=args.output / "application",
+            practical_visual_state=args.practical_visual_state,
             hud_values=args.hud_values,
             hud_visibility=args.hud_visibility,
             zone_observations=args.zone_observations,
@@ -676,6 +713,8 @@ def main() -> None:
             receipt_path=args.receipt,
             policy_path=args.policy,
             output=args.output,
+            practical_visual_state=args.practical_visual_state,
+            current_menu_return_candidate=args.current_menu_return_candidate,
             supplements=args.supplement,
             provisional_map_roles=args.provisional_map_roles,
             active_clock_bridge=args.active_clock_bridge,

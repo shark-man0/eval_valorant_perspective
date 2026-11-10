@@ -57,7 +57,13 @@ def classify_words(words: list[dict[str, Any]], ui: dict[str, Any]) -> dict[str,
 class HUDVisibilityReader:
     """Fixed center/header ROI and existing OCR languages; no Source/time inputs."""
 
-    def __init__(self, tessdata: Path, *, language: str = "jpn+eng") -> None:
+    def __init__(
+        self, tessdata: Path, *, language: str = "jpn+eng",
+        normalized_roi: tuple[float, float, float, float] = (.12, .08, .90, .46),
+    ) -> None:
+        x1, y1, x2, y2 = normalized_roi
+        if not (0 <= x1 < x2 <= 1 and 0 <= y1 < y2 <= 1):
+            raise ValueError("Normalized visible OCR region required")
         self.reader = TesseractTextReader(language=language, tessdata_dir=str(tessdata), psm=11)
         if self.reader.diagnostics or self.reader.executable is None:
             raise ValueError("Available configured UI OCR languages required")
@@ -68,7 +74,7 @@ class HUDVisibilityReader:
                          "languages": language, "language_assets_sha256": assets,
                          "code_sha256": file_sha(Path(__file__)),
                          "text_reader_code_sha256": file_sha(Path(text_templates.__file__)),
-                         "normalized_roi": [.12, .08, .90, .46], "word_floor": .85,
+                         "normalized_roi": list(normalized_roi), "word_floor": .85,
                          "Source_time_roster_initialization_inputs": False}
         self.fingerprint = digest(self.bindings)
 

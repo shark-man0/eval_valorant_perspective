@@ -152,8 +152,11 @@ el('map').textContent='Map名: '+
 (map.map_name_candidates.length?fmt(map.map_name_candidates):'UNKNOWN')+
 '\n位置候補: '+map.position_candidates.length+' / 本人対応候補: '+
 map.current_self_position_candidates.length+'\n研究用本人位置仮説（本人未確定）: '+
-(map.provisional_recorder_position_hypotheses||[]).length+'\nZone候補: '+map.zone_candidates.length+
-' '+Array.from(new Set(map.zone_candidates.map(c=>c.label_text||c.zone||'?'))).join(' / ')+
+(map.provisional_recorder_position_hypotheses||[]).length+
+'\n現在視点の位置仮説（本人未確定）: '+(map.research_view_position_hypotheses||[]).length+
+'\nZone候補: '+map.zone_candidates.length+
+' '+Array.from(new Set(map.zone_candidates.map(c=>
+c.label_text||c.zone_name||c.zone||'?'))).join(' / ')+
 '\n座標候補（未対応は画像座標）: '+fmt(map.position_candidates.slice(0,12).map(c=>
 c.map_position_norm||c.center_frame_px||'UNKNOWN'))+
 '\n同appearance代替があるnative仮説: '+(map.correspondence_reviews||[]).filter(

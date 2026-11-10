@@ -11,6 +11,7 @@ from collections import defaultdict
 from copy import deepcopy
 from enum import StrEnum
 from fractions import Fraction
+from pathlib import Path
 from typing import Any, Literal, NotRequired, TypedDict
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
@@ -312,6 +313,7 @@ class DevelopmentGameTimeline:
         current_hp_return_candidate: bool = False,
         current_menu_return_candidate: bool = False,
         buy_clock_tail: bool = False,
+        practical_visual_state: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -356,6 +358,9 @@ class DevelopmentGameTimeline:
         if type(buy_clock_tail) is not bool or (forward_only and buy_clock_tail):
             raise ValueError("BUY clock tail requires explicit offline mode")
         self.buy_clock_tail = buy_clock_tail
+        if type(practical_visual_state) is not bool:
+            raise ValueError("Explicit practical visual state mode required")
+        self.practical_visual_state = practical_visual_state
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -1173,6 +1178,27 @@ class DevelopmentGameTimeline:
             from .composite_view import attach_composite_views
 
             attach_composite_views(states, self._observations)
+        visual_history: list[dict[str, Any]] = []
+        superseded_transitions: list[dict[str, Any]] = []
+        if self.practical_visual_state:
+            from .visual_state import (
+                apply_visual_state,
+                merge_visual_events,
+                reconcile_visual_transitions,
+            )
+
+            visual_history, visual_events = apply_visual_state(
+                states, self._observations, _estimate
+            )
+            superseded_transitions = reconcile_visual_transitions(transitions, states)
+            merge_visual_events(transitions, visual_events)
+            for state in states:
+                rows = [self._observations[i] for i in state["observation_ids"]]
+                state["round_number"] = _round_number(state, rows)
+                if self.provisional_map_roles:
+                    state["map"]["provisional_recorder_position_hypotheses"] = (
+                        provisional_map_roles(state, rows)
+                    )
         acquisition_seconds = self._seconds(states)
         result: dict[str, Any] = {
             "version": VERSION,
@@ -1194,6 +1220,17 @@ class DevelopmentGameTimeline:
                 forward_only=self.forward_only,
                 mark_round_transition_gaps=self.mark_round_transition_gaps,
             )
+        if self.practical_visual_state:
+            from .replay import file_sha
+
+            result["configuration"]["practical_visual_state"] = (
+                "development_practical_visual_state_v1"
+            )
+            result["configuration"]["practical_visual_rule_sha256"] = file_sha(
+                Path(__file__).with_name("visual_state.py")
+            )
+            result["visual_state_projection_history"] = visual_history
+            result["superseded_transition_candidates"] = superseded_transitions
         if round_projections:
             result["round_model_projection_history"] = round_projections
         if self.buy_clock_expiry:
