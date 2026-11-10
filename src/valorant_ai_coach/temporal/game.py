@@ -1229,6 +1229,9 @@ class DevelopmentGameTimeline:
             result["configuration"]["practical_visual_rule_sha256"] = file_sha(
                 Path(__file__).with_name("visual_state.py")
             )
+            result["configuration"]["map_correspondence_rule_sha256"] = file_sha(
+                Path(__file__).with_name("map_correspondence.py")
+            )
             result["visual_state_projection_history"] = visual_history
             result["superseded_transition_candidates"] = superseded_transitions
         if round_projections:

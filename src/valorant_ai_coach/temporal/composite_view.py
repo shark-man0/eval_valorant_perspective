@@ -477,7 +477,7 @@ class CompositeViewObserver:
             if len(mapped) == 1:
                 raw["marker_context_rankings"] = rank_marker_context(
                     image, mapped[0]["map_candidates"]
-                )[:10]
+                )[:64]
                 raw["marker_candidate_supplier"] = mapped[0]["producer_fingerprint"]
         suppliers.append(
             {
