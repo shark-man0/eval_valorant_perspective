@@ -355,6 +355,7 @@ def run_match(
     buy_clock_tail: bool = False,
     current_hp_return_candidate: bool = False,
     current_menu_return_candidate: bool = False,
+    practical_visual_state: bool = False,
     checkpoint_dir: Path | None = None,
 ) -> dict[str, Any]:
     began = time.perf_counter()
@@ -390,6 +391,7 @@ def run_match(
             buy_clock_tail,
             current_hp_return_candidate,
             current_menu_return_candidate,
+            practical_visual_state,
         )
     ):
         raise ValueError("Explicit development ACTIVE clock bridge boolean required")
@@ -534,6 +536,7 @@ def run_match(
                     "buy_clock_tail": buy_clock_tail,
                     "current_hp_return_candidate": current_hp_return_candidate,
                     "current_menu_return_candidate": current_menu_return_candidate,
+                    "practical_visual_state": practical_visual_state,
                 },
             },
         )
@@ -854,6 +857,7 @@ def run_match(
         buy_clock_tail=buy_clock_tail,
         current_hp_return_candidate=current_hp_return_candidate,
         current_menu_return_candidate=current_menu_return_candidate,
+        practical_visual_state=practical_visual_state,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
@@ -866,6 +870,7 @@ def run_match(
             buy_clock_tail=buy_clock_tail,
             current_hp_return_candidate=current_hp_return_candidate,
             current_menu_return_candidate=current_menu_return_candidate,
+            practical_visual_state=practical_visual_state,
         )
         if baseline_producers
         else None
@@ -1102,6 +1107,7 @@ def main() -> None:
     parser.add_argument("--buy-clock-tail", action="store_true")
     parser.add_argument("--current-hp-return-candidate", action="store_true")
     parser.add_argument("--current-menu-return-candidate", action="store_true")
+    parser.add_argument("--practical-visual-state", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -1126,6 +1132,7 @@ def main() -> None:
         buy_clock_tail=args.buy_clock_tail,
         current_hp_return_candidate=args.current_hp_return_candidate,
         current_menu_return_candidate=args.current_menu_return_candidate,
+        practical_visual_state=args.practical_visual_state,
         checkpoint_dir=args.checkpoint_dir,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)

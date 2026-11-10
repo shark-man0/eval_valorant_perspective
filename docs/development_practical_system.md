@@ -28,3 +28,27 @@ coarse pixel measurements and the existing adaptive selector. This comparison
 holds the recognizer and native pixel grid fixed while changing available input
 density. Dense-grid phase can differ from a separately decoded adaptive pass;
 report this distinction and retain historical actual-acquisition results.
+
+`--practical-visual-state` connects existing composite-view and Round visual
+observations to the shared engine's research estimates. Each revision retains
+the previous estimate, competing hypotheses and native evidence. A current HUD
+component plus a prior recorder signature can support SELF/ALIVE; an agent name
+alone cannot. Remote, downed, death and spectator evidence veto self promotion.
+The default recognition path and formal qualification gates remain unchanged.
+
+The optional image-only `valorant_ai_coach.temporal.screen_cues:ScreenCueObserver`
+wraps a configured parent using `parent_observer`, `parent_config` and `tessdata`
+JSON keys. Local OCR reads purchase captions, English VICTORY/DEFEAT result text
+and HUD location names. A native pale-blue veil measurement can support a Round
+start when it disappears after an observed BUY with a compatible map view.
+Blue sky persistence, a failed OCR scan and source end do not start/end a match.
+These cues are research candidates; the world-barrier heuristic is not a general
+barrier segmentation model. Map and Zone readers can return empty candidates.
+
+Current-view marker rankings are joined to Camera/agent candidates and retained
+as `research_view_position_hypotheses` in JSON, CSV and the viewer. They do not
+become strict recorder positions, paths or qualified Map ownership. SPECTATOR
+positions describe possible viewed actors and exclude the recorder-self role.
+An older reference catalog covers only its listed maps/version; it is not proof
+of support for every current map. Downstream evaluation consumes the same
+application bundle with zero qualified Facts/Events.
