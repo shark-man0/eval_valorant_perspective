@@ -158,3 +158,68 @@ def test_map_ranking_uses_current_spectator_subject_without_recorder_ownership()
     assert hypothesis["camera_candidate"] == "SPECTATOR"
     assert hypothesis["ownership"] == "UNKNOWN" and not hypothesis["position_authority"]
     assert frame["map"]["current_self_position_candidates"] == []
+
+
+
+def test_dense_extra_observation_cannot_replace_existing_coarse_anchor():
+    """A/B/C sampling must not choose a different first recorder signature."""
+    from valorant_ai_coach.temporal.match import frame_observations
+
+    def sampled(base, raw, role):
+        return frame_observations(
+            {"signals": [], "raw": raw,
+             "context": {"stream_kind": "hud_composite_view"}, "map_candidates": []},
+            base["sample"], "c" * 64, sampling_role=role,
+        )[0]
+
+    early, primary, later = (
+        obs(0, ["owner_hud"]), obs(10, ["owner_hud"]), obs(60)
+    )
+    incompatible = cue()
+    for slot in incompatible["ability_signature"]:
+        slot["descriptor"] = [100, 0] * 72
+    good = cue()
+    primary_row = sampled(primary, good, "coarse")
+    early_row = sampled(early, incompatible, "dense")
+    later_row = sampled(later, good, "dense")
+    assert primary_row["context"]["native_sampling_role"] == "coarse"
+
+    baseline = run([primary, primary_row, later, later_row, self_hint(later)])
+    expanded = run([
+        early, early_row, primary, primary_row, later, later_row, self_hint(later)
+    ])
+    assert baseline["frames"][-1]["camera"]["value"] == "SELF"
+    assert baseline["frames"][-1]["life"]["value"] == "ALIVE"
+    assert expanded["frames"][-1]["camera"]["value"] == "SELF"
+    assert expanded["frames"][-1]["life"]["value"] == "ALIVE"
+    assert expanded["frames"][0]["viewed_identity"]["recording_player_anchor"] is None
+    assert (
+        expanded["frames"][-1]["viewed_identity"]["recording_player_anchor"]["sample"]
+        == primary["sample"]
+    )
+    assert expanded["qualified_facts"] == expanded["qualified_events"] == []
+
+
+def test_anchor_falls_back_to_dense_only_when_no_coarse_owner_and_resets_on_break():
+    from valorant_ai_coach.temporal.match import frame_observations
+
+    def sampled(base, role):
+        return frame_observations(
+            {"signals": [], "raw": cue(),
+             "context": {"stream_kind": "hud_composite_view"}, "map_candidates": []},
+            base["sample"], "c" * 64, sampling_role=role,
+        )[0]
+
+    first, broken, second = (
+        obs(0, ["owner_hud"]),
+        obs(10, continuity={"content_break_confirmed": True}),
+        obs(20, ["owner_hud"]),
+    )
+    result = run([
+        first, sampled(first, "dense"),
+        broken, sampled(broken, "dense"),
+        second, sampled(second, "coarse"),
+    ])
+    assert result["frames"][0]["viewed_identity"]["recording_player_anchor"]["sample"] == first["sample"]
+    assert result["frames"][1]["viewed_identity"]["recording_player_anchor"] is None
+    assert result["frames"][2]["viewed_identity"]["recording_player_anchor"]["sample"] == second["sample"]

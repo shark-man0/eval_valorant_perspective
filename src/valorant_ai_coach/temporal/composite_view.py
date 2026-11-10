@@ -228,6 +228,31 @@ def signature_similarity(left: list[dict[str, Any]], right: list[dict[str, Any]]
     return scores
 
 
+
+def _eligible_recorder_anchor(
+    frame: dict[str, Any], rows: list[dict[str, Any]], raw: dict[str, Any]
+) -> bool:
+    """Require observed current owner evidence, not a carried SELF hypothesis."""
+    if any(r["continuity"].get("decode_ok") is False for r in rows):
+        return False
+    blocked = any(
+        set(r["signals"]) & {"spectator", "remote", "death", "downed", "revival"}
+        for r in rows
+    )
+    owner = any("owner_hud" in r["signals"] for r in rows)
+    supported = sum(
+        a.get("descriptor") is not None for a in raw["ability_signature"]
+    ) >= 3
+    return (
+        frame["camera"]["value"] == "SELF"
+        and frame["life"]["value"] == "ALIVE"
+        and owner
+        and not blocked
+        and supported
+        and frame["camera"]["origin"] == "observation_projection"
+    )
+
+
 def attach_composite_views(states: list[dict[str, Any]], observations: dict[str, Any]) -> None:
     """Called by DevelopmentGameTimeline, not an independent state machine.
 
@@ -235,20 +260,47 @@ def attach_composite_views(states: list[dict[str, Any]], observations: dict[str,
     evidence. No first-frame assumption; no anchoring from carried state. Neither
     portrait nor a matching agent can alone change life/camera or Map ownership.
     """
-    anchors: dict[tuple[str, ...], dict[str, Any]] = {}
-    prior_reports: dict[tuple[str, ...], str] = {}
+    # Acquisition always runs its coarse pass before optional dense passes.
+    # Prefer an eligible coarse reference within each continuous segment, so
+    # adding earlier dense frames cannot silently replace the recorder anchor.
+    # The chosen anchor is NEVER attached before its actual native frame.
+    segments: list[int] = []
+    preferred_segments: set[int] = set()
+    previous_scope: tuple[str, ...] | None = None
+    segment = 0
     for frame in states:
         rows = [observations[i] for i in frame["observation_ids"]]
         scope = source_scope(frame["sample"])
-        if any(
-            any(
+        broken = any(
+            r["continuity"].get("decode_ok") is False
+            or any(
                 r["continuity"].get(k) is True
                 for k in ("content_break_confirmed", "source_discontinuity", "discontinuity")
             )
             for r in rows
+        )
+        if scope != previous_scope or broken:
+            segment += 1
+        segments.append(segment)
+        cues = [r for r in rows if r["raw"].get("schema") == VERSION]
+        if (
+            len(cues) == 1
+            and cues[0]["context"].get("native_sampling_role") == "coarse"
+            and _eligible_recorder_anchor(frame, rows, cues[0]["raw"])
         ):
-            anchors.pop(scope, None)
+            preferred_segments.add(segment)
+        previous_scope = scope
+
+    anchor: dict[str, Any] | None = None
+    previous_segment: int | None = None
+    prior_reports: dict[tuple[str, ...], str] = {}
+    for frame, current_segment in zip(states, segments, strict=True):
+        rows = [observations[i] for i in frame["observation_ids"]]
+        scope = source_scope(frame["sample"])
+        if current_segment != previous_segment:
+            anchor = None
             prior_reports.pop(scope, None)
+        previous_segment = current_segment
         cues = [r for r in rows if r["raw"].get("schema") == VERSION]
         if not cues:
             continue
@@ -262,28 +314,24 @@ def attach_composite_views(states: list[dict[str, Any]], observations: dict[str,
         row = cues[0]
         raw = row["raw"]
         owner = [r for r in rows if "owner_hud" in r["signals"]]
-        blocked = any(
-            set(r["signals"]) & {"spectator", "remote", "death", "downed", "revival"} for r in rows
-        )
-        supported = sum(a.get("descriptor") is not None for a in raw["ability_signature"]) >= 3
-        current_self = (
-            frame["camera"]["value"] == "SELF"
-            and frame["life"]["value"] == "ALIVE"
-            and bool(owner)
-            and not blocked
-            and supported
-            and frame["camera"]["origin"] == "observation_projection"
-        )
-        if scope not in anchors and current_self:
-            anchors[scope] = {
+        current_self = _eligible_recorder_anchor(frame, rows, raw)
+        if (
+            anchor is None
+            and current_self
+            and (
+                current_segment not in preferred_segments
+                or row["context"].get("native_sampling_role") == "coarse"
+            )
+        ):
+            anchor = {
                 "ability_signature": deepcopy(raw["ability_signature"]),
                 "evidence_ids": [row["observation_id"], *[r["observation_id"] for r in owner]],
                 "sample": deepcopy(frame["sample"]),
                 "agent_candidates": deepcopy(raw["viewed_agent_candidates"]),
                 "qualified": False,
                 "identity_status": "recorder_candidate_from_current_SELF_HUD",
+                "sampling_role": row["context"].get("native_sampling_role", "unspecified"),
             }
-        anchor = anchors.get(scope)
         scores = (
             signature_similarity(anchor["ability_signature"], raw["ability_signature"])
             if anchor
