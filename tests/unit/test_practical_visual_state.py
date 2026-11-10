@@ -86,11 +86,27 @@ def test_visual_revision_archives_stale_unknown_edges_and_updates_spectator_befo
 
 
 def test_round_visual_score_updates_shared_state_but_keeps_next_buy():
+    from valorant_ai_coach.temporal.evidence import native_time
+
     a, b = obs(0, context={"score": [0, 0]}), obs(1, context={"score": [1, 0]})
     after = run([a, b])
     assert after["frames"][-1]["round"]["value"] == "ENDED"
     buy = obs(1, ["buy"], context={"score": [1, 0]})
     assert run([a, buy])["frames"][-1]["round"]["value"] == "BUY"
+    ordered = run([a, b, obs(20, ["spectator"])])["transitions"]
+    times = [native_time(t["upper_sample"]) for t in ordered]
+    assert times == sorted(times)
+
+
+def test_temporal_reconciliation_does_not_leave_stale_unknown_edges():
+    rows = [obs(t, ["buy", "owner_hud"] if t in {0, 40} else [])
+            for t in (0, 10, 20, 30, 40)]
+    before, after = run(rows, False), run(rows)
+    assert [f["life"]["value"] for f in before["frames"]] == [
+        f["life"]["value"] for f in after["frames"]]
+    assert after["visual_state_projection_history"] == []
+    assert after["superseded_transition_candidates"]
+    assert not any(t["kind"] == "state_change" for t in after["transitions"])
 
 
 def test_match_result_not_source_end_and_display_persistence_is_one_candidate():

@@ -267,19 +267,20 @@ def reconcile_visual_transitions(
         lower = points.get(event["lower_sample"]["sample_sha256"])
         if (domain not in {"round", "life", "camera"} or upper is None or lower is None
                 or event["kind"] not in {"state_change", "spectator", "round_start", "round_end"}
-                or not any(f[domain]["origin"] == "visual_state_projection"
-                           for f in (lower, upper))):
+                or (event["kind"] != "state_change"
+                    and not any(f[domain]["origin"] == "visual_state_projection"
+                                for f in (lower, upper)))):
             retained.append(event)
             continue
         before = deepcopy(event)
         if event.get("after") != upper[domain]["value"]:
             superseded.append({"rule_transition": before, "status": "superseded",
-                               "reason": "upper_state_revised_by_visual_evidence",
+                               "reason": "upper_state_revised_by_shared_postprocessing",
                                "current_estimate": deepcopy(upper[domain]), "qualified": False})
             continue
         if lower[domain]["value"] == upper[domain]["value"]:
             superseded.append({"rule_transition": before, "status": "superseded",
-                               "reason": "no_state_change_after_visual_revision",
+                               "reason": "no_state_change_after_shared_revision",
                                "current_estimate": deepcopy(upper[domain]), "qualified": False})
             continue
         if event.get("before") != lower[domain]["value"]:
@@ -302,3 +303,5 @@ def merge_visual_events(existing: list[dict[str, Any]], added: list[dict[str, An
                for e in existing):
             continue
         existing.append(event)
+    existing.sort(key=lambda e: (source_scope(e["upper_sample"]),
+                                 native_time(e["upper_sample"])))
