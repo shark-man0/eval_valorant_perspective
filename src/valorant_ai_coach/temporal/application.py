@@ -12,6 +12,7 @@ import importlib
 import json
 import math
 from collections import defaultdict
+from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
@@ -372,6 +373,10 @@ def build_application_timeline(
         from .round_visual import attach_round_visual_candidates
 
         attach_round_visual_candidates(result)
+    if "superseded_transition_candidates" in timeline:
+        result["superseded_transition_candidates"] = deepcopy(
+            timeline["superseded_transition_candidates"]
+        )
     return result
 
 

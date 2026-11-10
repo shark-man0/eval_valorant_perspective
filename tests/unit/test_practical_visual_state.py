@@ -58,6 +58,33 @@ def test_unread_confidence_is_abstention_instead_of_crash_or_self_promotion():
     assert after["frames"][-1]["camera"]["value"] == "UNKNOWN"
 
 
+def test_visual_revision_archives_stale_unknown_edges_and_updates_spectator_before():
+    from fractions import Fraction
+
+    from valorant_ai_coach.temporal.application import build_application_timeline
+
+    anchor, report, spectator = (obs(0, ["owner_hud"]),
+                                obs(10, ["report", "hud_not_detected"]),
+                                obs(20, ["spectator"]))
+    rows = [r for base in (anchor, report, spectator)
+            for r in (base, visual(base, cue()), self_hint(base))]
+    before = run(rows, False)
+    assert before["frames"][1]["camera"]["value"] == "UNKNOWN"
+    after = run(rows)
+    assert after["frames"][1]["camera"]["value"] == "SELF"
+    archived = after["superseded_transition_candidates"]
+    assert {r["rule_transition"]["domain"] for r in archived} == {"life", "camera"}
+    assert all(r["rule_transition"]["after"] == "UNKNOWN" for r in archived)
+    edge = next(t for t in after["transitions"] if t["kind"] == "spectator")
+    assert edge["before"] == "SELF" and edge["rule_transition"]["before"] == "UNKNOWN"
+    bundle = build_application_timeline(after, duration=Fraction(3), origin=Fraction(0),
+                                        source={"video_id": anchor["sample"]["source_id"],
+                                                "source_sha256": anchor["sample"]["source_sha256"],
+                                                "physical_match_id": "synthetic-match"})
+    assert bundle["superseded_transition_candidates"] == archived
+    assert not any(e["upper_timestamp"] == 1 for e in bundle["events"].values())
+
+
 def test_round_visual_score_updates_shared_state_but_keeps_next_buy():
     a, b = obs(0, context={"score": [0, 0]}), obs(1, context={"score": [1, 0]})
     after = run([a, b])

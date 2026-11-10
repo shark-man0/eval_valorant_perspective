@@ -254,6 +254,44 @@ def _event(kind: str, low: dict[str, Any], high: dict[str, Any],
     return result
 
 
+def reconcile_visual_transitions(
+    transitions: list[dict[str, Any]], states: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Archive stale pre-projection edges without deleting their prior evidence."""
+    points = {f["sample"]["sample_sha256"]: f for f in states}
+    superseded = []
+    retained = []
+    for event in transitions:
+        domain = event.get("domain")
+        upper = points.get(event["upper_sample"]["sample_sha256"])
+        lower = points.get(event["lower_sample"]["sample_sha256"])
+        if (domain not in {"round", "life", "camera"} or upper is None or lower is None
+                or event["kind"] not in {"state_change", "spectator", "round_start", "round_end"}
+                or not any(f[domain]["origin"] == "visual_state_projection"
+                           for f in (lower, upper))):
+            retained.append(event)
+            continue
+        before = deepcopy(event)
+        if event.get("after") != upper[domain]["value"]:
+            superseded.append({"rule_transition": before, "status": "superseded",
+                               "reason": "upper_state_revised_by_visual_evidence",
+                               "current_estimate": deepcopy(upper[domain]), "qualified": False})
+            continue
+        if lower[domain]["value"] == upper[domain]["value"]:
+            superseded.append({"rule_transition": before, "status": "superseded",
+                               "reason": "no_state_change_after_visual_revision",
+                               "current_estimate": deepcopy(upper[domain]), "qualified": False})
+            continue
+        if event.get("before") != lower[domain]["value"]:
+            event["rule_transition"] = before
+            event["before"] = lower[domain]["value"]
+            event["evidence_ids"] = sorted(set(event["evidence_ids"]
+                                             + lower[domain]["evidence_ids"]))
+        retained.append(event)
+    transitions[:] = retained
+    return superseded
+
+
 def merge_visual_events(existing: list[dict[str, Any]], added: list[dict[str, Any]]) -> None:
     """A lasting result or two suppliers must not create another ending."""
     for event in added:

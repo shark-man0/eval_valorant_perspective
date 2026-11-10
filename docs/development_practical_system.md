@@ -31,7 +31,10 @@ report this distinction and retain historical actual-acquisition results.
 
 `--practical-visual-state` connects existing composite-view and Round visual
 observations to the shared engine's research estimates. Each revision retains
-the previous estimate, competing hypotheses and native evidence. A current HUD
+the previous estimate, competing hypotheses and native evidence. A state
+revision also archives obsolete pre-revision transition candidates separately;
+the current event queue follows the revised state while retaining the original
+edge and evidence in history. A current HUD
 component plus a prior recorder signature can support SELF/ALIVE; an agent name
 alone cannot. Remote, downed, death and spectator evidence veto self promotion.
 The default recognition path and formal qualification gates remain unchanged.

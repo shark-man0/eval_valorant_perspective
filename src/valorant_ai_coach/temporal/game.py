@@ -1179,12 +1179,18 @@ class DevelopmentGameTimeline:
 
             attach_composite_views(states, self._observations)
         visual_history: list[dict[str, Any]] = []
+        superseded_transitions: list[dict[str, Any]] = []
         if self.practical_visual_state:
-            from .visual_state import apply_visual_state, merge_visual_events
+            from .visual_state import (
+                apply_visual_state,
+                merge_visual_events,
+                reconcile_visual_transitions,
+            )
 
             visual_history, visual_events = apply_visual_state(
                 states, self._observations, _estimate
             )
+            superseded_transitions = reconcile_visual_transitions(transitions, states)
             merge_visual_events(transitions, visual_events)
             for state in states:
                 rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1224,6 +1230,7 @@ class DevelopmentGameTimeline:
                 Path(__file__).with_name("visual_state.py")
             )
             result["visual_state_projection_history"] = visual_history
+            result["superseded_transition_candidates"] = superseded_transitions
         if round_projections:
             result["round_model_projection_history"] = round_projections
         if self.buy_clock_expiry:
