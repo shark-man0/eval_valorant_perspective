@@ -85,16 +85,18 @@ interrupted compatible acquisition, keep its checkpoint but use a fresh output
 directory; the verified native prefix is replayed, not treated as completed state.
 An output completion receipt, not a progress message, establishes completion.
 
-The output contains the full `timeline_PRIVATE.json`, one JSON-valued CSV row per
-recording second in `timeline_1s_PRIVATE.csv`, `evaluation_PRIVATE.json` from the
-existing review consumer, and hashed completion/provenance receipts. Exact native
+The `generate` output has `acquisition/` for native measurements and an
+`application/` directory containing the full `timeline_PRIVATE.json`, one
+JSON-valued CSV row per recording second in `timeline_1s_PRIVATE.csv`,
+`evaluation_PRIVATE.json` from the existing review consumer, and hashed
+completion/provenance receipts. Exact native
 samples remain available alongside the one-second view. Keep these artifacts
 private. Open the local viewer and use its recording-time control to seek the
 unchanged original recording:
 
 ```bash
 python -m valorant_ai_coach.temporal.viewer \
-  --bundle "$TIMELINE_OUTPUT/timeline_PRIVATE.json" \
+  --bundle "$TIMELINE_OUTPUT/application/timeline_PRIVATE.json" \
   --policy "$TIMELINE_POLICY" --port 8783
 ```
 
