@@ -220,6 +220,12 @@ def test_anchor_falls_back_to_dense_only_when_no_coarse_owner_and_resets_on_brea
         broken, sampled(broken, "dense"),
         second, sampled(second, "coarse"),
     ])
-    assert result["frames"][0]["viewed_identity"]["recording_player_anchor"]["sample"] == first["sample"]
+    assert (
+        result["frames"][0]["viewed_identity"]["recording_player_anchor"]["sample"]
+        == first["sample"]
+    )
     assert result["frames"][1]["viewed_identity"]["recording_player_anchor"] is None
-    assert result["frames"][2]["viewed_identity"]["recording_player_anchor"]["sample"] == second["sample"]
+    assert (
+        result["frames"][2]["viewed_identity"]["recording_player_anchor"]["sample"]
+        == second["sample"]
+    )
