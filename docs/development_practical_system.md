@@ -130,3 +130,25 @@ current predictions. Reviewers can save only the fields they have checked.
 The answer file retains packet and image hashes, the native sample, reviewer,
 and confirmation scope. Corrections append a revision. Use an answer path
 outside Git and retain the original packet for replaying the same review.
+
+## Generic Map correspondence (research only)
+
+The context ranker keeps the first 64 ordered native candidates instead of
+truncating at 10. Existing scores/Top-1/Top-5 ordering do not change. The
+higher ranks include 11 and 32, which were lost in the earlier transport.
+This does not itself make the ranking more accurate.
+
+With `--practical-visual-state`, `research_map_correspondence_hypotheses`
+joins each actual supplier candidate index to current Camera/Life and
+agent-signature candidates, with original Source/epoch/PTS/native pixel SHA,
+supplier fingerprint, Profile, candidate ROI and observation evidence.
+It is exposed in native frames and application JSON/CSV. Observed SELF/ALIVE
+with current owner evidence permits RECORDER_SELF among competing hypotheses;
+SPECTATOR excludes it. Stale, conflicting and foreign evidence never creates
+strict recorder ownership. No old UI selection index is fabricated; existing
+formal outputs, map ownership and continuous-path gates stay unchanged.
+
+The historical four same-match DEVELOPMENT examples remain a frozen local
+check, not proof of cross-match generalization. Codex must measure rank,
+candidate role, abstention and false-owner outcomes separately after
+reacquiring the wider ranked image observations.
