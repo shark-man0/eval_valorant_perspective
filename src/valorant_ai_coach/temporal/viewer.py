@@ -154,6 +154,11 @@ el('map').textContent='Map名: '+
 map.current_self_position_candidates.length+'\n研究用本人位置仮説（本人未確定）: '+
 (map.provisional_recorder_position_hypotheses||[]).length+
 '\n現在視点の位置仮説（本人未確定）: '+(map.research_view_position_hypotheses||[]).length+
+'\nMap対応候補（順位・本人所有未確定）: '+
+(map.research_map_correspondence_hypotheses||[]).length+
+' / 本人role候補を含む数: '+
+(map.research_map_correspondence_hypotheses||[]).filter(h=>
+(h.role_hypotheses||[]).includes('RECORDER_SELF')).length+
 '\nZone候補: '+map.zone_candidates.length+
 ' '+Array.from(new Set(map.zone_candidates.map(c=>
 c.label_text||c.zone_name||c.zone||'?'))).join(' / ')+
