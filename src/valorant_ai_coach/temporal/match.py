@@ -77,7 +77,8 @@ def _native_audit_batches(ticks: list[int], base: Fraction) -> Iterator[list[int
 
 
 def frame_observations(
-    measurement: dict[str, Any], sample: dict[str, Any], producer: str
+    measurement: dict[str, Any], sample: dict[str, Any], producer: str,
+    *, sampling_role: str | None = None,
 ) -> list[dict[str, Any]]:
     """Attach the verified native sample to separately fingerprinted suppliers.
 
@@ -91,19 +92,28 @@ def frame_observations(
     elif not isinstance(suppliers, list) or not suppliers:
         raise ValueError("Nonempty supplier observations required")
     allowed = {"producer_fingerprint", "signals", "raw", "context", "map_candidates"}
+    if sampling_role not in (None, "coarse", "dense"):
+        raise ValueError("Known acquisition sampling role required")
     rows = []
     for item in suppliers:
         if not isinstance(item, dict) or (
             "supplier_observations" in measurement and set(item) - allowed
         ):
             raise ValueError("Supplier cannot override acquisition or continuity")
+        context = dict(item.get("context", {}))
+        if (
+            sampling_role is not None
+            and item["raw"].get("schema") == "development_composite_view_pixels_v1"
+        ):
+            # Transport provenance, not another independent pixel observation.
+            context["native_sampling_role"] = sampling_role
         rows.append(
             observation(
                 sample=sample,
                 producer=item["producer_fingerprint"],
                 signals=item["signals"],
                 raw=item["raw"],
-                context=item.get("context", {}),
+                context=context,
                 map_candidates=item.get("map_candidates", []),
                 continuity={"decode_ok": True},
             )
@@ -878,7 +888,12 @@ def run_match(
     for tick in sorted(records):
         r = records[tick]
         m = r["measurement"]
-        suppliers = frame_observations(m, r["sample"], observer.fingerprint)
+        suppliers = frame_observations(
+            m, r["sample"], observer.fingerprint,
+            sampling_role=(
+                "coarse" if r["pass"] == "coarse" else "dense"
+            ) if practical_visual_state else None,
+        )
         if {s["producer_fingerprint"] for s in suppliers} - set(permitted_producers):
             raise ValueError("Unbound supplier fingerprint at native frame")
         if set(baseline_producers) - {s["producer_fingerprint"] for s in suppliers}:

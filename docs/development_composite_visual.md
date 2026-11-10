@@ -87,3 +87,25 @@ initial predictions. See `native_observation_checkpoint.md` for crash limits.
 Private media, native PTS, review labels, profiles and model weights stay outside
 Git. Public reporting contains implementation, synthetic tests and anonymized
 aggregates only. Main integration and Production adoption require separate review.
+
+
+## Density-stable recorder anchor (development)
+
+For newly acquired runs with `--practical-visual-state`, the native transport
+records whether the composite observation came from the normal **coarse**
+acquisition pass or an added **dense** pass. This is acquisition provenance,
+not extra identity evidence. Within each continuous Source/epoch segment,
+a directly observed SELF/ALIVE + owner-HUD frame from the coarse pass takes
+precedence as the recorder signature anchor. Earlier extra dense frames cannot
+replace that coarse anchor. The anchor is only usable at or after its own
+native sample; it is never back-projected to earlier frames. If a segment has
+no eligible coarse observation, the existing first eligible observed frame
+remains the fallback. Source/epoch and confirmed discontinuities reset anchors;
+decoded-frame failures are not trusted anchors.
+
+This prevents one specific density-induced anchor substitution, **not** a
+proof of recognition accuracy or sampling invariance for every life/camera
+state. Older observations without a native sampling role retain the previous
+behavior. Compare the previously reviewed 69 + 9 attributes and the A/B/C
+density experiment on admitted recordings; do not relabel old observations as
+if they had this new transport metadata.
