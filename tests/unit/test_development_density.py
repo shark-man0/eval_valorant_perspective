@@ -33,7 +33,7 @@ def test_dense_native_cli_recovers_off_grid_pixels_and_binds_budget(
         "match", "--policy", str(policy), "--source-id", "registered-synthetic",
         "--reader-config", str(config), "--output", str(dense),
         "--coarse-seconds", "1/5", "--dense-seconds", "1/10",
-        "--max-refinement-windows", "0", "--max-refinement-seconds", "900",
+        "--max-refinement-windows", "0", "--max-refinement-seconds", "1801/2",
         "--checkpoint-dir", str(cache),
     ])
     match.main()
@@ -44,7 +44,7 @@ def test_dense_native_cli_recovers_off_grid_pixels_and_binds_budget(
     receipt = read_json(dense / "completion_PRIVATE.json")
     assert receipt["observed_native_points"] == 4
     assert receipt["sampling"]["coarse_seconds"] == "1/5"
-    assert receipt["sampling"]["max_refinement_seconds"] == "900"
+    assert receipt["sampling"]["max_refinement_seconds"] == "1801/2"
     with pytest.raises(ValueError, match="binding mismatch"):
         match.run_match(policy_path=policy, source_id="registered-synthetic",
                         reader_config=config, output=tmp_path / "changed", checkpoint_dir=cache,

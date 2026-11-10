@@ -52,3 +52,48 @@ positions describe possible viewed actors and exclude the recorder-self role.
 An older reference catalog covers only its listed maps/version; it is not proof
 of support for every current map. Downstream evaluation consumes the same
 application bundle with zero qualified Facts/Events.
+
+## Running a registered recording
+
+Use the existing private DEVELOPMENT registry/admission policy. Supply the same
+observer configuration for each physical match; Source IDs select admitted input
+and are never passed to the image observer. No roster, first state or known event
+time is required. Required local OCR models and existing HUD/profile assets must
+already be configured. An optional public-reference Map wrapper can be omitted;
+empty Map/Zone observations do not prevent timeline generation.
+
+```bash
+python -m valorant_ai_coach.temporal.application generate \
+  --policy "$TIMELINE_POLICY" --source-id "$TIMELINE_SOURCE" \
+  --reader-config "$TIMELINE_READER_CONFIG" \
+  --observer valorant_ai_coach.temporal.screen_cues:ScreenCueObserver \
+  --output "$TIMELINE_OUTPUT" --checkpoint-dir "$TIMELINE_CHECKPOINT" \
+  --coarse-seconds 1 --dense-seconds 1/5 \
+  --refinement-policy evidence --max-refinement-windows 400 \
+  --max-refinement-seconds 2000 --refinement-padding-seconds 4 \
+  --report-view-bridge --buy-clock-expiry --active-clock-bridge \
+  --return-display-tail --buy-clock-tail --current-hp-return-candidate \
+  --current-menu-return-candidate --provisional-map-roles --practical-visual-state
+```
+
+Add `--full-density` for the entire approximately 0.2-second observation pass.
+For a configuration change, use a new output/checkpoint directory. To resume an
+interrupted compatible acquisition, keep its checkpoint but use a fresh output
+directory; the verified native prefix is replayed, not treated as completed state.
+An output completion receipt, not a progress message, establishes completion.
+
+The output contains the full `timeline_PRIVATE.json`, one JSON-valued CSV row per
+recording second in `timeline_1s_PRIVATE.csv`, `evaluation_PRIVATE.json` from the
+existing review consumer, and hashed completion/provenance receipts. Exact native
+samples remain available alongside the one-second view. Keep these artifacts
+private. Open the local viewer and use its recording-time control to seek the
+unchanged original recording:
+
+```bash
+python -m valorant_ai_coach.temporal.viewer \
+  --bundle "$TIMELINE_OUTPUT/timeline_PRIVATE.json" \
+  --policy "$TIMELINE_POLICY" --port 8783
+```
+
+The deterministic evaluation package remains empty
+of qualified Facts/Events while the development consumer uses state/candidate data.

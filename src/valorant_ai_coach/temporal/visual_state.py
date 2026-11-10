@@ -6,6 +6,7 @@ Original estimates and observation IDs remain attached. No qualification changes
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable
 from copy import deepcopy
 from typing import Any
@@ -16,8 +17,13 @@ from .round_visual import round_visual_candidates
 VERSION = "development_practical_visual_state_v1"
 
 
+def _confidence(value: Any, minimum: float = 0) -> bool:
+    return bool(type(value) in (int, float) and math.isfinite(value) and minimum <= value <= 1)
+
+
 def selected_agent(candidates: list[dict[str, Any]]) -> str | None:
-    ranked = sorted(candidates, key=lambda r: r.get("score", 0), reverse=True)
+    ranked = sorted([r for r in candidates if _confidence(r.get("score"))],
+                    key=lambda r: r["score"], reverse=True)
     if not ranked or ranked[0].get("score", 0) < .65:
         return None
     if len(ranked) > 1 and ranked[0]["score"] - ranked[1]["score"] < .08:
@@ -37,7 +43,7 @@ def _hp_support(rows: list[dict[str, Any]]) -> bool:
                 and raw.get("current_HUD_component_supported") is True
                 and not raw.get("owned_verb_phrase")
                 and isinstance(text, str) and text.isascii() and text.isdigit()
-                and 0 < int(text) <= 150 and hp.get("confidence", 0) >= .90):
+                and 0 < int(text) <= 150 and _confidence(hp.get("confidence"), .90)):
             return True
     return False
 
@@ -83,7 +89,8 @@ def apply_visual_state(
         different = bool(current and recorder and current != recorder)
         portrait = view.get("portrait_candidate", {}).get("agent_candidates", [])
         portrait_agrees = bool(current and any(r.get("agent") == current
-                                               and r.get("score", 0) >= .50 for r in portrait))
+                                               and _confidence(r.get("score"), .50)
+                                               for r in portrait))
         evidence = sorted(set(view.get("evidence_ids", []) + anchor["evidence_ids"]
                               + [r["observation_id"] for r in rows
                                  if r["raw"].get("camera_hypothesis") is not None]))
@@ -181,8 +188,8 @@ def apply_visual_state(
         rows = [observations[i] for i in frame["observation_ids"]]
         _attach_map_view(frame, rows)
         scope = source_scope(frame["sample"])
-        if any("buy" in r["signals"] for r in rows):
-            ended.discard(scope)
+        # Each admitted Source represents one physical match. A noisy BUY
+        # reading must not duplicate a persisting match-result display.
         result = [r for r in rows if r["raw"].get("screen_cues", {}).get(
             "match_result", {}).get("visible") is True]
         if result and scope not in ended:

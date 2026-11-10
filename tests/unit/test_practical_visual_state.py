@@ -49,6 +49,15 @@ def test_named_agent_difference_with_portrait_and_report_revises_current_camera(
     assert guarded["frames"][-1]["camera"]["value"] == "REMOTE"
 
 
+def test_unread_confidence_is_abstention_instead_of_crash_or_self_promotion():
+    anchor, hidden = obs(0, ["owner_hud"]), obs(40)
+    hint = self_hint(hidden)
+    hint["raw"]["view_hp"]["confidence"] = None
+    hint = observation(sample=hidden["sample"], producer="d" * 64, signals=[], raw=hint["raw"])
+    after = run([anchor, visual(anchor, cue()), hidden, visual(hidden, cue()), hint])
+    assert after["frames"][-1]["camera"]["value"] == "UNKNOWN"
+
+
 def test_round_visual_score_updates_shared_state_but_keeps_next_buy():
     a, b = obs(0, context={"score": [0, 0]}), obs(1, context={"score": [1, 0]})
     after = run([a, b])
@@ -61,7 +70,8 @@ def test_match_result_not_source_end_and_display_persistence_is_one_candidate():
     rows = []
     for t in (0, 1, 2):
         base = obs(t)
-        rows.append(observation(sample=base["sample"], producer="d" * 64, signals=[],
+        rows.append(observation(sample=base["sample"], producer="d" * 64,
+                                signals=["buy"] if t == 1 else [],
                                 raw={"screen_cues": {"match_result": {"visible": True}}}))
     after = run(rows)
     assert len([e for e in after["transitions"] if e["kind"] == "match_end"]) == 1

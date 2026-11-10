@@ -993,7 +993,9 @@ def run_match(
             "coarse_seconds": str(coarse_seconds),
             "dense_seconds": str(dense_seconds),
             "max_refinement_windows": max_refinement_windows,
-            "max_refinement_seconds": str(max_refinement_seconds),
+            "max_refinement_seconds": (max_refinement_seconds.numerator
+                                       if max_refinement_seconds.denominator == 1
+                                       else str(max_refinement_seconds)),
             "full_density": full_density,
             "refinement_budget_applied": not full_density,
             "selection_policy": refinement_selection_policy,
