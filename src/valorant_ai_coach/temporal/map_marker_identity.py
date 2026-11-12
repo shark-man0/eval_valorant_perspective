@@ -77,7 +77,7 @@ def pixel_rank(
         triangle = 0.0
         for contour in contours:
             area = float(cv2.contourArea(contour))
-            if not 3 <= area <= max(80, 320 * scale * scale):
+            if not 3 <= area <= max(150, 320 * scale * scale):
                 continue
             moments = cv2.moments(contour)
             if moments["m00"] <= 0:
