@@ -102,3 +102,31 @@ python -m valorant_ai_coach.temporal.viewer \
 
 The deterministic evaluation package remains empty
 of qualified Facts/Events while the development consumer uses state/candidate data.
+
+## Event candidates and local review
+
+The visual state path groups start witnesses when their native samples
+support the same observed Round context. It retains the first candidate's
+bracket, every grouped witness, and the union of their evidence references.
+Event Round context records source and destination candidates with the score
+and phase observations used for each. A nearby score reading can contribute
+within a bounded context in the same Round token.
+
+Match-result evidence records the layout, outcome candidate, and supporting
+measurements. The central overlay uses large result words. The postmatch
+scoreboard uses aligned title glyphs, flanking score shapes, and the rematch
+control. Round result cards retain their separate event kind.
+
+For a frozen private review packet, use the viewer's review mode:
+
+```bash
+python -m valorant_ai_coach.temporal.viewer \
+  --review-packet "$TIMELINE_REVIEW_PACKET" \
+  --review-answers "$TIMELINE_REVIEW_ANSWERS"
+```
+
+Each scene shows a verified native frame, its original-video context, and the
+current predictions. Reviewers can save only the fields they have checked.
+The answer file retains packet and image hashes, the native sample, reviewer,
+and confirmation scope. Corrections append a revision. Use an answer path
+outside Git and retain the original packet for replaying the same review.

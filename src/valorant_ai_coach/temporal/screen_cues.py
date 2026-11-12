@@ -15,6 +15,7 @@ from numpy.typing import NDArray
 
 from .evidence import digest
 from .hud_visibility import HUDVisibilityReader
+from .match_result_pixels import match_result_candidate
 from .replay import file_sha, read_json
 
 VERSION = "development_screen_cues_v1"
@@ -106,6 +107,9 @@ class ScreenCueObserver:
         self.zone = HUDVisibilityReader(Path(cfg["tessdata"]),
                                         normalized_roi=(.015, 0, .25, .075))
         self.cue_fingerprint = digest({"code_sha256": file_sha(Path(__file__)),
+                                       "result_layout_code_sha256": file_sha(
+                                           Path(__file__).with_name("match_result_pixels.py")
+                                       ),
                                        "phase_reader": self.phase.bindings,
                                        "result_reader": self.result.bindings,
                                        "zone_reader": self.zone.bindings,
@@ -135,6 +139,7 @@ class ScreenCueObserver:
         ending = self.result.inspect(image, ui)
         location = self.zone.inspect(image, ui)
         cues = classify_screen_words(visibility["words"] + ending["words"])
+        cues["match_result"] = match_result_candidate(image, ending["words"])
         cues["barrier"] = barrier_pixels(image)
         cues["analysis_performed"] = visibility["analysis_performed"]
         signals = ["buy"] if cues["buy_caption"] else []

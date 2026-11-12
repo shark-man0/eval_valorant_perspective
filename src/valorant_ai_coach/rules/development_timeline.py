@@ -53,6 +53,8 @@ def review_timeline(bundle: dict[str, Any]) -> dict[str, Any]:
                 "kind": event["kind"],
                 "lower_timestamp": event["lower_timestamp"],
                 "upper_timestamp": event["upper_timestamp"],
+                **({"round_membership": event["round_membership"]}
+                   if "round_membership" in event else {}),
             }
             for ref, event in bundle["events"].items()
         ],

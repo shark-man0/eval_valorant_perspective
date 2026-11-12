@@ -1181,6 +1181,11 @@ class DevelopmentGameTimeline:
         visual_history: list[dict[str, Any]] = []
         superseded_transitions: list[dict[str, Any]] = []
         if self.practical_visual_state:
+            from .event_round import (
+                ROUND_CONTEXT_SECONDS,
+                attach_event_round_context,
+                group_round_starts,
+            )
             from .visual_state import (
                 apply_visual_state,
                 merge_visual_events,
@@ -1199,6 +1204,8 @@ class DevelopmentGameTimeline:
                     state["map"]["provisional_recorder_position_hypotheses"] = (
                         provisional_map_roles(state, rows)
                     )
+            group_round_starts(transitions, states, self.future)
+            attach_event_round_context(transitions, states, ROUND_CONTEXT_SECONDS)
         acquisition_seconds = self._seconds(states)
         result: dict[str, Any] = {
             "version": VERSION,
@@ -1228,6 +1235,9 @@ class DevelopmentGameTimeline:
             )
             result["configuration"]["practical_visual_rule_sha256"] = file_sha(
                 Path(__file__).with_name("visual_state.py")
+            )
+            result["configuration"]["event_round_rule_sha256"] = file_sha(
+                Path(__file__).with_name("event_round.py")
             )
             result["visual_state_projection_history"] = visual_history
             result["superseded_transition_candidates"] = superseded_transitions
