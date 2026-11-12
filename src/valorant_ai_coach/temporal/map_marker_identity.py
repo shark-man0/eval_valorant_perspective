@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import math
 from copy import deepcopy
-from typing import Any
+from typing import Any, cast
 
 import cv2
 import numpy as np
@@ -173,7 +173,7 @@ def _verified_legacy_rankings(
             or not 0 <= index < pool_size
             or index in indices
             or type(score) not in (int, float)
-            or not math.isfinite(score)
+            or not math.isfinite(cast(float, score))
         ):
             return []
         indices.add(index)
@@ -300,6 +300,8 @@ def attach_rank(
     pool: dict[str, Any],
 ) -> None:
     """Join same native visual supplier once; never change common camera state."""
+    if pool.get("sample") != frame["sample"]:
+        return
     supplier = pool["producer_fingerprint"]
     matches = [
         r for r in rows
@@ -319,10 +321,11 @@ def attach_rank(
     if not isinstance(proposals, list):
         return
     indices = [h.get("candidate_index") for h in proposals if isinstance(h, dict)]
-    if (len(indices) != len(proposals) or len(set(indices)) != len(indices)
+    if (len(indices) != len(proposals)
             or raw.get("candidate_count") != len(pool["map_candidates"])
             or any(type(i) is not int or not 0 <= i < len(pool["map_candidates"])
-                   for i in indices)):
+                   for i in indices)
+            or len(set(indices)) != len(indices)):
         return
     result = deepcopy(raw)
     # The old pixel-only selector produced a false owner in a SPECTATOR frame.
@@ -331,20 +334,20 @@ def attach_rank(
     result["proposed_index"] = None
     result["selection_status"] = "ABSTAIN"
     result["pixel_proposal_not_owner_proof"] = True
-    result["rankings"] = [
-        {
-            **deepcopy(h),
-            "candidate": deepcopy(pool["map_candidates"][h["candidate_index"]]),
-        }
-        for h in proposals
-    ]
+    result["ordered_pool_verified"] = supplied_digest is not None
+    if supplied_digest is not None:
+        for rank in result["rankings"]:
+            rank["candidate"] = deepcopy(pool["map_candidates"][rank["candidate_index"]])
+        result["map_observation_id"] = pool["observation_id"]
     result["sample"] = deepcopy(frame["sample"])
-    result["map_observation_id"] = pool["observation_id"]
     result["visual_observation_id"] = matches[0]["observation_id"]
     result["camera_candidate"] = frame["camera"]["value"]
+    recorder_view = (
+        frame["camera"]["value"] == "SELF" and frame.get("life", {}).get("value") == "ALIVE"
+    )
     result["role_hypotheses"] = (
         ["RECORDER_SELF", "OTHER", "UNKNOWN"]
-        if any(
+        if recorder_view and supplied_digest is not None and any(
             "RECORDER_SELF" in h.get("role_hypotheses", [])
             for h in frame["map"].get("research_map_correspondence_hypotheses", [])
         )
@@ -353,7 +356,8 @@ def attach_rank(
         else ["VIEWED_ACTOR", "OTHER", "UNKNOWN"]
     )
     result["evidence_ids"] = sorted(set(
-        [pool["observation_id"], matches[0]["observation_id"]]
+        ([pool["observation_id"]] if supplied_digest is not None else [])
+        + [matches[0]["observation_id"]]
         + frame["camera"].get("evidence_ids", [])
     ))
     result["temporal_path_eligible"] = False
