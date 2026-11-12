@@ -332,3 +332,83 @@ See [Windows E2E](WINDOWS_E2E.md), [Raspberry Pi setup](RASPBERRY_PI_E2E.md),
 and [migration audit](docs/cross_platform_e2e_migration.md).
 Linux/Pi real-device execution remains unverified; Analyzer improvements are paused
 until that result is reviewed. Desktop installation requires the `gui` extra.
+
+### Development shared HUD / Map timeline
+
+The opt-in [common timeline](docs/development_shared_timeline.md) consumes native
+HUD/Map observations, retains exact evidence, and exposes a shared one-second
+Source clock. Its CLI, [selective integration ledger](docs/development_shared_timeline_dependencies.md)
+and comparison report remain development-only; they issue no qualified Facts or
+Events. Production adoption and main integration require supervisor review.
+
+The [automatic match experiment](docs/development_full_match_timeline.md) adds a
+registered-source whole-video CLI, adaptive native sampling and same-observation
+forward/offline controls. Its pixel observer uses one shared Profile without
+Source/time/roster initialization. Generic life/camera and Map recognition remain
+unfinished; this route is not adopted as a recognition improvement.
+
+The [minimum application timeline](docs/development_timeline_application.md)
+connects whole-recording generation, unified JSON/CSV, a local viewer with
+original-video seek, and a development evaluation/review handoff. UNKNOWN and
+unqualified candidates remain usable without being promoted to formal outputs.
+
+The [frozen transfer validation harness](docs/development_frozen_timeline_validation.md)
+fixes the existing recognizer/configuration before new-source intake, retains
+failed and repeated attempts, and checks whole JSON/CSV/evaluation outputs.
+No authorized unseen recordings are currently available; unseen real-match
+validation remains incomplete.
+
+Development can continue on the existing authorized recordings. The opt-in
+[BUY clock context experiment](docs/development_buy_clock_context.md) compares
+the same native observations across eight development-exposed physical matches,
+reducing a known carried-BUY error while retaining uncertainty and the existing
+default behavior. Unseen verification is a separate follow-up.
+
+The opt-in [current Map role hypotheses](docs/development_provisional_map_roles.md)
+connect measured highlights to current weak SELF evidence in a separate research
+channel. Strong owner gates and formal outputs remain unchanged.
+
+[UNKNOWN diagnosis and configured HUD values](docs/development_unknown_clock_and_hud.md)
+adds an opt-in measured ACTIVE clock-chain candidate and exact-native value-only
+HUD joins. Unread gaps stay uncertain; viewed HP/Armor/Weapon never establish
+recorder life or ownership.
+
+The [bounded context sampling review](docs/development_context_sampling_review.md)
+compares fixed native contexts across the exposed matches and exposes optional
+before/after padding in the existing acquisition CLI. Wider windows keep the
+global dense budget and do not imply interval labels or qualified events.
+
+An optional [private pixel observation cache](docs/development_pixel_observation_cache.md)
+reuses unchanged image-only measurements for matched acquisition experiments.
+Native decoding/admission remain mandatory, and cache warmth is reported
+separately from sampling effects.
+
+[Advisory HUD visibility](docs/development_hud_visibility.md) connects current
+purchase-menu/Tracker candidates to exact native evidence and the local viewer.
+Display context remains separate from game-state and recorder ownership inference.
+
+The [remaining timeline review](docs/development_remaining_timeline_review.md)
+records the completed bounded candidate inspection and distinguishes strict Map
+ownership gaps from unconfigured Armor/Weapon providers.
+
+The optional [separate value provider](docs/development_value_providers.md) reads
+Armor and configured inventory labels without changing parent HP/state claims.
+Weapon selection and recorder ownership remain explicit uncertainties.
+
+Development measurements and restart tasks are in the
+[shared timeline comparison](docs/development_shared_timeline_results.md).
+The dependent [recorder episode experiment](docs/development_recorder_episode.md)
+documents current victim observations, competing death/return hypotheses and
+the unadopted exact-current-pixel sharing comparison.
+The [current Map projection](docs/development_current_map_projection.md) separates
+current native position hypotheses from temporal continuity and paths.
+The [HUD location adapter](docs/development_hud_zone_context.md) retains viewed
+names on that same timeline and requires current shared SELF evidence before
+associating a name with the recorder.
+## Development cross-match review
+
+The optional [cross-match timeline consumer](docs/development_cross_match_timeline.md)
+compares registered development bundles, extracts evidence-linked review intervals,
+and opens the existing original-video viewer. It includes JSON/CSV and evaluation
+handoff plus desktop menu entry points. Coverage and research candidates are kept
+separate from accuracy and formal scoring.

@@ -94,9 +94,9 @@ def test_quality_formula_matches_patch_logic_case() -> None:
     )
     assert quality["timeline_completeness"] == pytest.approx(0.8, abs=0.001)
     assert quality["hud_confidence"] == pytest.approx(0.72, abs=0.001)
-    assert quality["missing_intervals"] == pytest.approx(
-        [{"start_sec": 4.0, "end_sec": 5.0}], abs=0.001
-    )
+    assert len(quality["missing_intervals"]) == 1
+    assert quality["missing_intervals"][0]["start_sec"] == pytest.approx(4.0, abs=0.001)
+    assert quality["missing_intervals"][0]["end_sec"] == pytest.approx(5.0, abs=0.001)
 
 
 def test_builder_produces_schema_valid_round_package_without_visual_fabrication(
