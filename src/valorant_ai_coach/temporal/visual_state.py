@@ -131,8 +131,11 @@ def apply_visual_state(
             continue
         revise(frame, "round", "ACTIVE" if kind == "start" else "ENDED",
                cue["support_observation_ids"], "measured_round_visual_" + kind)
-        events.append(_event("round_" + kind, frame, frame,
-                             cue["support_observation_ids"]))
+        lower = by_sample.get(cue["lower_sample_sha256"], frame) if kind == "start" else frame
+        evidence = cue["support_observation_ids"]
+        if kind == "start":
+            evidence = evidence + cue["lower_observation_ids"]
+        events.append(_event("round_" + kind, lower, frame, evidence))
 
     # The shared owner can use a measured barrier loss as a single start cue.
     # A failed OCR scan alone is never evidence that a purchase phase ended.
@@ -296,7 +299,7 @@ def reconcile_visual_transitions(
 def merge_visual_events(existing: list[dict[str, Any]], added: list[dict[str, Any]]) -> None:
     """A lasting result or two suppliers must not create another ending."""
     for event in added:
-        if any(e["kind"] == event["kind"]
+        if event["kind"] != "round_start" and any(e["kind"] == event["kind"]
                and source_scope(e["upper_sample"]) == source_scope(event["upper_sample"])
                and (abs(native_time(e["upper_sample"]) - native_time(event["upper_sample"])) <= 1
                     or bool(set(e["evidence_ids"]) & set(event["evidence_ids"])))

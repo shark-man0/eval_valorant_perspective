@@ -164,6 +164,10 @@ def _candidate(kind: str, cue: str, prior: dict[str, Any] | None,
     lower = prior["time"] if prior else current["time"]
     return {"kind": kind, "candidate_second": int((current["time"] - origin) // 1),
             "lower_native_seconds": str(lower), "upper_native_seconds": str(current["time"]),
+            "lower_sample_sha256": (prior or current)["sample"]["sample_sha256"],
+            "lower_observation_ids": sorted(
+                r["observation_id"] for r in (prior or current)["rows"]
+            ),
             "support_cues": [cue], "sample_sha256": current["sample"]["sample_sha256"],
             "support_observation_ids": sorted(r["observation_id"] for r in current["rows"]),
             "qualification": "development_only", "formal_outputs": 0}

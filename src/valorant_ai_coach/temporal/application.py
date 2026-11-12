@@ -244,6 +244,8 @@ def build_application_timeline(
             "lower_timestamp": float(low),
             "upper_timestamp": float(high),
             "native_transition": transition,
+            **({"round_membership": transition["round_membership"]}
+               if "round_membership" in transition else {}),
             "internal_event_time": None,
             "evidence_refs": transition["evidence_ids"],
             "qualified": False,

@@ -179,6 +179,13 @@ const p=document.createElement('p');
 
 p.textContent=event.kind+' 候補 ['+event.lower_timestamp.toFixed(3)+', '+
 event.upper_timestamp.toFixed(3)+']秒';
+const membership=event.round_membership;
+if(membership){
+const numbers=values=>values.length?values.join(' / '):'不明';
+p.textContent+=' ｜所属Round候補 '+numbers(membership.candidates)+
+'（前 '+numbers(membership.source.candidates)+' → 後 '+
+numbers(membership.destination.candidates)+'）';
+}
 el('events').append(p)}
 if(!row.event_candidates.length)el('events').textContent='この秒に候補なし（イベント不在の証明ではありません）'}
 el('go').onclick=()=>select(Number(el('time').value));
@@ -405,11 +412,22 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--bundle", type=Path, required=True)
-    parser.add_argument("--policy", type=Path, required=True)
+    parser.add_argument("--bundle", type=Path)
+    parser.add_argument("--policy", type=Path)
+    parser.add_argument("--review-packet", type=Path)
+    parser.add_argument("--review-answers", type=Path)
     parser.add_argument("--port", type=int, default=0)
     args = parser.parse_args()
-    server = make_server(args.bundle, args.policy, port=args.port)
+    if args.review_packet is not None:
+        if args.review_answers is None or args.bundle is not None or args.policy is not None:
+            parser.error("Review mode requires --review-packet and --review-answers")
+        from .timeline_review import make_review_server
+
+        server = make_review_server(args.review_packet, args.review_answers, port=args.port)
+    else:
+        if args.bundle is None or args.policy is None or args.review_answers is not None:
+            parser.error("Timeline mode requires --bundle and --policy")
+        server = make_server(args.bundle, args.policy, port=args.port)
     print(server.viewer_url, flush=True)  # type: ignore[attr-defined]
     try:
         server.serve_forever()
