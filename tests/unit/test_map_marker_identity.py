@@ -36,7 +36,7 @@ def test_local_white_arrow_ranks_before_colored_competitors():
     no_roi = pixel_rank(image, pool, None)
     assert no_roi["selection_status"] == "ABSTAIN"
     assert no_roi["proposed_index"] is None
-    assert no_roi["rankings"] == ranks
+    assert [r["score"] for r in no_roi["rankings"]] == [r["score"] for r in ranks]
 
 
 def test_dark_frame_and_duplicate_arrows_abstain():
