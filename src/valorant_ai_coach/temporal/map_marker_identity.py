@@ -37,7 +37,7 @@ def pixel_rank(
     scale = width / 1920
     radius = max(6, round(12 * scale))
     inner = max(2, round(4 * scale))
-    ranked = []
+    ranked: list[dict[str, Any]] = []
     for index, candidate in enumerate(candidates):
         center = candidate.get("center_frame_px")
         if (
