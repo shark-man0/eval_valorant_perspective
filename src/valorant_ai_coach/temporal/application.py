@@ -337,6 +337,10 @@ def build_application_timeline(
                 m["research_marker_identity_ranking"] for m in maps
                 if "research_marker_identity_ranking" in m
             ]
+            seconds[-1]["map_observations"]["research_recorder_marker_v2"] = [
+                m["research_recorder_marker_v2"] for m in maps
+                if "research_recorder_marker_v2" in m
+            ]
             seconds[-1]["viewed_identity_observations"] = [
                 {"sample_ref": f["sample"]["sample_sha256"], **f["viewed_identity"]}
                 for f in current if "viewed_identity" in f
