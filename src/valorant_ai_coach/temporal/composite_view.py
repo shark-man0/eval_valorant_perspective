@@ -485,6 +485,7 @@ class CompositeViewObserver:
                 from .map_marker_identity import pixel_rank
 
                 raw["marker_identity_supplier"] = mapped[0]["producer_fingerprint"]
+                raw["marker_identity_pool_digest"] = digest(mapped[0]["map_candidates"])
                 raw["marker_identity_pixels"] = pixel_rank(
                     image, mapped[0]["map_candidates"],
                     mapped[0]["raw"].get("roi_xywh_native"),
