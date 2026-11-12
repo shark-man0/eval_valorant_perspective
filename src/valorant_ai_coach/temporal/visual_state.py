@@ -247,6 +247,9 @@ def _attach_map_view(frame: dict[str, Any], rows: list[dict[str, Any]]) -> None:
     frame["map"]["research_map_correspondence_hypotheses"] = associate_generic_map(
         frame, rows, ranking, pool
     )
+    from .map_marker_identity import attach_rank
+
+    attach_rank(frame, rows, pool)
 
 
 def _event(kind: str, low: dict[str, Any], high: dict[str, Any],
