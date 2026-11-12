@@ -125,3 +125,35 @@ The historical four same-match DEVELOPMENT examples remain a frozen local
 check, not proof of cross-match generalization. Codex must measure rank,
 candidate role, abstention and false-owner outcomes separately after
 reacquiring the wider ranked image observations.
+
+
+## Map candidate-specific identity safety revision v2
+
+The previous pixel-only white triangle ranker is preserved **for diagnostic
+comparison only**. In the 100 manually reviewed DEVELOPMENT frames, its
+9-native-pixel proxy Top-1 fell from baseline 20/64 to 6/64. The application
+now emits `proposed_index=null` and `selection_status=ABSTAIN`; the rejected
+pixel-only proposal is retained as `untrusted_pixel_proposal_index` for
+local auditing, never as a recorder-owned position.
+
+`research_recorder_marker_v2` validates an ordered native candidate-pool
+digest, exact supplier identity and the original ranked context values before
+joining candidate measurements. The `baseline_context_order` remains
+untouched; `spatial_diversified_order` is a **separate** experiment grouping
+nearby proposals (not verified physical identities) without discarding any
+candidate. A pixel triangle cannot replace the baseline Top-1 by default.
+
+Camera/Life must be current SELF/ALIVE and the shared current-owner role
+hypothesis must exist even to consider recorder role; SPECTATOR, REMOTE, DEAD
+or UNKNOWN abstain. These necessary conditions still do **not** establish
+marker-to-recorder correspondence: v2 always abstains until an independent,
+validated candidate-specific owner cue exists. Spatial groups are not Zone
+positions, paths, qualified Facts/Events or formal Map ownership.
+
+Validation must replay the fixed four plus all 100 privately reviewed frames
+with exactly the same native pixels. Report old baseline, pixel-only ranking,
+and spatial-diversified ranking separately: candidate proximity Top-1/3/5,
+MRR@64, wrong-owner proposals, abstentions, and camera veto coverage. Do not
+tune on the comparison-only two physical matches. Request additional labels
+for ambiguous physical-marker identities rather than interpreting a 9px
+center distance as strict identity.

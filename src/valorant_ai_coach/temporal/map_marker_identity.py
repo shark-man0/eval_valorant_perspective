@@ -9,6 +9,8 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+from .evidence import digest
+
 VERSION = "development_marker_specific_pixel_rank_v1"
 MAX_RANKS = 64
 
@@ -141,6 +143,157 @@ def pixel_rank(
     }
 
 
+
+def _verified_legacy_rankings(
+    frame: dict[str, Any],
+    source: dict[str, Any],
+    pool: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Accept baseline order only from the exact current native Map supplier."""
+    bridge = frame["map"].get("marker_ranking_hypotheses")
+    if not isinstance(bridge, dict):
+        return []
+    ranked = bridge.get("rankings")
+    if (
+        not isinstance(ranked, list)
+        or not ranked
+        or bridge.get("map_supplier_fingerprint") != pool["producer_fingerprint"]
+        or source.get("marker_candidate_supplier") != pool["producer_fingerprint"]
+        or source.get("marker_context_rankings") != ranked
+    ):
+        return []
+    pool_size = len(pool["map_candidates"])
+    indices: set[int] = set()
+    for item in ranked:
+        if not isinstance(item, dict):
+            return []
+        index, score = item.get("candidate_index"), item.get("score")
+        if (
+            type(index) is not int
+            or not 0 <= index < pool_size
+            or index in indices
+            or type(score) not in (int, float)
+            or not math.isfinite(score)
+        ):
+            return []
+        indices.add(index)
+    return ranked
+
+
+def _proximity_groups(
+    candidates: list[dict[str, Any]],
+    baseline: list[dict[str, Any]],
+    width: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Group spatially adjacent proposals; proximity is NOT physical identity.
+
+    A group's anchor is the earliest baseline candidate. Never join by a
+    chain of progressively offset coordinates, and never relabel an actor.
+    The alternative ranking distributes distinct locations first, while the
+    original baseline order is retained unchanged as the primary metric.
+    """
+    radius = max(4.0, 8.0 * width / 1920)
+    groups: list[dict[str, Any]] = []
+    membership: dict[int, int] = {}
+    baseline_lookup: dict[int, int] = {}
+    for original_rank, item in enumerate(baseline, 1):
+        index = item["candidate_index"]
+        baseline_lookup[index] = original_rank
+        x, y = candidates[index]["center_frame_px"]
+        assigned = False
+        for group_id, group in enumerate(groups):
+            anchor = group["representative_candidate_index"]
+            ax, ay = candidates[anchor]["center_frame_px"]
+            if math.hypot(x - ax, y - ay) <= radius:
+                group["member_indices"].append(index)
+                membership[index] = group_id
+                assigned = True
+                break
+        if not assigned:
+            membership[index] = len(groups)
+            groups.append({
+                "representative_candidate_index": index,
+                "member_indices": [index],
+                "best_baseline_rank": original_rank,
+                "grouping_reason": "nearby_native_proposals_not_marker_identity",
+            })
+    representatives = [group["representative_candidate_index"] for group in groups]
+    used = set(representatives)
+    diversified = representatives + [
+        item["candidate_index"] for item in baseline
+        if item["candidate_index"] not in used
+    ]
+    ordering = [{
+        "candidate_index": index,
+        "diversified_rank": rank,
+        "original_baseline_rank": baseline_lookup[index],
+        "proximity_group_id": membership[index],
+    } for rank, index in enumerate(diversified, 1)]
+    return groups, ordering
+
+
+def _safe_candidate_diagnostics(
+    frame: dict[str, Any],
+    source: dict[str, Any],
+    pool: dict[str, Any],
+    result: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Gate image scores, preserve legacy rank and fail closed on pool mismatch."""
+    supplied_digest = source.get("marker_identity_pool_digest")
+    expected_digest = digest(pool["map_candidates"])
+    if supplied_digest != expected_digest:
+        return None
+    baseline = _verified_legacy_rankings(frame, source, pool)
+    if not baseline:
+        return None
+    sample = frame["sample"]
+    width = sample["frame_size_px"][0]
+    groups, diversified = _proximity_groups(pool["map_candidates"], baseline, width)
+    camera = frame["camera"]["value"]
+    life = frame.get("life", {}).get("value")
+    camera_eligible = camera == "SELF" and life == "ALIVE"
+    existing_roles = frame["map"].get("research_map_correspondence_hypotheses", [])
+    role_eligible = any(
+        "RECORDER_SELF" in h.get("role_hypotheses", []) for h in existing_roles
+    )
+    baseline_indices = [item["candidate_index"] for item in baseline]
+    raw_indices = [item["candidate_index"] for item in result["rankings"]]
+    baseline_top = baseline_indices[0]
+    pixel_top = raw_indices[0] if raw_indices else None
+    return {
+        "contract": "development_map_marker_proof_gate_v2",
+        "sample": deepcopy(sample),
+        "map_observation_id": pool["observation_id"],
+        "visual_observation_id": result["visual_observation_id"],
+        "map_supplier_fingerprint": pool["producer_fingerprint"],
+        "ordered_candidate_pool_digest": expected_digest,
+        "baseline_context_order": baseline_indices,
+        "baseline_top_index": baseline_top,
+        "pixel_only_top_index": pixel_top,
+        "pixel_override_accepted": False,
+        "pixel_and_baseline_disagree": pixel_top != baseline_top,
+        "proximity_groups": groups,
+        "spatial_diversified_order": diversified,
+        "spatial_grouping_is_marker_identity": False,
+        "camera_life_gate": camera_eligible,
+        "self_role_gate": role_eligible,
+        "recorder_proposed_index": None,
+        "selection_status": "ABSTAIN",
+        "abstain_reason": (
+            "not_current_recorder_view"
+            if not camera_eligible
+            else "unverified_current_recorder_view"
+            if not role_eligible
+            else "no_independent_candidate_recorder_correspondence"
+        ),
+        "score_scope": "diagnostic_not_probability",
+        "ownership": "UNKNOWN",
+        "qualified": False,
+        "position_authority": False,
+        "temporal_path_eligible": False,
+    }
+
+
 def attach_rank(
     frame: dict[str, Any],
     rows: list[dict[str, Any]],
@@ -157,7 +310,11 @@ def attach_rank(
     ]
     if len(matches) != 1:
         return
-    raw = matches[0]["raw"]["marker_identity_pixels"]
+    source = matches[0]["raw"]
+    raw = source["marker_identity_pixels"]
+    supplied_digest = source.get("marker_identity_pool_digest")
+    if supplied_digest is not None and supplied_digest != digest(pool["map_candidates"]):
+        return
     proposals = raw.get("rankings")
     if not isinstance(proposals, list):
         return
@@ -168,6 +325,12 @@ def attach_rank(
                    for i in indices)):
         return
     result = deepcopy(raw)
+    # The old pixel-only selector produced a false owner in a SPECTATOR frame.
+    # Preserve its output only as a diagnostic; never emit an active selection.
+    result["untrusted_pixel_proposal_index"] = result.get("proposed_index")
+    result["proposed_index"] = None
+    result["selection_status"] = "ABSTAIN"
+    result["pixel_proposal_not_owner_proof"] = True
     result["rankings"] = [
         {
             **deepcopy(h),
@@ -195,3 +358,6 @@ def attach_rank(
     ))
     result["temporal_path_eligible"] = False
     frame["map"]["research_marker_identity_ranking"] = result
+    v2 = _safe_candidate_diagnostics(frame, source, pool, result)
+    if v2 is not None:
+        frame["map"]["research_recorder_marker_v2"] = v2
