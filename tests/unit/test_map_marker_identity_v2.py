@@ -147,3 +147,39 @@ def test_no_pixel_cue_can_override_baseline_rank():
     assert v2["baseline_top_index"] == 2
     assert v2["pixel_override_accepted"] is False
     assert v2["recorder_proposed_index"] is None
+
+
+def test_unbound_legacy_pixel_rank_does_not_attach_candidates():
+    frame, rows, pool = case(bound=False)
+    pool["map_candidates"].reverse()
+    attach_rank(frame, rows, pool)
+    result = frame["map"]["research_marker_identity_ranking"]
+    assert all("candidate" not in row for row in result["rankings"])
+    assert "map_observation_id" not in result
+
+
+def test_wrong_native_pool_sample_does_not_attach_even_with_matching_digest():
+    frame, rows, pool = case()
+    pool["sample"] = obs(1)["sample"]
+    attach_rank(frame, rows, pool)
+    assert "research_marker_identity_ranking" not in frame["map"]
+    assert "research_recorder_marker_v2" not in frame["map"]
+
+
+def test_malformed_candidate_index_does_not_raise_or_attach():
+    frame, rows, pool = case()
+    rows[-1]["raw"]["marker_identity_pixels"]["rankings"][0]["candidate_index"] = []
+    attach_rank(frame, rows, pool)
+    assert "research_marker_identity_ranking" not in frame["map"]
+    assert "research_recorder_marker_v2" not in frame["map"]
+
+
+def test_non_recorder_view_does_not_inherit_conflicting_recorder_role():
+    for camera, life in (("SPECTATOR", "ALIVE"), ("REMOTE", "ALIVE"),
+                         ("UNKNOWN", "UNKNOWN"), ("SELF", "DEAD"), ("SELF", "UNKNOWN")):
+        frame, rows, pool = case(camera, life)
+        attach_rank(frame, rows, pool)
+        assert "RECORDER_SELF" not in frame["map"]["research_marker_identity_ranking"][
+            "role_hypotheses"
+        ]
+        assert frame["map"]["research_recorder_marker_v2"]["recorder_proposed_index"] is None
