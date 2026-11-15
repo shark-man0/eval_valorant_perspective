@@ -137,8 +137,26 @@ def _measure_patch(
     )
     half = max(1, round(radius * .7))
     portrait = bgr[py-half:py+half+1, px-half:px+half+1]
-    gray = cv2.cvtColor(portrait, cv2.COLOR_BGR2GRAY)
+    gray = cast(NDArray[np.uint8], cv2.cvtColor(portrait, cv2.COLOR_BGR2GRAY))
     size = gray.shape[0]
+    axis = np.arange(size) - half
+    circle = np.hypot(axis[:, None], axis[None, :]) <= half
+    agents = portrait_agent_candidates(gray, references)
+    return {
+        **rim, "structure_score": float(score), "center_patch_px": [px, py],
+        "radius_px": radius, "portrait_mean_bgr": portrait[circle].mean(axis=0).tolist(),
+        "competing_structure_score": best[0] if best else None,
+        "agent_candidates": agents,
+    }
+
+
+
+def portrait_agent_candidates(
+    gray: NDArray[np.uint8], references: Sequence[Reference],
+) -> list[dict[str, Any]]:
+    """Compare a square grayscale portrait crop against the existing reference catalog."""
+    size = gray.shape[0]
+    half = size // 2
     axis = np.arange(size) - half
     circle = np.hypot(axis[:, None], axis[None, :]) <= half
     normalized = gray[circle].astype(np.float32)
@@ -154,12 +172,7 @@ def _measure_patch(
             if denom > 0:
                 agents.append({"agent": name, "score": float(vector @ normalized / denom)})
     agents.sort(key=lambda item: (-item["score"], item["agent"]))
-    return {
-        **rim, "structure_score": float(score), "center_patch_px": [px, py],
-        "radius_px": radius, "portrait_mean_bgr": portrait[circle].mean(axis=0).tolist(),
-        "competing_structure_score": best[0] if best else None,
-        "agent_candidates": agents[:3],
-    }
+    return agents[:3]
 
 
 def shared_structure_groups(measurement: dict[str, Any]) -> list[list[int]]:
