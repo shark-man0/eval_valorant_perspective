@@ -428,3 +428,20 @@ def test_source_policy_reads_the_catalog_and_keeps_legacy_receipts(catalog, tmp_
             "accepted": True, "manifest_sha256": "0" * 64, "allocation_sha256": anchor}})
     with pytest.raises(LeakageError):  # a blind hold-out is not development material
         SourcePolicy({"catalog": str(catalog.root), "allowed_recording_ids": ["batch_002"]})
+
+
+def test_path_map_keeps_canonical_paths_while_reading_a_mount(tmp_path):
+    mount = tmp_path / "mnt" / "full_match"
+    clip = video(mount, "a.mp4", b"mounted bytes" * 9)
+    canonical = "/Users/someone/Desktop/full_match"
+    root = tmp_path / "private" / "cat"
+    RecordingCatalog.create(root, seed="s")
+    catalog = RecordingCatalog(root, path_map={canonical: str(mount)})
+    rid = catalog.register(clip, physical_match_id="m", split="DEVELOPMENT").recording_id
+    stored = catalog.state.recordings[rid].locations["original"]["path"]
+    assert stored == f"{canonical}/a.mp4"
+    assert catalog.recordings_under(mount) == [rid]
+    assert catalog.verify()["missing_locations"] == []
+    assert RecordingCatalog(root).verify(quarantine=False)["missing_locations"] == [
+        f"{rid}:original"
+    ]  # without the map the canonical path is simply not mounted here

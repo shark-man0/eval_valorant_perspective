@@ -23,6 +23,10 @@ def _print(value: object) -> None:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m valorant_ai_coach.recordings")
     parser.add_argument("--catalog", type=Path, required=True, help="非公開カタログの場所")
+    parser.add_argument(
+        "--path-map", action="append", default=[], metavar="STORED=LOCAL",
+        help="保存済みパスの先頭をこの環境の場所に読み替える（例: Macのパスを仮想環境へ）",
+    )
     sub = parser.add_subparsers(dest="command", required=True)
     init = sub.add_parser("init")
     init.add_argument("--seed")
@@ -96,7 +100,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             RecordingCatalog.create(args.catalog, seed=args.seed, ratios=ratios)
             _print(RecordingCatalog(args.catalog).public_summary())
             return 0
-        catalog = RecordingCatalog(args.catalog)
+        path_map = dict(item.split("=", 1) for item in args.path_map)
+        catalog = RecordingCatalog(args.catalog, path_map=path_map)
         if args.command == "register":
             results = []
             for path in args.paths:

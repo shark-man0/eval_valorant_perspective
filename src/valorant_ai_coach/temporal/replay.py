@@ -91,7 +91,9 @@ class SourcePolicy:
         """
         from valorant_ai_coach.recordings import RecordingCatalog
 
-        catalog = RecordingCatalog(Path(policy["catalog"]))
+        catalog = RecordingCatalog(
+            Path(policy["catalog"]), path_map=policy.get("path_map") or None
+        )
         identifiers = list(policy.get("allowed_recording_ids") or [])
         if not identifiers or len(set(identifiers)) != len(identifiers):
             raise ValueError("Explicit existing source allowlist required")
@@ -106,7 +108,7 @@ class SourcePolicy:
                 "video_id": identifier,
                 "source_sha256": record.source_sha256,
                 "physical_match_id": record.physical_match_id,
-                "managed_path": location["path"],
+                "managed_path": str(catalog.local_path(location["path"])),
                 "status": "accepted",
                 "split": record.split,
                 "exposure": "DEVELOPMENT" if record.split == "DEVELOPMENT"

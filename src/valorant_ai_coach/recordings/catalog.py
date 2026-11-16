@@ -419,7 +419,11 @@ class RecordingCatalog:
     HEAD = "HEAD.json"
     LOCK = ".catalog.lock"
 
-    def __init__(self, root: Path) -> None:
+    def __init__(self, root: Path, *, path_map: Mapping[str, str] | None = None) -> None:
+        """``path_map`` maps stored (canonical) path prefixes to where they are mounted
+        on this machine, e.g. the Mac's ``/Users/me/Desktop`` inside a Linux VM. Stored
+        paths stay canonical; only file access is translated."""
+        self.path_map = dict(path_map or {})
         self.root = Path(root).expanduser().resolve()
         if _git_root(self.root) is not None:
             raise CatalogError("カタログはGitリポジトリの外（非公開の場所）に置いてください")
@@ -448,6 +452,7 @@ class RecordingCatalog:
         root.mkdir(parents=True, exist_ok=True, mode=0o700)
         catalog = cls.__new__(cls)
         catalog.root = root
+        catalog.path_map = {}
         catalog.state = CatalogState()
         with catalog._locked():
             catalog._append(
@@ -563,6 +568,21 @@ class RecordingCatalog:
             os.fsync(stream.fileno())
         temporary.replace(view)
 
+    # -- paths ---------------------------------------------------------------------
+
+    def local_path(self, stored: str) -> Path:
+        for canonical, local in sorted(self.path_map.items(), key=lambda kv: -len(kv[0])):
+            if stored == canonical or stored.startswith(canonical.rstrip("/") + "/"):
+                return Path(local + stored[len(canonical):])
+        return Path(stored)
+
+    def canonical_path(self, local: Path) -> str:
+        text = str(Path(local).expanduser().resolve())
+        for canonical, mounted in sorted(self.path_map.items(), key=lambda kv: -len(kv[1])):
+            if text == mounted or text.startswith(mounted.rstrip("/") + "/"):
+                return canonical + text[len(mounted):]
+        return text
+
     # -- registration --------------------------------------------------------------
 
     def _known_location(self, path: Path) -> Recording | None:
@@ -570,7 +590,7 @@ class RecordingCatalog:
         for recording in self.state.recordings.values():
             for location in recording.locations.values():
                 if (
-                    location["path"] == str(path)
+                    location["path"] == self.canonical_path(path)
                     and location["size_bytes"] == stat.st_size
                     and location["mtime_ns"] == stat.st_mtime_ns
                 ):
@@ -645,10 +665,11 @@ class RecordingCatalog:
                 raise CatalogError("同じ内容の録画が別の物理試合として登録済みです")
             if split and split != existing.split:
                 raise SplitImmutableError("登録済み録画のsplitは変更できません")
-            if role not in existing.locations or existing.locations[role]["path"] != str(path):
+            stored = self.canonical_path(path)
+            if role not in existing.locations or existing.locations[role]["path"] != stored:
                 self._append(
                     "location",
-                    {"recording_id": existing.recording_id, "role": role, "path": str(path),
+                    {"recording_id": existing.recording_id, "role": role, "path": stored,
                      "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns},
                 )
             return RegistrationResult(existing.recording_id, False, existing.split)
@@ -702,7 +723,7 @@ class RecordingCatalog:
         )
         self._append(
             "location",
-            {"recording_id": identifier, "role": role, "path": str(path),
+            {"recording_id": identifier, "role": role, "path": self.canonical_path(path),
              "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns},
         )
         if metadata:
@@ -808,7 +829,10 @@ class RecordingCatalog:
                     value = row.get(key)
                     if isinstance(value, str) and value and role not in locations:
                         locations[role] = Path(value)
-                sizes = [p.stat().st_size for p in locations.values() if p.is_file()]
+                sizes = [
+                    self.local_path(str(p)).stat().st_size
+                    for p in locations.values() if self.local_path(str(p)).is_file()
+                ]
                 self._append(
                     "register",
                     {
@@ -830,8 +854,8 @@ class RecordingCatalog:
                     },
                 )
                 for role, location in locations.items():
-                    if location.is_file():
-                        stat = location.stat()
+                    if self.local_path(str(location)).is_file():
+                        stat = self.local_path(str(location)).stat()
                         self._append(
                             "location",
                             {"recording_id": rid, "role": role, "path": str(location),
@@ -951,7 +975,7 @@ class RecordingCatalog:
                     "parents": sorted(set(parents)),
                     "producer": dict(producer),
                     "registered_at": utc_now(),
-                    "path": None if path is None else str(Path(path).resolve()),
+                    "path": None if path is None else self.canonical_path(Path(path)),
                     "physical_match_ids": list(physical),
                 },
             )
@@ -1038,7 +1062,7 @@ class RecordingCatalog:
                 if selected is not None and recording.recording_id not in selected:
                     continue
                 for role, location in sorted(recording.locations.items()):
-                    path = Path(location["path"])
+                    path = self.local_path(location["path"])
                     if not path.is_file():
                         missing.append(f"{recording.recording_id}:{role}")
                         continue
@@ -1133,7 +1157,9 @@ class RecordingCatalog:
                 {
                     "source_id": rid,
                     "physical_match_id": recording.physical_match_id,
-                    "archive": None if location is None else location["path"],
+                    "archive": None if location is None else str(
+                        self.local_path(location["path"])
+                    ),
                     "archive_sha256": recording.source_sha256,
                     "archive_bytes": recording.size_bytes,
                     "split": sub,
@@ -1175,7 +1201,7 @@ class RecordingCatalog:
             splits = {row["split"] for row in parents if row is not None}
             if len(artifact.physical_match_ids) != 1 or len(splits) != 1:
                 continue
-            path = Path(artifact.path)
+            path = self.local_path(artifact.path)
             rows.append(
                 {
                     "source_id": artifact.artifact_id,
@@ -1216,7 +1242,7 @@ class RecordingCatalog:
 
     def recordings_under(self, prefix: Path) -> list[str]:
         """Recording ids with a location under ``prefix`` (e.g. one recording folder)."""
-        root = str(Path(prefix).expanduser().resolve())
+        root = self.canonical_path(Path(prefix))
         return sorted(
             rid for rid, recording in self.state.recordings.items()
             if any(
