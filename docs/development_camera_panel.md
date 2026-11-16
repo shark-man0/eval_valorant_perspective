@@ -62,7 +62,10 @@ pixel identical to the acquisition. The supplements used for this replay were
 measured on JPEG crops (quality 92) of those frames. The label reference comes
 from one match; thresholds were chosen on four matches and applied unchanged to
 the other six. The own-bar prototype was available in 10 of 10 matches
-(cluster 227 to 281 of 300; 0 spectator frames matched).
+(cluster 227 to 281 of 300; 0 spectator frames matched). A check of 301
+full-resolution frames (one match, 1,000 to 1,300 s) with the module itself gave
+the same label state as the crops for 301 of 301 frames (largest score
+difference 0.027).
 
 | Measure | Before | After |
 | --- | ---: | ---: |
