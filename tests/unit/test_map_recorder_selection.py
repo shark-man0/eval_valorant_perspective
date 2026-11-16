@@ -169,3 +169,57 @@ def test_measured_track_can_recover_a_lower_ranked_visible_portrait(monkeypatch)
         assert result["support_count"] == step
     assert result["research_candidate_index"] == 0
     assert result["portrait_recovered_from_continuity"]
+
+
+def test_knowledge_match_keeps_camera_veto_and_splits_after_a_gap(monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
+
+    image = _image(80)
+    asset = image[55:66, 75:86].copy()
+    catalog = SimpleNamespace(agent=lambda name: SimpleNamespace(uuid="recorder", name=name))
+    knowledge = KnowledgeRecorderMap(
+        hud=SimpleNamespace(agent_uuids=("recorder", "rival")), catalog=catalog,
+        portraits=[("recorder", asset), ("rival", np.fliplr(asset))], provenance={},
+    )
+    monkeypatch.setattr(knowledge, "_hud_uuid", lambda image: "recorder")
+    monkeypatch.setattr(knowledge, "_portrait_scores", lambda image, center: np.array([.92, .49]))
+
+    baseline = MapRecorderSelector([])
+    def observe(x, tick, *, signal=None, other_x=None):
+        image = _image(x)
+        pool = [{"center_frame_px": [x, 60]}]
+        if other_x is not None:
+            second = _image(other_x)
+            image[:, other_x-20:other_x+20] = second[:, other_x-20:other_x+20]
+            pool.append({"center_frame_px": [other_x, 60]})
+        frame = _context(image, tick, pool)
+        sample = frame["sample"]
+        panel = observation(
+            sample=sample, producer="c"*64, signals=["owner_hud"],
+            context={"stream_kind": "camera_panel"},
+            raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                  "own_ability_bar_score": .90},
+                 "qualified": False, "formal_outputs": 0},
+        )
+        observations = [panel]
+        if signal:
+            observations.append(observation(
+                sample=sample, producer="d"*64, signals=[signal], raw={},
+            ))
+        frame["observation_ids"] = [row["observation_id"] for row in observations]
+        frame["camera"]["evidence_ids"] = [panel["observation_id"]]
+        old = baseline.observe(image, pool, sample, frame, observations=observations)
+        return knowledge.observe(image, pool, sample, frame, observations, old)
+
+    first = observe(80, 6)
+    assert first["selection_method"] == "knowledge_agent_uuid"
+    assert first["ownership"] == "UNKNOWN" and not first["position_authority"]
+    assert observe(81, 12)["support_count"] == 2
+    assert observe(82, 18, signal="report")["selection_status"] == "ABSTAIN"
+    assert observe(83, 24)["support_count"] == 1
+    assert observe(84, 50)["support_count"] == 1
+    ambiguous = observe(85, 56, other_x=145)
+    assert ambiguous["knowledge_reason"] == "distinct_matching_markers"
+    assert ambiguous["selection_status"] == "ABSTAIN"

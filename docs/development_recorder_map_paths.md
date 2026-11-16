@@ -57,3 +57,52 @@ original common timeline second. This segment falls outside the authored site
 polygons. The held endpoint and the second training sequence remain without an
 accepted coordinate transform. The Zone polygon checks pass controlled tests.
 All 100 frozen ranking scenes retained the established ordering.
+
+## External game knowledge mode
+
+Pass `--knowledge-asset-cache <cache directory>` when the game knowledge API
+from PR #153 is available in the evaluation checkout. The exporter verifies
+the pinned image cache through that API. It reads the viewed Agent from
+distinct bottom-HUD ability slots and compares that Agent UUID with the
+portrait inside each candidate's warm rim. The exact-sample Camera and Life
+guards still apply, including combat-report and perspective conflicts.
+Distinct matching markers and overlapping fitted rivals cause abstention.
+The recognition mode preserves the existing candidate IDs and ranking.
+
+A strongly fitted portrait with an attached tip can contribute a single
+observed point. A tipless fit needs a matching adjacent observation of the
+same Agent, Camera producer, Source, acquisition, and Round. A one-second
+row may contain a single point. Path edges require adjacent observations
+within 250 ms and split when the evidence starts a new track. Each point and
+track remains a development hypothesis. The mode only reads the common
+timeline. It issues no position Facts, Player Events, or tactical assessments.
+
+### Evaluation with the revised common timeline
+
+| Fixed 150 native frames across five DEVELOPMENT matches | PR #156 | Latest common inputs | With knowledge |
+| --- | ---: | ---: | ---: |
+| Selected research candidates | 2 | 2 | 23 |
+| Correct among six reviewed recorder markers | 2 | 2 | 5 |
+| Wrong among reviewed selections | 0 | 0 | 0 |
+| Selected candidates with unresolved correctness | 0 | 0 | 18 |
+| Abstained | 148 | 148 | 127 |
+| Current view evidence conflict | 41 | 40 | 40 |
+| Current SELF and ALIVE unavailable | 31 | 41 | 41 |
+| Top portrait unresolved | 33 | 28 | 27 |
+| Insufficient native continuity | 24 | 24 | 5 |
+
+The common inputs use the health-digit camera gate from #151 and the
+continuity revisions from #150. They rejected additional insufficiently
+supported views. The held-out DEVELOPMENT comparison subset selected one
+of 60 candidates. That new selection has no owner label. All 25 native
+observations classified as SPECTATOR by the revised timeline abstained.
+These counts measure development coverage and reviewed agreements.
+
+The public exporter was run on the same 250 retained images (50 per match)
+using whole-recording one-second bins. Map-reference points increased from
+3 to 21 across Lotus and Corrode. Seconds with any point increased from
+1 to 9 out of 11,487. Observed edges increased from 2 to 13. Named Zone
+coverage remained zero. The other seconds were unobserved by this replay
+or had no accepted point. The five-match test used sparse native coverage
+and short dense windows. Absolute coordinate error and full-density match
+coverage remain unmeasured.

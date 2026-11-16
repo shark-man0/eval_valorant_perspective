@@ -78,6 +78,10 @@ def project_recorder_witness(
         "reference_sha256": sha, "map_reference_px": coordinate,
         "recorder_agent_candidate": selection.get("recorder_agent_candidate"),
         "qualified": False, "position_authority": False,
+        **({"selection_method": selection["selection_method"],
+            "track_anchor": selection["track_anchor"],
+            "recorder_agent_uuid_candidate": selection["recorder_agent_uuid_candidate"]}
+           if selection.get("selection_method") == "knowledge_agent_uuid" else {}),
     }
 
 
@@ -154,6 +158,8 @@ def _same_run(a: dict[str, Any], b: dict[str, Any]) -> bool:
         source_scope(src_a) == source_scope(src_b)
         and 0 < native_time(src_b) - native_time(src_a) <= Fraction(1, 4)
         and a["support_count"] + 1 == b["support_count"]
+        and a.get("selection_method") == b.get("selection_method")
+        and a.get("track_anchor") == b.get("track_anchor")
         and a["map_id"] == b["map_id"]
         and a["reference_sha256"] == b["reference_sha256"]
     )
