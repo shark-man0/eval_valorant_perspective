@@ -90,7 +90,7 @@ def test_same_size_recordings_need_explicit_confirmation(catalog, tmp_path):
 def test_directory_intake_is_incremental(catalog, tmp_path, monkeypatch):
     folder = tmp_path / "drop"
     for index in range(5):
-        video(folder, f"rec{index}.mp4", f"recording {index}".encode() * (index + 3))
+        video(folder, f"rec{index}.mp4", f"recording {index}".encode("ascii") * (index + 3))
     (folder / "notes.txt").write_text("not a video", encoding="utf-8")
     first = catalog.register_directory(folder, workers=2)
     assert sum(r.added for r in first) == 5
@@ -105,7 +105,9 @@ def test_directory_intake_is_incremental(catalog, tmp_path, monkeypatch):
 
 
 def test_journal_tampering_is_detected(catalog, tmp_path):
-    catalog.register(video(tmp_path, "a.mp4", b"a" * 99), physical_match_id="m", split="DEVELOPMENT")
+    catalog.register(
+        video(tmp_path, "a.mp4", b"a" * 99), physical_match_id="m", split="DEVELOPMENT"
+    )
     journal = catalog.root / "journal.jsonl"
     lines = journal.read_text(encoding="utf-8").splitlines()
     lines[1] = lines[1].replace("DEVELOPMENT", "QUALIFICATION")
@@ -126,8 +128,9 @@ def test_concurrent_writer_is_refused(catalog, tmp_path):
 def _three(catalog, tmp_path):
     ids = {}
     for index, split in enumerate(("DEVELOPMENT", "QUALIFICATION", "FINAL_HOLDOUT")):
-        path = video(tmp_path, f"{split}.mp4", split.encode() * 20 + b"x" * index)
-        ids[split] = catalog.register(path, physical_match_id=f"m_{split}", split=split).recording_id
+        path = video(tmp_path, f"{split}.mp4", split.encode("ascii") * 20 + b"x" * index)
+        result = catalog.register(path, physical_match_id=f"m_{split}", split=split)
+        ids[split] = result.recording_id
     return ids
 
 
@@ -213,7 +216,7 @@ def _legacy_manifest(tmp_path: Path) -> Path:
         ("FINAL_HOLDOUT_CANDIDATE", "UNKNOWN_EXPOSURE", "accepted"),
         ("DEVELOPMENT", "DEVELOPMENT", "rejected"),
     ]):
-        source = video(tmp_path / "legacy", f"v{index}.mp4", f"legacy {index}".encode() * 40)
+        source = video(tmp_path / "legacy", f"v{index}.mp4", f"legacy {index}".encode("ascii") * 40)
         rows.append({
             "original_path": str(source), "managed_path": str(source),
             "source_sha256": catalog_module.sha256_file(source),

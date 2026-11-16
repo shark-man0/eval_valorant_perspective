@@ -150,7 +150,7 @@ def _require_sha(value: str) -> str:
 
 
 def hash_bucket(seed: str, physical_match_id: str) -> float:
-    value = hashlib.sha256(f"{seed}:{physical_match_id}".encode()).digest()
+    value = hashlib.sha256(f"{seed}:{physical_match_id}".encode("utf-8")).digest()  # noqa: UP012
     return int.from_bytes(value[:8], "big") / 2**64
 
 
@@ -1056,7 +1056,8 @@ def probe_metadata(path: Path, ffprobe: str = "ffprobe") -> dict[str, Any]:
         [ffprobe, "-v", "error", "-select_streams", "v:0", "-show_entries",
          "stream=codec_name,width,height,avg_frame_rate,time_base:format=duration",
          "-of", "json", str(path)],
-        capture_output=True, text=True, timeout=120, check=False,
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+        timeout=120, check=False,
     )
     if result.returncode:
         raise CatalogError("ffprobeでメタデータを取得できません")
