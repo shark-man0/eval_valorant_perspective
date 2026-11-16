@@ -399,6 +399,7 @@ def export_application(
     current_hp_return_candidate: bool = False,
     current_menu_return_candidate: bool = False,
     practical_visual_state: bool = False,
+    measured_view_precedence: bool = False,
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
@@ -413,6 +414,7 @@ def export_application(
             current_hp_return_candidate,
             current_menu_return_candidate,
             practical_visual_state,
+            measured_view_precedence,
         )
     ):
         raise ValueError("Explicit development Map/clock booleans required")
@@ -456,6 +458,7 @@ def export_application(
         or current_hp_return_candidate
         or current_menu_return_candidate
         or practical_visual_state
+        or measured_view_precedence
     ):
         config = timeline["configuration"]
         engine = DevelopmentGameTimeline(
@@ -476,6 +479,8 @@ def export_application(
             or bool(config.get("current_menu_return_candidate")),
             practical_visual_state=practical_visual_state
             or bool(config.get("practical_visual_state")),
+            measured_view_precedence=measured_view_precedence
+            or bool(config.get("measured_view_precedence")),
         )
         for row in timeline["observations"] + extra:
             engine.add(row)
@@ -557,6 +562,7 @@ def export_application(
         "current_hp_return_candidate_requested_for_export": current_hp_return_candidate,
         "current_menu_return_candidate_requested_for_export": current_menu_return_candidate,
         "practical_visual_state_requested_for_export": practical_visual_state,
+        "measured_view_precedence_requested_for_export": measured_view_precedence,
         "export_engine_configuration": timeline["configuration"],
         "output_sha256s": {p.name: file_sha(p) for p in output.iterdir()},
         "formal_outputs": 0,
@@ -582,6 +588,7 @@ def main() -> None:
     export.add_argument("--current-hp-return-candidate", action="store_true")
     export.add_argument("--current-menu-return-candidate", action="store_true")
     export.add_argument("--practical-visual-state", action="store_true")
+    export.add_argument("--measured-view-precedence", action="store_true")
     generate = sub.add_parser("generate")
     for name in ("policy", "reader-config", "output"):
         generate.add_argument("--" + name, type=Path, required=True)
@@ -716,6 +723,7 @@ def main() -> None:
             policy_path=args.policy,
             output=args.output,
             practical_visual_state=args.practical_visual_state,
+            measured_view_precedence=args.measured_view_precedence,
             current_menu_return_candidate=args.current_menu_return_candidate,
             supplements=args.supplement,
             provisional_map_roles=args.provisional_map_roles,
