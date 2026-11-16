@@ -36,6 +36,7 @@ for relative in (
     add_file(relative)
 
 add_json_tree("schemas")
+add_json_tree("config/game_knowledge")
 add_file("config/visual_v2/MANIFEST.json")
 add_json_tree("config/visual_v2/config")
 add_json_tree("config/visual_v2/schemas")
