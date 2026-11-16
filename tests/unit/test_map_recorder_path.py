@@ -67,3 +67,21 @@ def test_native_path_uses_exact_transform_and_leaves_missing_seconds_unknown():
     assert joined[1]["coverage"] == "UNKNOWN"
     with pytest.raises(ValueError, match="absent from"):
         join_recorder_seconds(result, {"seconds": timeline["seconds"][1:]})
+
+
+def test_path_edges_do_not_join_different_knowledge_witness_anchors():
+    rows = []
+    for i, anchor in enumerate(("x", "x", "y")):
+        sample = freeze_native_sample({
+            "source_id": "s", "source_sha256": "a"*64,
+            "acquisition_id": "e", "native_epoch": "e",
+            "native_pts_tick": i + 3, "native_time_base": "1/10",
+            "acquired_frame_sha256": "b"*64, "frame_size_px": [90, 60],
+            "native_pixel_sha256": "c"*64,
+        })
+        rows.append({
+            "sample": sample, "support_count": i + 1, "kind": "selected",
+            "map_id": "lotus", "reference_sha256": "d"*64,
+            "selection_method": "knowledge_agent_uuid", "track_anchor": anchor,
+        })
+    assert [len(seg) for seg in build_recorder_paths(rows)["segments"]] == [2, 1]

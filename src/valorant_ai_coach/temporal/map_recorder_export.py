@@ -13,6 +13,7 @@ import numpy as np
 from .application import VERSION as APPLICATION_VERSION
 from .evidence import digest, freeze_native_sample
 from .map_portrait_rim import Reference
+from .map_recorder_knowledge import KnowledgeRecorderMap
 from .map_recorder_path import (
     ReferenceZones,
     build_recorder_paths,
@@ -49,7 +50,7 @@ def _agent_references(catalog: Path) -> tuple[list[Reference], dict[str, str]]:
 def export_recorder_paths(
     *, bundle_path: Path, frame_manifest: Path, policy_path: Path, catalog: Path,
     layout: Path, output: Path, zones_path: Path | None = None,
-    recover_supported_portraits: bool = False,
+    recover_supported_portraits: bool = False, knowledge_asset_cache: Path | None = None,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -59,6 +60,8 @@ def export_recorder_paths(
     refs, asset_hashes = _agent_references(catalog)
     projector = PublicMapPixels(catalog, layout)
     tracker = MapRecorderSelector(refs, recover_supported_portraits=recover_supported_portraits)
+    knowledge = (KnowledgeRecorderMap.load(knowledge_asset_cache, catalog)
+                 if knowledge_asset_cache else None)
     zones = [
         ReferenceZones(z["map_id"], z["reference_sha256"], z["polygons"])
         for z in read_json(zones_path)["maps"]
@@ -83,6 +86,8 @@ def export_recorder_paths(
         packet = inputs.get(key)
         if packet is None:
             tracker.reset()
+            if knowledge is not None:
+                knowledge.reset()
             rows.append(None)
             continue
         path = packet[1]
@@ -97,11 +102,15 @@ def export_recorder_paths(
                  and r["raw"].get("schema") == "development_generic_map_pixels_v1"]
         if len(pools) != 1:
             tracker.reset()
+            if knowledge is not None:
+                knowledge.reset()
             rows.append(None)
             continue
         pool = pools[0]["map_candidates"]
         image = np.asarray(decoded, dtype=np.uint8)
         result = tracker.observe(image, pool, sample, frame, observations=obs)
+        if knowledge is not None:
+            result = knowledge.observe(image, pool, sample, frame, obs, result)
         if result["support_count"] <= 0:
             rows.append(None)
             continue
@@ -117,6 +126,8 @@ def export_recorder_paths(
         "map_catalog_fingerprint": digest(projector.bindings),
         "zone_catalog_sha256": file_sha(zones_path) if zones_path else None,
     }
+    if knowledge is not None:
+        report["game_knowledge"] = knowledge.provenance
     write_private(output, report)
     return report
 
@@ -127,6 +138,7 @@ def main() -> None:
         parser.add_argument(f"--{field}", required=True, type=Path)
     parser.add_argument("--zones-path", type=Path)
     parser.add_argument("--recover-supported-portraits", action="store_true")
+    parser.add_argument("--knowledge-asset-cache", type=Path)
     export_recorder_paths(**vars(parser.parse_args()))
 
 
