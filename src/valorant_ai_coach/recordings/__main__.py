@@ -1,0 +1,151 @@
+"""Command line for the private recording catalog (#62).
+
+Outputs that can be shown or committed are counts only; ids, hashes and paths stay in
+the catalog directory.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from collections.abc import Sequence
+from pathlib import Path
+
+from .catalog import ARTIFACT_KINDS, EXPOSURE_KINDS, PURPOSES, CatalogError, RecordingCatalog
+
+
+def _print(value: object) -> None:
+    print(json.dumps(value, ensure_ascii=False, indent=2))
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(prog="python -m valorant_ai_coach.recordings")
+    parser.add_argument("--catalog", type=Path, required=True, help="非公開カタログの場所")
+    sub = parser.add_subparsers(dest="command", required=True)
+    init = sub.add_parser("init")
+    init.add_argument("--seed")
+    init.add_argument("--ratios", help="例: DEVELOPMENT=0.6,QUALIFICATION=0.2,FINAL_HOLDOUT=0.2")
+    register = sub.add_parser("register")
+    register.add_argument("paths", nargs="+", type=Path)
+    register.add_argument("--physical-match-id")
+    register.add_argument("--split")
+    register.add_argument("--role", default="original", choices=["original", "managed"])
+    register.add_argument("--probe", action="store_true")
+    register.add_argument("--workers", type=int, default=4)
+    register.add_argument("--confirm-distinct", action="store_true")
+    legacy = sub.add_parser("import-legacy")
+    legacy.add_argument("files", nargs="+", type=Path)
+    exposure = sub.add_parser("expose")
+    exposure.add_argument("recording_ids", nargs="+")
+    exposure.add_argument("--kind", required=True, choices=EXPOSURE_KINDS)
+    exposure.add_argument("--note", default="")
+    opening = sub.add_parser("open")
+    opening.add_argument("recording_ids", nargs="+")
+    opening.add_argument("--purpose", required=True, choices=["qualification", "final_evaluation"])
+    opening.add_argument("--note", required=True)
+    artifact = sub.add_parser("artifact")
+    artifact.add_argument("--kind", required=True, choices=ARTIFACT_KINDS)
+    artifact.add_argument("--parent", action="append", required=True)
+    artifact.add_argument("--producer", required=True)
+    artifact.add_argument("--version", default="")
+    artifact.add_argument("--config-sha256", default="")
+    artifact.add_argument("--path", type=Path)
+    artifact.add_argument("--sha256")
+    artifact.add_argument("--artifact-id")
+    guard = sub.add_parser("guard")
+    guard.add_argument("nodes", nargs="+")
+    guard.add_argument("--purpose", required=True, choices=PURPOSES)
+    plan = sub.add_parser("plan")
+    plan.add_argument("--producer", required=True)
+    plan.add_argument("--version", default="")
+    plan.add_argument("--config-sha256", default="")
+    plan.add_argument("--purpose", default="development_analysis", choices=PURPOSES)
+    lineage = sub.add_parser("lineage")
+    lineage.add_argument("node")
+    verify = sub.add_parser("verify")
+    verify.add_argument("--quick", action="store_true", help="size/mtimeが同じなら再ハッシュしない")
+    sub.add_parser("summary")
+    sub.add_parser("learning-view")
+    leak = sub.add_parser("leak-check")
+    leak.add_argument("files", nargs="+", type=Path)
+    args = parser.parse_args(argv)
+    try:
+        if args.command == "init":
+            ratios = None
+            if args.ratios:
+                ratios = {
+                    key: float(value)
+                    for key, value in (item.split("=", 1) for item in args.ratios.split(","))
+                }
+            RecordingCatalog.create(args.catalog, seed=args.seed, ratios=ratios)
+            _print(RecordingCatalog(args.catalog).public_summary())
+            return 0
+        catalog = RecordingCatalog(args.catalog)
+        if args.command == "register":
+            results = []
+            for path in args.paths:
+                if path.is_dir():
+                    results.extend(catalog.register_directory(
+                        path, workers=args.workers, probe=args.probe,
+                        confirm_distinct=args.confirm_distinct,
+                    ))
+                else:
+                    results.append(catalog.register(
+                        path, physical_match_id=args.physical_match_id, split=args.split,
+                        role=args.role, confirm_distinct=args.confirm_distinct,
+                    ))
+            _print({"added": sum(r.added for r in results),
+                    "already_registered": sum(not r.added for r in results),
+                    "summary": catalog.public_summary()})
+        elif args.command == "import-legacy":
+            _print([catalog.import_legacy(path) for path in args.files])
+        elif args.command == "expose":
+            for recording_id in args.recording_ids:
+                catalog.record_exposure(recording_id, args.kind, args.note)
+            _print(catalog.public_summary())
+        elif args.command == "open":
+            catalog.open_for_evaluation(args.recording_ids, args.purpose, args.note)
+            _print(catalog.public_summary())
+        elif args.command == "artifact":
+            identifier = catalog.register_artifact(
+                kind=args.kind, parents=args.parent, path=args.path, sha256=args.sha256,
+                artifact_id=args.artifact_id,
+                producer={"name": args.producer, "version": args.version,
+                          "config_sha256": args.config_sha256},
+            )
+            _print({"artifact_id": identifier})
+        elif args.command == "guard":
+            catalog.guard(args.nodes, args.purpose)
+            _print({"allowed": True, "purpose": args.purpose})
+        elif args.command == "plan":
+            todo = catalog.plan(
+                {"name": args.producer, "version": args.version,
+                 "config_sha256": args.config_sha256},
+                purpose=args.purpose,
+            )
+            _print({"pending": todo})
+        elif args.command == "lineage":
+            _print(catalog.lineage(args.node))
+        elif args.command == "verify":
+            report = catalog.verify(full=not args.quick)
+            _print(report)
+            return 1 if report["missing_locations"] or report["changed_sources"] or not report[
+                "materialised_view_matches_journal"
+            ] else 0
+        elif args.command == "summary":
+            _print(catalog.public_summary())
+        elif args.command == "learning-view":
+            _print(catalog.learning_view())
+        elif args.command == "leak-check":
+            findings = catalog.leak_check(args.files)
+            _print({"findings": findings})
+            return 1 if findings else 0
+    except CatalogError as exc:
+        print(f"拒否: {exc}", file=sys.stderr)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
