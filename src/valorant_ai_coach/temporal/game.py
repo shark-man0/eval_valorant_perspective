@@ -1203,17 +1203,12 @@ class DevelopmentGameTimeline:
             from .visual_state import reconcile_visual_transitions as reconcile_edges
 
             continuity_history, added_events = apply_evidence_continuity(
-                states, self._observations, _estimate
+                states, self._observations, _estimate, transitions
             )
             superseded_transitions.extend(reconcile_edges(transitions, states))
             continuity_events = merge_continuity_events(transitions, added_events)
-        if self.practical_visual_state:
-            from .event_round import (
-                ROUND_CONTEXT_SECONDS,
-                attach_event_round_context,
-                group_round_starts,
-            )
-
+        if self.practical_visual_state or self.evidence_continuity:
+            # Round numbers and provisional Map roles follow the revised states.
             for state in states:
                 rows = [self._observations[i] for i in state["observation_ids"]]
                 state["round_number"] = _round_number(state, rows)
@@ -1221,6 +1216,13 @@ class DevelopmentGameTimeline:
                     state["map"]["provisional_recorder_position_hypotheses"] = (
                         provisional_map_roles(state, rows)
                     )
+        if self.practical_visual_state:
+            from .event_round import (
+                ROUND_CONTEXT_SECONDS,
+                attach_event_round_context,
+                group_round_starts,
+            )
+
             group_round_starts(transitions, states, self.future)
             attach_event_round_context(transitions, states, ROUND_CONTEXT_SECONDS)
         acquisition_seconds = self._seconds(states)
@@ -1267,7 +1269,10 @@ class DevelopmentGameTimeline:
             result["configuration"]["evidence_continuity_rule_sha256"] = file_sha(
                 Path(__file__).with_name("evidence_continuity.py")
             )
+            from .evidence_continuity import summarize
+
             result["evidence_continuity_projection_history"] = continuity_history
+            result["evidence_continuity_summary"] = summarize(continuity_history)
             result["evidence_continuity_events"] = [e["candidate_id"] for e in continuity_events]
             result["superseded_transition_candidates"] = superseded_transitions
         if round_projections:

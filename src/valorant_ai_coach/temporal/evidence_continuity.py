@@ -45,6 +45,12 @@ SCORE_SEARCH = Fraction(30)
 # Displayed combat-phase countdown at a Round start (1:40).
 ROUND_SECONDS = 100
 CLOCK_WINDOW = Fraction(3)
+# The countdown may be read for this long after the first ACTIVE anchor.
+CLOCK_SEARCH = Fraction(60)
+# The score display can follow the Round decision: on the ten DEVELOPMENT matches
+# the result banner preceded the first updated score by at most 3 s. Old-score
+# frames this close to the update are not assumed undecided.
+DECISION_DISPLAY_LEAD = Fraction(5)
 _PHASE_CUES = {"buy", "result", "intermission"}
 _SELF_CUES = {"owner_hud", "remote", "revival"}
 _OWN_REASONS = {
@@ -57,6 +63,7 @@ _OWN_REASONS = {
     "recorder_not_alive_views_another_actor",
     "new_round_since_death_and_current_owner_hud",
     "death_hypothesis_outlived_its_round",
+    "active_countdown_since_projected_start",
 }
 
 
@@ -176,41 +183,37 @@ def _clock(frame: dict[str, Any], observations: dict[str, Any]) -> tuple[int, li
     return (value, [r["observation_id"] for r in rows]) if type(value) is int else None
 
 
-def _clock_lower(
+def _countdown_start(
     states: list[dict[str, Any]], observations: dict[str, Any], segment: list[int],
-    a: int, b: int,
-) -> tuple[int, list[str], int] | None:
-    """Narrow a start bracket by the measured ACTIVE countdown at its upper anchor.
+    b: int, score: tuple[int, ...],
+) -> tuple[Fraction, list[str], int] | None:
+    """Project a Round start from the measured ACTIVE countdown after anchor ``b``.
 
-    A second, consistent countdown reading within a few seconds guards against a
-    single misread. Returns the latest segment position still before the start.
+    The first frame (within ``CLOCK_SEARCH``) whose countdown reading is confirmed
+    by a second consistent reading a few seconds later fixes the start at
+    ``t - (ROUND_SECONDS - shown)``. Frames up to it must keep the same score and
+    show no phase cue, so the countdown belongs to the same Round.
     """
-    upper = states[segment[b]]
-    first = _clock(upper, observations)
-    if first is None or not ROUND_SECONDS - 10 <= first[0] <= ROUND_SECONDS:
-        return None
-    t_b = native_time(upper["sample"])
-    support = None
-    for k in range(b + 1, len(segment)):
+    t_b = native_time(states[segment[b]]["sample"])
+    for k in range(b, len(segment)):
         frame = states[segment[k]]
-        dt = native_time(frame["sample"]) - t_b
-        if dt > CLOCK_WINDOW:
-            break
-        later = _clock(frame, observations)
-        if later is not None and dt > 0 and abs((first[0] - later[0]) - dt) <= 1:
-            support = later
-            break
-    if support is None:
-        return None
-    start_not_after = t_b - (ROUND_SECONDS - first[0]) - 1
-    lower = None
-    for k in range(b - 1, a - 1, -1):
-        if native_time(states[segment[k]]["sample"]) <= start_not_after:
-            lower = k
-            break
-    if lower is None:
-        return None
-    return lower, first[1] + support[1], first[0]
+        t_k = native_time(frame["sample"])
+        if t_k - t_b > CLOCK_SEARCH:
+            return None
+        if _signals(_rows(frame, observations)) & _PHASE_CUES or _scores(frame) - {score}:
+            return None
+        first = _clock(frame, observations)
+        if first is None or not 30 <= first[0] <= ROUND_SECONDS:
+            continue
+        for m in range(k + 1, len(segment)):
+            later_frame = states[segment[m]]
+            dt = native_time(later_frame["sample"]) - t_k
+            if dt > CLOCK_WINDOW:
+                break
+            later = _clock(later_frame, observations)
+            if later is not None and dt > 0 and abs((first[0] - later[0]) - dt) <= 1:
+                return t_k - (ROUND_SECONDS - first[0]), first[1] + later[1], first[0]
+    return None
 
 
 def _event(kind: str, low: dict[str, Any], high: dict[str, Any], evidence: list[str],
@@ -284,16 +287,32 @@ def _round_pass(
         ):
             basis = ("same_score_purchase_to_active_bracket" if pa == "BUY"
                      else "same_score_result_to_active_bracket")
-            lower, ids = low, evidence + bracket_ids
-            narrowed = _clock_lower(states, observations, segment, a, b)
-            if narrowed is not None:
-                lower = states[segment[narrowed[0]]]
-                ids = ids + narrowed[1]
-                basis += "+active_countdown_projection"
-            event = _event("round_start", lower, high, ids, basis, (low, high))
-            if narrowed is not None:
+            lower, upper, ids = low, high, evidence + bracket_ids
+            projected = _countdown_start(states, observations, segment, b, left)
+            if projected is not None:
+                start, clock_ids, shown = projected
+                before = [k for k in range(a, b)
+                          if native_time(states[segment[k]]["sample"]) <= start - 1]
+                after = [k for k in range(a + 1, b + 1)
+                         if native_time(states[segment[k]]["sample"]) >= start + 1]
+                if before and after and before[-1] < after[0]:
+                    lower = states[segment[before[-1]]]
+                    upper = states[segment[after[0]]]
+                    ids = ids + clock_ids
+                    basis += "+active_countdown_projection"
+                    # The countdown proves the Round has run since the projected start.
+                    for k in range(after[0], b):
+                        frame = states[segment[k]]
+                        if frame["round"]["value"] == "UNKNOWN":
+                            revise(frame, "round", "ACTIVE", ["ACTIVE"],
+                                   high["round"]["evidence_ids"] + clock_ids,
+                                   "active_countdown_since_projected_start")
+                else:
+                    projected = None
+            event = _event("round_start", lower, upper, ids, basis, (low, high))
+            if projected is not None:
                 event["countdown_projection"] = {
-                    "displayed_seconds": narrowed[2], "round_seconds": ROUND_SECONDS,
+                    "displayed_seconds": shown, "round_seconds": ROUND_SECONDS,
                     "basis": "two_consistent_countdown_readings",
                 }
             events.append(event)
@@ -314,7 +333,18 @@ def _round_pass(
                 break
         if changed_at is None:
             continue
-        for k in range(a + 1, last_same):
+        # The Round is known undecided only at a measured ACTIVE cue, or at an
+        # old-score frame earlier than the score update by the display lead.
+        t_change = native_time(states[segment[changed_at]]["sample"])
+        undecided = a
+        for k in range(a + 1, last_same + 1):
+            frame = states[segment[k]]
+            cues = _signals(_rows(frame, observations))
+            if "result" in cues:
+                break
+            if "active" in cues or native_time(frame["sample"]) <= t_change - DECISION_DISPLAY_LEAD:
+                undecided = k
+        for k in range(a + 1, undecided + 1):
             if states[segment[k]]["round"]["value"] == "UNKNOWN":
                 revise(states[segment[k]], "round", "ACTIVE", ["ACTIVE"],
                        evidence + _score_ids(states[segment[last_same]]),
@@ -327,9 +357,13 @@ def _round_pass(
         ):
             continue
         upper = states[segment[changed_at]]
+        for k in range(undecided + 1, changed_at):
+            if "result" in _signals(_rows(states[segment[k]], observations)):
+                upper = states[segment[k]]
+                break
         events.append(_event(
-            "round_end", states[segment[last_same]], upper,
-            evidence + _score_ids(states[segment[last_same]]) + _score_ids(upper),
+            "round_end", states[segment[undecided]], upper,
+            evidence + _score_ids(states[segment[undecided]]) + _score_ids(upper),
             "measured_active_phase_and_one_point_score_increment", (low, high),
         ))
         if pb == "ENDED" and right == new and all(
@@ -341,9 +375,37 @@ def _round_pass(
                        "ended_score_already_updated")
 
 
+def _new_round_seen(
+    states: list[dict[str, Any]], segment: list[int], since: int, now: int,
+    starts: list[tuple[Fraction, Fraction]],
+) -> bool:
+    """A measured purchase phase or a Round start bracket lies after the death."""
+    t0 = native_time(states[segment[since]]["sample"])
+    t1 = native_time(states[segment[now]]["sample"])
+    if any(t0 <= lo and hi <= t1 for lo, hi in starts):
+        return True
+    return any(
+        _anchor(states[segment[k]]["round"], {"BUY"}) for k in range(since + 1, now + 1)
+    )
+
+
+def _respawned(frame: dict[str, Any], weak: set[str]) -> bool:
+    """Current owner HUD inside a measured BUY/ACTIVE phase, with no death cue."""
+    return bool(
+        "owner_hud" in weak
+        and not weak & {
+            "spectator", "remote", "death", "downed", "report",
+            "recorder_elimination_display",
+        }
+        and frame["round"]["value"] in {"BUY", "ACTIVE"}
+        and "UNKNOWN" not in frame["round"]["hypotheses"]
+        and frame["camera"]["value"] in {"SELF", "UNKNOWN"}
+    )
+
+
 def _life_pass(
     states: list[dict[str, Any]], observations: dict[str, Any], segment: list[int],
-    revise: _Reviser,
+    revise: _Reviser, starts: list[tuple[Fraction, Fraction]],
 ) -> None:
     for i in segment:
         frame = states[i]
@@ -383,6 +445,7 @@ def _life_pass(
             or _signals(_rows(states[i], observations), strong_only=False)
             & (_SELF_CUES | {"buy"})
             or states[i]["round"]["value"] in {"BUY", "INTERMISSION"}
+            or states[i]["camera"]["value"] in {"SELF", "REMOTE"}
             for i in inner
         ):
             continue
@@ -397,6 +460,7 @@ def _life_pass(
     # A displayed score above the one shown at the last dead anchor proves that
     # a new Round, and therefore a respawn, happened in between.
     dead_score: tuple[int, ...] | None = None
+    dead_at = 0
     for k, i in enumerate(segment):
         frame = states[i]
         weak = _signals(_rows(frame, observations), strong_only=False)
@@ -408,6 +472,7 @@ def _life_pass(
                 and life["uncertainty"] != "continuation_unverified"
             ):
                 dead_score, _ = _nearest_score(states, segment, k, -1)
+                dead_at = k
             continue
         current, _ = _nearest_score(states, segment, k, -1)
         if (
@@ -416,14 +481,11 @@ def _life_pass(
             and frame["life"]["reason"] in {
                 "return_edge_unobserved", "candidate_return_edge_unobserved"
             }
-            and "owner_hud" in weak
-            and not weak & {
-                "spectator", "remote", "death", "downed", "report",
-                "recorder_elimination_display",
-            }
+            and _respawned(frame, weak)
             and len(current) == len(dead_score)
             and all(c >= d for c, d in zip(current, dead_score, strict=True))
             and sum(current) > sum(dead_score)
+            and _new_round_seen(states, segment, dead_at, k, starts)
         ):
             revise(frame, "life", "ALIVE", ["ALIVE"],
                    _score_ids(frame) + frame["camera"]["evidence_ids"],
@@ -432,6 +494,7 @@ def _life_pass(
     # higher score every player has respawned. Without a fresh death cue the
     # stale value is withdrawn; with a current owner HUD the recorder is alive.
     run_score: tuple[int, ...] | None = None
+    run_at = 0
     for k, i in enumerate(segment):
         frame = states[i]
         life = frame["life"]
@@ -441,7 +504,7 @@ def _life_pass(
             continue
         current, _ = _nearest_score(states, segment, k, -1)
         if run_score is None:
-            run_score = current
+            run_score, run_at = current, k
             continue
         weak = _signals(_rows(frame, observations), strong_only=False)
         if (
@@ -451,7 +514,7 @@ def _life_pass(
             or weak & {"death", "downed", "recorder_elimination_display", "spectator"}
         ):
             continue
-        if "owner_hud" in weak and not weak & {"remote", "report"}:
+        if _respawned(frame, weak) and _new_round_seen(states, segment, run_at, k, starts):
             revise(frame, "life", "ALIVE", ["ALIVE"],
                    _score_ids(frame) + frame["camera"]["evidence_ids"],
                    "new_round_since_death_and_current_owner_hud")
@@ -484,14 +547,199 @@ def _life_pass(
 def apply_evidence_continuity(
     states: list[dict[str, Any]], observations: dict[str, Any],
     estimate: Callable[..., dict[str, Any]],
+    transitions: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Return revision history and added unqualified event candidates."""
     revise = _Reviser(estimate)
     events: list[dict[str, Any]] = []
     for segment in _segments(states):
         _round_pass(states, observations, segment, revise, events)
-        _life_pass(states, observations, segment, revise)
+        starts = [
+            (native_time(e["lower_sample"]), native_time(e["upper_sample"]))
+            for e in [*(transitions or []), *events] if e["kind"] == "round_start"
+        ]
+        _life_pass(states, observations, segment, revise, starts)
+    _demote_current_view_maps(states, revise.history)
+    _widen_score_display_ends(states, observations, transitions or [])
+    _relocate_revised_edges(states, transitions or [])
     return revise.history, events
+
+
+def _relocate_revised_edges(
+    states: list[dict[str, Any]], transitions: list[dict[str, Any]]
+) -> None:
+    """Move a named edge whose lower frame already holds the edge's after-state.
+
+    A revision or an earlier carry can show that the change happened before the
+    rule edge. The edge moves to the first frame of that run, with the rule edge
+    kept under ``rule_transition``.
+    """
+    index = {f["sample"]["sample_sha256"]: i for i, f in enumerate(states)}
+    for event in transitions:
+        domain = event.get("domain")
+        if event["kind"] in {"state_change", "round_start", "round_end"} or domain not in {
+            "round", "life", "camera"
+        }:
+            continue
+        lo = index.get(event["lower_sample"]["sample_sha256"])
+        if lo is None:
+            continue
+        after = event.get("after")
+        if states[lo][domain]["value"] != after:
+            continue
+        m = lo
+        while (
+            m > 0 and states[m - 1][domain]["value"] == after
+            and states[m]["continuity"].get("carry_allowed", False)
+            and source_scope(states[m - 1]["sample"]) == source_scope(states[m]["sample"])
+        ):
+            m -= 1
+        if m == 0 or not states[m]["continuity"].get("carry_allowed", False):
+            continue
+        event["rule_transition"] = deepcopy(event)
+        event["lower_sample"] = deepcopy(states[m - 1]["sample"])
+        event["upper_sample"] = deepcopy(states[m]["sample"])
+        event["before"] = states[m - 1][domain]["value"]
+        event["evidence_ids"] = sorted(set(event["evidence_ids"])
+                                       | set(states[m][domain]["evidence_ids"]))
+        event["edge_basis"] = "earliest_frame_of_revised_run"
+
+
+def _widen_score_display_ends(
+    states: list[dict[str, Any]], observations: dict[str, Any],
+    transitions: list[dict[str, Any]],
+) -> None:
+    """Move score-update end brackets back to the last frame known undecided.
+
+    An existing end edge whose lower frame is only the last old-score display may
+    already follow the decision. Its lower bound moves to the latest measured
+    ACTIVE cue, or old-score frame earlier than the update by the display lead.
+    The rule's own lower sample is kept.
+    """
+    index = {f["sample"]["sample_sha256"]: i for i, f in enumerate(states)}
+    for event in transitions:
+        if event["kind"] != "round_end" or "basis" in event:
+            continue
+        lo = index.get(event["lower_sample"]["sample_sha256"])
+        hi = index.get(event["upper_sample"]["sample_sha256"])
+        if lo is None or hi is None:
+            continue
+        if _signals(_rows(states[lo], observations)) & {"active", "result"}:
+            continue  # Already a measured ACTIVE (or result) frame.
+        if states[hi]["round"]["reason"] != "score_change_and_later_result":
+            continue
+        t_hi = native_time(states[hi]["sample"])
+        score = _scores(states[lo])
+        k = lo
+        while k > 0:
+            prev = states[k - 1]
+            if (
+                not prev["continuity"].get("carry_allowed", False) and k - 1 != lo
+                or not states[k]["continuity"].get("carry_allowed", False)
+                or source_scope(prev["sample"]) != source_scope(states[lo]["sample"])
+                or _scores(prev) - score
+                or _signals(_rows(prev, observations)) & {"result", "buy", "intermission"}
+            ):
+                k = -1
+                break
+            k -= 1
+            cues = _signals(_rows(states[k], observations))
+            if "active" in cues or native_time(states[k]["sample"]) <= t_hi - DECISION_DISPLAY_LEAD:
+                break
+        if k < 0 or k == lo:
+            continue
+        event["rule_lower_sample"] = deepcopy(event["lower_sample"])
+        event["lower_sample"] = deepcopy(states[k]["sample"])
+        event["lower_sample_basis"] = "score_display_lead"
+
+
+def _demote_current_view_maps(
+    states: list[dict[str, Any]], history: list[dict[str, Any]]
+) -> None:
+    """Current recorder-view Map candidates require a living first-person view."""
+    revised = {h["sample"]["sample_sha256"] for h in history}
+    for frame in states:
+        current = frame.get("map", {})
+        if frame["sample"]["sample_sha256"] not in revised or not (
+            current.get("current_self_position_candidates")
+            or current.get("current_recorder_view_evidence_ids")
+        ):
+            continue
+        if (
+            frame["life"]["value"] == "ALIVE" and frame["camera"]["value"] == "SELF"
+            and not set(frame["round"]["hypotheses"]) & {"ENDED", "INTERMISSION"}
+        ):
+            continue
+        current["continuity_superseded_current_view"] = {
+            "current_self_position_candidates": current.get(
+                "current_self_position_candidates", []),
+            "current_recorder_view_evidence_ids": current.get(
+                "current_recorder_view_evidence_ids", []),
+            "reason": current.get("reason"),
+        }
+        current["current_self_position_candidates"] = []
+        current["current_recorder_view_evidence_ids"] = []
+        current["reason"] = "current_view_gate_failed_after_continuity_revision"
+
+
+def summarize(history: list[dict[str, Any]]) -> dict[str, Any]:
+    """Counts of revised frames; withdrawn values are abstentions, not verified errors."""
+    by_reason: dict[str, int] = {}
+    withdrawn = 0
+    for h in history:
+        key = f'{h["domain"]}:{h["reason"]}'
+        by_reason[key] = by_reason.get(key, 0) + 1
+        if h["after"]["value"] == "UNKNOWN" and h["before"]["value"] != "UNKNOWN":
+            withdrawn += 1
+    return {
+        "revised_frames_by_rule": dict(sorted(by_reason.items())),
+        "withdrawn_to_unknown_frames": withdrawn,
+        "withdrawn_meaning": "abstention_not_a_verified_error_count",
+        "qualified": False,
+    }
+
+
+CONSISTENCY_RULES = (
+    "dead_recorder_holds_first_person_view",
+    "living_recorder_spectates",
+    "dead_recorder_in_purchase_phase",
+    "current_view_map_without_living_first_person_view",
+    "edge_endpoint_disagrees_with_frame_state",
+)
+
+
+def consistency_violations(timeline: dict[str, Any]) -> dict[str, int]:
+    """Count shared-state contradictions across frames, Map and edges."""
+    counts = dict.fromkeys(CONSISTENCY_RULES, 0)
+    points = {}
+    for f in timeline["frames"]:
+        points[f["sample"]["sample_sha256"]] = f
+        life, camera, rnd = f["life"]["value"], f["camera"]["value"], f["round"]["value"]
+        if life == "DEAD" and camera in {"SELF", "REMOTE"}:
+            counts["dead_recorder_holds_first_person_view"] += 1
+        if life == "ALIVE" and camera == "SPECTATOR":
+            counts["living_recorder_spectates"] += 1
+        if life == "DEAD" and rnd == "BUY":
+            counts["dead_recorder_in_purchase_phase"] += 1
+        current = f.get("map", {})
+        if current.get("current_self_position_candidates") and not (
+            life == "ALIVE" and camera == "SELF"
+        ):
+            counts["current_view_map_without_living_first_person_view"] += 1
+    for e in timeline["transitions"]:
+        domain = e.get("domain")
+        if e["kind"] not in {"state_change", "spectator"} or domain not in {
+            "round", "life", "camera"
+        }:
+            continue
+        lower = points.get(e["lower_sample"]["sample_sha256"])
+        upper = points.get(e["upper_sample"]["sample_sha256"])
+        if lower is None or upper is None:
+            continue
+        if (e.get("before") != lower[domain]["value"]
+                or e.get("after") != upper[domain]["value"]):
+            counts["edge_endpoint_disagrees_with_frame_state"] += 1
+    return counts
 
 
 def merge_continuity_events(
