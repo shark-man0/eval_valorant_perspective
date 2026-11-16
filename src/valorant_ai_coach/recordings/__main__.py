@@ -7,6 +7,7 @@ the catalog directory.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import sys
 from collections.abc import Sequence
@@ -34,10 +35,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     register.add_argument("--probe", action="store_true")
     register.add_argument("--workers", type=int, default=4)
     register.add_argument("--confirm-distinct", action="store_true")
+    register.add_argument("--derived-from", help="派生動画の派生元recording_id")
+    register.add_argument("--max-new-files", type=int, help="1回に新規登録する最大本数")
     legacy = sub.add_parser("import-legacy")
     legacy.add_argument("files", nargs="+", type=Path)
     exposure = sub.add_parser("expose")
-    exposure.add_argument("recording_ids", nargs="+")
+    exposure.add_argument("recording_ids", nargs="*")
+    exposure.add_argument("--location-prefix", type=Path, action="append", default=[],
+                          help="この場所にある録画をすべて対象にする")
     exposure.add_argument("--kind", required=True, choices=EXPOSURE_KINDS)
     exposure.add_argument("--note", default="")
     opening = sub.add_parser("open")
@@ -65,6 +70,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     lineage.add_argument("node")
     verify = sub.add_parser("verify")
     verify.add_argument("--quick", action="store_true", help="size/mtimeが同じなら再ハッシュしない")
+    verify.add_argument("--recordings", nargs="+", help="照合する録画（分割実行用）")
+    verify.add_argument("--trusted-head", help="カタログ外に保管したSEQ:SHA256")
+    sub.add_parser("head")
+    archives = sub.add_parser("learning-archives")
+    archives.add_argument("--kind", default="frames")
+    archives.add_argument("--include-authorised-exposed", action="store_true")
+    sync = sub.add_parser("sync-learning", help="#154の継続学習登録簿へ反映")
+    sync.add_argument("--workspace", type=Path, required=True)
+    sync.add_argument("--kind", default="frames")
+    sync.add_argument("--include-authorised-exposed", action="store_true")
     sub.add_parser("summary")
     sub.add_parser("learning-view")
     leak = sub.add_parser("leak-check")
@@ -89,11 +104,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                     results.extend(catalog.register_directory(
                         path, workers=args.workers, probe=args.probe,
                         confirm_distinct=args.confirm_distinct,
+                        max_new_files=args.max_new_files, split=args.split,
                     ))
                 else:
                     results.append(catalog.register(
                         path, physical_match_id=args.physical_match_id, split=args.split,
                         role=args.role, confirm_distinct=args.confirm_distinct,
+                        derived_from=args.derived_from,
                     ))
             _print({"added": sum(r.added for r in results),
                     "already_registered": sum(not r.added for r in results),
@@ -101,9 +118,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "import-legacy":
             _print([catalog.import_legacy(path) for path in args.files])
         elif args.command == "expose":
-            for recording_id in args.recording_ids:
+            targets = list(args.recording_ids)
+            for prefix in args.location_prefix:
+                targets.extend(catalog.recordings_under(prefix))
+            targets = list(dict.fromkeys(targets))
+            if not targets:
+                raise CatalogError("対象の録画がありません")
+            recorded = 0
+            for recording_id in targets:
+                kinds = {e["kind"] for e in catalog.state.recordings[recording_id].exposures}
+                if args.kind in kinds and args.kind == "user_authorized_development_use":
+                    continue  # the same authorisation once is enough
                 catalog.record_exposure(recording_id, args.kind, args.note)
-            _print(catalog.public_summary())
+                recorded += 1
+            _print({"targets": len(targets), "recorded": recorded,
+                    "summary": catalog.public_summary()})
         elif args.command == "open":
             catalog.open_for_evaluation(args.recording_ids, args.purpose, args.note)
             _print(catalog.public_summary())
@@ -127,8 +156,30 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print({"pending": todo})
         elif args.command == "lineage":
             _print(catalog.lineage(args.node))
+        elif args.command == "head":
+            _print({"head": catalog.head_anchor()})
+        elif args.command == "learning-archives":
+            _print(catalog.learning_archives(
+                artifact_kind=args.kind,
+                include_authorised_exposed=args.include_authorised_exposed,
+            ))
+        elif args.command == "sync-learning":
+            # Imported dynamically: the continual-learning package (#154) is optional.
+            learning = importlib.import_module("valorant_ai_coach.learning.registry")
+            DatasetRegistry = learning.DatasetRegistry  # noqa: N806
+
+            rows = catalog.learning_archives(
+                artifact_kind=args.kind,
+                include_authorised_exposed=args.include_authorised_exposed,
+            )
+            registry = DatasetRegistry(args.workspace / "dataset_registry.json")
+            _print({**catalog.sync_learning_registry(registry, rows),
+                    "registry": registry.summary()})
         elif args.command == "verify":
-            report = catalog.verify(full=not args.quick)
+            report = catalog.verify(
+                full=not args.quick, recording_ids=args.recordings,
+                trusted_head=args.trusted_head,
+            )
             _print(report)
             return 1 if report["missing_locations"] or report["changed_sources"] or not report[
                 "materialised_view_matches_journal"

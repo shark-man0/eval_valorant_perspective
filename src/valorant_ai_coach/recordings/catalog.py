@@ -73,6 +73,7 @@ EXPOSURE_KINDS: tuple[str, ...] = (
 # Exposures that authorise development use of a protected recording.
 DEVELOPMENT_AUTHORISING: frozenset[str] = frozenset({"user_authorized_development_use"})
 ARTIFACT_KINDS: tuple[str, ...] = (
+    "derived_video",
     "frames",
     "features",
     "labels",
@@ -80,6 +81,11 @@ ARTIFACT_KINDS: tuple[str, ...] = (
     "analysis_result",
     "model",
     "report",
+)
+# Kinds that are always cut from one physical match. They inherit its id and may never
+# mix two matches (a crop archive spanning two matches would leak a split boundary).
+SINGLE_MATCH_KINDS: frozenset[str] = frozenset(
+    {"derived_video", "frames", "timeline", "analysis_result"}
 )
 PURPOSES: tuple[str, ...] = (
     "training",
@@ -182,11 +188,20 @@ class Recording:
     locations: dict[str, dict[str, Any]] = field(default_factory=dict)
     exposures: list[dict[str, Any]] = field(default_factory=list)
     legacy: dict[str, Any] = field(default_factory=dict)
+    legacy_anchors: list[str] = field(default_factory=list)
 
     @property
     def blind(self) -> bool:
         """A protected recording nobody has looked at, tuned on or opened."""
         return self.split in PROTECTED_SPLITS and not self.exposures
+
+    @property
+    def independent_until_opened(self) -> bool:
+        """No exposure other than evaluation openings: usable as independent hold-out."""
+        return self.split in PROTECTED_SPLITS and all(
+            item["kind"] in {"qualification_opened", "final_evaluation_opened"}
+            for item in self.exposures
+        )
 
     @property
     def development_authorised(self) -> bool:
@@ -214,10 +229,12 @@ class Recording:
             "status": self.status,
             "blind": self.blind,
             "development_authorised": self.development_authorised,
+            "independent_until_opened": self.independent_until_opened,
             "metadata": dict(self.metadata),
             "locations": {key: dict(value) for key, value in sorted(self.locations.items())},
             "exposures": [dict(item) for item in self.exposures],
             "legacy": dict(self.legacy),
+            "legacy_anchors": list(self.legacy_anchors),
         }
 
 
@@ -230,10 +247,12 @@ class Artifact:
     producer: dict[str, Any]
     registered_at: str
     path: str | None = None
+    physical_match_ids: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "artifact_id": self.artifact_id,
+            "physical_match_ids": list(self.physical_match_ids),
             "kind": self.kind,
             "sha256": self.sha256,
             "parents": list(self.parents),
@@ -250,6 +269,12 @@ class CatalogState:
     artifacts: dict[str, Artifact] = field(default_factory=dict)
     events: int = 0
     head: str | None = None
+
+    def physical_matches(self, nodes: Iterable[str]) -> tuple[str, ...]:
+        return tuple(sorted({
+            self.recordings[rid].physical_match_id
+            for node in nodes for rid in self.ancestry(node)
+        }))
 
     # -- lookups -------------------------------------------------------------------
 
@@ -337,6 +362,10 @@ def _apply(state: CatalogState, event: Mapping[str, Any]) -> None:
         }
     elif kind == "metadata":
         state.recordings[data["recording_id"]].metadata = dict(data["metadata"])
+    elif kind == "anchor":
+        anchors = state.recordings[data["recording_id"]].legacy_anchors
+        if data["sha256"] not in anchors:
+            anchors.append(data["sha256"])
     elif kind == "status":
         state.recordings[data["recording_id"]].status = data["status"]
     elif kind == "exposure":
@@ -344,12 +373,21 @@ def _apply(state: CatalogState, event: Mapping[str, Any]) -> None:
             {"kind": data["kind"], "note": data.get("note", ""), "at": event["at"]}
         )
     elif kind == "artifact":
-        artifact = Artifact(**{**data, "parents": tuple(data["parents"])})
+        artifact = Artifact(**{
+            **data,
+            "parents": tuple(data["parents"]),
+            "physical_match_ids": tuple(data.get("physical_match_ids", ())),
+        })
         if artifact.artifact_id in state.artifacts or artifact.artifact_id in state.recordings:
             raise CatalogIntegrityError("artifact_idが重複しています")
         for parent in artifact.parents:
             if parent not in state.recordings and parent not in state.artifacts:
                 raise CatalogIntegrityError("親のないartifactです")
+        inherited = state.physical_matches(artifact.parents)
+        if artifact.physical_match_ids != inherited:
+            raise CatalogIntegrityError("artifactの物理試合IDが親と一致しません")
+        if artifact.kind in SINGLE_MATCH_KINDS and len(inherited) != 1:
+            raise CatalogIntegrityError("1試合から作るartifactが複数の物理試合にまたがっています")
         state.artifacts[artifact.artifact_id] = artifact
     else:
         raise CatalogIntegrityError(f"未知のイベントです: {kind}")
@@ -378,6 +416,7 @@ class RecordingCatalog:
 
     JOURNAL = "journal.jsonl"
     VIEW = "catalog.json"
+    HEAD = "HEAD.json"
     LOCK = ".catalog.lock"
 
     def __init__(self, root: Path) -> None:
@@ -448,7 +487,8 @@ class RecordingCatalog:
     def _replay(self) -> CatalogState:
         state = CatalogState()
         previous: str | None = None
-        for number, line in enumerate(self._journal_lines(), start=1):
+        lines = self._journal_lines()
+        for number, line in enumerate(lines, start=1):
             event = json.loads(line)
             if event.get("prev") != previous or event.get("seq") != number:
                 raise CatalogIntegrityError(f"journalの{number}行目で履歴の連鎖が切れています")
@@ -456,7 +496,40 @@ class RecordingCatalog:
             previous = _line_hash(line)
             state.events = number
         state.head = previous
+        # The chain cannot see lines removed from its *end*. HEAD.json records the last
+        # appended (seq, sha); it is written after the journal line is durable, so the
+        # journal may be at most one event ahead after a crash, never behind.
+        anchor_path = self.root / self.HEAD
+        if lines and not anchor_path.exists():
+            raise CatalogIntegrityError("HEAD.jsonがありません（履歴末尾を検証できません）")
+        if anchor_path.exists():
+            anchor = json.loads(anchor_path.read_text(encoding="utf-8"))
+            seq, sha = int(anchor["seq"]), str(anchor["sha256"])
+            if state.events < seq:
+                raise CatalogIntegrityError(
+                    f"履歴の末尾が削除されています（HEAD {seq}件、journal {state.events}件）"
+                )
+            if state.events == seq and sha != state.head:
+                raise CatalogIntegrityError("HEADとjournal末尾のハッシュが一致しません")
+            if state.events > seq + 1:
+                raise CatalogIntegrityError("HEADより2件以上新しい履歴があります")
+            if state.events == seq + 1 and seq and _line_hash(lines[seq - 1]) != sha:
+                raise CatalogIntegrityError("HEADの位置の履歴が書き換えられています")
         return state
+
+    def _write_head(self) -> None:
+        anchor = self.root / self.HEAD
+        temporary = anchor.with_name(f".{anchor.name}.tmp")
+        descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+            stream.write(json.dumps({"seq": self.state.events, "sha256": self.state.head}) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(anchor)
+
+    def head_anchor(self) -> str:
+        """``SEQ:SHA256`` of the journal head, to keep outside the catalog (trusted anchor)."""
+        return f"{self.state.events}:{self.state.head}"
 
     def _append(self, kind: str, data: Mapping[str, Any]) -> None:
         event = {
@@ -478,6 +551,7 @@ class RecordingCatalog:
             os.close(descriptor)
         self.state.events += 1
         self.state.head = _line_hash(line)
+        self._write_head()
 
     def _write_view(self) -> None:
         view = self.root / self.VIEW
@@ -514,8 +588,14 @@ class RecordingCatalog:
         source_sha256: str | None = None,
         metadata: Mapping[str, Any] | None = None,
         confirm_distinct: bool = False,
+        derived_from: str | None = None,
     ) -> RegistrationResult:
-        """Register one recording file. Re-registering the same bytes is a no-op."""
+        """Register one recording file. Re-registering the same bytes is a no-op.
+
+        ``derived_from`` marks a re-encoded or trimmed copy of a registered recording.
+        It inherits the parent's physical match id and split; a conflicting
+        ``physical_match_id`` or ``split`` is refused.
+        """
         path = Path(path).expanduser().resolve()
         if not path.is_file() or path.is_symlink():
             raise CatalogError("通常ファイルの録画が必要です")
@@ -529,6 +609,7 @@ class RecordingCatalog:
                 source_sha256=source_sha256,
                 metadata=metadata,
                 confirm_distinct=confirm_distinct,
+                derived_from=derived_from,
             )
 
     def _register_locked(
@@ -542,8 +623,19 @@ class RecordingCatalog:
         source_sha256: str | None,
         metadata: Mapping[str, Any] | None,
         confirm_distinct: bool,
+        derived_from: str | None = None,
     ) -> RegistrationResult:
         stat = path.stat()
+        parent: Recording | None = None
+        if derived_from is not None:
+            parent = self.state.recordings.get(derived_from)
+            if parent is None:
+                raise CatalogError(f"派生元の録画が未登録です: {derived_from}")
+            if physical_match_id not in (None, parent.physical_match_id):
+                raise SplitImmutableError("派生動画は派生元と同じ物理試合IDを継承します")
+            if split is not None and LEGACY_SPLIT_NAMES.get(split, split) != parent.split:
+                raise SplitImmutableError("派生動画は派生元と同じsplitを継承します")
+            physical_match_id = parent.physical_match_id
         known = self._known_location(path)
         digest = source_sha256 or (known.source_sha256 if known else sha256_file(path))
         _require_sha(digest)
@@ -570,7 +662,7 @@ class RecordingCatalog:
             for r in self.state.recordings.values()
             if r.size_bytes == stat.st_size and r.physical_match_id != physical
         ]
-        if similar and not confirm_distinct:
+        if similar and not confirm_distinct and parent is None:
             raise CatalogError(
                 "同じサイズの別録画があります。別の試合であることを確認してから"
                 "confirm_distinctを指定してください"
@@ -578,7 +670,9 @@ class RecordingCatalog:
         if similar:
             warnings.append("same_size_confirmed_distinct")
         bound = self.state.split_of_physical(physical)
-        if split is not None:
+        if parent is not None:
+            chosen, allocation = parent.split, "derived_from_parent"
+        elif split is not None:
             split = LEGACY_SPLIT_NAMES.get(split, split)
             if split not in SPLITS:
                 raise CatalogError(f"未知のsplitです: {split}")
@@ -603,7 +697,7 @@ class RecordingCatalog:
                 "split": chosen,
                 "allocation": allocation,
                 "registered_at": utc_now(),
-                "origin": "intake",
+                "origin": "intake" if parent is None else f"derived:{parent.recording_id}",
             },
         )
         self._append(
@@ -623,6 +717,8 @@ class RecordingCatalog:
         probe: bool = False,
         ffprobe: str = "ffprobe",
         confirm_distinct: bool = False,
+        max_new_files: int | None = None,
+        split: str | None = None,
     ) -> list[RegistrationResult]:
         """Incremental intake of every video file under ``directory``.
 
@@ -637,6 +733,10 @@ class RecordingCatalog:
             and not p.name.startswith(".")
         )
         pending = [p for p in files if self._known_location(p) is None]
+        if max_new_files is not None:
+            # Bounded batch: the rest stays unregistered and is picked up next run.
+            pending = pending[: max(0, max_new_files)]
+            files = [p for p in files if p in set(pending) or self._known_location(p)]
         with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
             hashes = dict(zip(pending, pool.map(sha256_file, pending), strict=True))
         results: list[RegistrationResult] = []
@@ -652,6 +752,7 @@ class RecordingCatalog:
                     source_sha256=hashes[path],
                     metadata=metadata,
                     confirm_distinct=confirm_distinct,
+                    split=split,
                 )
             )
         return results
@@ -693,6 +794,9 @@ class RecordingCatalog:
                         )
                     else:
                         report["already_present"] += 1
+                        if anchor not in existing.legacy_anchors:
+                            self._append("anchor", {"recording_id": existing.recording_id,
+                                                    "sha256": anchor})
                     continue
                 bound = self.state.split_of_physical(physical)
                 if (bound is not None and bound != split) or rid in self.state.recordings:
@@ -737,6 +841,7 @@ class RecordingCatalog:
                     "DEVELOPMENT": "development_use",
                     "UNKNOWN_EXPOSURE": "unknown_prior_exposure",
                 }.get(str(row.get("exposure")))
+                self._append("anchor", {"recording_id": rid, "sha256": anchor})
                 if exposure is not None:
                     self._append(
                         "exposure",
@@ -779,6 +884,10 @@ class RecordingCatalog:
                 expected = "QUALIFICATION" if purpose == "qualification" else "FINAL_HOLDOUT"
                 if recording.split != expected:
                     raise LeakageError(f"{recording_id}は{expected}ではありません")
+                if not recording.independent_until_opened:
+                    raise LeakageError(
+                        f"{recording_id}は開発等で露出済みのため独立した評価には使えません"
+                    )
             for recording_id in recording_ids:
                 self._append("exposure", {"recording_id": recording_id, "kind": kind,
                                           "note": note})
@@ -809,11 +918,28 @@ class RecordingCatalog:
             artifact_id or f"{kind}_{digest[:12]}", "artifact_id"
         )
         with self._locked():
-            if identifier in self.state.artifacts:
-                if self.state.artifacts[identifier].sha256 == digest:
-                    return identifier
-                raise CatalogError("artifact_idは別の内容で使用済みです")
+            wanted_parents = tuple(sorted(set(parents)))
+            existing = self.state.artifacts.get(identifier)
+            if existing is not None:
+                # Re-registration must describe the same thing: same content, kind,
+                # parents and producer. Anything else would silently rewrite lineage.
+                if existing.sha256 != digest:
+                    raise CatalogError("artifact_idは別の内容で使用済みです")
+                if (existing.kind, existing.parents, existing.producer) != (
+                    kind, wanted_parents, dict(producer)
+                ):
+                    raise LeakageError("登録済みartifactと種類・親・生成器が一致しません")
+                return identifier
+            same_content = [
+                a for a in self.state.artifacts.values()
+                if a.sha256 == digest and a.kind == kind and a.parents != wanted_parents
+            ]
+            if same_content:
+                raise LeakageError("同じ内容のartifactが別の系譜で登録済みです")
             ancestry = set().union(*(self.state.ancestry(p) for p in parents))
+            physical = self.state.physical_matches(parents)
+            if kind in SINGLE_MATCH_KINDS and len(physical) != 1:
+                raise CatalogError(f"{kind}は1つの物理試合からだけ作れます")
             if kind == "model":
                 self._guard_locked(ancestry, "training")
             self._append(
@@ -826,6 +952,7 @@ class RecordingCatalog:
                     "producer": dict(producer),
                     "registered_at": utc_now(),
                     "path": None if path is None else str(Path(path).resolve()),
+                    "physical_match_ids": list(physical),
                 },
             )
         return identifier
@@ -865,6 +992,8 @@ class RecordingCatalog:
             elif purpose in {"training", "tuning", "development_analysis"}:
                 if not recording.development_authorised:
                     problems.append(f"{rid}: {recording.split}は開発用途に使えません")
+            elif not recording.independent_until_opened:
+                problems.append(f"{rid}: 露出済みのため独立した評価には使えません")
             elif purpose == "qualification":
                 if recording.split != "QUALIFICATION" or not recording.opened_for(purpose):
                     problems.append(f"{rid}: 開封済みQUALIFICATIONではありません")
@@ -875,18 +1004,39 @@ class RecordingCatalog:
 
     # -- verification ---------------------------------------------------------------
 
-    def verify(self, *, full: bool = True, quarantine: bool = True) -> dict[str, Any]:
-        """Re-derive the state, re-hash every location and quarantine changed sources."""
+    def verify(
+        self,
+        *,
+        full: bool = True,
+        quarantine: bool = True,
+        recording_ids: Iterable[str] | None = None,
+        trusted_head: str | None = None,
+    ) -> dict[str, Any]:
+        """Re-derive the state, re-hash locations and quarantine changed sources.
+
+        ``recording_ids`` limits re-hashing to a batch (large libraries are verified in
+        several runs). ``trusted_head`` is a ``SEQ:SHA256`` anchor kept outside the
+        catalog; the journal must still contain that exact event.
+        """
+        selected = None if recording_ids is None else set(recording_ids)
         with self._locked():
             view_path = self.root / self.VIEW
             view_matches = True
             if view_path.exists():
                 stored = json.loads(view_path.read_text(encoding="utf-8"))
                 view_matches = stored == json.loads(json.dumps(self.state.to_dict()))
+            if trusted_head is not None:
+                seq_text, _, sha = trusted_head.partition(":")
+                lines = self._journal_lines()
+                seq = int(seq_text)
+                if seq < 1 or seq > len(lines) or _line_hash(lines[seq - 1]) != sha:
+                    raise CatalogIntegrityError("信頼できるHEADの位置と履歴が一致しません")
             missing: list[str] = []
             changed: list[str] = []
             checked = 0
             for recording in sorted(self.state.recordings.values(), key=lambda r: r.recording_id):
+                if selected is not None and recording.recording_id not in selected:
+                    continue
                 for role, location in sorted(recording.locations.items()):
                     path = Path(location["path"])
                     if not path.is_file():
@@ -914,6 +1064,7 @@ class RecordingCatalog:
                 "missing_locations": missing,
                 "changed_sources": changed,
                 "mode": "full_sha256" if full else "size_mtime_then_sha256",
+                "journal_head": self.head_anchor(),
             }
 
     # -- incremental processing -----------------------------------------------------
@@ -992,6 +1143,87 @@ class RecordingCatalog:
                 }
             )
         return rows
+
+    def learning_archives(
+        self,
+        *,
+        artifact_kind: str = "frames",
+        seed: str = "continual-v1",
+        ratios: Mapping[str, float] | None = None,
+        include_authorised_exposed: bool = False,
+    ) -> list[dict[str, Any]]:
+        """Derived archives (e.g. HUD crop zips) for the continual-learning registry.
+
+        Each archive inherits its recording's physical match id and authorisation, and
+        the TRAIN/VALIDATION/FROZEN_TEST sub-split is decided per physical match, so all
+        archives of one match land in the same sub-split.
+        """
+        by_recording = {
+            row["source_id"]: row
+            for row in self.learning_view(
+                seed=seed, ratios=ratios, include_authorised_exposed=include_authorised_exposed
+            )
+        }
+        rows: list[dict[str, Any]] = []
+        for artifact in sorted(self.state.artifacts.values(), key=lambda a: a.artifact_id):
+            if artifact.kind != artifact_kind or artifact.path is None:
+                continue
+            recordings = sorted(self.state.ancestry(artifact.artifact_id))
+            parents = [by_recording.get(rid) for rid in recordings]
+            if not parents or any(row is None for row in parents):
+                continue  # some ancestor is not allowed for development
+            splits = {row["split"] for row in parents if row is not None}
+            if len(artifact.physical_match_ids) != 1 or len(splits) != 1:
+                continue
+            path = Path(artifact.path)
+            rows.append(
+                {
+                    "source_id": artifact.artifact_id,
+                    "physical_match_id": artifact.physical_match_ids[0],
+                    "archive": str(path),
+                    "archive_sha256": artifact.sha256,
+                    "archive_bytes": path.stat().st_size if path.is_file() else None,
+                    "split": splits.pop(),
+                    "recording_ids": recordings,
+                    "exposed_holdout": any(
+                        row is not None and row["exposed_holdout"] for row in parents
+                    ),
+                }
+            )
+        return rows
+
+    def sync_learning_registry(
+        self, registry: Any, rows: Sequence[Mapping[str, Any]]
+    ) -> dict[str, int]:
+        """Feed rows into a continual-learning ``DatasetRegistry`` (#154) duck-typed.
+
+        The catalog decides the split; the registry's own hash bucket is not used. A
+        registry that already holds a physical match in another split raises its own
+        ``LeakageError`` and nothing is forced.
+        """
+        added = existing = 0
+        for row in rows:
+            archive = Path(str(row["archive"]))
+            if sha256_file(archive) != row["archive_sha256"]:
+                raise CatalogIntegrityError("学習用アーカイブの内容が登録時と異なります")
+            _, is_new = registry.intake(
+                str(row["source_id"]), str(row["physical_match_id"]), archive,
+                split=str(row["split"]), note="recording_catalog",
+            )
+            added += int(bool(is_new))
+            existing += int(not is_new)
+        return {"added": added, "already_present": existing}
+
+    def recordings_under(self, prefix: Path) -> list[str]:
+        """Recording ids with a location under ``prefix`` (e.g. one recording folder)."""
+        root = str(Path(prefix).expanduser().resolve())
+        return sorted(
+            rid for rid, recording in self.state.recordings.items()
+            if any(
+                item["path"] == root or item["path"].startswith(root.rstrip("/\\") + os.sep)
+                for item in recording.locations.values()
+            )
+        )
 
     def public_summary(self) -> dict[str, Any]:
         """Counts only: no ids, hashes, paths, names or timestamps."""

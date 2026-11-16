@@ -279,3 +279,152 @@ def test_cli_round_trip(tmp_path, capsys):
     capsys.readouterr()
     assert cli(["--catalog", str(root), "guard", "nope", "--purpose", "training"]) == 2
     assert cli(["--catalog", str(root), "init"]) == 2  # never re-initialise
+
+
+# ------------------------------------------------------------- 2026-11-17 review
+
+
+def test_tail_deletion_is_detected_by_head_and_trusted_anchor(catalog, tmp_path):
+    for index in range(3):
+        catalog.register(video(tmp_path, f"t{index}.mp4", b"t" * (40 + index)),
+                         physical_match_id=f"m{index}", split="DEVELOPMENT")
+    anchor = catalog.head_anchor()
+    journal = catalog.root / "journal.jsonl"
+    lines = journal.read_text(encoding="utf-8").splitlines()
+    journal.write_text("\n".join(lines[:-2]) + "\n", encoding="utf-8")
+    with pytest.raises(CatalogIntegrityError):
+        RecordingCatalog(catalog.root)
+    # Even with HEAD.json removed too, an anchor kept outside the catalog catches it.
+    journal.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    assert RecordingCatalog(catalog.root).verify(trusted_head=anchor)["journal_head"] == anchor
+    (catalog.root / "HEAD.json").unlink()
+    with pytest.raises(CatalogIntegrityError):
+        RecordingCatalog(catalog.root)
+
+
+def test_artifact_reregistration_must_repeat_its_lineage(catalog, tmp_path):
+    ids = _three(catalog, tmp_path)
+    producer = {"name": "crop", "version": "1"}
+    crop = catalog.register_artifact(kind="frames", parents=[ids["DEVELOPMENT"]],
+                                     producer=producer, sha256="6" * 64, artifact_id="crops_a")
+    assert catalog.register_artifact(kind="frames", parents=[ids["DEVELOPMENT"]],
+                                     producer=producer, sha256="6" * 64,
+                                     artifact_id="crops_a") == crop
+    with pytest.raises(LeakageError):  # same id, different parent
+        catalog.register_artifact(kind="frames", parents=[ids["QUALIFICATION"]],
+                                  producer=producer, sha256="6" * 64, artifact_id="crops_a")
+    with pytest.raises(LeakageError):  # same content claimed from another recording
+        catalog.register_artifact(kind="frames", parents=[ids["QUALIFICATION"]],
+                                  producer=producer, sha256="6" * 64, artifact_id="crops_b")
+
+
+def test_physical_match_id_is_inherited_by_derived_videos_and_crops(catalog, tmp_path):
+    source = catalog.register(video(tmp_path, "full.mp4", b"full match" * 30),
+                              physical_match_id="match_q", split="QUALIFICATION")
+    clip = video(tmp_path, "clip.mp4", b"clip of it" * 7)
+    with pytest.raises(SplitImmutableError):
+        catalog.register(clip, derived_from=source.recording_id, split="DEVELOPMENT")
+    derived = catalog.register(clip, derived_from=source.recording_id)
+    record = catalog.state.recordings[derived.recording_id]
+    assert (record.physical_match_id, record.split, record.allocation) == (
+        "match_q", "QUALIFICATION", "derived_from_parent"
+    )
+    crops = catalog.register_artifact(kind="frames", parents=[derived.recording_id],
+                                      producer={"name": "crop"}, sha256="7" * 64)
+    assert catalog.state.artifacts[crops].physical_match_ids == ("match_q",)
+    other = catalog.register(video(tmp_path, "other.mp4", b"other one" * 31),
+                             physical_match_id="match_d", split="DEVELOPMENT")
+    with pytest.raises(CatalogError):  # a crop archive cannot mix two matches
+        catalog.register_artifact(kind="frames", parents=[crops, other.recording_id],
+                                  producer={"name": "crop"}, sha256="8" * 64)
+    features = catalog.register_artifact(kind="features", parents=[crops, other.recording_id],
+                                         producer={"name": "f"}, sha256="9" * 64)
+    assert catalog.state.artifacts[features].physical_match_ids == ("match_d", "match_q")
+
+
+def test_exposed_recordings_never_serve_independent_evaluation(catalog, tmp_path):
+    ids = _three(catalog, tmp_path)
+    catalog.record_exposure(ids["FINAL_HOLDOUT"], "user_authorized_development_use", "dev")
+    with pytest.raises(LeakageError):
+        catalog.open_for_evaluation([ids["FINAL_HOLDOUT"]], "final_evaluation", "approved")
+    with pytest.raises(LeakageError):
+        catalog.guard([ids["FINAL_HOLDOUT"]], "final_evaluation")
+    catalog.guard([ids["FINAL_HOLDOUT"]], "training")  # development use stays allowed
+
+
+def test_bounded_batches_resume_and_location_prefix_selects(catalog, tmp_path):
+    folder = tmp_path / "full_match_x"
+    for index in range(5):
+        video(folder, f"m{index}.mp4", f"match {index}".encode("ascii") * (index + 5))
+    first = catalog.register_directory(folder, max_new_files=2, split="DEVELOPMENT")
+    assert sum(r.added for r in first) == 2
+    second = catalog.register_directory(folder, max_new_files=2, split="DEVELOPMENT")
+    assert sum(r.added for r in second) == 2 and len(second) == 4
+    third = catalog.register_directory(folder, split="DEVELOPMENT")
+    assert sum(r.added for r in third) == 1 and len(third) == 5
+    assert len(catalog.recordings_under(folder)) == 5
+    assert catalog.recordings_under(tmp_path / "full_match") == []  # no prefix confusion
+    batch = catalog.recordings_under(folder)[:2]
+    assert catalog.verify(recording_ids=batch)["locations_checked"] == 2
+
+
+class _FakeContinualRegistry:
+    """The intake contract of #154 ``DatasetRegistry`` (same signature)."""
+
+    def __init__(self) -> None:
+        self.rows: dict[str, tuple[str, str]] = {}
+
+    def intake(self, source_id, physical_match_id, archive, *, split=None, note=""):
+        if source_id in self.rows:
+            return self.rows[source_id], False
+        for other_physical, other_split in self.rows.values():
+            if other_physical == physical_match_id and other_split != split:
+                raise ValueError("leakage")
+        self.rows[source_id] = (physical_match_id, split)
+        return self.rows[source_id], True
+
+
+def test_continual_learning_receives_only_development_archives(catalog, tmp_path):
+    ids = _three(catalog, tmp_path)
+    archives = {}
+    for split, rid in ids.items():
+        path = video(tmp_path / "crops", f"{split}.zip", split.encode("ascii") * 9)
+        archives[split] = catalog.register_artifact(
+            kind="frames", parents=[rid], producer={"name": "crop"}, path=path
+        )
+    rows = catalog.learning_archives()
+    assert [row["source_id"] for row in rows] == [archives["DEVELOPMENT"]]
+    assert rows[0]["physical_match_id"] == "m_DEVELOPMENT"
+    registry = _FakeContinualRegistry()
+    assert catalog.sync_learning_registry(registry, rows) == {"added": 1, "already_present": 0}
+    assert catalog.sync_learning_registry(registry, rows) == {"added": 0, "already_present": 1}
+    catalog.record_exposure(ids["QUALIFICATION"], "user_authorized_development_use", "ok")
+    exposed = catalog.learning_archives(include_authorised_exposed=True)
+    assert {row["source_id"] for row in exposed} == {archives["DEVELOPMENT"],
+                                                      archives["QUALIFICATION"]}
+
+
+def test_source_policy_reads_the_catalog_and_keeps_legacy_receipts(catalog, tmp_path):
+    from valorant_ai_coach.temporal.replay import SourcePolicy
+
+    manifest = _legacy_manifest(tmp_path)
+    catalog.import_legacy(manifest)
+    anchor = catalog_module.sha256_file(manifest)
+    policy = SourcePolicy({"catalog": str(catalog.root),
+                           "allowed_recording_ids": ["batch_001"]})
+    record = catalog.state.recordings["batch_001"]
+    sample = {"source_sha256": record.source_sha256, "source_id": "batch_001"}
+    frame = {"leakage_group_id": "batch_001", "source_sha256": record.source_sha256,
+             "split": "DEVELOPMENT_TRAIN",
+             "source_acceptance": {"accepted": True, "manifest_sha256": anchor,
+                                   "allocation_sha256": anchor}}
+    policy.admit(sample, frame)  # a receipt written under the legacy manifest
+    new_receipt = {**frame, "source_acceptance": {
+        "accepted": True, "manifest_sha256": policy.manifest_sha,
+        "allocation_sha256": policy.allocation_sha}}
+    policy.admit(sample, new_receipt)
+    with pytest.raises(ValueError):
+        policy.admit(sample, {**frame, "source_acceptance": {
+            "accepted": True, "manifest_sha256": "0" * 64, "allocation_sha256": anchor}})
+    with pytest.raises(LeakageError):  # a blind hold-out is not development material
+        SourcePolicy({"catalog": str(catalog.root), "allowed_recording_ids": ["batch_002"]})
