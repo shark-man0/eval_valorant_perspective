@@ -1419,16 +1419,12 @@ class DevelopmentGameTimeline:
         """Resolve unobserved return edges around a measured own HUD.
 
         A measured own HUD after an elimination hypothesis leaves life UNKNOWN
-        while the Round token is unchanged. A dead recorder keeps spectating
-        until the next Round respawns every player, so the run of own-HUD rows
-        is a respawn when its Round has demonstrably changed:
-
-        * a measured Round result separates the run from the elimination, with
-          only spectator or unmeasured rows in between; or
-        * the own HUD continues, without a death, spectator, result or score
-          change, until a measured BUY with a new Round token.
-
-        The return time itself stays unknown.
+        while the Round token is unchanged. A dead recorder can still see its own
+        ability bar (for example on the camera that follows the planted spike)
+        until the next Round respawns every player. The run of own-HUD rows is
+        therefore a respawn only when it continues, without a death, spectator,
+        result or score change, until a measured BUY with a new Round token. A
+        Round result inside the run ends it. The return time stays unknown.
         """
         history: list[dict[str, Any]] = []
         unresolved = {"candidate_return_edge_unobserved", "return_edge_unobserved"}
@@ -1460,6 +1456,9 @@ class DevelopmentGameTimeline:
             for j in range(index + 1, len(states)):
                 if not linked(states[j - 1], states[j]):
                     break
+                if signals_of(states[j]) & {"result", "intermission"}:
+                    # A Round result inside the run separates two Rounds.
+                    break
                 if eligible(states[j]):
                     bracketed += gap
                     gap = []
@@ -1470,26 +1469,8 @@ class DevelopmentGameTimeline:
                     gap.append(j)
             index = run[-1] + 1
             # Rows without view evidence between own-HUD rows are bracketed by them.
-            # Earlier result: walk back over spectator or unmeasured rows only.
             basis = None
             confirmation = None
-            for k in range(run[0] - 1, -1, -1):
-                prior = states[k]
-                if (
-                    not linked(prior, states[k + 1])
-                    or native_time(first["sample"]) - native_time(prior["sample"])
-                    > PURCHASE_PHASE_LIMIT
-                    or self._measured_own_view(prior)
-                    or signals_of(prior) & {"death", "downed", "revival", "remote"}
-                ):
-                    break
-                if "result" in signals_of(prior) and any(
-                    "result" in self._observations[i]["signals"]
-                    and self._observations[i]["context"].get("unqualified_round_model") is not True
-                    for i in prior["observation_ids"]
-                ):
-                    basis, confirmation = "measured_result_before_own_hud", prior
-                    break
             if confirmation is None:
                 last = states[run[-1]]
                 score = self._score({"observations": [
@@ -1525,7 +1506,13 @@ class DevelopmentGameTimeline:
                         break
             if confirmation is None:
                 continue
-            for k in sorted(run + bracketed):
+            # Rows still inside the eliminated Round (its result or the camera that
+            # follows the spike) are not respawned; only rows of the new Round are.
+            respawned = [
+                k for k in sorted(run + bracketed)
+                if states[k]["round_token"] == confirmation["round_token"]
+            ]
+            for k in respawned:
                 frame = states[k]
                 before = {d: deepcopy(frame[d]) for d in ("life", "camera")}
                 neighbours = [max((r for r in run if r <= k), default=run[0]),

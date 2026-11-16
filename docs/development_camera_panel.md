@@ -49,64 +49,84 @@ native samples, keeps only frames whose decoded pixels hash to the sample's
   signals are kept. A measured `remote` row also gives life ALIVE: only a living
   recorder steers an ability.
 - A run of measured own-HUD rows after an elimination hypothesis keeps life
-  UNKNOWN while the Round token is unchanged. It becomes ALIVE only when the
-  Round has demonstrably changed: a measured Round result lies between the
-  elimination and the run with only spectator or unmeasured rows in between, or
-  the run continues without death, spectator, result or score change until a
-  measured BUY with a new Round token. Unmeasured rows inside the run follow it.
-  The return time stays unknown (`measured_view_return_history`).
+  UNKNOWN while the Round token is unchanged. A dead recorder can still see its
+  own ability bar (on the camera that follows the planted spike), so the run is
+  a respawn only when it continues, without death, spectator, result or score
+  change, until a measured BUY with a new Round token, and only rows that
+  already carry that new token become ALIVE. A Round result inside the run ends
+  it. The return time stays unknown (`measured_view_return_history`).
 
 The default path is unchanged.
 
+## Health digit gate
+
+`owner_hud` rows additionally require digit-shaped glyphs in the own health box
+(575, 1000, 105x58 at 1080p). A first full-length run without this gate turned
+30 seconds of correct DEAD into ALIVE on the spike camera after the recorder
+died (6 of 6 sampled frames were wrong), which this gate removes.
+
 ## Validation (2026-11-16)
 
-Ten admitted DEVELOPMENT matches, the same 21,999 second rows. All 32,089
-native samples were decoded again from the original recordings; 32,089 were
-pixel identical to the acquisition. The supplements used for this replay were
-measured on JPEG crops (quality 92) of those frames. The label reference comes
-from one match; thresholds were chosen on four matches and applied unchanged to
-the other six. The own-bar prototype was available in 10 of 10 matches
-(cluster 227 to 281 of 300; 0 spectator frames matched). A check of 301
-full-resolution frames (one match, 1,000 to 1,300 s) with the module itself gave
-the same label state as the crops for 301 of 301 frames (largest score
-difference 0.027).
+### Fixed comparison: ten DEVELOPMENT matches, 21,999 second rows
+
+All 32,089 native samples were decoded again from the original recordings on
+the recording machine; all were pixel identical to the acquisition. The rows
+for this replay were measured on JPEG crops (quality 92) of those frames. The
+crops did not include the health box, so for nine matches the gate is
+unchecked and those matches get **no `owner_hud` rows** (spectator and remote
+rows only). For DEV2 the health digits were measured on the same timestamps
+decoded again in the Linux container (decoder output is not pixel identical
+there, so this is recorded as such).
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Camera UNKNOWN seconds | 4,118 | 518 |
-| Life UNKNOWN seconds | 5,322 | 2,632 |
-| Camera REMOTE seconds | 0 | 87 |
+| Camera UNKNOWN seconds | 4,118 | 3,452 |
+| Life UNKNOWN seconds | 5,322 | 5,135 |
 | Round UNKNOWN seconds | 7,230 | 7,230 |
+| Camera REMOTE seconds | 0 | 87 |
 | Fixed 69 attributes: correct / incorrect / abstained | 69 / 0 / 0 | 69 / 0 / 0 |
-| Fixed labels (77, union scorer): Camera / Life correct | 20 / 20 (1 abstained each) | 21 / 21 |
+| Fixed labels (77, union scorer): Camera / Life correct | 20 / 20 | 20 / 20 (1 abstained each, unchanged) |
 | Supplemental 9 and 6 attributes | 9/9, 6/6 | 9/9, 6/6 |
-| Frames: DEAD recorder with a first-person camera | 223 | 51 |
 | Formal Facts/Events | 0 | 0 |
 
-Seconds that changed between known values: camera SPECTATOR to SELF 182, SELF
-to SPECTATOR 5, SELF to REMOTE 87; life DEAD to ALIVE 1,191, ALIVE to DEAD 1.
+Changes between known values: camera SELF to REMOTE 99 frames, SELF to
+SPECTATOR 15, SPECTATOR to SELF 5; life ALIVE to DEAD 11, DEAD to ALIVE 10.
+DEV2 alone (health measured): Camera UNKNOWN 316 to 105 seconds, Life 509 to
+345.
 
-Remote references come from one Owl Drone frame. Remote cues were measured on
-the four matches whose recorder agent has a steerable or out-of-body ability
-(two Sova, one Fade, one Astra): 50 and 49 frames in the Sova matches, 0 in the
-others. The other six matches were not measured for REMOTE.
+### Fresh full-length analysis: DEV2 from the original recording
 
-Visual review of decoded original frames by the implementing agent (not human
-GT):
+The existing acquisition command (`generate`, 1 s sampling, ScreenCueObserver)
+was run on the whole recording in a Linux container (2,052 seconds, 70 min);
+`camera_panel` then measured every sample from the same recording at full
+resolution (2,052 of 2,052 pixel identical; 414 spectator, 38 remote and 1,200
+own-HUD rows; 400 undecided).
+
+| Measure | Before | After |
+| --- | ---: | ---: |
+| Camera UNKNOWN seconds | 320 | 101 |
+| Life UNKNOWN seconds | 554 | 391 |
+| Round UNKNOWN seconds | 465 | 465 |
+| Human labels on this match (15): correct | 15 | 15 |
+
+Changes between known values: camera SELF to REMOTE 38, SPECTATOR to SELF 6;
+no life value changed between known values; 3 seconds of correct DEAD at the
+end of a Round became UNKNOWN.
+
+### Visual review by the implementing agent (not human GT)
 
 | Sample | Consistent | Contradicted | Undecidable |
 | --- | ---: | ---: | ---: |
-| Per-frame cues (24) | 20 | 0 | 2 (2 without a cue) |
-| Camera changes (45) | 37 | 0 | 8 |
-| Life DEAD to ALIVE (10) | 9 | 0 | 1 |
-| Life UNKNOWN to ALIVE (6) | 6 | 0 | 0 |
-| Life UNKNOWN to DEAD (1) | 0 | 1 | 0 |
+| Earlier per-frame cue check (24) | 20 | 0 | 2 (2 without a cue) |
+| Fresh DEV2 changes (24) | 21 | 0 | 0 (3 abstentions were correct DEAD) |
+| Fixed DEV2 changes (18) | 18 | 0 | 0 |
+| Fixed DEV2 known-to-known life/camera changes (4) | 0 | 4 | 0 |
 | REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
-| Owl Drone views found by a sweep of 252 frames (2 to 24 s after each start in one match) | 11 of 11 read REMOTE | | |
-| Life DEAD to UNKNOWN (4): the old DEAD was wrong in | 3 | | 1 |
+| Owl Drone views in a 252-frame sweep of one match | 11 of 11 read REMOTE | | |
 
-The contradicted frame is a buy menu without visible camera evidence inside a
-pending elimination hypothesis.
+The four contradicted values are two seconds at the start of a purchase phase:
+measured spectator rows kept a death latch alive until the next measured own
+HUD, and the learned own-view rows in the buy menu could not end it.
 
 ## Limits
 
@@ -116,5 +136,7 @@ pending elimination hypothesis.
   bindings. Other steerable abilities (Fade's Prowler, Cypher's camera, Skye's
   Trailblazer) and Astra's astral form were not reviewed and are still
   read as SELF when the own ability bar stays visible.
-- 35 seconds of DEAD in one match became UNKNOWN: a measured remote frame
-  ended a stale elimination hypothesis that had supplied that DEAD.
+- Nine of ten matches in the fixed comparison lack health-box crops; their
+  own-HUD rows are therefore not used and their result understates the module.
+- Pixel identity depends on the decoder: the recording machine's acquisitions
+  and the container's acquisition each match their own decoder only.

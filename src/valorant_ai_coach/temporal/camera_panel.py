@@ -45,6 +45,11 @@ REMOTE_BAND = (640, 850, 650, 125)
 DURATION_BOX = (930, 850, 60, 50)
 REMOTE_HINT_MATCH = 0.60
 REMOTE_DURATION_MATCH = 0.60
+# Own health digits left of the ability bar: only a living player's HUD shows them.
+HEALTH_BOX = (575, 1000, 105, 58)
+HEALTH_DIGIT_HEIGHT = (28, 40)
+HEALTH_DIGIT_WIDTH = (6, 26)
+HEALTH_DIGIT_AREA = 120
 LABEL_PRESENT = 0.55
 LABEL_ABSENT = 0.30
 OWN_BAR_MATCH = 0.60
@@ -138,6 +143,28 @@ def measure_remote(image: NDArray[np.uint8], reference: RemoteReference) -> dict
         "duration_score": round(duration, 6),
         "present": hint >= REMOTE_HINT_MATCH and duration >= REMOTE_DURATION_MATCH,
     }
+
+
+def health_digits(image: NDArray[np.uint8]) -> int | None:
+    """Number of digit-shaped bright glyphs in the health box (None if unchecked).
+
+    A dead recorder's camera can keep the recorder's ability bar (for example the
+    view that follows the planted spike) but shows no health value.
+    """
+    native = _native(image)
+    if native is None or native.ndim != 3:
+        return None
+    x, y, w, h = HEALTH_BOX
+    hsv = cv2.cvtColor(native[y : y + h, x : x + w], cv2.COLOR_BGR2HSV)
+    mask = ((hsv[..., 2] > 200) & (hsv[..., 1] < 90)).astype(np.uint8)
+    _, _, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+    return sum(
+        1
+        for _, _, width, height, area in stats[1:]
+        if HEALTH_DIGIT_HEIGHT[0] <= height <= HEALTH_DIGIT_HEIGHT[1]
+        and HEALTH_DIGIT_WIDTH[0] <= width <= HEALTH_DIGIT_WIDTH[1]
+        and area >= HEALTH_DIGIT_AREA
+    )
 
 
 def bar_slots(image: NDArray[np.uint8]) -> list[NDArray[np.float32]] | None:
@@ -235,6 +262,7 @@ def measure_frame(
     return {
         "label": measure_label(image, reference),
         "slots": bar_slots(image),
+        "health_digits": health_digits(image),
         "remote": None if remote is None else measure_remote(image, remote),
     }
 
@@ -256,6 +284,7 @@ def camera_rows(
         "remote_reference_sha256": None if remote is None else remote.sha256,
         "label_box": LABEL_BOX,
         "bar_box": BAR_BOX,
+        "health_box": HEALTH_BOX,
         "thresholds": {"label_present": LABEL_PRESENT, "label_absent": LABEL_ABSENT,
                        "own_bar": OWN_BAR_MATCH, "remote_hint": REMOTE_HINT_MATCH,
                        "remote_duration": REMOTE_DURATION_MATCH},
@@ -279,7 +308,11 @@ def camera_rows(
         elif remote_cue and remote_cue["present"] and label["state"] != "PRESENT":
             signals = ["remote"]
             counts["remote_control"] += 1
-        elif label["state"] == "ABSENT" and own_score is not None and own_score >= OWN_BAR_MATCH:
+        elif (
+            label["state"] == "ABSENT"
+            and own_score is not None and own_score >= OWN_BAR_MATCH
+            and (m.get("health_digits") or 0) > 0
+        ):
             signals = ["owner_hud"]
             counts["own_ability_bar"] += 1
         else:
@@ -290,6 +323,7 @@ def camera_rows(
             producer=producer,
             signals=signals,
             raw={"camera_panel": {"label": label, "remote": remote_cue,
+                                  "health_digits": m.get("health_digits"),
                                   "own_ability_bar_score": None if own_score is None
                                   else round(own_score, 6)},
                  "qualified": False, "formal_outputs": 0},
@@ -377,7 +411,7 @@ def main(argv: list[str] | None = None) -> int:
     result["samples_requested"] = len(samples)
     result["samples_not_pixel_identical"] = len(missing)
     args.output.write_text(json.dumps(result), encoding="utf-8")
-    print(json.dumps({"rows": len(result["observations"]), **result["counts"],
+    print(json.dumps({"rows": len(result["observations"]), "counts": result["counts"],
                       "own_ability_bar": result["own_ability_bar"],
                       "samples_not_pixel_identical": len(missing)}))
     return 0
