@@ -20,6 +20,7 @@ scoreboards, and some SPECTATOR seconds were carried from learned claims.
 | --- | --- | --- |
 | Spectator label (lower left, "switch player") | Normalized cross-correlation with a 158x28 reference crop of the label, searched within 6 px, at 1920x1080 (other 16:9 sizes are resized; other aspect ratios are UNCHECKED) | `PRESENT` at 0.55 or more, `ABSENT` at 0.30 or less, otherwise undecided |
 | Ability bar (bottom centre) | Four icon slots compared with the recorder's own icons; the second-lowest slot score is used, so three of four icons must agree | own HUD at 0.60 or more |
+| Remote control (optional references) | The key hint shown above the ability bar while an ability is steered, searched across the band above the bar, and the control-duration icon at the screen centre above the bar | remote at 0.60 or more for both |
 
 The recorder's own icons are learned per recording: 300 evenly spaced frames
 with the label `ABSENT` are clustered and the dominant cluster becomes the
@@ -29,21 +30,24 @@ teammates can be spectated, so a matching bar identifies the recorder's own HUD.
 
 Rows (`stream_kind: camera_panel`, strong evidence):
 
-- label `PRESENT` gives `spectator`;
+- label `PRESENT` gives `spectator` (unless a remote cue is also present: no row);
+- a remote cue without the label gives `remote`;
 - label `ABSENT` and own ability bar give `owner_hud`;
 - anything else gives no row. Label absence alone is never evidence.
 
 `python -m valorant_ai_coach.temporal.camera_panel --video V --timeline T
---label-reference LABEL.png --output S.json` decodes exactly the timeline's
+--label-reference LABEL.png [--remote-hint H.png --remote-duration D.png]
+--output S.json` decodes exactly the timeline's
 native samples, keeps only frames whose decoded pixels hash to the sample's
 `native_pixel_sha256`, and writes a supplement for `export --supplement S.json
 --measured-view-precedence`. The label reference is a private asset.
 
 ## Engine option `measured_view_precedence`
 
-- In a frame with a measured `owner_hud` or `spectator` row, learned
-  (`unqualified_view_model`) `owner_hud`/`spectator` claims are ignored. Other
-  learned signals are kept.
+- In a frame with a measured `owner_hud`, `spectator` or `remote` row, learned
+  (`unqualified_view_model`) claims of those three are ignored. Other learned
+  signals are kept. A measured `remote` row also gives life ALIVE: only a living
+  recorder steers an ability.
 - A run of measured own-HUD rows after an elimination hypothesis keeps life
   UNKNOWN while the Round token is unchanged. It becomes ALIVE only when the
   Round has demonstrably changed: a measured Round result lies between the
@@ -69,8 +73,9 @@ difference 0.027).
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Camera UNKNOWN seconds | 4,118 | 517 |
-| Life UNKNOWN seconds | 5,322 | 2,598 |
+| Camera UNKNOWN seconds | 4,118 | 518 |
+| Life UNKNOWN seconds | 5,322 | 2,632 |
+| Camera REMOTE seconds | 0 | 87 |
 | Round UNKNOWN seconds | 7,230 | 7,230 |
 | Fixed 69 attributes: correct / incorrect / abstained | 69 / 0 / 0 | 69 / 0 / 0 |
 | Fixed labels (77, union scorer): Camera / Life correct | 20 / 20 (1 abstained each) | 21 / 21 |
@@ -79,7 +84,12 @@ difference 0.027).
 | Formal Facts/Events | 0 | 0 |
 
 Seconds that changed between known values: camera SPECTATOR to SELF 182, SELF
-to SPECTATOR 5; life DEAD to ALIVE 1,189, ALIVE to DEAD 1, UNKNOWN to DEAD 1.
+to SPECTATOR 5, SELF to REMOTE 87; life DEAD to ALIVE 1,191, ALIVE to DEAD 1.
+
+Remote references come from one Owl Drone frame. Remote cues were measured on
+the four matches whose recorder agent has a steerable or out-of-body ability
+(two Sova, one Fade, one Astra): 50 and 49 frames in the Sova matches, 0 in the
+others. The other six matches were not measured for REMOTE.
 
 Visual review of decoded original frames by the implementing agent (not human
 GT):
@@ -91,6 +101,8 @@ GT):
 | Life DEAD to ALIVE (10) | 9 | 0 | 1 |
 | Life UNKNOWN to ALIVE (6) | 6 | 0 | 0 |
 | Life UNKNOWN to DEAD (1) | 0 | 1 | 0 |
+| REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
+| Owl Drone views found by a sweep of 252 frames (2 to 24 s after each start in one match) | 11 of 11 read REMOTE | | |
 | Life DEAD to UNKNOWN (4): the old DEAD was wrong in | 3 | | 1 |
 
 The contradicted frame is a buy menu without visible camera evidence inside a
@@ -100,5 +112,9 @@ pending elimination hypothesis.
 
 - Development matches only; holdout recordings were not used.
 - The thresholds and geometry assume the recordings' HUD scale and language.
-- REMOTE is not measured; a remote view that keeps the own ability bar would be
-  read as SELF.
+- REMOTE is measured only for the Owl Drone control hint of this recorder's key
+  bindings. Other steerable abilities (Fade's Prowler, Cypher's camera, Skye's
+  Trailblazer) and Astra's astral form were not reviewed and are still
+  read as SELF when the own ability bar stays visible.
+- 35 seconds of DEAD in one match became UNKNOWN: a measured remote frame
+  ended a stale elimination hypothesis that had supplied that DEAD.

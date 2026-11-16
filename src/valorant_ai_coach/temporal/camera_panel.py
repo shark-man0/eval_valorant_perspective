@@ -40,6 +40,11 @@ BAR_BOX = (700, 975, 520, 85)
 BAR_SLOTS = ((55, 125), (170, 240), (285, 355), (400, 470))
 BAR_ROWS = (0, 56)
 SLOT_MARGIN = 4
+# Remote control hint band above the ability bar and the control duration icon.
+REMOTE_BAND = (640, 850, 650, 125)
+DURATION_BOX = (930, 850, 60, 50)
+REMOTE_HINT_MATCH = 0.60
+REMOTE_DURATION_MATCH = 0.60
 LABEL_PRESENT = 0.55
 LABEL_ABSENT = 0.30
 OWN_BAR_MATCH = 0.60
@@ -89,6 +94,50 @@ class LabelReference:
         if image is None or image.shape != (LABEL_BOX[3], LABEL_BOX[2]):
             raise ValueError(f"Spectator label reference must be {LABEL_BOX[2]}x{LABEL_BOX[3]}")
         return cls(image.astype(np.float32), hashlib.sha256(data).hexdigest())
+
+
+@dataclass(frozen=True)
+class RemoteReference:
+    """Remote-control key hint and duration icon shown while steering an ability."""
+
+    hint: NDArray[np.float32]
+    duration: NDArray[np.float32]
+    sha256: str
+
+    @classmethod
+    def load(cls, hint_path: Path, duration_path: Path) -> RemoteReference:
+        images = []
+        digest_input = b""
+        for path in (hint_path, duration_path):
+            data = path.read_bytes()
+            image = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_GRAYSCALE)
+            if image is None:
+                raise ValueError("Readable remote reference required")
+            images.append(image.astype(np.float32))
+            digest_input += hashlib.sha256(data).digest()
+        hint, duration = images
+        if (
+            hint.shape[0] > REMOTE_BAND[3] or hint.shape[1] > REMOTE_BAND[2]
+            or duration.shape[0] > DURATION_BOX[3] or duration.shape[1] > DURATION_BOX[2]
+        ):
+            raise ValueError("Remote references exceed their search regions")
+        return cls(hint, duration, hashlib.sha256(digest_input).hexdigest())
+
+
+def measure_remote(image: NDArray[np.uint8], reference: RemoteReference) -> dict[str, Any]:
+    native = _native(image)
+    if native is None:
+        return {"checked": False, "present": None}
+    x, y, w, h = REMOTE_BAND
+    hint = _ncc(_gray(native[y : y + h, x : x + w]), reference.hint)
+    x, y, w, h = DURATION_BOX
+    duration = _ncc(_gray(native[y : y + h, x : x + w]), reference.duration)
+    return {
+        "checked": True,
+        "hint_score": round(hint, 6),
+        "duration_score": round(duration, 6),
+        "present": hint >= REMOTE_HINT_MATCH and duration >= REMOTE_DURATION_MATCH,
+    }
 
 
 def bar_slots(image: NDArray[np.uint8]) -> list[NDArray[np.float32]] | None:
@@ -177,14 +226,23 @@ def learn_own_bar(
     }
 
 
-def measure_frame(image: NDArray[np.uint8], reference: LabelReference) -> dict[str, Any]:
+def measure_frame(
+    image: NDArray[np.uint8],
+    reference: LabelReference,
+    remote: RemoteReference | None = None,
+) -> dict[str, Any]:
     """Per-frame measurements; only small crops are kept."""
-    return {"label": measure_label(image, reference), "slots": bar_slots(image)}
+    return {
+        "label": measure_label(image, reference),
+        "slots": bar_slots(image),
+        "remote": None if remote is None else measure_remote(image, remote),
+    }
 
 
 def camera_rows(
     measured: list[tuple[dict[str, Any], dict[str, Any]]],
     reference: LabelReference,
+    remote: RemoteReference | None = None,
 ) -> dict[str, Any]:
     """Return a supplement with one row per frame decided by the two displays."""
     absent = [m["slots"] for _, m in measured
@@ -195,16 +253,18 @@ def camera_rows(
     bindings = {
         "version": VERSION,
         "label_reference_sha256": reference.sha256,
+        "remote_reference_sha256": None if remote is None else remote.sha256,
         "label_box": LABEL_BOX,
         "bar_box": BAR_BOX,
         "thresholds": {"label_present": LABEL_PRESENT, "label_absent": LABEL_ABSENT,
-                       "own_bar": OWN_BAR_MATCH},
+                       "own_bar": OWN_BAR_MATCH, "remote_hint": REMOTE_HINT_MATCH,
+                       "remote_duration": REMOTE_DURATION_MATCH},
         "own_bar_prototype_sha256": own.get("prototype_sha256"),
         "implementation_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     }
     producer = digest(bindings)
     rows = []
-    counts = {"spectator_label": 0, "own_ability_bar": 0, "undecided": 0}
+    counts = {"spectator_label": 0, "remote_control": 0, "own_ability_bar": 0, "undecided": 0}
     for sample, m in measured:
         label, slot = m["label"], m["slots"]
         own_score = (
@@ -212,9 +272,13 @@ def camera_rows(
             if own["available"] and slot is not None else None
         )
         signals: list[str] = []
-        if label["state"] == "PRESENT":
+        remote_cue = m.get("remote")
+        if label["state"] == "PRESENT" and not (remote_cue and remote_cue["present"]):
             signals = ["spectator"]
             counts["spectator_label"] += 1
+        elif remote_cue and remote_cue["present"] and label["state"] != "PRESENT":
+            signals = ["remote"]
+            counts["remote_control"] += 1
         elif label["state"] == "ABSENT" and own_score is not None and own_score >= OWN_BAR_MATCH:
             signals = ["owner_hud"]
             counts["own_ability_bar"] += 1
@@ -225,7 +289,7 @@ def camera_rows(
             sample=freeze_native_sample(sample),
             producer=producer,
             signals=signals,
-            raw={"camera_panel": {"label": label,
+            raw={"camera_panel": {"label": label, "remote": remote_cue,
                                   "own_ability_bar_score": None if own_score is None
                                   else round(own_score, 6)},
                  "qualified": False, "formal_outputs": 0},
@@ -280,6 +344,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeline", type=Path, required=True,
                         help="Timeline or observation JSON whose samples are measured")
     parser.add_argument("--label-reference", type=Path, required=True)
+    parser.add_argument("--remote-hint", type=Path)
+    parser.add_argument("--remote-duration", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.output.exists():
@@ -296,12 +362,18 @@ def main(argv: list[str] | None = None) -> int:
         if row["sample"]["source_sha256"] == source
     }
     reference = LabelReference.load(args.label_reference)
+    if (args.remote_hint is None) != (args.remote_duration is None):
+        raise SystemExit("Both remote references or neither required")
+    remote = (
+        RemoteReference.load(args.remote_hint, args.remote_duration)
+        if args.remote_hint is not None and args.remote_duration is not None else None
+    )
     missing: list[dict[str, Any]] = []
     measured = [
-        (sample, measure_frame(image, reference))
+        (sample, measure_frame(image, reference, remote))
         for sample, image in decode_samples(args.video, list(samples.values()), missing)
     ]
-    result = camera_rows(measured, reference)
+    result = camera_rows(measured, reference, remote)
     result["samples_requested"] = len(samples)
     result["samples_not_pixel_identical"] = len(missing)
     args.output.write_text(json.dumps(result), encoding="utf-8")

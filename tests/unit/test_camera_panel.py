@@ -65,7 +65,8 @@ def test_rows_use_label_and_learned_own_ability_bar(reference):
     result = cp.camera_rows(measured, reference)
     signals = {r["sample"]["native_pts_tick"]: r["signals"] for r in result["observations"]}
     assert result["own_ability_bar"]["available"] is True
-    assert result["counts"] == {"spectator_label": 10, "own_ability_bar": 40, "undecided": 1}
+    assert result["counts"] == {"spectator_label": 10, "remote_control": 0, "own_ability_bar": 40,
+                                "undecided": 1}
     assert signals[0] == ["owner_hud"] and signals[400] == ["spectator"]
     assert 500 not in signals
     assert all(r["context"]["stream_kind"] == "camera_panel" for r in result["observations"])
@@ -142,3 +143,49 @@ def test_own_hud_until_next_round_buy_resolves_the_return():
     assert {h["basis"] for h in result["measured_view_return_history"]} == {
         "measured_buy_after_own_hud"
     }
+
+
+HINT = cv2.resize(RNG.integers(0, 256, (9, 7)).astype(np.uint8), (70, 90),
+                  interpolation=cv2.INTER_NEAREST)
+DURATION = cv2.resize(RNG.integers(0, 256, (6, 5)).astype(np.uint8), (24, 30),
+                      interpolation=cv2.INTER_NEAREST)
+
+
+@pytest.fixture
+def remote(tmp_path):
+    hint, duration = tmp_path / "hint.png", tmp_path / "duration.png"
+    cv2.imwrite(str(hint), HINT)
+    cv2.imwrite(str(duration), DURATION)
+    return cp.RemoteReference.load(hint, duration)
+
+
+def with_remote(image, slot_x=115):
+    x, y = cp.REMOTE_BAND[:2]
+    image[y + 20 : y + 110, x + slot_x : x + slot_x + 70] = HINT[..., None]
+    x, y = cp.DURATION_BOX[:2]
+    image[y + 10 : y + 40, x + 18 : x + 42] = DURATION[..., None]
+    return image
+
+
+def test_remote_control_hint_and_duration_give_remote(reference, remote):
+    assert cp.measure_remote(with_remote(frame(icons=OWN)), remote)["present"] is True
+    hint_only = frame(icons=OWN)
+    x, y = cp.REMOTE_BAND[:2]
+    hint_only[y + 20 : y + 110, x + 300 : x + 370] = HINT[..., None]
+    assert cp.measure_remote(hint_only, remote)["present"] is False
+    images = [frame(icons=OWN, seed=i) for i in range(40)]
+    images += [with_remote(frame(icons=OWN, seed=50), slot_x=400)]
+    images += [with_remote(frame(label=True, icons=OTHER, seed=51))]
+    measured = [(sample(i), cp.measure_frame(img, reference, remote))
+                for i, img in enumerate(images)]
+    result = cp.camera_rows(measured, reference, remote)
+    signals = {r["sample"]["native_pts_tick"]: r["signals"] for r in result["observations"]}
+    assert signals[400] == ["remote"] and 410 not in signals
+    assert result["counts"]["remote_control"] == 1
+    assert result["bindings"]["remote_reference_sha256"] == remote.sha256
+
+
+def test_measured_remote_outranks_learned_self():
+    rows = [obs(0, ["remote"]), obs(0, ["owner_hud"], context=WEAK)]
+    frame = replay(rows, measured_view_precedence=True)["frames"][0]
+    assert (frame["camera"]["value"], frame["life"]["value"]) == ("REMOTE", "ALIVE")

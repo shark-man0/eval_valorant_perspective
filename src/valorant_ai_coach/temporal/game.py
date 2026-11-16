@@ -21,7 +21,7 @@ from .zone_contract import ZONE_CONTEXT_CONTRACT, viewed_zone_candidate
 
 VERSION = "development_game_timeline_v2"
 # Measured view displays (fixed HUD panels) outrank learned view classifiers.
-_MEASURED_VIEW_SIGNALS = frozenset({"owner_hud", "spectator"})
+_MEASURED_VIEW_SIGNALS = frozenset({"owner_hud", "spectator", "remote"})
 # Longest purchase phase plus the transition into it (competitive format).
 PURCHASE_PHASE_LIMIT = Fraction(45)
 
@@ -585,6 +585,9 @@ class DevelopmentGameTimeline:
                     if signal in signals
                 ],
             }
+            if measured_view and "remote" in signals and "ALIVE" not in choices["life"]:
+                # Steering a measured remote ability requires a living recorder.
+                choices["life"].append("ALIVE")
             # A small active clock remains contextually ACTIVE below the buy-clock
             # ambiguity range only when its observed countdown and score agree.
             clocks = {
