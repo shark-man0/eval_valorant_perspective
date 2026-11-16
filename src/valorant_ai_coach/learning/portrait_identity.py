@@ -94,6 +94,8 @@ class MatchPortraits:
     sec: NDArray[np.float32]
     ally_set: tuple[str, ...]
     recorder: str | None
+    slot: NDArray[np.int8] | None = None
+    viewed: tuple[tuple[float, str, float], ...] = ()  # (sec, HUD agent, score)
 
     @classmethod
     def from_arrays(cls, match_id: str, arrays: dict[str, Any], agent_names: tuple[str, ...]
@@ -104,8 +106,12 @@ class MatchPortraits:
                          if v >= 0 and s >= MIN_VIEW_SCORE)
         ally = tuple(sorted(agent_names[i] for i, n in counts.items() if n >= MIN_VIEW_SAMPLES))
         recorder = agent_names[counts.most_common(1)[0][0]] if counts else None
+        viewed_rows = tuple(
+            (float(t), agent_names[int(v)], float(s))
+            for t, v, s in zip(arrays["viewed_sec"], viewed, scores, strict=True) if v >= 0)
         return cls(match_id, np.asarray(arrays["features"], np.float64),
-                   np.asarray(arrays["team"]), np.asarray(arrays["sec"]), ally, recorder)
+                   np.asarray(arrays["team"]), np.asarray(arrays["sec"]), ally, recorder,
+                   np.asarray(arrays["slot"]), viewed_rows)
 
 
 @dataclass
@@ -209,8 +215,65 @@ def train(anchors: tuple[NDArray[np.float64], list[str]], matches: list[MatchPor
     return model
 
 
+def reviewed_accuracy(model: PortraitModel, matches: list[MatchPortraits],
+                      labels: list[dict[str, Any]]) -> dict[str, float]:
+    """Top-1 accuracy against reviewed per-portrait labels.
+
+    ``labels`` rows are ``{"match_id", "sec", "team", "slot", "agent"}`` written
+    by a reviewer who compared the portrait with official icons. Unlike
+    ``ally_set_consistency`` this is a per-portrait recognition accuracy.
+    """
+    by_match = {m.match_id: m for m in matches}
+    correct = total = 0
+    for row in labels:
+        match = by_match.get(row["match_id"])
+        if match is None or match.slot is None:
+            continue
+        team = ALLY if row["team"] == "ally" else ENEMY
+        hits = np.where((np.abs(match.sec - float(row["sec"])) < 0.05)
+                        & (match.team == team) & (match.slot == int(row["slot"])))[0]
+        if not len(hits):
+            continue
+        predicted = model.classes[int(np.argmax(model.scores(match.features[hits[:1]])))]
+        total += 1
+        correct += predicted == row["agent"]
+    return {"reviewed_accuracy": correct / total if total else 0.0,
+            "reviewed_labels": float(total)}
+
+
+EXACT_VIEW_SCORE = 0.8
+
+
+def exact_reference_accuracy(model: PortraitModel, matches: list[MatchPortraits]
+                             ) -> dict[str, float]:
+    """Per-portrait accuracy where the label is exact.
+
+    When exactly one ally portrait is on the bar and the ability HUD clearly
+    shows a living player's abilities at the same moment, that portrait must be
+    the HUD's agent (only one ally is alive, and a dead player's HUD is not
+    shown). The HUD is read with official icons and is not used to train on
+    these matches, so this is an independent per-portrait label.
+    """
+    correct = total = 0
+    for match in matches:
+        hud = {round(t, 1): (agent, score) for t, agent, score in match.viewed}
+        for sec in np.unique(match.sec):
+            rows = np.where((match.sec == sec) & (match.team == ALLY))[0]
+            seen = hud.get(round(float(sec), 1))
+            if len(rows) != 1 or seen is None or seen[1] < EXACT_VIEW_SCORE:
+                continue
+            predicted = model.classes[int(np.argmax(model.scores(match.features[rows])))]
+            total += 1
+            correct += predicted == seen[0]
+    return {"exact_ref_accuracy": correct / total if total else 0.0,
+            "exact_ref_portraits": float(total)}
+
+
 def evaluate(model: PortraitModel, matches: list[MatchPortraits]) -> dict[str, float]:
-    """Mean over matches with a reference ally set of >=4 agents."""
+    """Agreement with the ability-HUD weak reference; not a recognition accuracy.
+
+    Mean over matches with a reference ally set of >=4 agents.
+    """
     consistency, recall, coverage = [], [], 0
     for match in matches:
         if len(match.ally_set) < 4:
@@ -228,6 +291,7 @@ def evaluate(model: PortraitModel, matches: list[MatchPortraits]) -> dict[str, f
         "ally_set_consistency": float(np.mean(consistency)) if consistency else 0.0,
         "ally_team_recall": float(np.mean(recall)) if recall else 0.0,
         "evaluated_matches": float(coverage),
+        **exact_reference_accuracy(model, matches),
     }
 
 

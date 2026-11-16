@@ -25,31 +25,69 @@ def _archive(tmp_path: Path, name: str, content: bytes) -> Path:
     return path
 
 
+def _sha(index: int) -> str:
+    return f"{index:064x}"
+
+
 def test_registry_is_incremental_deterministic_and_leak_free(tmp_path: Path) -> None:
     registry = DatasetRegistry(tmp_path / "reg.json")
     records = []
     for index in range(12):
-        archive = _archive(tmp_path, f"m{index}", f"content-{index}".encode("utf-8"))  # noqa: UP012
-        record, added = registry.intake(f"m{index}", f"physical-{index}", archive)
-        assert added
+        archive = _archive(tmp_path, f"m{index}", f"content-{index}".encode())
+        record, added = registry.intake(f"m{index}", f"physical-{index}", archive,
+                                        source_video_sha256=_sha(index))
+        assert added and record.exposure == "DEVELOPMENT"
         records.append(record)
-    again, added = registry.intake("m0", "physical-0", tmp_path / "m0.zip")
+    again, added = registry.intake("m0", "physical-0", tmp_path / "m0.zip",
+                                   source_video_sha256=_sha(0))
     assert not added and again == records[0]
     reloaded = DatasetRegistry(tmp_path / "reg.json")
     assert {r.source_id: r.split for r in reloaded.sources()} == {
         r.source_id: r.split for r in records}
-    assert {r.split for r in records} <= {"TRAIN", "VALIDATION", "FROZEN_TEST"}
+    assert {r.split for r in records} <= {"TRAIN", "VALIDATION", "DEV_COMPARISON"}
     # A second recording of the same physical match keeps that match's split.
-    other = _archive(tmp_path, "m0b", b"other-encoding")
-    record, _ = reloaded.intake("m0b", "physical-0", other)
+    record, _ = reloaded.intake("m0b", "physical-0", _archive(tmp_path, "m0b", b"other"),
+                                source_video_sha256=_sha(100))
     assert record.split == records[0].split
-    wrong = next(s for s in ("TRAIN", "VALIDATION", "FROZEN_TEST") if s != record.split)
+    wrong = next(s for s in ("TRAIN", "VALIDATION", "DEV_COMPARISON") if s != record.split)
     with pytest.raises(LeakageError):
-        reloaded.intake("m0c", "physical-0", _archive(tmp_path, "m0c", b"x"), split=wrong)
+        reloaded.intake("m0c", "physical-0", _archive(tmp_path, "m0c", b"x"),
+                        source_video_sha256=_sha(101), split=wrong)
+    # The same source recording under another id (e.g. re-extracted crops) is refused.
+    with pytest.raises(LeakageError):
+        reloaded.intake("m1-again", "physical-x", _archive(tmp_path, "m1b", b"recut"),
+                        source_video_sha256=_sha(1))
     with pytest.raises(ValueError):
-        reloaded.intake("dup", "physical-99", tmp_path / "m1.zip")
+        reloaded.intake("dup", "physical-99", tmp_path / "m1.zip", source_video_sha256=_sha(99))
+    with pytest.raises(ValueError):
+        reloaded.intake("nohash", "physical-98", _archive(tmp_path, "n", b"n"),
+                        source_video_sha256="")
     first_two = reloaded.sources(limit_matches=2)
     assert {r.physical_match_id for r in first_two} == {"physical-0", "physical-1"}
+
+
+def test_unexposed_recordings_form_an_independent_test(tmp_path: Path) -> None:
+    registry = DatasetRegistry(tmp_path / "reg.json")
+    seen, _ = registry.intake("dev", "physical-1", _archive(tmp_path, "dev", b"a"),
+                              source_video_sha256=_sha(1))
+    fresh, _ = registry.intake("new", "physical-2", _archive(tmp_path, "new", b"b"),
+                               source_video_sha256=_sha(2), unexposed=True)
+    assert fresh.split == "INDEPENDENT_TEST" and fresh.exposure == "UNEXPOSED_AT_REGISTRATION"
+    with pytest.raises(LeakageError):
+        registry.intake("dev2", "physical-1", _archive(tmp_path, "dev2", b"c"),
+                        source_video_sha256=_sha(3), unexposed=True)
+    assert seen.split != "INDEPENDENT_TEST"
+
+
+def test_legacy_frozen_split_reads_as_dev_comparison(tmp_path: Path) -> None:
+    path = tmp_path / "reg.json"
+    path.write_text(json.dumps({
+        "seed": "continual-v1",
+        "ratios": {"TRAIN": 0.6, "VALIDATION": 0.2, "FROZEN_TEST": 0.2},
+        "sources": [{"source_id": "a", "physical_match_id": "p", "archive": "a.zip",
+                     "archive_sha256": "0" * 64, "archive_bytes": 1, "split": "FROZEN_TEST",
+                     "added_at": "t", "order": 0}]}), "utf-8")
+    assert DatasetRegistry(path).sources()[0].split == "DEV_COMPARISON"
 
 
 def test_registry_seed_cannot_change(tmp_path: Path) -> None:
@@ -58,22 +96,25 @@ def test_registry_seed_cannot_change(tmp_path: Path) -> None:
         DatasetRegistry(tmp_path / "reg.json", seed="other")
 
 
-def test_model_registry_gate_and_rollback(tmp_path: Path) -> None:
+def test_model_registry_gate_reads_validation_only_and_rolls_back(tmp_path: Path) -> None:
     registry = ModelRegistry(tmp_path)
-    arrays = {"w": np.zeros(3)}
-    first = registry.register("t", "f", arrays, {"a": 1},
-                              {"frozen_accuracy": 0.5, "validation_accuracy": 0.5}, "d1")
+    first = registry.register("t", "f", {"w": np.zeros(3)}, {"a": 1},
+                              {"validation_accuracy": 0.5, "validation_team_recall": 0.5,
+                               "dev_comparison_weak_ref_consistency": 0.9}, "d1")
     assert registry.decide(first.version_id, GatePolicy())["adopt"]
-    worse = registry.register("t", "f", {"w": np.ones(3)}, {"a": 2},
-                              {"frozen_accuracy": 0.45, "validation_accuracy": 0.6}, "d2")
-    assert not registry.decide(worse.version_id, GatePolicy())["adopt"]
-    assert registry.active_id("t") == first.version_id
-    regress = registry.register("t", "f", {"w": np.full(3, 2.0)}, {"a": 3},
-                                {"frozen_accuracy": 0.6, "validation_accuracy": 0.4}, "d3")
-    decision = registry.decide(regress.version_id, GatePolicy())
-    assert not decision["adopt"] and "validation_accuracy" in decision["reason"]
+    # A large DEV_COMPARISON gain does not matter: VALIDATION did not improve.
+    comparison_only = registry.register(
+        "t", "f", {"w": np.ones(3)}, {"a": 2},
+        {"validation_accuracy": 0.5, "validation_team_recall": 0.5,
+         "dev_comparison_weak_ref_consistency": 1.0}, "d2")
+    assert not registry.decide(comparison_only.version_id, GatePolicy())["adopt"]
+    recall_drop = registry.register("t", "f", {"w": np.full(3, 2.0)}, {"a": 3},
+                                    {"validation_accuracy": 0.6,
+                                     "validation_team_recall": 0.4}, "d3")
+    decision = registry.decide(recall_drop.version_id, GatePolicy())
+    assert not decision["adopt"] and "validation_team_recall" in decision["reason"]
     better = registry.register("t", "f", {"w": np.full(3, 3.0)}, {"a": 4},
-                               {"frozen_accuracy": 0.7, "validation_accuracy": 0.6}, "d4")
+                               {"validation_accuracy": 0.7, "validation_team_recall": 0.6}, "d4")
     assert registry.decide(better.version_id, GatePolicy())["adopt"]
     assert registry.active_id("t") == better.version_id
     assert registry.rollback("t") == first.version_id
@@ -81,6 +122,8 @@ def test_model_registry_gate_and_rollback(tmp_path: Path) -> None:
     assert [e["event"] for e in registry.history()].count("rollback") == 1
     assert np.array_equal(registry.load_arrays(better.version_id)["w"], np.full(3, 3.0))
     assert ModelRegistry(tmp_path).active_id("t") == first.version_id
+    with pytest.raises(ValueError):
+        GatePolicy(metric="dev_comparison_weak_ref_consistency")
 
 
 def test_feature_store_computes_once(tmp_path: Path) -> None:
@@ -151,6 +194,7 @@ def test_portrait_task_learns_from_cross_modal_ally_sets() -> None:
 
     train = [match("t1", [0, 1, 2, 3], [4, 5, 6, 7]), match("t2", [4, 5, 6, 7], [0, 1, 2, 3])]
     test = [match("f1", [0, 2, 4, 6], [1, 3, 5, 7])]
+    test[0].slot = np.tile(np.arange(4, dtype=np.int8), len(test[0].team) // 4)
     zero = task.train(anchors, [], {"ssl": False, "rounds": 0})
     learned = task.train(anchors, train, {"ssl": True, "ssl_dims": 16, "rounds": 2})
     before = task.evaluate(zero, test)["ally_set_consistency"]
@@ -159,3 +203,23 @@ def test_portrait_task_learns_from_cross_modal_ally_sets() -> None:
     assert after >= before
     assert after > 0.9
     json.dumps(task.evaluate(learned, test))
+    labels = [{"match_id": "f1", "sec": 0.0, "team": "ally", "slot": slot, "agent": names[agent]}
+              for slot, agent in enumerate([0, 2, 4, 6])]
+    reviewed = task.reviewed_accuracy(learned, test, labels)
+    assert reviewed["reviewed_labels"] == 4 and reviewed["reviewed_accuracy"] == 1.0
+
+
+def test_exact_reference_uses_single_ally_frames_only() -> None:
+    names = ("a", "b", "c")
+    protos = np.eye(3)
+    model = task.PortraitModel({}, np.zeros(3), np.eye(3), np.ones(3), names, protos)
+    features = np.array([[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0], [0, 1.0, 0]])
+    match = task.MatchPortraits(
+        "m", features, np.asarray([task.ALLY, task.ALLY, task.ALLY, task.ENEMY], np.int8),
+        np.asarray([0.0, 5.0, 5.0, 10.0], np.float32), ("a", "b", "c"), "a",
+        np.zeros(4, np.int8),
+        ((0.0, "a", 0.95), (5.0, "b", 0.95), (10.0, "c", 0.95)))
+    result = task.exact_reference_accuracy(model, [match])
+    # sec 0: one ally, HUD "a" -> correct; sec 5: two allies -> skipped;
+    # sec 10: no ally portrait -> skipped.
+    assert result == {"exact_ref_accuracy": 1.0, "exact_ref_portraits": 1.0}

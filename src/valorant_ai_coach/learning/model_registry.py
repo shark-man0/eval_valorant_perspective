@@ -21,13 +21,22 @@ STATUSES = ("CANDIDATE", "ACTIVE", "RETIRED", "REJECTED", "ROLLED_BACK")
 
 @dataclass(frozen=True)
 class GatePolicy:
-    """Adopt only when the frozen metric improves and nothing regresses."""
+    """Adopt only when the VALIDATION metric improves and no guard regresses.
 
-    metric: str = "frozen_accuracy"
+    Decisions read VALIDATION metrics only. DEV_COMPARISON and INDEPENDENT_TEST
+    metrics are recorded for reporting and never influence adoption.
+    """
+
+    metric: str = "validation_accuracy"
     min_improvement: float = 0.005
-    guard_metrics: tuple[str, ...] = ("validation_accuracy",)
+    guard_metrics: tuple[str, ...] = ("validation_team_recall",)
     max_guard_drop: float = 0.0
     max_abstain_increase: float = 0.05
+
+    def __post_init__(self) -> None:
+        for name in (self.metric, *self.guard_metrics):
+            if not name.startswith("validation_"):
+                raise ValueError(f"Gate may only read VALIDATION metrics, not {name}")
 
 
 @dataclass
@@ -115,8 +124,8 @@ class ModelRegistry:
             name: baseline.get(name, 0.0) - metrics.get(name, float("-inf"))
             for name in policy.guard_metrics
         }
-        abstain_increase = metrics.get("frozen_abstain_rate", 0.0) - baseline.get(
-            "frozen_abstain_rate", 0.0)
+        abstain_increase = metrics.get("validation_abstain_rate", 0.0) - baseline.get(
+            "validation_abstain_rate", 0.0)
         reasons = []
         if gain < policy.min_improvement:
             reasons.append(f"{policy.metric} gain {gain:+.4f} < {policy.min_improvement}")
