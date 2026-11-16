@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 
 from valorant_ai_coach.temporal.evidence import freeze_native_sample
+from valorant_ai_coach.temporal.game import observation
 from valorant_ai_coach.temporal.map_marker_geometry import measure_marker_geometry, same_marker
 from valorant_ai_coach.temporal.map_recorder_selection import MapRecorderSelector
 
@@ -94,3 +95,40 @@ def test_selection_requires_current_pixels_and_consecutive_anchored_witnesses():
     assert observe(86, 42, ("sample", None))["selection_reason"] == "unmatched_native_context"
     assert observe(87, 48)["support_count"] == 1
     assert observe(88, 72)["support_count"] == 1
+
+
+def test_measured_camera_requires_bound_evidence_and_vetoes_remote():
+    selector = MapRecorderSelector([])
+
+    def observe(cx, tick, *, remote=False, unrelated=False):
+        image = _image(cx)
+        pool = [{"center_frame_px": [cx, 60]}]
+        frame = _context(image, tick, pool)
+        frame["map"]["current_recorder_view_evidence_ids"] = []
+        evidence_sample = (
+            _context(image, tick + 1, pool)["sample"] if unrelated else frame["sample"]
+        )
+        panel = observation(
+            sample=evidence_sample, producer="c"*64, signals=["owner_hud"],
+            context={"stream_kind": "camera_panel"},
+            raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                  "own_ability_bar_score": .9},
+                 "qualified": False, "formal_outputs": 0},
+        )
+        observations = [panel]
+        if remote:
+            observations.append(observation(sample=frame["sample"], producer="d"*64,
+                                            raw={}, signals=["remote"]))
+        frame["camera"]["evidence_ids"] = [panel["observation_id"]]
+        frame["observation_ids"] = [r["observation_id"] for r in observations]
+        return selector.observe(image, pool, frame["sample"], frame, observations=observations)
+
+    assert observe(80, 6)["support_count"] == 1
+    assert observe(81, 12)["support_count"] == 2
+    proposed = observe(82, 18)
+    assert proposed["research_candidate_index"] == 0
+    assert proposed["selection_reason"] == "measured_recorder_hud_and_consecutive_map_portrait"
+    assert proposed["ownership"] == "UNKNOWN" and not proposed["position_authority"]
+    assert observe(83, 24, remote=True)["selection_reason"] == "current_view_evidence_conflicts"
+    assert observe(84, 30)["support_count"] == 1
+    assert observe(85, 36, unrelated=True)["selection_reason"] == "current_view_evidence_conflicts"
