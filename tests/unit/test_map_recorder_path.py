@@ -85,3 +85,22 @@ def test_path_edges_do_not_join_different_knowledge_witness_anchors():
             "selection_method": "knowledge_agent_uuid", "track_anchor": anchor,
         })
     assert [len(seg) for seg in build_recorder_paths(rows)["segments"]] == [2, 1]
+
+
+def test_knowledge_callout_bound_to_texture_and_clear_of_ambiguity():
+    from valorant_ai_coach.temporal.map_recorder_path import ReferenceCallouts
+
+    callouts = ReferenceCallouts("lotus", "a"*64, (1000, 1000), [
+        ("A Main", (.25, .3)), ("A Main", (.25, .301)), ("A Site", (.27, .3)),
+    ])
+    observation = {"map_id": "lotus", "reference_sha256": "a"*64,
+                   "map_reference_px": [250, 300], "fit_residual_p95_reference_px": 3.0}
+    assert callouts.classify(observation, margin_reference_px=4) == "A Main"
+    assert callouts.classify({**observation, "map_reference_px": [260, 300]},
+                             margin_reference_px=4) is None
+    assert callouts.classify({**observation, "reference_sha256": "b"*64},
+                             margin_reference_px=4) is None
+    assert callouts.classify({**observation, "fit_residual_p95_reference_px": None},
+                             margin_reference_px=4) is None
+    assert callouts.classify({**observation, "map_reference_px": [251, 324]},
+                             margin_reference_px=4) is None

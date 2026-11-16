@@ -18,6 +18,7 @@ from numpy.typing import NDArray
 from .evidence import digest, freeze_native_sample, native_time, source_scope
 from .map_marker_geometry import MarkerGeometry, measure_marker_geometry, same_marker
 from .map_recorder_camera import measure_recorder_view
+from .map_recorder_path import ReferenceCallouts
 from .map_rim_ranking import measure_warm_rims, rank_rim_candidates
 from .map_shape_ranking import rank_marker_context
 from .replay import read_json
@@ -118,6 +119,36 @@ class KnowledgeRecorderMap:
             provenance={"knowledge_asset_digest": assets.content_digest,
                         "minimap_portrait_sha256": hashes},
         )
+
+    @staticmethod
+    def callouts(asset_cache: Path, map_catalog: Path) -> list[ReferenceCallouts]:
+        """Bind optional Knowledge labels to the identical registered displayicon."""
+        knowledge = import_module("valorant_ai_coach.knowledge")
+        loader = import_module("valorant_ai_coach.knowledge.assets")
+        catalog = knowledge.load_game_knowledge()
+        assets = loader.ReferenceAssets.load(asset_cache)
+        root = map_catalog.parent.resolve()
+        callouts = []
+        for entry in read_json(map_catalog)["maps"]:
+            game_map = catalog.map(entry["id"])
+            if game_map is None or not game_map.callouts:
+                continue
+            asset_id = f"map:{game_map.uuid}:displayicon"
+            path = (root / entry["reference"]).resolve()
+            if not path.is_relative_to(root) or not path.is_file() or not assets.has(asset_id):
+                continue
+            sha = hashlib.sha256(path.read_bytes()).hexdigest()
+            if sha != assets.records[asset_id].sha256:
+                continue
+            image = assets.image(asset_id)
+            width, height = image.shape[1], image.shape[0]
+            anchors = []
+            for anchor in game_map.callouts:
+                x, y = anchor.minimap_xy
+                if 0 <= x < 1 and 0 <= y < 1 and image[int(y * height), int(x * width), 3] > 0:
+                    anchors.append((anchor.label, (x, y)))
+            callouts.append(ReferenceCallouts(game_map.uuid, sha, (width, height), anchors))
+        return callouts
 
     def reset(self) -> None:
         self._previous = None
@@ -241,16 +272,14 @@ class KnowledgeRecorderMap:
         for name in names:
             known = self._catalog.agent(name) if name else None
             if known is not None and known.uuid != uid:
-                return {**baseline, "knowledge_reason": "ability_hud_conflicts_with_anchor"}
+                return _conflict(baseline, "ability_hud_conflicts_with_anchor")
         chosen, reason = self._matches(image, pool, uid)
         if chosen is None:
+            if (baseline["selection_status"] == "RESEARCH_SELECTED"
+                    and reason in {"distinct_matching_markers", "competing_marker_or_overlap"}):
+                return _conflict(baseline, reason)
             return {**baseline, "knowledge_reason": reason}
         index, marker = chosen
-        if (
-            baseline["selection_status"] == "RESEARCH_SELECTED"
-            and math.dist(marker.center, baseline["support_center_frame_px"]) > marker.radius / 2
-        ):
-            return {**baseline, "knowledge_reason": "existing_selection_disagrees"}
         round_token = frame.get("round_token")
         count = 1
         if previous is not None:
@@ -268,6 +297,17 @@ class KnowledgeRecorderMap:
                 count = previous.count + 1
         self._previous = _Match(marker, uid, sample, round_token, camera, count)
         accepted = count >= 2 or (marker.tip is not None and marker.support >= .84)
+        if accepted and baseline["selection_status"] == "RESEARCH_SELECTED":
+            legacy_index = baseline["research_candidate_index"]
+            same_center = (
+                math.dist(marker.center, baseline["support_center_frame_px"]) <= marker.radius / 2
+            )
+            if same_center and index != legacy_index:
+                legacy_fit, = measure_marker_geometry(image, [pool[legacy_index]])
+                same_center = legacy_fit is not None and same_marker(marker, legacy_fit)
+            if not same_center:
+                self.reset()
+                return _conflict(baseline, "different_physical_markers")
         # An attached, well-fitted tip and independent HUD + portrait agreement
         # can establish an isolated development point. We still require adjacent
         # observed points to draw any path edge.
@@ -286,3 +326,19 @@ class KnowledgeRecorderMap:
             "recorder_agent_uuid_candidate": uid,
             "track_anchor": digest([camera, round_token, uid]),
         }
+
+
+def _conflict(baseline: dict[str, Any], reason: str) -> dict[str, Any]:
+    """Drop both candidates and their path witnesses at a contradictory observation."""
+    return {
+        **baseline,
+        "selection_status": "ABSTAIN",
+        "selection_reason": "recorder_selection_conflict",
+        "knowledge_reason": reason,
+        "research_candidate_index": None,
+        "research_marker_center_frame_px": None,
+        "recorder_agent_candidate": None,
+        "support_candidate_index": None,
+        "support_center_frame_px": None,
+        "support_count": 0,
+    }

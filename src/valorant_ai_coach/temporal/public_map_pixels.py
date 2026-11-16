@@ -47,7 +47,8 @@ class PublicMapPixels:
                 gray[image[:, :, 3] == 0] = 0
             keypoints, descriptors = self.orb.detectAndCompute(gray, None)
             if descriptors is not None:
-                self.references.append((record["name"], record["id"], keypoints, descriptors))
+                size = (image.shape[1], image.shape[0])
+                self.references.append((record["name"], record["id"], keypoints, descriptors, size))
             assets[record["id"]] = file_sha(path)
         if not self.references:
             raise ValueError("Readable map reference features required")
@@ -80,7 +81,7 @@ class PublicMapPixels:
         keypoints, descriptors = self.orb.detectAndCompute(gray, None)
         ranking = []
         if descriptors is not None and len(keypoints) >= 4:
-            for name, identity, reference_points, reference_descriptors in self.references:
+            for name, identity, reference_points, reference_descriptors, size in self.references:
                 pairs = self.matcher.knnMatch(reference_descriptors, descriptors, k=2)
                 good = [p[0] for p in pairs if len(p) == 2 and p[0].distance < 0.75 * p[1].distance]
                 unique: dict[int, Any] = {}
@@ -109,13 +110,18 @@ class PublicMapPixels:
                 if not 0.1 <= scale <= 3 or coverage < 0.08:
                     continue
                 matrix = np.vstack([affine, [0, 0, 1]])
+                inliers = mask.ravel().astype(bool)
+                predicted = source[inliers] @ affine[:, :2].T + affine[:, 2]
+                residual = np.linalg.norm(predicted - target[inliers], axis=1) / scale
                 ranking.append(
                     {
                         "map_id": identity,
                         "map_name": name,
+                        "reference_image_size_px": list(size),
                         "inliers": count,
                         "matches": len(good),
                         "inlier_ratio": count / len(good),
+                        "fit_residual_p95_reference_px": float(np.percentile(residual, 95)),
                         "reference_to_roi_homography_candidate": matrix.tolist(),
                         "ownership": "UNKNOWN",
                         "qualified": False,
