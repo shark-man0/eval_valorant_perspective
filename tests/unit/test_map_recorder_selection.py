@@ -97,10 +97,10 @@ def test_selection_requires_current_pixels_and_consecutive_anchored_witnesses():
     assert observe(88, 72)["support_count"] == 1
 
 
-def test_measured_camera_requires_bound_evidence_and_vetoes_remote():
+def test_measured_camera_requires_bound_evidence_and_vetoes_remote_or_report():
     selector = MapRecorderSelector([])
 
-    def observe(cx, tick, *, remote=False, unrelated=False):
+    def observe(cx, tick, *, veto_signal=None, unrelated=False):
         image = _image(cx)
         pool = [{"center_frame_px": [cx, 60]}]
         frame = _context(image, tick, pool)
@@ -116,9 +116,9 @@ def test_measured_camera_requires_bound_evidence_and_vetoes_remote():
                  "qualified": False, "formal_outputs": 0},
         )
         observations = [panel]
-        if remote:
+        if veto_signal:
             observations.append(observation(sample=frame["sample"], producer="d"*64,
-                                            raw={}, signals=["remote"]))
+                                            raw={}, signals=[veto_signal]))
         frame["camera"]["evidence_ids"] = [panel["observation_id"]]
         frame["observation_ids"] = [r["observation_id"] for r in observations]
         return selector.observe(image, pool, frame["sample"], frame, observations=observations)
@@ -129,6 +129,9 @@ def test_measured_camera_requires_bound_evidence_and_vetoes_remote():
     assert proposed["research_candidate_index"] == 0
     assert proposed["selection_reason"] == "measured_recorder_hud_and_consecutive_map_portrait"
     assert proposed["ownership"] == "UNKNOWN" and not proposed["position_authority"]
-    assert observe(83, 24, remote=True)["selection_reason"] == "current_view_evidence_conflicts"
+    remote = observe(83, 24, veto_signal="remote")
+    assert remote["selection_reason"] == "current_view_evidence_conflicts"
     assert observe(84, 30)["support_count"] == 1
     assert observe(85, 36, unrelated=True)["selection_reason"] == "current_view_evidence_conflicts"
+    report = observe(87, 42, veto_signal="report")
+    assert report["selection_reason"] == "current_view_evidence_conflicts"

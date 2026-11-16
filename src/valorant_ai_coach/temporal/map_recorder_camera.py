@@ -9,7 +9,7 @@ from typing import Any
 from .evidence import digest, is_sha
 
 _VETO_SIGNALS = frozenset({
-    "spectator", "remote", "downed", "death", "revival", "result", "intermission",
+    "spectator", "remote", "downed", "death", "revival", "result", "intermission", "report",
 })
 
 

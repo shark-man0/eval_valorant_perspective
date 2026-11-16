@@ -32,6 +32,7 @@ class _Witness:
     marker: MarkerGeometry
     count: int
     appearance: NDArray[np.float32] | None
+    measured_tips: tuple[bool, ...]
 
 
 class MapRecorderSelector:
@@ -138,7 +139,10 @@ class MapRecorderSelector:
             image, [pool[row["candidate_index"]] for row in contenders], self._references,
         )
         marker = fitted[0]
-        if marker is None or marker.support < .70 or marker.tip is None:
+        if (
+            marker is None or marker.support < .70
+            or (marker.tip is None and (measured_view is None or marker.support < .78))
+        ):
             result["selection_reason"] = "top_portrait_unresolved"
             return result
         marker_agent = selected_agent(list(marker.agent_candidates))
@@ -168,6 +172,7 @@ class MapRecorderSelector:
         appearance = _portrait_appearance(image, marker) if measured_view else None
         round_token = timeline.get("round_token")
         count = 1
+        measured_tips: tuple[bool, ...] = (marker.tip is not None,)
         if previous is not None:
             gap = native_time(sample) - native_time(previous.sample)
             if (
@@ -182,12 +187,18 @@ class MapRecorderSelector:
                 and math.dist(previous.marker.center, marker.center) <= scale * (3 + 35*float(gap))
             ):
                 count = previous.count + 1
-        self._previous = _Witness(sample, anchor_identity, round_token, marker, count, appearance)
+                measured_tips = (*previous.measured_tips[-2:], marker.tip is not None)
+        self._previous = _Witness(
+            sample, anchor_identity, round_token, marker, count, appearance, measured_tips,
+        )
         result["support_count"] = count
         result["support_candidate_index"] = index
         result["support_center_frame_px"] = list(marker.center)
         if count < 3:
             result["selection_reason"] = "insufficient_consecutive_native_support"
+            return result
+        if not any(measured_tips):
+            result["selection_reason"] = "attached_tip_not_seen_in_last_three_observations"
             return result
         return {
             **result,
