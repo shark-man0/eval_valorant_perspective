@@ -88,6 +88,7 @@ def test_selection_requires_current_pixels_and_consecutive_anchored_witnesses():
     accepted = observe(82, 18)
     assert accepted["selection_status"] == "RESEARCH_SELECTED"
     assert accepted["research_candidate_index"] == 0
+    assert accepted["recorder_agent_candidate"] == "Recorder"
     assert accepted["ownership"] == "UNKNOWN" and not accepted["position_authority"]
     assert observe(83, 24, ("camera", {"value": "SPECTATOR"}))["support_count"] == 0
     assert observe(84, 30)["support_count"] == 1
@@ -135,3 +136,36 @@ def test_measured_camera_requires_bound_evidence_and_vetoes_remote_or_report():
     assert observe(85, 36, unrelated=True)["selection_reason"] == "current_view_evidence_conflicts"
     report = observe(87, 42, veto_signal="report")
     assert report["selection_reason"] == "current_view_evidence_conflicts"
+
+
+def test_measured_track_can_recover_a_lower_ranked_visible_portrait(monkeypatch):
+    from valorant_ai_coach.temporal import map_recorder_selection as selection_module
+
+    ranking = selection_module.rank_rim_candidates
+
+    def rank(legacy, rim, **kwargs):
+        rows = ranking(legacy, rim, **kwargs)
+        # An unrelated candidate briefly overtakes the portrait in the order.
+        return sorted(rows, key=lambda row: -row["candidate_index"])
+
+    tracker = MapRecorderSelector([], recover_supported_portraits=True)
+    for step, x in enumerate((80, 81, 82), start=1):
+        image = _image(x)
+        pool = [{"center_frame_px": [x, 60]}]
+        if step == 3:
+            monkeypatch.setattr(selection_module, "rank_rim_candidates", rank)
+            pool.append({"center_frame_px": [136, 60]})
+        frame = _context(image, step * 6, pool)
+        panel = observation(
+            sample=frame["sample"], raw={
+                "camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                 "own_ability_bar_score": .9},
+                "qualified": False, "formal_outputs": 0,
+            },
+            producer="c"*64, signals=["owner_hud"], context={"stream_kind": "camera_panel"},
+        )
+        frame["observation_ids"] = frame["camera"]["evidence_ids"] = [panel["observation_id"]]
+        result = tracker.observe(image, pool, frame["sample"], frame, observations=[panel])
+        assert result["support_count"] == step
+    assert result["research_candidate_index"] == 0
+    assert result["portrait_recovered_from_continuity"]
