@@ -110,10 +110,26 @@ visually by the implementing agent (not human GT):
 The 1,138 withdrawn seconds are therefore not 1,138 confirmed errors: the
 reviewed sample found 4 wrong and 2 correct values among 6 decidable frames.
 
+### Fresh full-length analysis (DEV2, 2026-11-16)
+
+The existing acquisition command (`generate`, 1 s sampling, ScreenCueObserver)
+was run again on the whole DEV2 recording in a Linux container (2,052 seconds,
+70 min) and the result was rebuilt with and without the pass.
+
+| Measure | Before | After |
+| --- | ---: | ---: |
+| Round UNKNOWN seconds | 465 | 188 |
+| Life UNKNOWN seconds | 554 | 240 |
+| Camera UNKNOWN seconds | 320 | 306 |
+| Seconds changed between two known values | – | 0 |
+| Life seconds withdrawn to UNKNOWN | – | 20 |
+| Round start candidates (21 Rounds) / max width (s) | 18 / 5 | 21 / 5 |
+| Human labels on this match (15): correct | 15 | 15 |
+
 ## Limits
 
-- These are replays of existing native observations; fresh pixel acquisition is
-  separate.
+- The ten-match comparison replays existing native observations; only DEV2 was
+  acquired again from its recording.
 - Sub-second boundary error, unseen-match generalization and recorder
   ownership accuracy remain unmeasured.
 - The 1:40 countdown and the display lead are competitive-format values.
