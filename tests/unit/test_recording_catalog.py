@@ -119,10 +119,19 @@ def test_journal_tampering_is_detected(catalog, tmp_path):
         RecordingCatalog(catalog.root)
 
 
-def test_concurrent_writer_is_refused(catalog, tmp_path):
-    (catalog.root / ".catalog.lock").mkdir()
-    with pytest.raises(CatalogError):
-        catalog.register(video(tmp_path, "a.mp4", b"a" * 10), physical_match_id="m")
+def test_concurrent_writer_is_refused_and_no_stale_lock_remains(catalog, tmp_path):
+    import os
+
+    descriptor = os.open(catalog.root / ".catalog.lock", os.O_RDWR | os.O_CREAT, 0o600)
+    catalog_module._lock_exclusive(descriptor)  # another writer holds the lock
+    try:
+        with pytest.raises(CatalogError):
+            catalog.register(video(tmp_path, "a.mp4", b"a" * 10), physical_match_id="m")
+    finally:
+        catalog_module._unlock(descriptor)
+        os.close(descriptor)
+    # Released by the OS; the lock file itself never has to be deleted.
+    assert catalog.register(video(tmp_path, "b.mp4", b"b" * 10), physical_match_id="m").added
 
 
 def _three(catalog, tmp_path):

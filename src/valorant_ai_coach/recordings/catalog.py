@@ -40,6 +40,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 from collections import Counter
 from collections.abc import Iterable, Iterator, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
@@ -119,6 +120,27 @@ class LeakageError(CatalogError):
 
 class CatalogIntegrityError(CatalogError):
     """The journal or the materialised view does not match its own history."""
+
+
+if sys.platform == "win32":  # pragma: no cover - exercised by the Windows CI job
+    import msvcrt
+
+    def _lock_exclusive(descriptor: int) -> None:
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        msvcrt.locking(descriptor, msvcrt.LK_NBLCK, 1)
+
+    def _unlock(descriptor: int) -> None:
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        msvcrt.locking(descriptor, msvcrt.LK_UNLCK, 1)
+
+else:
+    import fcntl
+
+    def _lock_exclusive(descriptor: int) -> None:
+        fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+    def _unlock(descriptor: int) -> None:
+        fcntl.flock(descriptor, fcntl.LOCK_UN)
 
 
 def utc_now() -> str:
@@ -468,20 +490,29 @@ class RecordingCatalog:
 
     @contextmanager
     def _locked(self) -> Iterator[None]:
-        lock = self.root / self.LOCK
+        """Exclusive OS file lock on a persistent lock file.
+
+        The lock is released by the OS when the process ends, so a crash never leaves a
+        stale lock, and nothing has to be deleted (some private mounts forbid deletion).
+        """
         try:
-            lock.mkdir(mode=0o700)
-        except FileExistsError as exc:
-            raise CatalogError(
-                "カタログは別の処理が使用中です（異常終了した場合はロックを確認してから削除）"
-            ) from exc
+            descriptor = os.open(self.root / self.LOCK, os.O_RDWR | os.O_CREAT, 0o600)
+        except OSError as exc:
+            raise CatalogError("カタログのロックファイルを開けません") from exc
         try:
-            # Re-read inside the lock: another process may have appended meanwhile.
-            self.state = self._replay()
-            yield
-            self._write_view()
+            try:
+                _lock_exclusive(descriptor)
+            except OSError as exc:
+                raise CatalogError("カタログは別の処理が使用中です") from exc
+            try:
+                # Re-read inside the lock: another process may have appended meanwhile.
+                self.state = self._replay()
+                yield
+                self._write_view()
+            finally:
+                _unlock(descriptor)
         finally:
-            lock.rmdir()
+            os.close(descriptor)
 
     def _journal_lines(self) -> list[str]:
         path = self.root / self.JOURNAL
