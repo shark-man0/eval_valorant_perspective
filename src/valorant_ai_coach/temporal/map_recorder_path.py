@@ -72,11 +72,24 @@ def project_recorder_witness(
     ):
         return None
     coordinate = np.linalg.solve(matrix, np.asarray([x-left, y-top, 1.]))[:2].tolist()
+    size = reference.get("reference_image_size_px")
+    if size is not None and (
+        not isinstance(size, list) or len(size) != 2
+        or any(type(dim) is not int or not 0 <= p < dim
+               for p, dim in zip(coordinate, size, strict=True))
+    ):
+        return None
+    residual = reference.get("fit_residual_p95_reference_px")
+    if residual is not None and (
+        type(residual) not in (float, int) or not math.isfinite(residual) or residual < 0
+    ):
+        return None
     return {
         "sample": sample, "candidate_index": index, "support_count": selection["support_count"],
         "kind": "selected" if selected else "measured_witness", "map_id": map_id,
         "reference_sha256": sha, "map_reference_px": coordinate,
         "recorder_agent_candidate": selection.get("recorder_agent_candidate"),
+        "fit_residual_p95_reference_px": residual,
         "qualified": False, "position_authority": False,
         **({"selection_method": selection["selection_method"],
             "track_anchor": selection["track_anchor"],
@@ -115,9 +128,48 @@ class ReferenceZones:
         return None
 
 
+class ReferenceCallouts:
+    """Proximity hints for registered anchor points on an exact reference image."""
+
+    def __init__(
+        self, map_id: str, reference_sha256: str, image_size: tuple[int, int],
+        anchors: Sequence[tuple[str, tuple[float, float]]],
+    ) -> None:
+        if not map_id or not is_sha(reference_sha256) or min(image_size) <= 0:
+            raise ValueError("Callout reference Map, hash, and dimensions required")
+        self.map_id = map_id
+        self.sha256 = reference_sha256
+        width, height = image_size
+        self.radius = min(width, height) * .025
+        self.anchors = [
+            (label, (x * width, y * height)) for label, (x, y) in anchors
+            if label and 0 <= x < 1 and 0 <= y < 1
+        ]
+
+    def classify(self, observation: dict[str, Any], *, margin_reference_px: float) -> str | None:
+        if (observation["map_id"] != self.map_id
+                or observation["reference_sha256"] != self.sha256
+                or observation.get("fit_residual_p95_reference_px") is None):
+            return None
+        distances: dict[str, float] = {}
+        point = observation["map_reference_px"]
+        for label, center in self.anchors:
+            distances[label] = min(math.dist(point, center), distances.get(label, math.inf))
+        if not distances:
+            return None
+        rank = sorted((dist, name) for name, dist in distances.items())
+        distance, name = rank[0]
+        if distance + margin_reference_px > self.radius:
+            return None
+        if len(rank) > 1 and rank[1][0] - distance <= 2 * margin_reference_px:
+            return None
+        return name
+
+
 def build_recorder_paths(
     samples: Iterable[dict[str, Any] | None], *,
     zones: Sequence[ReferenceZones] = (), margin_reference_px: float = 4.0,
+    callouts: Sequence[ReferenceCallouts] = (),
 ) -> dict[str, Any]:
     """Collect only measured witnesses of accepted hypotheses; split at a missing row."""
     paths: list[list[dict[str, Any]]] = []
@@ -137,10 +189,15 @@ def build_recorder_paths(
         last = record
         if record is None:
             continue
+        margin = max(margin_reference_px, record.get("fit_residual_p95_reference_px") or 0)
         zone = {k for index in zones if (k := index.classify(
-            record, margin_reference_px=margin_reference_px,
+            record, margin_reference_px=margin,
         )) is not None}
-        run.append({**record, "zone_candidate": next(iter(zone)) if len(zone) == 1 else None})
+        callout = {k for index in callouts if (k := index.classify(
+            record, margin_reference_px=margin,
+        )) is not None}
+        run.append({**record, "zone_candidate": next(iter(zone)) if len(zone) == 1 else None,
+                    "callout_candidate": next(iter(callout)) if len(callout) == 1 else None})
         if record["kind"] == "selected":
             if start is None:
                 start = max(0, len(run) - 3)

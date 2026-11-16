@@ -223,3 +223,45 @@ def test_knowledge_match_keeps_camera_veto_and_splits_after_a_gap(monkeypatch):
     ambiguous = observe(85, 56, other_x=145)
     assert ambiguous["knowledge_reason"] == "distinct_matching_markers"
     assert ambiguous["selection_status"] == "ABSTAIN"
+
+
+def test_knowledge_and_legacy_competing_physical_markers_remove_path_witness(monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
+
+    selected_image = _image(122)
+    selected_image[:, 60:99] = _image(80)[:, 60:99]
+    patch = selected_image[55:66, 75:86].copy()
+    track = KnowledgeRecorderMap(
+        hud=SimpleNamespace(agent_uuids=("recorder", "rival")),
+        catalog=SimpleNamespace(agent=lambda name: SimpleNamespace(uuid="recorder", name=name)),
+        portraits=[("recorder", patch), ("rival", np.fliplr(patch))], provenance={},
+    )
+    monkeypatch.setattr(track, "_hud_uuid", lambda image: "recorder")
+    pool = [{"center_frame_px": [80, 60]}, {"center_frame_px": [122, 60]}]
+    marker, _ = measure_marker_geometry(selected_image, pool)
+    assert marker is not None and marker.tip is not None and marker.support >= .84
+    monkeypatch.setattr(track, "_matches", lambda *args: ((0, marker), "matched_agent_uuid"))
+    frame = _context(selected_image, 6, pool)
+    sample = frame["sample"]
+    panel = observation(
+        sample=sample, producer="c"*64, signals=["owner_hud"],
+        context={"stream_kind": "camera_panel"},
+        raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                              "own_ability_bar_score": .9},
+             "qualified": False, "formal_outputs": 0},
+    )
+    frame["camera"]["evidence_ids"] = frame["observation_ids"] = [panel["observation_id"]]
+    baseline = MapRecorderSelector([]).observe(
+        selected_image, pool, sample, frame, observations=[panel],
+    )
+    baseline.update(selection_status="RESEARCH_SELECTED", research_candidate_index=1,
+                    support_candidate_index=1, research_marker_center_frame_px=[122, 60],
+                    support_center_frame_px=[122, 60], support_count=4)
+    result = track.observe(selected_image, pool, sample, frame, [panel], baseline)
+    assert result["selection_reason"] == "recorder_selection_conflict"
+    assert result["research_candidate_index"] is None
+    assert result["support_candidate_index"] is None
+    assert result["support_count"] == 0
+    assert result["ownership"] == "UNKNOWN"

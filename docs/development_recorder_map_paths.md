@@ -106,3 +106,32 @@ coverage remained zero. The other seconds were unobserved by this replay
 or had no accepted point. The five-match test used sparse native coverage
 and short dense windows. Absolute coordinate error and full-density match
 coverage remain unmeasured.
+
+### Selection conflicts and location names
+
+When two accepted research methods place the recorder marker at different
+physical markers, the frame abstains and contributes no witness to either
+side of the path. Different candidate IDs may still refer to the same
+physical marker if their fitted rim and centers agree. The exporter resets
+the legacy witness at a conflict. Explicit visual ambiguity can also veto a
+legacy selection. A missing UUID reading alone preserves the legacy path.
+
+Map-reference coordinates are bounded by the selected reference image.
+Registration reports a 95th-percentile inlier fit residual in reference
+pixels, which is used as a lower bound on the Zone boundary margin. The
+residual describes the features used to fit the transform. Absolute marker
+error requires independently measured landmark or recorder ground truth.
+
+In Knowledge mode, registered callout anchors whose image digest matches
+the Map reference also supply a `callout_candidate`. A near anchor must
+clear distance and runner-up margins even after including the fit
+residual. Authored polygons remain the source of `zone_candidate`.
+Callout points do not define polygon boundaries or dwelling intervals.
+
+Knowledge mode fills absent Map reference IDs from verified displayicons
+in the same asset cache. An explicitly provided readable reference takes
+precedence for its Map ID. The alignment and runner-up thresholds apply to
+the expanded inventory. The Bind and Haven development polygon
+registries can be used after verifying the texture bytes. The Haven
+authoring image is an exact quarter turn of the displayicon, so those
+polygons need the inverse authoring transform before export.

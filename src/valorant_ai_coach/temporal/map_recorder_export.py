@@ -58,10 +58,11 @@ def export_recorder_paths(
         raise ValueError("Unqualified application timeline required")
     policy = SourcePolicy(read_json(policy_path))
     refs, asset_hashes = _agent_references(catalog)
-    projector = PublicMapPixels(catalog, layout)
-    tracker = MapRecorderSelector(refs, recover_supported_portraits=recover_supported_portraits)
     knowledge = (KnowledgeRecorderMap.load(knowledge_asset_cache, catalog)
                  if knowledge_asset_cache else None)
+    projector = PublicMapPixels(catalog, layout,
+                                verified_references=knowledge.map_references if knowledge else ())
+    tracker = MapRecorderSelector(refs, recover_supported_portraits=recover_supported_portraits)
     zones = [
         ReferenceZones(z["map_id"], z["reference_sha256"], z["polygons"])
         for z in read_json(zones_path)["maps"]
@@ -111,6 +112,8 @@ def export_recorder_paths(
         result = tracker.observe(image, pool, sample, frame, observations=obs)
         if knowledge is not None:
             result = knowledge.observe(image, pool, sample, frame, obs, result)
+            if result["selection_reason"] == "recorder_selection_conflict":
+                tracker.reset()
         if result["support_count"] <= 0:
             rows.append(None)
             continue
@@ -118,7 +121,9 @@ def export_recorder_paths(
             image, sample, pool, result, projector.inspect(image)["raw"],
             reference_sha256s=projector.bindings["asset_sha256s"],
         ))
-    paths = build_recorder_paths(rows, zones=zones)
+    callouts = (KnowledgeRecorderMap.callouts(knowledge_asset_cache, catalog)
+                if knowledge_asset_cache else [])
+    paths = build_recorder_paths(rows, zones=zones, callouts=callouts)
     report = {
         **paths, "second_rows": join_recorder_seconds(paths, bundle),
         "timeline_sha256": file_sha(bundle_path), "frame_manifest_sha256": file_sha(frame_manifest),

@@ -1,8 +1,10 @@
+import hashlib
 import json
 from types import SimpleNamespace
 
 import cv2
 import numpy as np
+import pytest
 
 from valorant_ai_coach.temporal import public_map_pixels as module
 
@@ -48,3 +50,19 @@ def test_public_reference_alignment_is_advisory_and_blank_view_is_unknown(tmp_pa
     assert result["map_candidates"] == []
     assert result["signals"] == []
     assert reader.inspect(np.zeros_like(pixels))["raw"]["map_name_candidates"] == []
+
+
+    extra = tmp_path / "reference.png"
+    sha = hashlib.sha256(extra.read_bytes()).hexdigest()
+    index.write_text(json.dumps({"maps": [], "catalog_version": "synthetic"}), encoding="utf-8")
+    added = module.PublicMapPixels(
+        index, layout, verified_references=[("VerifiedOnly", "m", extra, sha)],
+    )
+    hit, = added.inspect(pixels)["raw"]["map_name_candidates"]
+    assert hit["map_name"] == "VerifiedOnly"
+    assert hit["reference_image_size_px"] == [320, 320]
+    assert hit["fit_residual_p95_reference_px"] < 1e-3
+    with pytest.raises(ValueError, match="Verified Map reference bytes changed"):
+        module.PublicMapPixels(
+            index, layout, verified_references=[("VerifiedOnly", "m", extra, "e"*64)],
+        )
