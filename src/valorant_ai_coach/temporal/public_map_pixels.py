@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+from collections.abc import Sequence
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, cast
@@ -25,7 +26,10 @@ class PublicMapPixels:
     similarity transform remains a hypothesis, not a qualified marker transform or Zone.
     """
 
-    def __init__(self, index_path: Path, layout_path: Path) -> None:
+    def __init__(
+        self, index_path: Path, layout_path: Path, *,
+        verified_references: Sequence[tuple[str, str, Path, str]] = (),
+    ) -> None:
         index = read_json(index_path)
         root = index_path.parent.resolve()
         self.layout = HudLayout.load(layout_path)
@@ -33,13 +37,21 @@ class PublicMapPixels:
         self.matcher = cv2.FlannBasedMatcher(dict(algorithm=1, trees=3), dict(checks=32))
         self.references = []
         assets = {}
+        paths: dict[str, tuple[str, Path, str | None]] = {}
         for record in index["maps"]:
             path = (root / record["reference"]).resolve()
             if root not in path.parents:
                 raise ValueError("Map reference outside catalog")
-            if not path.is_file():
-                continue
-            image = cv2.imread(str(path), cv2.IMREAD_UNCHANGED)
+            if path.is_file():
+                paths[record["id"]] = (record["name"], path, None)
+        for name, map_id, path, pinned_sha in verified_references:
+            paths.setdefault(map_id, (name, path, pinned_sha))
+        for map_id, (name, path, expected_sha) in paths.items():
+            data = path.read_bytes()
+            asset_hash = hashlib.sha256(data).hexdigest()
+            if expected_sha is not None and asset_hash != expected_sha:
+                raise ValueError("Verified Map reference bytes changed")
+            image = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_UNCHANGED)
             if image is None or image.ndim != 3:
                 raise ValueError("Readable public map reference required")
             gray = cv2.cvtColor(image[:, :, :3], cv2.COLOR_BGR2GRAY)
@@ -48,8 +60,8 @@ class PublicMapPixels:
             keypoints, descriptors = self.orb.detectAndCompute(gray, None)
             if descriptors is not None:
                 size = (image.shape[1], image.shape[0])
-                self.references.append((record["name"], record["id"], keypoints, descriptors, size))
-            assets[record["id"]] = file_sha(path)
+                self.references.append((name, map_id, keypoints, descriptors, size))
+            assets[map_id] = asset_hash
         if not self.references:
             raise ValueError("Readable map reference features required")
         self.bindings = {

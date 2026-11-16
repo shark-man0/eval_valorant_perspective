@@ -58,10 +58,11 @@ def export_recorder_paths(
         raise ValueError("Unqualified application timeline required")
     policy = SourcePolicy(read_json(policy_path))
     refs, asset_hashes = _agent_references(catalog)
-    projector = PublicMapPixels(catalog, layout)
-    tracker = MapRecorderSelector(refs, recover_supported_portraits=recover_supported_portraits)
     knowledge = (KnowledgeRecorderMap.load(knowledge_asset_cache, catalog)
                  if knowledge_asset_cache else None)
+    projector = PublicMapPixels(catalog, layout,
+                                verified_references=knowledge.map_references if knowledge else ())
+    tracker = MapRecorderSelector(refs, recover_supported_portraits=recover_supported_portraits)
     zones = [
         ReferenceZones(z["map_id"], z["reference_sha256"], z["polygons"])
         for z in read_json(zones_path)["maps"]

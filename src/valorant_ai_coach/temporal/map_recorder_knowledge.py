@@ -51,10 +51,12 @@ class KnowledgeRecorderMap:
     def __init__(
         self, *, hud: Any, catalog: Any,
         portraits: Sequence[tuple[str, NDArray[np.uint8]]], provenance: dict[str, Any],
+        map_references: Sequence[tuple[str, str, Path, str]] = (),
     ) -> None:
         self._hud = hud
         self._catalog = catalog
         self.provenance = provenance
+        self.map_references = tuple(map_references)
         groups: dict[str, list[NDArray[np.float32]]] = {}
         for agent_id, portrait in portraits:
             bgr = portrait[:, :, :3]
@@ -114,10 +116,17 @@ class KnowledgeRecorderMap:
                 raise ValueError("Readable color minimap portrait required")
             hashes[agent.uuid] = hashlib.sha256(data).hexdigest()
             portraits.append((agent.uuid, portrait))
+        map_references = []
+        for game_map in catalog.maps:
+            asset_id = f"map:{game_map.uuid}:displayicon"
+            if assets.has(asset_id):
+                record = assets.records[asset_id]
+                map_references.append((game_map.name, game_map.uuid, record.path, record.sha256))
         return cls(
             hud=hud_module.AbilityHudReader(catalog, assets), catalog=catalog, portraits=portraits,
             provenance={"knowledge_asset_digest": assets.content_digest,
                         "minimap_portrait_sha256": hashes},
+            map_references=map_references,
         )
 
     @staticmethod
@@ -128,18 +137,21 @@ class KnowledgeRecorderMap:
         catalog = knowledge.load_game_knowledge()
         assets = loader.ReferenceAssets.load(asset_cache)
         root = map_catalog.parent.resolve()
+        paths = {entry["id"]: (root / entry["reference"]).resolve()
+                 for entry in read_json(map_catalog)["maps"]}
         callouts = []
-        for entry in read_json(map_catalog)["maps"]:
-            game_map = catalog.map(entry["id"])
-            if game_map is None or not game_map.callouts:
-                continue
+        for game_map in catalog.maps:
             asset_id = f"map:{game_map.uuid}:displayicon"
-            path = (root / entry["reference"]).resolve()
-            if not path.is_relative_to(root) or not path.is_file() or not assets.has(asset_id):
+            if not game_map.callouts or not assets.has(asset_id):
                 continue
-            sha = hashlib.sha256(path.read_bytes()).hexdigest()
-            if sha != assets.records[asset_id].sha256:
+            asset = assets.records[asset_id]
+            path = paths.get(game_map.uuid)
+            if path is not None and path.is_file() and (
+                not path.is_relative_to(root)
+                or hashlib.sha256(path.read_bytes()).hexdigest() != asset.sha256
+            ):
                 continue
+            sha = asset.sha256
             image = assets.image(asset_id)
             width, height = image.shape[1], image.shape[0]
             anchors = []
