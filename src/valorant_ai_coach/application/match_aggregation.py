@@ -39,6 +39,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from valorant_ai_coach.models import RuleCandidate
+from valorant_ai_coach.rules.policy_runtime import occurrence_summaries
 from valorant_ai_coach.rules.temporal_contract import (
     ROUND_TIMELINE_COMPLETE,
     ContextAssessment,
@@ -49,9 +50,10 @@ from valorant_ai_coach.rules.temporal_contract import (
 from valorant_ai_coach.rules.temporal_scope import AnalysisScope, TemporalScopeResolver
 from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
-from .round_analyzer import RoundAnalysis
+from .round_analyzer import ADMISSION_PROVISIONAL_WITHHELD, RoundAnalysis
 
 SCHEMA_VERSION = "match_aggregation.v1"
+PROVISIONAL_WITHHELD_REASON = "Practical/unknownまたは不正な境界のため採点保留"
 COUNTING_BASIS = "evaluation_records_as_supplied"
 LABELS: tuple[str, ...] = ("good", "improve", "unscored")
 
@@ -133,6 +135,15 @@ class RoundInput:
 
     @classmethod
     def from_round_analysis(cls, analysis: RoundAnalysis) -> RoundInput:
+        if analysis.admission == ADMISSION_PROVISIONAL_WITHHELD:
+            # Same reading as the stored view (aggregate_saved_match): a Round whose
+            # scoring was withheld is *not evaluated*, not an evaluated Round with zero
+            # findings. Before this, the live and the stored view disagreed.
+            return cls(
+                round_package=analysis.round_package,
+                output=None,
+                evaluation_failure=PROVISIONAL_WITHHELD_REASON,
+            )
         return cls(
             round_package=analysis.round_package,
             output=analysis.output,
@@ -369,15 +380,19 @@ class MatchAggregation:
         return tuple(item for item in self.issues if item.code == code)
 
     def to_dict(self) -> dict[str, Any]:
+        rules = [item.to_dict() for item in self.rules]
+        evaluations = [item.to_dict() for item in self.evaluations]
         return {
             "schema_version": self.schema_version,
             "counting_basis": self.counting_basis,
             "match_id": self.match_id,
             "completeness": self.completeness.to_dict(),
             "rounds": [item.to_dict() for item in self.rounds],
-            "rules": [item.to_dict() for item in self.rules],
-            "evaluations": [item.to_dict() for item in self.evaluations],
+            "rules": rules,
+            "evaluations": evaluations,
             "issues": [item.to_dict() for item in self.issues],
+            # #31 §6-6: structured, verdict-free repeated-occurrence view.
+            "occurrence_summaries": occurrence_summaries(rules, evaluations),
         }
 
 

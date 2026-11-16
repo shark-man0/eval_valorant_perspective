@@ -7,12 +7,29 @@ from __future__ import annotations
 
 from typing import Any
 
+from valorant_ai_coach.rules.policy_runtime import ProvisionalAdmissionTable
 from valorant_ai_coach.storage import SQLiteRepository
 
-from .match_aggregation import MatchAggregationError, MatchAggregator, RoundInput
+from .match_aggregation import (
+    PROVISIONAL_WITHHELD_REASON,
+    MatchAggregationError,
+    MatchAggregator,
+    RoundInput,
+)
 from .round_analyzer import RoundAnalyzer
 
 _FULL_SET_MARKER = "full_post_dedup_v1"
+# Checkpoint marker written only when the #25 opt-in policy produced the stored rows.
+PROVISIONAL_PARTIAL_MARKER = "boundary_independent_v1"
+
+
+def _provisional_rows_admissible(stored: list[dict[str, Any]]) -> bool:
+    admissible = ProvisionalAdmissionTable.load().admissible_rule_ids()
+    return all(
+        str(row.get("primary_rule_id")) in admissible
+        and all(str(rule) in admissible for rule in row.get("related_rule_ids", []) or [])
+        for row in stored
+    )
 
 
 def _round_numbers(value: object) -> set[int]:
@@ -71,12 +88,28 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
         if round_no in failed:
             reason = "失敗したRoundの保存済み評価は採用しません"
         elif _boundary_uncertain_or_invalid(package):
+            if (
+                stored
+                and checkpoint.get("provisional_evaluation") == PROVISIONAL_PARTIAL_MARKER
+                and "round_lifecycle" in package
+                and _provisional_rows_admissible(stored)
+            ):
+                # #25 opt-in rows: only boundary-independent rules, recorded as such.
+                output = {
+                    "schema_version": "3.0",
+                    "analysis_id": f"RESTORED-{match_id}-R{round_no}",
+                    "match_id": match_id,
+                    "round_no": round_no,
+                    "evaluations": stored,
+                }
+                inputs.append(RoundInput(round_package=package, output=output))
+                continue
             if stored:
                 # A valid Practical Round with scores is a storage-contract violation.
                 raise MatchAggregationError(
                     f"R{round_no}: 境界未確定または不正なのに採点済み評価が保存されています"
                 )
-            reason = "Practical/unknownまたは不正な境界のため採点保留"
+            reason = PROVISIONAL_WITHHELD_REASON
         elif stored or round_no in completed:
             output = {
                 "schema_version": "3.0",

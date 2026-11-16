@@ -95,6 +95,18 @@ def format_match_summary(
     })
     if missing:
         parts.append("不足文脈: " + ", ".join(missing[:8]))
+    summaries = [
+        row for row in value.get("occurrence_summaries") or [] if row.get("summary_required")
+    ]
+    if summaries:
+        # #31 §6-6: counts only. The natural-language summary is an approval item.
+        parts.append(
+            "繰り返し集約の対象: "
+            + "、".join(
+                f"{row['rule_id']} {row['occurrences']}件（Round {len(row.get('rounds', []))}）"
+                for row in summaries[:8]
+            )
+        )
     if refs:
         parts.append(
             "根拠参照: " + ", ".join(str(x.get("evaluation_id")) for x in refs[:8])

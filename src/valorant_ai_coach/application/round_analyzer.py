@@ -9,6 +9,12 @@ from typing import Any, Protocol
 from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.models import RuleCandidate
 from valorant_ai_coach.rules import DeterministicRuleEngine, MockEvaluator, RuleSelector
+from valorant_ai_coach.rules.policy_runtime import (
+    GATE_REPORT_ONLY,
+    GateRecord,
+    ProvisionalEvaluationPolicy,
+    RoundTimelineGate,
+)
 from valorant_ai_coach.rules.temporal_scope import (
     AnalysisScope,
     TemporalScopeResolver,
@@ -60,6 +66,15 @@ class RoundAnalysis:
     deterministic_decisions: dict[str, dict[str, Any]]
     output: dict[str, Any]
     analysis_scopes: dict[str, AnalysisScope] = field(default_factory=dict)
+    # How the Round was admitted: "confirmed" boundaries, "provisional_withheld"
+    # (historical safe path, no scoring) or "provisional_partial" (opt-in #25 path).
+    admission: str = "confirmed"
+    timeline_gate: tuple[GateRecord, ...] = ()
+
+
+ADMISSION_CONFIRMED = "confirmed"
+ADMISSION_PROVISIONAL_WITHHELD = "provisional_withheld"
+ADMISSION_PROVISIONAL_PARTIAL = "provisional_partial"
 
 
 class RoundAnalyzer:
@@ -74,8 +89,15 @@ class RoundAnalyzer:
         coach: RoundCoach,
         validator: SchemaValidator,
         scope_resolver: TemporalScopeResolver | None = None,
+        provisional_policy: ProvisionalEvaluationPolicy | None = None,
+        round_timeline_gate: RoundTimelineGate | None = None,
     ) -> None:
         self.scope_resolver = scope_resolver or TemporalScopeResolver()
+        # Both default to the historical behaviour: provisional Rounds are not scored
+        # and the Round-timeline policy is reported only. Turning either on changes
+        # evaluation semantics and is an approval item (#25, #31 §6-1).
+        self.provisional_policy = provisional_policy
+        self.round_timeline_gate = round_timeline_gate
         self.fact_builder = fact_builder
         self.selector = selector
         self.rule_engine = rule_engine
@@ -88,7 +110,9 @@ class RoundAnalyzer:
         self.validator.validate_round_package(round_package)
         enriched = self.fact_builder.enrich(round_package)
         self.validator.validate_round_package(enriched)
-        if self.boundary_context_is_uncertain(enriched):
+        admission = ADMISSION_CONFIRMED
+        uncertain = self.boundary_context_is_uncertain(enriched)
+        if uncertain and (self.provisional_policy is None or not self.provisional_policy.enabled):
             # Persist and expose observed facts, but do not let an incomplete
             # round denominator become scored coaching. Individual rules may be
             # admitted later after proving independence from uncertain boundaries.
@@ -100,9 +124,24 @@ class RoundAnalyzer:
                 "evaluations": [],
             }
             self.validator.validate_ai_output(output, round_package=enriched)
-            return RoundAnalysis(enriched, (), {}, output, {})
+            return RoundAnalysis(
+                enriched, (), {}, output, {}, admission=ADMISSION_PROVISIONAL_WITHHELD
+            )
         candidates = self.selector.select(enriched)
+        if uncertain:
+            admission = ADMISSION_PROVISIONAL_PARTIAL
+            candidates = self._admit_provisional_candidates(candidates, enriched)
         candidate_ids = [candidate.rule_id for candidate in candidates]
+        if uncertain and not candidates:
+            output = {
+                "schema_version": "3.0",
+                "analysis_id": f"partial-{enriched['match_id']}-R{enriched['round_no']}",
+                "match_id": enriched["match_id"],
+                "round_no": enriched["round_no"],
+                "evaluations": [],
+            }
+            self.validator.validate_ai_output(output, round_package=enriched)
+            return RoundAnalysis(enriched, (), {}, output, {}, admission=admission)
         decisions: dict[str, dict[str, Any]] = {}
         for candidate in candidates:
             decision = self.rule_engine.evaluate(
@@ -119,6 +158,15 @@ class RoundAnalyzer:
             candidate.rule_id: self.scope_resolver.resolve(candidate, enriched)
             for candidate in candidates
         }
+        if uncertain:
+            # A deterministic decision may only cite facts inside its own event
+            # window: the uncertain Round window must never become the evidence range.
+            for rule_id in list(decisions):
+                if not self._facts_inside_scope(decisions[rule_id], enriched, scopes[rule_id]):
+                    del decisions[rule_id]
+                    candidates = [c for c in candidates if c.rule_id != rule_id]
+                    del scopes[rule_id]
+            candidate_ids = [candidate.rule_id for candidate in candidates]
         bound_fact_ids = {
             str(ref) for decision in decisions.values() for ref in decision.get("fact_refs", [])
         }
@@ -148,7 +196,71 @@ class RoundAnalyzer:
             candidate_rule_ids=set(candidate_ids),
         )
         self._validate_deterministic_authority(output, decisions)
-        return RoundAnalysis(enriched, tuple(candidates), decisions, output, scopes)
+        gate_records: tuple[GateRecord, ...] = ()
+        if self.round_timeline_gate is not None:
+            output, gate_records = self.round_timeline_gate.apply(output, enriched)
+            if self.round_timeline_gate.mode != GATE_REPORT_ONLY and gate_records:
+                self.validator.validate_ai_output(
+                    output,
+                    round_package=enriched,
+                    candidate_rule_ids=set(candidate_ids),
+                )
+        return RoundAnalysis(
+            enriched,
+            tuple(candidates),
+            decisions,
+            output,
+            scopes,
+            admission=admission,
+            timeline_gate=gate_records,
+        )
+
+    def _admit_provisional_candidates(
+        self, candidates: list[RuleCandidate], package: dict[str, Any]
+    ) -> list[RuleCandidate]:
+        """#25 opt-in: keep only self-contained rules pinned to an observed pivot."""
+        assert self.provisional_policy is not None
+        missing = [
+            (float(item["start_sec"]), float(item["end_sec"]))
+            for item in package.get("observation_quality", {}).get("missing_intervals", [])
+        ]
+        admitted: list[RuleCandidate] = []
+        for candidate in candidates:
+            if not self.provisional_policy.admits(candidate.rule_id):
+                continue
+            scope = self.scope_resolver.resolve(candidate, package)
+            if scope.whole_round or not scope.windows or scope.missing_context:
+                continue
+            if any(
+                low < gap_end and gap_start < high
+                for low, high in scope.windows
+                for gap_start, gap_end in missing
+            ):
+                continue
+            admitted.append(candidate)
+        return admitted
+
+    @staticmethod
+    def _facts_inside_scope(
+        decision: dict[str, Any], package: dict[str, Any], scope: AnalysisScope
+    ) -> bool:
+        facts = {str(fact["fact_id"]): fact for fact in package.get("deterministic_facts", [])}
+        for ref in decision.get("fact_refs", []):
+            fact = facts.get(str(ref))
+            if fact is None:
+                return False
+            if fact.get("time_range") is not None:
+                start = float(fact["time_range"]["start_sec"])
+                end = float(fact["time_range"]["end_sec"])
+            elif fact.get("time_sec") is not None:
+                start = end = float(fact["time_sec"])
+            else:
+                # A timeless fact (config, agent) is not evidence of *when*; it
+                # cannot anchor an occurrence inside an uncertain Round.
+                return False
+            if not scope.contains(start, end):
+                return False
+        return True
 
     @staticmethod
     def boundary_context_is_uncertain(package: dict[str, Any]) -> bool:
