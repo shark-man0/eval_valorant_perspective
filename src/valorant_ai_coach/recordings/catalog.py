@@ -1066,6 +1066,7 @@ class RecordingCatalog:
         quarantine: bool = True,
         recording_ids: Iterable[str] | None = None,
         trusted_head: str | None = None,
+        workers: int = 4,
     ) -> dict[str, Any]:
         """Re-derive the state, re-hash locations and quarantine changed sources.
 
@@ -1088,7 +1089,7 @@ class RecordingCatalog:
                     raise CatalogIntegrityError("信頼できるHEADの位置と履歴が一致しません")
             missing: list[str] = []
             changed: list[str] = []
-            checked = 0
+            jobs: list[tuple[Recording, str, Path]] = []
             for recording in sorted(self.state.recordings.values(), key=lambda r: r.recording_id):
                 if selected is not None and recording.recording_id not in selected:
                     continue
@@ -1097,20 +1098,28 @@ class RecordingCatalog:
                     if not path.is_file():
                         missing.append(f"{recording.recording_id}:{role}")
                         continue
-                    checked += 1
                     stat = path.stat()
                     same_stat = (
                         stat.st_size == location["size_bytes"]
                         and stat.st_mtime_ns == location["mtime_ns"]
                     )
-                    if (full or not same_stat) and sha256_file(path) != recording.source_sha256:
-                        changed.append(f"{recording.recording_id}:{role}")
-                        if quarantine and recording.status != "quarantined":
-                            self._append(
-                                "status",
-                                {"recording_id": recording.recording_id,
-                                 "status": "quarantined"},
-                            )
+                    if full or not same_stat:
+                        jobs.append((recording, role, path))
+            with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+                digests = list(pool.map(lambda job: sha256_file(job[2]), jobs))
+            for (recording, role, _), digest in zip(jobs, digests, strict=True):
+                if digest != recording.source_sha256:
+                    changed.append(f"{recording.recording_id}:{role}")
+                    if quarantine and recording.status != "quarantined":
+                        self._append(
+                            "status",
+                            {"recording_id": recording.recording_id, "status": "quarantined"},
+                        )
+            checked = sum(
+                1 for recording in self.state.recordings.values()
+                if selected is None or recording.recording_id in selected
+                for _ in recording.locations
+            ) - len(missing)
             return {
                 "journal_events": self.state.events,
                 "journal_chain": "ok",
@@ -1118,6 +1127,8 @@ class RecordingCatalog:
                 "locations_checked": checked,
                 "missing_locations": missing,
                 "changed_sources": changed,
+                "locations_rehashed": len(jobs),
+                "bytes_rehashed": sum(job[2].stat().st_size for job in jobs),
                 "mode": "full_sha256" if full else "size_mtime_then_sha256",
                 "journal_head": self.head_anchor(),
             }

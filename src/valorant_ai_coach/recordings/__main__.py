@@ -75,6 +75,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     verify = sub.add_parser("verify")
     verify.add_argument("--quick", action="store_true", help="size/mtimeが同じなら再ハッシュしない")
     verify.add_argument("--recordings", nargs="+", help="照合する録画（分割実行用）")
+    verify.add_argument("--workers", type=int, default=4)
     verify.add_argument("--trusted-head", help="カタログ外に保管したSEQ:SHA256")
     sub.add_parser("head")
     archives = sub.add_parser("learning-archives")
@@ -85,6 +86,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     sync.add_argument("--kind", default="frames")
     sync.add_argument("--include-authorised-exposed", action="store_true")
     sub.add_parser("summary")
+    listing = sub.add_parser("list-ids", help="録画IDの一覧（分割実行用。公開しないこと）")
+    listing.add_argument("--location-prefix", type=Path)
     sub.add_parser("learning-view")
     leak = sub.add_parser("leak-check")
     leak.add_argument("files", nargs="+", type=Path)
@@ -183,12 +186,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "verify":
             report = catalog.verify(
                 full=not args.quick, recording_ids=args.recordings,
-                trusted_head=args.trusted_head,
+                trusted_head=args.trusted_head, workers=args.workers,
             )
             _print(report)
             return 1 if report["missing_locations"] or report["changed_sources"] or not report[
                 "materialised_view_matches_journal"
             ] else 0
+        elif args.command == "list-ids":
+            ids = (catalog.recordings_under(args.location_prefix) if args.location_prefix
+                   else sorted(catalog.state.recordings))
+            _print(ids)
         elif args.command == "summary":
             _print(catalog.public_summary())
         elif args.command == "learning-view":
