@@ -27,8 +27,8 @@
 | `level_code` | IMPLEMENTED | `rules/temporal_scope.py` `TemporalScopeResolver.resolve`(L77〜) | 設定のlevelが候補のlevelより優先される。registry/rules間のlevel一致は今回テストで固定（§5） |
 | `event_window_seconds` | IMPLEMENTED | `rules/temporal_scope.py` `_event_windows`(L96〜) | pivot event前後の窓を作り、ラウンド範囲にclampし、重なる窓は結合。pivotが無い・窓が空ならラウンド全体にfallback |
 | `requires_previous_round_context` | IMPLEMENTED | `rules/temporal_scope.py` L81〜, `validate_output_scope_payload`(L225〜) | 文脈が無い（無し/None/空object）とき `missing_context` を設定し、good/improveの採点を拒否する。unscoredは許可。今回、判定を `previous_round_context_missing()` に一本化 |
-| `requires_round_timeline` | PARTIAL | `ui/backend.py` L42 → `ui/main_window.py` L725 | **UI表示だけ**（「ラウンド全体の文脈を参照」ラベル）。採点のゲートにはなっていない。Round時間軸が不完全でも採点は止まらない。仕様上ゲートにすべきかは未定義 → UNDECIDED（§6-1） |
-| `uses_whole_match_aggregation` | NOT_IMPLEMENTED（実行時）/ 報告のみ今回追加 | 実行時の読み取りなし。`rules/temporal_contract.py` と `application/match_aggregation.py` が**報告専用**で読む | 実行時パイプラインはラウンド単位。Match総合の評価ロジックは存在しない。Match全体の評価基準は人間判断を含むため UNDECIDED（§6-2） |
+| `requires_round_timeline` | IMPLEMENTED（既定は報告のみ）/ ゲート化はUNDECIDED | `ui/backend.py`（表示）、`rules/policy_runtime.py` `RoundTimelineGate`（#31で追加） | `RoundAnalyzer` に渡すと、Round時間軸が完全でないRoundで影響を受ける評価を `timeline_gate` に記録する。既定 `report_only` は出力を変えない。`unscore_incomplete` は該当GOOD/IMPROVEをUNSCOREDにするが、有効化は承認待ち（§6-1） |
+| `uses_whole_match_aggregation` | PARTIAL | `rules/policy_runtime.py`（#25の分類で `match_aggregated` として保持）、`rules/temporal_contract.py` / `application/match_aggregation.py`（報告） | 実行時パイプラインはラウンド単位。Match全体のGOOD/IMPROVE判定は存在しない（§6-2、#26で見送りを推奨） |
 | `display_clip_strategy` | NOT_IMPLEMENTED | 参照なし | 自然言語（例:「代表例8〜15秒を最大3本程度」）。固定秒数へは変換していない。実際のclip窓は別項目 `suggested_clip_window_seconds`（`ai/coach.py` L685）由来で、`display_clip_strategy` とは無関係。→ UNDECIDED（§6-3） |
 | `temporal_tolerance_policy`（トップレベル） | NOT_IMPLEMENTED | 参照なし | level別 `evidence_sec` / `clip_sec`。`TemporalScopeResolver` の `_TOLERANCE_SEC = 0.05` とは**別概念**。同じものとして扱っていない |
 | `test_tolerance_seconds`（ルール別） | NOT_IMPLEMENTED | 参照なし | 全44ルールで、そのlevelの `temporal_tolerance_policy` と一致していることをテストで固定（データ整合のみ） |
@@ -36,8 +36,8 @@
 | `automation_policy.final_label_mode` | PARTIAL（間接） | 直接参照なし。`rules/selector.py` L58 が registry の `label_mode` を読む | 全44ルールで registry の `label_mode` と一致していることをテストで固定。値が食い違えば検出できるが、`automation_policy` 自体は実行方式を決めていない |
 | `aggregation_policy.deduplicate_same_rule_within_seconds` | IMPLEMENTED | `rules/aggregator.py` L20 | 同一rule・同一label・同一scope（=同一ラウンド）内でのみ重複排除 |
 | `aggregation_policy.max_display_exemplars_per_match` | IMPLEMENTED | `rules/aggregator.py` L99〜 | ruleごとにMatch全体で表示上限。**上限超過分は保存結果から消える**ため、保存済み結果の件数は下限値（§4） |
-| `aggregation_policy.aggregate_repeated_occurrences` | NOT_IMPLEMENTED | 参照なし | 6ルール(AIM-01〜04, MOV-01, MOV-02)が `true`。「繰り返しを集約」の具体的な出力形式が未定義 |
-| `aggregation_policy.summary_required_if_occurrences_at_least` | NOT_IMPLEMENTED | 参照なし | 同じ6ルールが `3`。要約を誰が・何で生成するか未定義（LLM総評は事前承認が必要） |
+| `aggregation_policy.aggregate_repeated_occurrences` | IMPLEMENTED（構造化のみ） | `rules/policy_runtime.py` `occurrence_summaries` → Match集計の `occurrence_summaries` → GUI要約 | 6ルール(AIM-01〜04, MOV-01, MOV-02)の件数・Round・評価参照を集約する。文章と判定は含めない（§6-6） |
+| `aggregation_policy.summary_required_if_occurrences_at_least` | IMPLEMENTED（フラグのみ） | `rules/policy_runtime.py` `occurrence_summaries` | 件数が閾値以上なら `summary_required: true`。要約文（`text`）は `null`、`text_status: requires_approval` |
 | `suggested_clip_window_seconds` | IMPLEMENTED | `ai/coach.py` L685 | 実際のclip窓。`event_window_seconds` / `display_clip_strategy` / tolerance とは別概念 |
 
 ### 2.1 evidence窓 0.75 秒について
@@ -208,6 +208,15 @@
 - 推奨: (a) を維持し、(b) は文面を決定論にし判定語を含めない形で別途承認を得る。
 - 理由: 要約は評価の言い換えになり得る。
 - 影響: (b)(c) は出力スキーマ追加。
+
+## 6.1 2026-11-16 の更新（#31・#25・#26）
+
+起点は main `9c76fd3`。詳細と承認が必要な項目は `docs/evaluation_engine_connection.md` にまとめた。
+
+- §6-1: `RoundTimelineGate` を追加した。既定は報告だけで、評価は変わらない。
+- §6-6: 選択肢 (a) に `summary_required` フラグと構造化した集約を加えた。文章は承認待ち。
+- #25: 境界非依存ルールの分類表（17/44）とオプトインの部分評価を追加した。既定は無効。
+- §6-2〜§6-5: 変更していない。
 
 ## 7. 今後必要な実装（承認後）
 
