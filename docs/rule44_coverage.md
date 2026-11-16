@@ -45,26 +45,25 @@ PYTHONPATH=src python3 scripts/rules/rule_readiness_real_video.py --cache ASSETS
 | 開発観測（実動画で入力がそろう） | 1 | **10** 🟢 |
 | 認定 | 0 | 0 |
 
-### 実動画で評価候補が出たルール（暫定、5試合）
+### 実動画で評価候補が出たルール（36試合）
 
-開発用録画5試合（Fade、Phoenix、Reyna、Jett、Omen）で、評価候補が1回以上出たルールは **8**（変更前に実動画で入力がそろうのは ECO-01 の1ルールのみ）。
+開発用録画36試合（録画者は16エージェント、4ロールすべて）で、評価候補が1回以上出たルールは **9**（変更前に実動画で入力がそろうのは ECO-01 の1ルールのみ）。
 
 | ルール | 候補が出た試合 | 候補数（合計） |
 |---|---|---|
-| INFO-03 人数状況の認識 | 5/5 | 698 |
-| DEC-01 人数有利時の判断 | 5/5 | 181 |
-| DEC-02 人数不利時の判断 | 5/5 | 171 |
-| UTL-01 Utilityを残して死亡 | 5/5 | 63 |
-| ADV-08 Ult使用判断 | 5/5 | 57 |
-| ADV-03 クラッチ判断 | 4/5 | 11 |
-| ROLE-03（イニシエーター） | 1/5（Fade） | 56 |
-| ROLE-02 Smokeタイミング（コントローラー） | 1/5（Omen） | 36 |
+| INFO-03 人数状況の認識 | 36/36 | 5,525 |
+| DEC-01 人数有利時の判断 | 36/36 | 1,394 |
+| DEC-02 人数不利時の判断 | 36/36 | 1,298 |
+| UTL-01 Utilityを残して死亡 | 36/36 | 486 |
+| ADV-08 Ult使用判断 | 36/36 | 393 |
+| ADV-03 クラッチ判断 | 27/36 | 83 |
+| ROLE-03（イニシエーター） | 10/36 | 606 |
+| ROLE-02 Smokeタイミング（コントローラー） | 10/36 | 472 |
+| ROLE-07（センチネル） | 6/36 | 348 |
 
-- ROLE-07（センチネル）は入力の準備はできたが、5試合にセンチネルの試合がないため候補は0だった。
-- 1試合あたりの録画者の死亡検出は9〜18回で、試合のラウンド数を超えていない。
+- ROLE系は、録画者のロールに合うルールだけに候補が出ている（イニシエーター10試合、コントローラー10試合、センチネル6試合）。デュエリストのROLE-06/08はトリガー側が未整備。
+- 1試合あたりの録画者の死亡検出は8〜24回。ラウンド数との照合はまだしていないため、上限側（24回）には誤検出が含まれている可能性がある。
 - 候補数は5秒ごとのサンプル単位の数で、評価件数ではない。ラウンド単位への集約と正式Fact化は別工程である。
-
-36試合への拡大は、Macとの接続が切れたため止まっている（切り出しは22/36試合まで完了）。再接続後に同じスクリプトで測る。
 
 ## 全ルールの表
 
@@ -87,14 +86,14 @@ PYTHONPATH=src python3 scripts/rules/rule_readiness_real_video.py --cache ASSETS
 | POS-04 | ポストプラント位置 | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:spike_planted/position_change/position_hold, fact:spike_planted |
 | POS-05 | 守りの配置 | llm_contextual | なし | なし | 0 | fact:side |
 | INFO-02 | 音情報の利用 | llm_contextual | なし | なし | 0 | trigger:audio_cue/position_change/peek, fact:audio_cue_observed |
-| INFO-03 | 人数状況の認識 | llm_contextual | なし | 開発観測 🟢 | 5 | - |
+| INFO-03 | 人数状況の認識 | llm_contextual | なし | 開発観測 🟢 | 36 | - |
 | INFO-04 | 未確認エリアの扱い | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:enemy_spotted/enemy_lost/peek/position_change |
-| DEC-01 | 人数有利時の判断 | llm_contextual | なし | 開発観測 🟢 | 5 | - |
-| DEC-02 | 人数不利時の判断 | llm_contextual | なし | 開発観測 🟢 | 5 | - |
+| DEC-01 | 人数有利時の判断 | llm_contextual | なし | 開発観測 🟢 | 36 | - |
+| DEC-02 | 人数不利時の判断 | llm_contextual | なし | 開発観測 🟢 | 36 | - |
 | DEC-03 | 戦闘継続/離脱 | llm_contextual | 契約のみ | 契約のみ | 0 | fact:disadvantageous_effect_active |
 | DEC-04 | ローテーション判断 | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:enemy_spotted/rotation_started/position_change, fact:enemy_spotted_count |
 | DEC-05 | 残り時間の使い方 | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:objective_state/spike_planted/rotation_started/position_change, fact:objective_state_observed |
-| UTL-01 | Utilityを残して死亡 | llm_contextual | なし | 開発観測 🟢 | 5 | - |
+| UTL-01 | Utilityを残して死亡 | llm_contextual | なし | 開発観測 🟢 | 36 | - |
 | TEAM-02 | 味方とのタイミング合わせ | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:ally_entry_start/ally_enter_site/peek/engagement_start, fact:ally_entry_active |
 | OBJ-02 | 設置判断 | llm_contextual | なし | なし | 0 | trigger:objective_state/site_state/spike_planted/engagement_start, fact:side, fact:spike_carried_by_player |
 | OBJ-03 | 設置後/解除時の時間管理 | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:spike_planted/spike_defuse_started/position_change/peek/engagement_start, fact:spike_planted |
@@ -102,16 +101,16 @@ PYTHONPATH=src python3 scripts/rules/rule_readiness_real_video.py --cache ASSETS
 | ECO-02 | 武器回収/セーブ判断 | llm_contextual | 契約のみ | 契約のみ | 0 | fact:save_context_observed |
 | ADV-01 | ファーストデス | llm_contextual | なし | なし | 0 | fact:first_death_by_player |
 | ADV-02 | ファーストキル後の判断 | llm_contextual | なし | なし | 0 | fact:first_kill_by_player |
-| ADV-03 | クラッチ判断 | llm_contextual | なし | 開発観測 🟢 | 4 | - |
+| ADV-03 | クラッチ判断 | llm_contextual | なし | 開発観測 🟢 | 27 | - |
 | ADV-04 | ラーク | llm_contextual | なし | なし | 0 | trigger:position_change/position_hold/enemy_spotted, fact:lurk_context_observed |
 | ADV-05 | エントリー役との連携 | llm_contextual | 契約のみ | 契約のみ | 0 | fact:ally_entry_active |
 | ADV-06 | アンチエコ | llm_contextual | なし | なし | 0 | fact:enemy_eco_likely |
 | ADV-07 | セーブ | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:save_decision/weapon_pickup/position_change, fact:save_context_observed |
-| ADV-08 | Ult使用判断 | llm_contextual | なし | 開発観測 🟢 | 5 | - |
-| ROLE-02 | Smokeタイミング | llm_contextual | なし | 開発観測 🟢 | 1 | - |
-| ROLE-03 | 索敵Utility | llm_contextual | なし | 開発観測 🟢 | 1 | - |
+| ADV-08 | Ult使用判断 | llm_contextual | なし | 開発観測 🟢 | 36 | - |
+| ROLE-02 | Smokeタイミング | llm_contextual | なし | 開発観測 🟢 | 10 | - |
+| ROLE-03 | 索敵Utility | llm_contextual | なし | 開発観測 🟢 | 10 | - |
 | ROLE-06 | Space獲得後の生存 | llm_contextual | なし | 契約のみ 🟢 | 0 | trigger:ally_enter_site/engagement_end/position_change |
-| ROLE-07 | サイト保持 | llm_contextual | なし | 開発観測 🟢 | 0 | - |
+| ROLE-07 | サイト保持 | llm_contextual | なし | 開発観測 🟢 | 6 | - |
 | ROLE-08 | Flank管理 | llm_contextual | なし | 契約のみ 🟢 | 0 | trigger:position_hold/enemy_spotted/enemy_lost |
 | WPN-01 | Operator使用 | llm_contextual | 契約のみ | 契約のみ | 0 | trigger:hold_angle/shot/position_change, fact:weapon |
 
