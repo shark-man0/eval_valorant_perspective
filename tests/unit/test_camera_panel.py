@@ -152,12 +152,12 @@ def test_own_hud_without_round_change_stays_unresolved():
     assert result["measured_view_return_history"] == []
 
 
-def test_own_hud_rows_before_the_new_round_are_not_respawned():
+def test_own_hud_until_next_round_buy_resolves_the_return():
     rows = [obs(0, ["owner_hud", "buy"]), obs(10, ["owner_hud", "active"]),
             obs(20, ["death"]), obs(30, ["owner_hud"]), obs(40),
             obs(50, ["owner_hud", "buy"])]
     result = replay(rows, measured_view_precedence=True)
-    frames = result["frames"]
-    assert frames[3]["life"]["value"] == "UNKNOWN"
-    assert frames[5]["life"]["value"] == "ALIVE"
-    assert all(h["after_life"]["value"] == "ALIVE" for h in result["measured_view_return_history"])
+    assert [f["life"]["value"] for f in result["frames"][3:]] == ["ALIVE"] * 3
+    assert result["frames"][4]["life"]["reason"] == (
+        "bracketed_by_measured_own_hud_after_round_change"
+    )

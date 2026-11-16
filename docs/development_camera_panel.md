@@ -48,13 +48,12 @@ native samples, keeps only frames whose decoded pixels hash to the sample's
   (`unqualified_view_model`) claims of those three are ignored. Other learned
   signals are kept. A measured `remote` row also gives life ALIVE: only a living
   recorder steers an ability.
-- A run of measured own-HUD rows after an elimination hypothesis keeps life
-  UNKNOWN while the Round token is unchanged. A dead recorder can still see its
-  own ability bar (on the camera that follows the planted spike), so the run is
-  a respawn only when it continues, without death, spectator, result or score
-  change, until a measured BUY with a new Round token, and only rows that
-  already carry that new token become ALIVE. A Round result inside the run ends
-  it. The return time stays unknown (`measured_view_return_history`).
+- A run of measured own-HUD rows (which require the own health value) after an
+  elimination hypothesis keeps life UNKNOWN, or a victim-display DEAD, while the
+  Round token is unchanged. The run is a respawn only when it continues, without
+  death, spectator, result or score change, until a measured BUY with a new
+  Round token; a Round result inside the run ends it. The return time stays
+  unknown (`measured_view_return_history`).
 
 The default path is unchanged.
 
@@ -70,29 +69,29 @@ died (6 of 6 sampled frames were wrong), which this gate removes.
 ### Fixed comparison: ten DEVELOPMENT matches, 21,999 second rows
 
 All 32,089 native samples were decoded again from the original recordings on
-the recording machine; all were pixel identical to the acquisition. The rows
-for this replay were measured on JPEG crops (quality 92) of those frames. The
-crops did not include the health box, so for nine matches the gate is
-unchecked and those matches get **no `owner_hud` rows** (spectator and remote
-rows only). For DEV2 the health digits were measured on the same timestamps
-decoded again in the Linux container (decoder output is not pixel identical
-there, so this is recorded as such).
+the recording machine; all were pixel identical to the acquisition. Label and
+ability-bar scores were measured on JPEG crops (quality 92) of those frames;
+the health digits and remote cues were measured on the recording machine from
+crops of the same frames with the same formulas. For DEV2 the health digits
+come from the same timestamps decoded in the Linux container (not pixel
+identical there, recorded as such).
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Camera UNKNOWN seconds | 4,118 | 3,452 |
-| Life UNKNOWN seconds | 5,322 | 5,135 |
+| Camera UNKNOWN seconds | 4,118 | 1,039 |
+| Life UNKNOWN seconds | 5,322 | 4,336 |
 | Round UNKNOWN seconds | 7,230 | 7,230 |
 | Camera REMOTE seconds | 0 | 87 |
 | Fixed 69 attributes: correct / incorrect / abstained | 69 / 0 / 0 | 69 / 0 / 0 |
-| Fixed labels (77, union scorer): Camera / Life correct | 20 / 20 | 20 / 20 (1 abstained each, unchanged) |
+| Fixed labels (77, union scorer): Camera / Life correct | 20 / 20 (1 abstained each) | 21 / 21 |
 | Supplemental 9 and 6 attributes | 9/9, 6/6 | 9/9, 6/6 |
+| Frames: DEAD recorder with a first-person camera | 223 | 149 |
 | Formal Facts/Events | 0 | 0 |
 
-Changes between known values: camera SELF to REMOTE 99 frames, SELF to
-SPECTATOR 15, SPECTATOR to SELF 5; life ALIVE to DEAD 11, DEAD to ALIVE 10.
-DEV2 alone (health measured): Camera UNKNOWN 316 to 105 seconds, Life 509 to
-345.
+Seconds changed between known values: life DEAD to ALIVE 188, ALIVE to DEAD 2;
+camera SPECTATOR to SELF 107, SELF to REMOTE 87, SELF to SPECTATOR 6. Life
+values withdrawn to UNKNOWN: 862 seconds (abstentions; in the review below the
+old DEAD was wrong in 5 of 5 decidable frames).
 
 ### Fresh full-length analysis: DEV2 from the original recording
 
@@ -115,18 +114,23 @@ end of a Round became UNKNOWN.
 
 ### Visual review by the implementing agent (not human GT)
 
+Frames decoded at the exact native PTS from the original recordings.
+
 | Sample | Consistent | Contradicted | Undecidable |
 | --- | ---: | ---: | ---: |
-| Earlier per-frame cue check (24) | 20 | 0 | 2 (2 without a cue) |
+| Fixed comparison, all ten matches (64 frames) | 43 | 4 | 12 |
+| of which life DEAD to ALIVE (16) | 16 | 0 | 0 |
+| of which camera SPECTATOR to SELF (12) | 11 | 0 | 1 |
+| of which life DEAD to UNKNOWN (8) | old DEAD wrong in 5 | | 3 |
 | Fresh DEV2 changes (24) | 21 | 0 | 0 (3 abstentions were correct DEAD) |
-| Fixed DEV2 changes (18) | 18 | 0 | 0 |
-| Fixed DEV2 known-to-known life/camera changes (4) | 0 | 4 | 0 |
 | REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
 | Owl Drone views in a 252-frame sweep of one match | 11 of 11 read REMOTE | | |
 
-The four contradicted values are two seconds at the start of a purchase phase:
-measured spectator rows kept a death latch alive until the next measured own
-HUD, and the learned own-view rows in the buy menu could not end it.
+The four contradicted values are one event: two seconds at the start of a
+purchase phase in DEV2 (camera SPECTATOR and life DEAD), where measured
+spectator rows kept a death latch alive and the learned own-view rows in the
+buy menu could not end it. The undecidable frames are mostly Round or match
+result screens.
 
 ## Limits
 
@@ -136,7 +140,9 @@ HUD, and the learned own-view rows in the buy menu could not end it.
   bindings. Other steerable abilities (Fade's Prowler, Cypher's camera, Skye's
   Trailblazer) and Astra's astral form were not reviewed and are still
   read as SELF when the own ability bar stays visible.
-- Nine of ten matches in the fixed comparison lack health-box crops; their
-  own-HUD rows are therefore not used and their result understates the module.
+- A measured spectator label before a purchase phase can keep a death latch
+  for the first seconds of the buy menu (one event of two seconds seen).
+- Fresh full-length analysis covers DEV2 only; the transfer rate from the
+  recording machine (about 1 MB/s at the time) did not allow the other nine.
 - Pixel identity depends on the decoder: the recording machine's acquisitions
   and the container's acquisition each match their own decoder only.

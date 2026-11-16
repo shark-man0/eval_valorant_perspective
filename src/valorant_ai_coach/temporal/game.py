@@ -1419,19 +1419,23 @@ class DevelopmentGameTimeline:
         """Resolve unobserved return edges around a measured own HUD.
 
         A measured own HUD after an elimination hypothesis leaves life UNKNOWN
-        while the Round token is unchanged. A dead recorder can still see its own
-        ability bar (for example on the camera that follows the planted spike)
-        until the next Round respawns every player. The run of own-HUD rows is
-        therefore a respawn only when it continues, without a death, spectator,
-        result or score change, until a measured BUY with a new Round token. A
-        Round result inside the run ends it. The return time stays unknown.
+        (or keeps a victim-display DEAD) while the Round token is unchanged.
+        Measured own-HUD rows require the own health value, which the camera that
+        follows the planted spike does not show. The run of such rows is a
+        respawn only when it continues, without a death, spectator, result or
+        score change, until a measured BUY with a new Round token; a Round result
+        inside the run ends it. The return time stays unknown.
         """
         history: list[dict[str, Any]] = []
         unresolved = {"candidate_return_edge_unobserved", "return_edge_unobserved"}
         blocking = {"spectator", "remote", "death", "downed", "revival", "result", "intermission"}
 
         def eligible(state: dict[str, Any]) -> bool:
-            return state["life"]["reason"] in unresolved and bool(self._measured_own_view(state))
+            return (
+                state["life"]["reason"] in unresolved
+                or state["life"]["value"] == "DEAD"
+                and state["life"]["reason"] == "victim_display_and_owned_spectator_hypothesis"
+            ) and bool(self._measured_own_view(state))
 
         def signals_of(state: dict[str, Any]) -> set[str]:
             return {
@@ -1506,13 +1510,7 @@ class DevelopmentGameTimeline:
                         break
             if confirmation is None:
                 continue
-            # Rows still inside the eliminated Round (its result or the camera that
-            # follows the spike) are not respawned; only rows of the new Round are.
-            respawned = [
-                k for k in sorted(run + bracketed)
-                if states[k]["round_token"] == confirmation["round_token"]
-            ]
-            for k in respawned:
+            for k in sorted(run + bracketed):
                 frame = states[k]
                 before = {d: deepcopy(frame[d]) for d in ("life", "camera")}
                 neighbours = [max((r for r in run if r <= k), default=run[0]),
