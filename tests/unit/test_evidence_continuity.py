@@ -189,6 +189,23 @@ def test_countdown_later_in_the_round_narrows_both_bounds_and_fills_active():
     assert result["frames"][25]["round"]["reason"] == "active_countdown_since_projected_start"
 
 
+def bounds(event):
+    return event["lower_sample"]["native_pts_tick"], event["upper_sample"]["native_pts_tick"]
+
+
+def test_countdown_start_next_to_the_purchase_anchor_uses_that_anchor():
+    rows = [at(0, ["buy"], (1, 1))] + [at(s, score=(1, 1)) for s in range(1, 15)]
+    rows += [at(15, ["active"], (1, 1), timer=85), at(16, ["active"], (1, 1), timer=84)]
+    start = [t for t in run(rows)["transitions"] if t["kind"] == "round_start"][0]
+    assert bounds(start) == (0, 10)
+    # A countdown placing the start before a measured purchase frame is rejected.
+    rows = [at(10, ["buy"], (1, 1))] + [at(s, score=(1, 1)) for s in range(11, 20)]
+    rows += [at(20, ["active"], (1, 1), timer=85), at(21, ["active"], (1, 1), timer=84)]
+    start = [t for t in run(rows)["transitions"] if t["kind"] == "round_start"][0]
+    assert "countdown_projection" not in start
+    assert bounds(start) == (100, 200)
+
+
 def test_revisions_keep_frames_map_and_edges_consistent():
     from valorant_ai_coach.temporal.evidence_continuity import consistency_violations
 

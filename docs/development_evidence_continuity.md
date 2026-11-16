@@ -25,7 +25,7 @@ match specific conditions and no threshold changes in any recognizer.
 | ENDED after a score change | One-point increment; later ENDED anchor with the new score | As above | Rows from the first new-score frame to the anchor are ENDED |
 | Round end candidate | Same inputs | One increment is one decided Round | `round_end` between the last known-undecided frame and the first result cue or new-score frame |
 | Existing score-update end edges | An existing end edge whose lower frame is only the last old-score frame | Display lead as above | Lower bound moved back to the last known-undecided frame (`lower_sample_basis: score_display_lead`, `rule_lower_sample` kept) |
-| Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side, and rows after the projected start become ACTIVE |
+| Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side (the earlier anchor itself when it is closer), and rows after the projected start become ACTIVE. A projection before the earlier anchor is rejected |
 | Spectating during a Round | Measured spectator panel, or the combat report, learned spectator view and the recorder's alias in the elimination display together; no owner HUD, remote, revival or purchase cue; Round ACTIVE/ENDED | Living players do not spectate | Life `DEAD` (alternative `DOWNED`) |
 | Dead bracket | Two such DEAD anchors, unchanged score, no owner HUD, revival or purchase cue between, no SELF/REMOTE camera between | No respawn inside a Round without revival | Rows between are DEAD |
 | Not alive, not first person | DEAD without an open alternative, no owner HUD/remote/revival cue | A recorder that is not alive cannot hold the first-person view | Camera `SPECTATOR` |
@@ -73,17 +73,17 @@ first reproduced the baseline exactly: 21,999 rows, UNKNOWN Round 7,230 / Life
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Round UNKNOWN seconds | 7,230 | 4,026 |
+| Round UNKNOWN seconds | 7,230 | 3,975 |
 | Life UNKNOWN seconds | 5,322 | 3,401 |
 | Camera UNKNOWN seconds | 4,118 | 4,016 |
 | Seconds changed between two known values | – | 0 |
 | Life seconds withdrawn from DEAD to UNKNOWN (abstentions) | – | 1,138 |
 | Fixed 69 attributes: correct / incorrect / abstained | 69 / 0 / 0 | 69 / 0 / 0 |
 | Supplemental 9 and 6 attributes | 9/9, 6/6 | 9/9, 6/6 |
-| Rounds with a start candidate (229 Rounds) | 167 | 221 |
+| Rounds with a start candidate (229 Rounds) | 167 | 221 (220 indexable by a later score reading) |
 | Rounds with an end candidate (plus 5 final-Round ends after the last score display) | 197 | 220 |
 | Duplicate start/end candidates for one Round | 0 / 0 | 0 / 0 |
-| Start bracket width median / p90 / max (s) | 1 / 3 / 5 | 1 / 3 / 25 |
+| Start bracket width median / p90 / max (s) | 1 / 3 / 5 | 1 / 3 / 5 |
 | End bracket width median / p90 / max (s) | 1 / 2 / 3 | 3 / 5 / 14 |
 | Frames: DEAD recorder with a first-person camera | 223 | 201 |
 | Named or state edges disagreeing with their frames | 57 | 0 |
@@ -91,7 +91,8 @@ first reproduced the baseline exactly: 21,999 rows, UNKNOWN Round 7,230 / Life
 
 End brackets are wider on purpose: in 3 of 6 reviewed score-update edges the
 post-round countdown was already visible at the old lower frame, so the previous
-bracket excluded the decision. 218 of 221 start brackets are at most 10 s wide.
+bracket excluded the decision. The 167 start brackets that existed before are
+unchanged.
 
 Original-video spot checks: frames decoded at the exact native PTS and reviewed
 visually by the implementing agent (not human GT):
@@ -104,6 +105,7 @@ visually by the implementing agent (not human GT):
 | Widened end brackets, 6 | 6/6 contain the decision; 3/6 old brackets did not |
 | Countdown-filled ACTIVE rows, 6 | 6/6 show the running Round countdown |
 | Result-to-ACTIVE and countdown-narrowed starts, 12 | 12/12 contain the start |
+| Start brackets against the countdown switch (0:00 to 1:39) read every 0.5 s, 16 (10 added, 6 existing) | 16/16 contain the switch; bracket midpoint error median 0.25 s, max 2.25 s (an existing 5 s bracket) |
 
 The 1,138 withdrawn seconds are therefore not 1,138 confirmed errors: the
 reviewed sample found 4 wrong and 2 correct values among 6 decidable frames.

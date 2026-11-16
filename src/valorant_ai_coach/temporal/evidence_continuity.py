@@ -291,11 +291,16 @@ def _round_pass(
             projected = _countdown_start(states, observations, segment, b, left)
             if projected is not None:
                 start, clock_ids, shown = projected
+                # The earlier anchor is measured before the start; the projection
+                # may not place the start before it (integer display tolerance).
                 before = [k for k in range(a, b)
-                          if native_time(states[segment[k]]["sample"]) <= start - 1]
+                          if native_time(states[segment[k]]["sample"]) <= start - 1] or [a]
                 after = [k for k in range(a + 1, b + 1)
                          if native_time(states[segment[k]]["sample"]) >= start + 1]
-                if before and after and before[-1] < after[0]:
+                if (
+                    start >= native_time(low["sample"]) - 1
+                    and after and before[-1] < after[0]
+                ):
                     lower = states[segment[before[-1]]]
                     upper = states[segment[after[0]]]
                     ids = ids + clock_ids
