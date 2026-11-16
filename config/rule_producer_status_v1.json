@@ -1,0 +1,354 @@
+{
+ "version": "rule_producer_status_v1",
+ "baseline_commit": "9c76fd3",
+ "levels": {
+  "none": "No producer.",
+  "contract": "Producer exists with schema/synthetic tests only; no real-recording observation.",
+  "development": "Observed on DEVELOPMENT recordings in a development-only path (formal_outputs = 0).",
+  "qualified": "Independent real-video qualification passed (none yet)."
+ },
+ "events": {
+  "ability_state": {
+   "before": "contract",
+   "after": "development",
+   "producer": "ability HUD reader with official icons (this change)"
+  },
+  "ally_enter_site": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "ally_entry_start": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "audio_cue": {
+   "before": "none",
+   "after": "none",
+   "producer": "disabled for MVP"
+  },
+  "buy_phase": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline buy-phase template"
+  },
+  "enemy_lost": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "enemy_reengage": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "enemy_spotted": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "engagement_end": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "engagement_start": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "hold_angle": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "info_peek": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "kill": {
+   "before": "contract",
+   "after": "development",
+   "producer": "hud_analyzer kill feed (contract); top-bar alive-count decrease as team-level kill (this change, development)"
+  },
+  "movement_state": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "objective_state": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "derived_event_builder"
+  },
+  "peek": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "player_death": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline life_state; ability-HUD owner change (this change)"
+  },
+  "position_change": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "position_hold": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "preaim_started": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "purchase": {
+   "before": "none",
+   "after": "none",
+   "producer": "deferred"
+  },
+  "rotation_started": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "round_start": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline (DevelopmentGameTimeline)"
+  },
+  "save_decision": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "derived_event_builder"
+  },
+  "shot": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "site_state": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "spike_defuse_started": {
+   "before": "none",
+   "after": "none",
+   "producer": "deferred"
+  },
+  "spike_planted": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud_analyzer"
+  },
+  "state_snapshot": {
+   "before": "contract",
+   "after": "development",
+   "producer": "derived snapshot; top-bar alive counts and ability HUD give real-video snapshots (this change)"
+  },
+  "utility_used": {
+   "before": "contract",
+   "after": "development",
+   "producer": "charge-bar decrease on the recorder's own HUD (this change, 5 s sampling)"
+  },
+  "weapon_pickup": {
+   "before": "none",
+   "after": "none",
+   "producer": "deferred"
+  }
+ },
+ "facts": {
+  "ally_entry_active": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "audio_cue_observed": {
+   "before": "none",
+   "after": "none",
+   "producer": "audio disabled"
+  },
+  "buy_phase_observed": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline"
+  },
+  "clutch_state": {
+   "before": "none",
+   "after": "development",
+   "producer": "top bar: only the recorder alive vs >=2 enemies while the HUD shows the recorder (this change)"
+  },
+  "cover_available": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "disadvantageous_effect_active": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud status_effect"
+  },
+  "enemy_eco_likely": {
+   "before": "none",
+   "after": "none",
+   "producer": "no producer"
+  },
+  "enemy_spotted_count": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "escape_route_available": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "exposed_directions_count": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "first_death_by_player": {
+   "before": "none",
+   "after": "none",
+   "producer": "needs kill-feed ownership"
+  },
+  "first_kill_by_player": {
+   "before": "none",
+   "after": "none",
+   "producer": "needs kill-feed ownership"
+  },
+  "first_shot_detected": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "first_shot_stationary": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "line_of_sight_state": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "lurk_context_observed": {
+   "before": "none",
+   "after": "none",
+   "producer": "no producer"
+  },
+  "numbers_state": {
+   "before": "none",
+   "after": "development",
+   "producer": "top-bar alive portraits (this change)"
+  },
+  "objective_state_observed": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "derived"
+  },
+  "player_buy_class": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "player_died": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline life_state; recorder HUD ownership (this change)"
+  },
+  "player_role": {
+   "before": "none",
+   "after": "development",
+   "producer": "recorder agent from ability HUD + knowledge agent->role (this change)"
+  },
+  "preaim_lead_sec": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "round_time_remaining_sec": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud timer"
+  },
+  "save_context_observed": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "derived"
+  },
+  "shot_while_moving": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "side": {
+   "before": "none",
+   "after": "none",
+   "producer": "no producer"
+  },
+  "site_incoming_damage_risk_observed": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "spatial_context_available": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "map pipeline (Map work in progress elsewhere)"
+  },
+  "spike_carried_by_player": {
+   "before": "none",
+   "after": "none",
+   "producer": "no producer"
+  },
+  "spike_planted": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud_analyzer"
+  },
+  "team_buy_class": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "tradeable_ally_nearby": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "ultimate_available": {
+   "before": "none",
+   "after": "development",
+   "producer": "ultimate charge bar (this change)"
+  },
+  "uncleared_zone_ahead": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "utility_available_count": {
+   "before": "none",
+   "after": "development",
+   "producer": "charge bars on the recorder's own HUD (this change)"
+  },
+  "weapon": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud weapon registry contract; templates not yet sourced"
+  },
+  "zone_id": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "map zone resolver (Summit only)"
+  }
+ }
+}
