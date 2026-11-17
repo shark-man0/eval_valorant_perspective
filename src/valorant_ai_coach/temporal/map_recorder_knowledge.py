@@ -56,12 +56,14 @@ class KnowledgeRecorderMap:
         portraits: Sequence[tuple[str, NDArray[np.uint8]]], provenance: dict[str, Any],
         map_references: Sequence[tuple[str, str, Path, str]] = (),
         recover_track: bool = False,
+        minimap_portraits: Sequence[tuple[str, NDArray[np.uint8]]] = (),
     ) -> None:
         self._recover_track = recover_track
         self._hud = hud
         self._catalog = catalog
         self.provenance = provenance
         self.map_references = tuple(map_references)
+        self.minimap_portraits = tuple(minimap_portraits)
         groups: dict[str, list[NDArray[np.float32]]] = {}
         for agent_id, portrait in portraits:
             bgr = portrait[:, :, :3]
@@ -110,6 +112,7 @@ class KnowledgeRecorderMap:
                 portraits.append((agent.uuid, assets.image(f"agent:{agent.uuid}:{variant}")))
         root = map_catalog.parent.resolve()
         hashes = {}
+        minimap_portraits: list[tuple[str, NDArray[np.uint8]]] = []
         for row in read_json(map_catalog).get("characters", []):
             agent = catalog.agent(row["name"])
             if agent is None or "minimap_portrait" not in row:
@@ -123,6 +126,7 @@ class KnowledgeRecorderMap:
                 raise ValueError("Readable color minimap portrait required")
             hashes[agent.uuid] = hashlib.sha256(data).hexdigest()
             portraits.append((agent.uuid, portrait))
+            minimap_portraits.append((agent.uuid, np.asarray(portrait, dtype=np.uint8)))
         map_references = []
         for game_map in catalog.maps:
             asset_id = f"map:{game_map.uuid}:displayicon"
@@ -134,6 +138,7 @@ class KnowledgeRecorderMap:
             provenance={"knowledge_asset_digest": assets.content_digest,
                         "minimap_portrait_sha256": hashes},
             map_references=map_references, recover_track=recover_track,
+            minimap_portraits=minimap_portraits,
         )
 
     @staticmethod
