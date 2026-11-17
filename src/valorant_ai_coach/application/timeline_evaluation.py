@@ -229,6 +229,11 @@ def segment_rounds(
     Rounds.
     """
     rows = bundle["seconds"]
+    for index, row in enumerate(rows):
+        # Windows are recording seconds; Facts from producers use the same clock.
+        stamp = row.get("timestamp", index)
+        if isinstance(stamp, bool) or not isinstance(stamp, int | float) or stamp != index:
+            raise TimelineEvaluationError("秒行のtimestampが行番号（録画の秒）と一致しません")
     seconds_by_round: dict[int, list[int]] = {}
     for index, row in enumerate(rows):
         value = _round_value(row)
@@ -747,8 +752,10 @@ def run(
     }
     provider = None
     if derived_samples is not None:
+        loaded = json.loads(derived_samples.read_text(encoding="utf-8"))
+        # Either the bare list of samples or {"meta": ..., "samples": [...]}.
         provider = DerivedSampleFactProvider(
-            json.loads(derived_samples.read_text(encoding="utf-8"))
+            loaded["samples"] if isinstance(loaded, Mapping) else loaded
         )
     evaluation = evaluate_timeline(
         bundle, match_id=match_id, source_video=source_video, fact_provider=provider
