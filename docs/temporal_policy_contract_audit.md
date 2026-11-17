@@ -29,7 +29,7 @@
 | `requires_previous_round_context` | IMPLEMENTED | `rules/temporal_scope.py` L81〜, `validate_output_scope_payload`(L225〜) | 文脈が無い（無し/None/空object）とき `missing_context` を設定し、good/improveの採点を拒否する。unscoredは許可。今回、判定を `previous_round_context_missing()` に一本化 |
 | `requires_round_timeline` | IMPLEMENTED（既定は報告のみ）/ ゲート化はUNDECIDED | `ui/backend.py`（表示）、`rules/policy_runtime.py` `RoundTimelineGate`（#31で追加） | `RoundAnalyzer` に渡すと、Round時間軸が完全でないRoundで影響を受ける評価を `timeline_gate` に記録する。既定 `report_only` は出力を変えない。`unscore_incomplete` は該当GOOD/IMPROVEをUNSCOREDにするが、有効化は承認待ち（§6-1） |
 | `uses_whole_match_aggregation` | PARTIAL | `rules/policy_runtime.py`（#25の分類で `match_aggregated` として保持）、`rules/temporal_contract.py` / `application/match_aggregation.py`（報告） | 実行時パイプラインはラウンド単位。Match全体のGOOD/IMPROVE判定は存在しない（§6-2、#26で見送りを推奨） |
-| `display_clip_strategy` | NOT_IMPLEMENTED | 参照なし | 自然言語（例:「代表例8〜15秒を最大3本程度」）。固定秒数へは変換していない。実際のclip窓は別項目 `suggested_clip_window_seconds`（`ai/coach.py` L685）由来で、`display_clip_strategy` とは無関係。→ UNDECIDED（§6-3） |
+| `display_clip_strategy` | IMPLEMENTED（構造化フィールド＋報告） | `config` の `display_clip_policy`（人が転記）→ `rules/temporal_contract.py` `DisplayClipPolicy`（記述の秒数と照合）→ `application/match_aggregation.py` の `display_clip_report` | 文章は残し、秒数・本数・補足を構造化した。クリップ長は報告のみで、生成されるクリップは変えない（2026-11-17承認） |
 | `temporal_tolerance_policy`（トップレベル） | NOT_IMPLEMENTED | 参照なし | level別 `evidence_sec` / `clip_sec`。`TemporalScopeResolver` の `_TOLERANCE_SEC = 0.05` とは**別概念**。同じものとして扱っていない |
 | `test_tolerance_seconds`（ルール別） | NOT_IMPLEMENTED | 参照なし | 全44ルールで、そのlevelの `temporal_tolerance_policy` と一致していることをテストで固定（データ整合のみ） |
 | `automation_policy.candidate_selection` | NOT_IMPLEMENTED（直接参照なし） | 参照なし | 全44ルールが `deterministic_rule_engine`。実際の候補選択は `rules/selector.py`（registry）が行う |
