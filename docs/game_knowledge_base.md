@@ -85,6 +85,30 @@ PYTHONPATH=src python3 scripts/knowledge/agent_identification_experiment.py \
   --cache CACHE --truth fm1_1=Fade,... CROPS/*.zip
 ```
 
+### 共通タイムラインとの併用
+
+録画者の特定は、共通タイムライン（`DevelopmentGameTimeline`）の本人・生存・観戦状態を使える。`knowledge/timeline_view.py` がタイムラインの書き出し（`events_and_states`）を読み、`identify_agent(..., self_live=...)` はタイムラインが SELF かつ ALIVE とした時点のHUDだけで多数決をとる。観戦中の味方のHUDを多数決で押し切るのではなく、タイムラインで除外する。該当フレームが20未満のときは、従来どおり全HUDで多数決をとる（`basis` に記録する）。
+
+タイムラインの書き出しがある10試合で比較した（元動画のSHA-256で対応づけた）。
+
+| 指標 | HUD多数決（変更前） | タイムライン併用（変更後） |
+|---|---|---|
+| 特定の正解 | 10/10 | 10/10（維持） |
+| 多数決の得票率 | 0.695〜0.817 | **0.958〜0.995** 🟢 |
+| 1位と2位の平均スコア差 | 0.199〜0.383 | **0.370〜0.508** 🟢 |
+
+- タイムラインが SPECTATOR とした区間のHUDが録画者のエージェントだった割合は、1.6〜10.5%だった。HUDとタイムラインの観戦判定が、独立した読み取りとして互いに整合している。
+- 残りの26試合はタイムラインの書き出しがないため、従来のHUD多数決のまま36/36を維持している。
+
+```sh
+PYTHONPATH=src python3 scripts/knowledge/timeline_identification_experiment.py \
+  --cache CACHE --pair fm1_1=CROPS/fm1_1.zip:TIMELINE/issue_oldfull001.json ...
+```
+
+### Map側（#157）との互換性
+
+#157 は、`load_game_knowledge()`、`ReferenceAssets.load()`、`AbilityHudReader(catalog, assets)`、`read(strip_from_frame(...))`、`ranked(2)`、`hud_present`、`agent_uuids`、`slot_scores`、`assets.image("agent:<uuid>:<variant>")`、`content_digest` を使っている。これらは `tests/unit/test_game_knowledge.py::test_api_contract_used_by_map_recorder_pr157` で固定した。今回の変更はどれも引数の追加だけで、既存の呼び出しはそのまま動く。
+
 ## 版の更新手順
 
 1. パッチ後に valorant-api.com から同じ形式のスナップショットを取り直す（`scripts/knowledge/fetch_reference_assets.py` と同じ選択規則）。

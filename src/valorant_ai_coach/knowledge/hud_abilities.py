@@ -71,6 +71,7 @@ class AgentIdentification:
     top: list[tuple[str, float]] = field(default_factory=list)
     margin: float = 0.0
     vote_share: float = 0.0
+    basis: str = "hud_majority"  # or "timeline_self_live"
 
 
 def _icon_template(bgra: NDArray[np.uint8], size: int) -> NDArray[np.float32]:
@@ -182,17 +183,29 @@ class AbilityHudReader:
 
 
 def identify_agent(readings: Iterable[FrameReading], *, min_frames: int = 20,
-                   min_margin: float = 0.03, min_vote_share: float = 0.4) -> AgentIdentification:
+                   min_margin: float = 0.03, min_vote_share: float = 0.4,
+                   self_live: Sequence[bool] | None = None) -> AgentIdentification:
     """Aggregate per-frame rankings into the recorder's agent, or abstain.
 
-    The recorder controls their own HUD for most of a match (buy phases, every
-    round until death), while spectated teammates rotate. The most frequent
-    per-frame top-1 is therefore the recorder hypothesis; a weak majority or a
-    small score margin abstains rather than guesses.
+    With ``self_live`` (aligned with ``readings``, from the shared timeline's
+    SELF + ALIVE state) only the recorder's own live frames vote, so spectated
+    teammates' HUDs are excluded by the timeline rather than outvoted. When the
+    timeline gives fewer than ``min_frames`` such frames, or none is supplied,
+    all HUD frames vote: the recorder controls their own HUD for most of a
+    match while spectated teammates rotate. A weak majority or a small score
+    margin abstains rather than guesses.
     """
+    readings = list(readings)
+    basis = "hud_majority"
+    if self_live is not None:
+        if len(self_live) != len(readings):
+            raise ValueError("self_live must align with readings")
+        own = [r for r, live in zip(readings, self_live, strict=True) if live and r.hud_present]
+        if len(own) >= min_frames:
+            readings, basis = own, "timeline_self_live"
     usable = [r for r in readings if r.hud_present]
     if len(usable) < min_frames:
-        return AgentIdentification(None, "NO_HUD", len(usable))
+        return AgentIdentification(None, "NO_HUD", len(usable), basis=basis)
     uuids = usable[0].agent_uuids
     votes = np.zeros(len(uuids))
     totals = np.zeros(len(uuids))
@@ -208,5 +221,5 @@ def identify_agent(readings: Iterable[FrameReading], *, min_frames: int = 20,
     return AgentIdentification(
         uuids[order[0]] if identified else None,
         "IDENTIFIED" if identified else "ABSTAIN",
-        len(usable), top, margin, float(share),
+        len(usable), top, margin, float(share), basis,
     )
