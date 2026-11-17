@@ -99,6 +99,86 @@ class EventWindow:
     after_sec: float
 
 
+DISPLAY_CLIP_SUPPLEMENTS: frozenset[str] = frozenset(
+    {"preceding_context_text", "timeline_summary", "economy_text"}
+)
+
+
+@dataclass(frozen=True, slots=True)
+class DisplayClipPolicy:
+    """Structured form of ``display_clip_strategy`` (authored in the rules JSON).
+
+    The numbers are transcribed by a person from the natural-language text and must
+    appear in it (``8〜15`` → 8 and 15); nothing is parsed from prose at runtime.
+    ``None`` means the text does not say.
+    """
+
+    min_seconds: float
+    max_seconds: float
+    clips_per_evaluation: int | None
+    max_clips_per_match: int | None
+    count_is_approximate: bool
+    supplement: str | None
+    supplement_required: bool
+
+    def contains(self, length: float) -> bool:
+        return self.min_seconds - 1e-9 <= length <= self.max_seconds + 1e-9
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "min_seconds": self.min_seconds,
+            "max_seconds": self.max_seconds,
+            "clips_per_evaluation": self.clips_per_evaluation,
+            "max_clips_per_match": self.max_clips_per_match,
+            "count_is_approximate": self.count_is_approximate,
+            "supplement": self.supplement,
+            "supplement_required": self.supplement_required,
+        }
+
+
+def _optional_count(rule_id: str, mapping: Mapping[str, Any], key: str) -> int | None:
+    value = mapping.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise _fail(rule_id, f"display_clip_policy.{key} はnullまたは1以上の整数です: {value!r}")
+    return int(value)
+
+
+def _display_clip_policy(
+    rule_id: str, context: Mapping[str, Any], strategy: str
+) -> DisplayClipPolicy:
+    raw = _require_mapping(rule_id, context, "display_clip_policy")
+    low, high = raw.get("min_seconds"), raw.get("max_seconds")
+    if not (_finite_number(low) and _finite_number(high)) or not 0 < float(low) < float(high):
+        raise _fail(rule_id, "display_clip_policy の秒数は 0 < min < max が必要です")
+    if f"{_plain(low)}〜{_plain(high)}" not in strategy:
+        raise _fail(
+            rule_id,
+            "display_clip_policy の秒数が display_clip_strategy の記述と一致しません",
+        )
+    supplement = raw.get("supplement")
+    if supplement is not None and supplement not in DISPLAY_CLIP_SUPPLEMENTS:
+        raise _fail(rule_id, f"display_clip_policy.supplement が不正です: {supplement!r}")
+    required = _require_bool(rule_id, raw, "supplement_required")
+    if required and supplement is None:
+        raise _fail(rule_id, "supplement_required には supplement が必要です")
+    return DisplayClipPolicy(
+        min_seconds=float(low),
+        max_seconds=float(high),
+        clips_per_evaluation=_optional_count(rule_id, raw, "clips_per_evaluation"),
+        max_clips_per_match=_optional_count(rule_id, raw, "max_clips_per_match"),
+        count_is_approximate=_require_bool(rule_id, raw, "count_is_approximate"),
+        supplement=supplement,
+        supplement_required=required,
+    )
+
+
+def _plain(value: Any) -> str:
+    number = float(value)
+    return str(int(number)) if number.is_integer() else str(number)
+
+
 @dataclass(frozen=True, slots=True)
 class RuleTemporalPolicy:
     """One rule's temporal and aggregation policy, copied from the rules JSON."""
@@ -110,6 +190,7 @@ class RuleTemporalPolicy:
     requires_previous_round_context: bool
     uses_whole_match_aggregation: bool
     display_clip_strategy: str
+    display_clip: DisplayClipPolicy
     candidate_selection: str
     final_label_mode: str
     aggregate_repeated_occurrences: bool
@@ -179,6 +260,9 @@ class RuleTemporalPolicy:
                 rule_id, context, "uses_whole_match_aggregation"
             ),
             display_clip_strategy=_require_text(rule_id, context, "display_clip_strategy"),
+            display_clip=_display_clip_policy(
+                rule_id, context, _require_text(rule_id, context, "display_clip_strategy")
+            ),
             candidate_selection=_require_text(rule_id, automation, "candidate_selection"),
             final_label_mode=_require_text(rule_id, automation, "final_label_mode"),
             aggregate_repeated_occurrences=_require_bool(
