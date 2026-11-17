@@ -71,7 +71,7 @@
   "kill": {
    "before": "contract",
    "after": "development",
-   "producer": "hud_analyzer kill feed (contract); top-bar alive-count decrease as team-level kill (this change, development)"
+   "producer": "kill feed entries read with official kill-feed portraits and team colours (this change); top-bar alive-count drop only where the kill feed was not captured"
   },
   "movement_state": {
    "before": "contract",
@@ -80,8 +80,8 @@
   },
   "objective_state": {
    "before": "contract",
-   "after": "contract",
-   "producer": "derived_event_builder"
+   "after": "development",
+   "producer": "spike plant transition on the centre indicator (this change)"
   },
   "peek": {
    "before": "contract",
@@ -91,7 +91,7 @@
   "player_death": {
    "before": "development",
    "after": "development",
-   "producer": "shared timeline life_state; ability-HUD owner change (this change)"
+   "producer": "shared timeline death hypotheses reconciled per round with the kill feed's local-player highlight (this change); ability-HUD owner change only without a timeline"
   },
   "position_change": {
    "before": "contract",
@@ -145,8 +145,8 @@
   },
   "spike_planted": {
    "before": "contract",
-   "after": "contract",
-   "producer": "hud_analyzer"
+   "after": "development",
+   "producer": "top-bar centre indicator turns into the red spike icon (this change)"
   },
   "state_snapshot": {
    "before": "contract",
@@ -217,13 +217,13 @@
   },
   "first_death_by_player": {
    "before": "none",
-   "after": "none",
-   "producer": "needs kill-feed ownership"
+   "after": "development",
+   "producer": "first kill-feed entry of the round carries the local-player highlight on the victim end (this change)"
   },
   "first_kill_by_player": {
    "before": "none",
-   "after": "none",
-   "producer": "needs kill-feed ownership"
+   "after": "development",
+   "producer": "first kill-feed entry of the round carries the local-player highlight on the killer end (this change)"
   },
   "first_shot_detected": {
    "before": "contract",
@@ -252,8 +252,8 @@
   },
   "objective_state_observed": {
    "before": "contract",
-   "after": "contract",
-   "producer": "derived"
+   "after": "development",
+   "producer": "top-bar centre indicator read (timer or spike) (this change)"
   },
   "player_buy_class": {
    "before": "none",
@@ -263,7 +263,7 @@
   "player_died": {
    "before": "development",
    "after": "development",
-   "producer": "shared timeline life_state; recorder HUD ownership (this change)"
+   "producer": "round-reconciled recorder deaths (timeline + kill feed; HUD only without a timeline) (this change)"
   },
   "player_role": {
    "before": "none",
@@ -312,8 +312,8 @@
   },
   "spike_planted": {
    "before": "contract",
-   "after": "contract",
-   "producer": "hud_analyzer"
+   "after": "development",
+   "producer": "top-bar centre indicator (this change)"
   },
   "team_buy_class": {
    "before": "none",
