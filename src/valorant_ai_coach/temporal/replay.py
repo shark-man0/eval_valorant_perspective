@@ -48,6 +48,10 @@ class SourcePolicy:
     """Exact allowlist from existing accepted DEVELOPMENT; never open source media."""
 
     def __init__(self, policy: dict[str, Any]) -> None:
+        self.legacy_anchors: dict[str, set[str]] = {}
+        if "catalog" in policy:
+            self._from_catalog(policy)
+            return
         manifest_path, allocation_path = Path(policy["manifest"]), Path(policy["allocation"])
         if (
             file_sha(manifest_path) != policy["manifest_sha256"]
@@ -78,6 +82,63 @@ class SourcePolicy:
         self.manifest_sha = policy["manifest_sha256"]
         self.allocation_sha = policy["allocation_sha256"]
 
+    def _from_catalog(self, policy: dict[str, Any]) -> None:
+        """Admission from the recording catalog (#62), the single source of truth.
+
+        The catalog's guard decides development use (DEVELOPMENT, or a protected
+        recording with an explicit user authorisation). Receipts written under the
+        legacy manifests stay valid through the anchors recorded at import.
+        """
+        from valorant_ai_coach.recordings import RecordingCatalog
+
+        catalog = RecordingCatalog(
+            Path(policy["catalog"]), path_map=policy.get("path_map") or None
+        )
+        identifiers = list(policy.get("allowed_recording_ids") or [])
+        if not identifiers or len(set(identifiers)) != len(identifiers):
+            raise ValueError("Explicit existing source allowlist required")
+        catalog.guard(identifiers, "development_analysis")
+        allowed: dict[str, dict[str, Any]] = {}
+        for identifier in identifiers:
+            record = catalog.state.recordings[identifier]
+            location = record.locations.get("managed") or record.locations.get("original")
+            if location is None:
+                raise ValueError("Catalog recording has no registered location")
+            allowed[record.source_sha256] = {
+                "video_id": identifier,
+                "source_sha256": record.source_sha256,
+                "physical_match_id": record.physical_match_id,
+                "managed_path": str(catalog.local_path(location["path"])),
+                "status": "accepted",
+                "split": record.split,
+                "exposure": "DEVELOPMENT" if record.split == "DEVELOPMENT"
+                else "USER_AUTHORIZED_DEVELOPMENT",
+            }
+            self.legacy_anchors[record.source_sha256] = set(record.legacy_anchors)
+        if set(allowed) & set(policy.get("protected_source_sha256s", [])):
+            raise ValueError("Protected source cannot be allowlisted")
+        anchor = hashlib.sha256(
+            json.dumps(
+                sorted(
+                    [s, r["video_id"], r["physical_match_id"], r["split"]]
+                    for s, r in allowed.items()
+                ),
+                separators=(",", ":"),
+            ).encode("ascii")
+        ).hexdigest()
+        self.allowed = allowed
+        self.manifest_sha = anchor
+        self.allocation_sha = anchor
+
+    def _receipt_bound(self, receipt: dict[str, Any], source_sha256: str) -> bool:
+        if (
+            receipt["manifest_sha256"] == self.manifest_sha
+            and receipt["allocation_sha256"] == self.allocation_sha
+        ):
+            return True
+        anchors = self.legacy_anchors.get(source_sha256, set())
+        return {receipt["manifest_sha256"], receipt["allocation_sha256"]} <= anchors
+
     def admit(self, sample: dict[str, Any], frame: dict[str, Any] | None = None) -> None:
         source = self.allowed.get(sample["source_sha256"])
         if source is None or source["video_id"] != sample["source_id"]:
@@ -89,8 +150,7 @@ class SourcePolicy:
                 or frame["source_sha256"] != sample["source_sha256"]
                 or frame["split"] != "DEVELOPMENT_TRAIN"
                 or receipt["accepted"] is not True
-                or receipt["manifest_sha256"] != self.manifest_sha
-                or receipt["allocation_sha256"] != self.allocation_sha
+                or not self._receipt_bound(receipt, sample["source_sha256"])
             ):
                 raise ValueError("Source/exposure/physical-match admission mismatch")
 

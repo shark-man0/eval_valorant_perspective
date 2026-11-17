@@ -261,6 +261,10 @@ def main() -> None:
     intake.add_argument("--user-confirmed-unedited", action="store_true")
     intake.add_argument("--ffprobe", default="ffprobe")
     intake.add_argument("--ffmpeg", default="ffmpeg")
+    intake.add_argument(
+        "--catalog", type=Path,
+        help="録画カタログ（#62の正本）へ割当をそのまま取り込む。新規の運用ではカタログを使う",
+    )
     check = sub.add_parser("verify")
     check.add_argument("--batch", type=Path, required=True)
     check.add_argument("--trusted-manifest-sha256", required=True)
@@ -268,11 +272,17 @@ def main() -> None:
     args = parser.parse_args()
     try:
         if args.command == "register":
-            _, summary = register(
+            batch, summary = register(
                 args.source_dir, args.registry, args.batch_id,
                 unused_and_distinct=args.user_confirmed_unused_and_distinct,
                 unedited=args.user_confirmed_unedited, ffprobe=args.ffprobe, ffmpeg=args.ffmpeg,
             )
+            if args.catalog is not None:
+                from valorant_ai_coach.recordings import RecordingCatalog
+
+                imported = RecordingCatalog(args.catalog).import_legacy(batch / "manifest.json")
+                summary["catalog_import"] = {k: imported[k] if k != "conflicts"
+                                             else len(imported[k]) for k in imported}
         else:
             summary = verify(args.batch, args.trusted_manifest_sha256,
                              args.trusted_allocation_sha256)
