@@ -208,6 +208,12 @@ def test_verify_quarantines_changed_sources_and_plans_skip_them(catalog, tmp_pat
                               sha256="5" * 64)
     assert catalog.plan(producer) == []
     assert catalog.plan({**producer, "version": "3"}) == [rid]
+    evaluator = {"name": "bridge", "version": "1", "config_sha256": ""}
+    timeline = catalog.register_artifact(kind="timeline", parents=[rid],
+                                         producer={"name": "t"}, sha256="a" * 64)
+    catalog.register_artifact(kind="analysis_result", parents=[timeline],
+                              producer=evaluator, sha256="b" * 64)
+    assert catalog.plan(evaluator) == []  # processed through an intermediate artifact
     path.write_bytes(b"edited bytes!!" * 20)
     report = catalog.verify()
     assert report["changed_sources"] == [f"{rid}:original"]

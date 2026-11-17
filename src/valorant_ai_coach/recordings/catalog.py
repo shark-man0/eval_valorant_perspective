@@ -1161,12 +1161,14 @@ class RecordingCatalog:
     ) -> list[str]:
         """Recordings allowed for ``purpose`` that this exact producer has not processed."""
         key = {k: producer.get(k) for k in ("name", "version", "config_sha256")}
+        # A recording counts as processed when any matching output descends from it,
+        # directly or through intermediate artifacts (timeline -> evaluation).
         done = {
-            parent
+            recording_id
             for artifact in self.state.artifacts.values()
             if {k: artifact.producer.get(k) for k in key} == key
             and (artifact_kind is None or artifact.kind == artifact_kind)
-            for parent in artifact.parents
+            for recording_id in self.state.ancestry(artifact.artifact_id)
         }
         allowed: list[str] = []
         for rid in sorted(self.state.recordings):
