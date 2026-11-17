@@ -197,3 +197,29 @@ def test_consistent_legacy_policy_is_admitted_and_marked_checked(
     monkeypatch.setenv(ENV_CATALOG, str(catalog.root))
     policy = SourcePolicy(_legacy_policy(tmp_path, sha))
     assert policy.catalog_checked is True and list(policy.allowed) == [sha]
+
+
+def test_legacy_split_names_and_implicit_match_ids_are_read_like_import_legacy(
+    tmp_path, catalog
+):
+    """Real manifests use ``*_CANDIDATE`` splits and may omit the physical match id."""
+    from valorant_ai_coach.recordings.admission import check_allowlist, precheck_allocation
+
+    video = tmp_path / "q.mp4"
+    video.write_bytes(b"qualification" * 50)
+    rid = catalog.register(video, physical_match_id="batch_007",
+                           split="QUALIFICATION").recording_id
+    recording = catalog.state.recordings[rid]
+    sha = recording.source_sha256
+    legacy = {"video_id": "batch_007", "source_sha256": sha,
+              "split": "QUALIFICATION_CANDIDATE"}
+    precheck_allocation(catalog, [legacy])  # consistent: no error
+    with pytest.raises(LeakageError):
+        precheck_allocation(catalog, [{**legacy, "split": "DEVELOPMENT"}])
+    with pytest.raises(LeakageError):
+        precheck_allocation(catalog, [{**legacy, "split": "SOMETHING_ELSE"}])
+    with pytest.raises(LeakageError):  # consistent row, but blind QUALIFICATION
+        check_allowlist(catalog, [legacy])
+    catalog.record_exposure(recording.recording_id, "user_authorized_development_use",
+                            note="test")
+    assert check_allowlist(catalog, [legacy]) == [recording.recording_id]

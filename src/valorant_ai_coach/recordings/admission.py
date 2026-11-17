@@ -23,7 +23,7 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
-from .catalog import CatalogError, LeakageError, RecordingCatalog
+from .catalog import LEGACY_SPLIT_NAMES, CatalogError, LeakageError, RecordingCatalog
 
 ENV_CATALOG = "VALORANT_RECORDING_CATALOG"
 ENV_PATH_MAP = "VALORANT_RECORDING_PATH_MAP"
@@ -52,6 +52,20 @@ def resolve_catalog(
     return RecordingCatalog(Path(root), path_map=mapping)
 
 
+def _legacy_split(row: Mapping[str, Any]) -> str | None:
+    """Split of a legacy row in catalog names (``*_CANDIDATE`` -> catalog split)."""
+    value = row.get("split")
+    if value is None:
+        return None
+    return LEGACY_SPLIT_NAMES.get(str(value), f"unknown:{value}")
+
+
+def _legacy_physical(row: Mapping[str, Any]) -> str | None:
+    """Physical match of a legacy row; ``import_legacy`` falls back to the row id."""
+    value = row.get("physical_match_id") or row.get("video_id") or row.get("source_id")
+    return None if value is None else str(value)
+
+
 def check_allowlist(
     catalog: RecordingCatalog,
     records: Iterable[Mapping[str, Any]],
@@ -70,14 +84,14 @@ def check_allowlist(
         if recording is None:
             problems.append(f"{row.get('video_id') or row.get('source_id')}: カタログに未登録")
             continue
-        split = row.get("split")
+        split = _legacy_split(row)
         if split is not None and split != recording.split:
             problems.append(
                 f"{recording.recording_id}: 旧来の割当({split})とカタログ({recording.split})が違う"
             )
             continue
-        physical = row.get("physical_match_id")
-        if physical is not None and str(physical).casefold() != str(
+        physical = _legacy_physical(row)
+        if physical is not None and physical.casefold() != str(
             recording.physical_match_id
         ).casefold():
             problems.append(f"{recording.recording_id}: 物理試合IDがカタログと違う")
@@ -117,21 +131,26 @@ def precheck_allocation(catalog: RecordingCatalog, records: Iterable[Mapping[str
     """A new allocation may not contradict the catalog (same bytes or match elsewhere)."""
     problems: list[str] = []
     for row in records:
+        name = row.get("source_id") or row.get("video_id")
+        split, physical = _legacy_split(row), _legacy_physical(row)
+        if split is None or physical is None:
+            problems.append(f"{name}: splitまたは物理試合IDがない")
+            continue
         recording = catalog.state.by_sha(str(row["source_sha256"]))
         if recording is not None and (
-            recording.split != row["split"]
-            or recording.physical_match_id.casefold() != str(row["physical_match_id"]).casefold()
+            recording.split != split
+            or recording.physical_match_id.casefold() != physical.casefold()
         ):
-            problems.append(f"{row.get('source_id') or row.get('video_id')}: カタログと衝突")
+            problems.append(f"{name}: カタログと衝突")
             continue
         bound = next(
             (
                 r.split for r in catalog.state.recordings.values()
-                if r.physical_match_id.casefold() == str(row["physical_match_id"]).casefold()
+                if r.physical_match_id.casefold() == physical.casefold()
             ),
             None,
         )
-        if bound is not None and bound != row["split"]:
-            problems.append(f"{row.get('source_id') or row.get('video_id')}: 物理試合が別split")
+        if bound is not None and bound != split:
+            problems.append(f"{name}: 物理試合が別split")
     if problems:
         raise LeakageError("; ".join(problems))
