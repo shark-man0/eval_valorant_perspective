@@ -12,7 +12,8 @@
 |---|---|
 | `journal.jsonl` | 追記専用の履歴。各行は直前の行のSHA-256を `prev` に持つ |
 | `catalog.json` | 履歴を再生した結果の写し。`verify` が履歴から作り直して照合する |
-| `.catalog.lock` | 書き込み中の排他ロック |
+| `HEAD.json` | 最後に追記した履歴の番号とハッシュ。末尾の削除を検出する |
+| `.catalog.lock` | OSのファイルロック（異常終了しても残らず、削除も不要） |
 
 現在の状態は履歴の再生でだけ決まります。行を書き換えたり消したりすると連鎖が切れ、読み込み時に `CatalogIntegrityError` になります。ファイルの権限はPOSIXで0600、ディレクトリは0700です。Windowsでは所有者だけが読めるNTFS ACLを別途設定してください。
 
@@ -89,6 +90,34 @@ python -m valorant_ai_coach.recordings --catalog "$PRIVATE_CATALOG" plan --produ
 python -m valorant_ai_coach.recordings --catalog "$PRIVATE_CATALOG" verify
 python -m valorant_ai_coach.recordings --catalog "$PRIVATE_CATALOG" leak-check docs/*.md
 ```
+
+## 2026-11-17 承認後の追加
+
+- 正本：既存の解析器が使う `SourcePolicy` は、`{"catalog": ..., "allowed_recording_ids": [...]}` でカタログから許可リストを作る。旧来の割当で書かれた受領記録は、取り込み時に記録した割当ファイルのハッシュで引き続き検証できる。`register_private_sources.py --catalog` は登録後にカタログへ取り込む。
+- 物理試合IDの継承：派生動画（`register --derived-from`）、切り出し画像（`frames`）、タイムライン、解析結果は親の物理試合IDとsplitを引き継ぐ。1試合から作る種類が複数の試合にまたがると拒否する。
+- 履歴末尾の削除：`HEAD.json` と、カタログ外に保管する `SEQ:SHA256`（`head` で表示、`verify --trusted-head` で照合）で検出する。
+- artifactの再登録：同じIDは同じ内容・種類・親・生成器のときだけ受け付ける。同じ内容を別の系譜で登録すると拒否する。
+- 露出済み録画：独立した評価（qualification・final_evaluation）の開封も利用も拒否する。
+- 別の場所にマウントした保存先：`--path-map 保存されたパス=この環境のパス` で読み替える。保存するパスは元の（Macの）パスのまま。
+- 継続学習（#154）：`learning-archives` と `sync-learning` で、HUD切り出しアーカイブをTRAIN・VALIDATION・DEV_COMPARISONに登録する。INDEPENDENT_TESTには入れない。
+
+## 実データでの検証（2026-11-17）
+
+| 項目 | 結果 |
+|---|---|
+| 既存割当の移行 | 4つの登録簿（9・8・9・6本）の32本を取り込み。split変更0、衝突0、却下0 |
+| 割当ファイルのハッシュ | 9ファイル（manifest/allocation）を照合用に記録 |
+| 新規登録 | full_match_5の4本（11.6GB、24秒）をDEVELOPMENTとして登録 |
+| 増分登録 | 36本すべて登録済みの再実行で、ハッシュ計算0本、0.3秒 |
+| ハッシュ照合 | 62か所（元動画36、管理コピー26）、212.6GBを再計算。不一致0、欠落0 |
+| 開発利用許可 | 36本に記録。QUALIFICATION 6本・FINAL_HOLDOUT 5本は `blind` でなくなり、splitは維持 |
+| 独立評価の拒否 | 露出済みのFINAL_HOLDOUTを `final_evaluation` に使うと拒否 |
+| 履歴末尾の削除 | 写しの末尾2行を削除すると読み込みで拒否 |
+| 旧来の受領記録 | 既存の開発結果60フレームをカタログ由来の `SourcePolicy` で全件受理 |
+| 継続学習への接続 | HUD切り出しアーカイブ36件を #154 の登録簿へ（TRAIN 20、VALIDATION 6、DEV_COMPARISON 10、INDEPENDENT_TEST 0）。再実行は追加0 |
+| 系譜 | アーカイブ36件、タイムライン2件、開発用評価2件を登録。評価から録画までたどれる |
+
+検証の途中（2026-11-17 10:44 JST）で、3つの登録簿の管理コピー26本が元動画へのシンボリックリンクに置き換えられた（このセッションの操作ではない）。カタログはこれを検出し、仮想環境からは「欠落」と報告する。Mac上ではリンク先の元動画が照合される。管理コピーは独立したバックアップではなくなった。
 
 ## 制約
 
