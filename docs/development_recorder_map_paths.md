@@ -135,3 +135,36 @@ the expanded inventory. The Bind and Haven development polygon
 registries can be used after verifying the texture bytes. The Haven
 authoring image is an exact quarter turn of the displayicon, so those
 polygons need the inverse authoring transform before export.
+
+## Native cadence and coverage
+
+For continuous trajectory analysis, acquire native frames at 5 Hz over the
+relevant intervals. The shared match acquisition supports
+`--full-density --dense-seconds 1/5` for a whole recording. Retain each
+native sample ID and its original image in the frame manifest, and join to
+the existing application timeline. Map export keeps the one-second rows.
+An isolated point remains `isolated_points`. An observed edge of at most
+250 ms puts `native_edge_observed` in its endpoint bins. A missing frame,
+camera or acquisition change still breaks the path.
+
+`operable_coverage` uses bins whose observed frames all carry current
+SELF, ALIVE and measured recorder-view evidence. Missing or contradictory
+evidence is excluded from that denominator. A bin containing an edge need
+not have an uninterrupted path throughout the second. A 1 Hz experiment
+can measure observed position availability but does not measure subsecond
+trajectory availability.
+
+`--recover-knowledge-track` allows a 250 ms UUID hold only within the
+same measured camera, acquisition and round and only while finding a
+current compatible marker. A partially fitted local marker needs a single
+strong UUID match on its current pixels and may not seed a track or be
+followed by another partial fit. Candidates rejected only by the quick
+rim prescreen can be fitted again. This branch requires an attached tip
+and a strong full fit in addition to the original UUID thresholds.
+`--recover-map-alignment` rechecks an abstaining alignment using exact
+descriptor matching. It requires the original best Map, agreement at four
+points across the ROI, and the existing Map acceptance gates.
+
+Both recovery options are development modes. Callouts remain point
+proximity hints. Named Zones require a registered polygon for the exact
+reference texture.

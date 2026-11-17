@@ -104,3 +104,38 @@ def test_knowledge_callout_bound_to_texture_and_clear_of_ambiguity():
                              margin_reference_px=4) is None
     assert callouts.classify({**observation, "map_reference_px": [251, 324]},
                              margin_reference_px=4) is None
+
+
+def test_operable_coverage_reports_1hz_points_and_5hz_edges_separately():
+    from valorant_ai_coach.temporal.map_recorder_path import measure_operable_coverage
+
+    def point(tick, count):
+        sample = freeze_native_sample({
+            "source_id": "s", "source_sha256": "a"*64, "acquisition_id": "e",
+            "native_epoch": "e", "native_pts_tick": tick, "native_time_base": "1/10",
+            "acquired_frame_sha256": "b"*64, "frame_size_px": [90, 60],
+            "native_pixel_sha256": "c"*64,
+        })
+        return {
+            "sample": sample, "support_count": count, "kind": "selected",
+            "map_id": "lotus", "reference_sha256": "d"*64,
+        }
+
+    p0, p1, p2 = point(0, 1), point(10, 1), point(12, 2)
+    ids = [p["sample"]["sample_sha256"] for p in (p0, p1, p2)]
+    timeline = {"seconds": [
+        {"timestamp": 0, "sample_refs": [ids[0]]},
+        {"timestamp": 1, "sample_refs": ids[1:]},
+        {"timestamp": 2, "sample_refs": []},
+    ]}
+    paths = build_recorder_paths([p0, p1, p2])
+    rows = join_recorder_seconds(paths, timeline)
+    assert [r["trajectory_coverage"] for r in rows] == [
+        "isolated_points", "native_edge_observed", "UNKNOWN",
+    ]
+    coverage = measure_operable_coverage(paths, timeline["seconds"], rows, set(ids))
+    assert coverage["position_rate"] == 1
+    assert coverage["trajectory_rate"] == .5
+    assert coverage["seconds_without_full_operability_evidence"] == 1
+    ghost = measure_operable_coverage(paths, timeline["seconds"], rows, {ids[0], ids[2]})
+    assert ghost["position_rate"] == 1 and ghost["trajectory_rate"] == 0

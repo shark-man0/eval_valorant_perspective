@@ -222,6 +222,19 @@ def _same_run(a: dict[str, Any], b: dict[str, Any]) -> bool:
     )
 
 
+def _linked_sample_ids(
+    paths: dict[str, Any], admissible: set[str] | None = None,
+) -> set[str]:
+    linked: set[str] = set()
+    for segment in paths["segments"]:
+        for a, b in zip(segment, segment[1:], strict=False):
+            if _same_run(a, b):
+                ids = {a["sample"]["sample_sha256"], b["sample"]["sample_sha256"]}
+                if admissible is None or ids <= admissible:
+                    linked.update(ids)
+    return linked
+
+
 def join_recorder_seconds(
     paths: dict[str, Any], timeline: dict[str, Any],
 ) -> list[dict[str, Any]]:
@@ -229,6 +242,7 @@ def join_recorder_seconds(
     if paths["schema"] != VERSION or paths["formal_outputs"] != 0:
         raise ValueError("Development recorder paths required")
     by_id = {p["sample"]["sample_sha256"]: p for path in paths["segments"] for p in path}
+    linked = _linked_sample_ids(paths)
     result = []
     consumed: set[str] = set()
     for second in timeline["seconds"]:
@@ -240,9 +254,48 @@ def join_recorder_seconds(
                 consumed.add(sample_id)
                 points.append(by_id[sample_id])
         points.sort(key=lambda row: native_time(row["sample"]))
-        result.append({"timestamp": second["timestamp"], "recorder_map_observations": points,
-                       "coverage": "sampled_points_only" if points else "UNKNOWN",
-                       "qualified": False})
+        has_edge = any(p["sample"]["sample_sha256"] in linked for p in points)
+        result.append({
+            "timestamp": second["timestamp"], "recorder_map_observations": points,
+            "coverage": "sampled_points_only" if points else "UNKNOWN",
+            "trajectory_coverage": "native_edge_observed" if has_edge else (
+                "isolated_points" if points else "UNKNOWN"
+            ),
+            "qualified": False,
+        })
     if consumed != by_id.keys():
         raise ValueError("Recorder path has a sample absent from the common timeline")
     return result
+
+
+def measure_operable_coverage(
+    paths: dict[str, Any], timeline_seconds: Sequence[dict[str, Any]],
+    second_rows: Sequence[dict[str, Any]], operable_samples: set[str],
+) -> dict[str, Any]:
+    """Coverage over seconds supported entirely by current SELF/ALIVE evidence.
+
+    One-second sampling can report point coverage. Native edges alone
+    contribute trajectory coverage. A second with an edge is not treated as
+    a full second of uninterrupted movement.
+    """
+    linked = _linked_sample_ids(paths, operable_samples)
+    eligible = positions = edges = 0
+    for domain, row in zip(timeline_seconds, second_rows, strict=True):
+        samples = set(domain["sample_refs"])
+        if not samples or not samples <= operable_samples:
+            continue
+        eligible += 1
+        points = {
+            p["sample"]["sample_sha256"] for p in row["recorder_map_observations"]
+        }
+        positions += bool(points & samples)
+        edges += bool(points & samples & linked)
+    return {
+        "operable_seconds_with_current_evidence": eligible,
+        "seconds_without_full_operability_evidence": len(timeline_seconds) - eligible,
+        "operable_seconds_with_position": positions,
+        "operable_seconds_with_native_edge": edges,
+        "position_rate": positions / eligible if eligible else None,
+        "trajectory_rate": edges / eligible if eligible else None,
+        "continuous_time_assumed": False,
+    }
