@@ -1,0 +1,44 @@
+{
+  "version": "reference_assets_13.10",
+  "source": "valorant_api_media",
+  "game_version": "13.10.00.5893614",
+  "content_digest": "8c45fc55106c2c598708514e288d55a579af016cb5125ad19edd91672b47bf84",
+  "content_digest_definition": "sha256 of sorted lines \"<url> <file sha256>\" joined by \\n (see knowledge.assets.content_digest)",
+  "files": 268,
+  "total_bytes": 15638482,
+  "bundle": {
+    "file_name": "valorant_reference_assets_13.10.vakb",
+    "format": "VAKB1: line 1 'VAKB1', line 2 JSON index {files:[{kind,subject,variant,url,offset,length,sha256}]}, then concatenated file bytes",
+    "sha256": "4696957c0d5b5ed97b322ac87c267be101aacb5a6255bc2f004593cc8377abec",
+    "bytes": 15712798,
+    "files": 268
+  },
+  "url_patterns": {
+    "agent": "https://media.valorant-api.com/agents/{agent_uuid}/{variant}.png",
+    "ability": "https://media.valorant-api.com/agents/{agent_uuid}/abilities/{api_slot_lower}/displayicon.png",
+    "weapon": "https://media.valorant-api.com/weapons/{weapon_uuid}/{variant}.png",
+    "map": "https://media.valorant-api.com/maps/{map_uuid}/displayicon.png"
+  },
+  "variants": {
+    "agent": [
+      "displayicon",
+      "killfeedportrait",
+      "minimapportrait"
+    ],
+    "ability": [
+      "Grenade",
+      "Ability1",
+      "Ability2",
+      "Ultimate",
+      "Passive"
+    ],
+    "weapon": [
+      "displayicon",
+      "killstreamicon"
+    ],
+    "map": [
+      "displayicon"
+    ]
+  },
+  "storage": "Private cache only. Never commit the bundle or extracted images."
+}
