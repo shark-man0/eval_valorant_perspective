@@ -315,3 +315,67 @@ def test_display_clip_report_measures_clips_without_changing_them():
     assert mov["clips"] == 3 and mov["within_length"] + mov["shorter"] + mov["longer"] == 3
     assert mov["policy"]["min_seconds"] == 8.0 and mov["policy"]["max_seconds"] == 15.0
     assert mov["exceeds_max_clips_per_match"] is False
+
+
+def test_display_clips_are_capped_without_touching_analysis_ranges():
+    from valorant_ai_coach.rules.policy_runtime import cap_display_clips
+
+    table = TemporalPolicyTable.load()
+    output = {"evaluations": [
+        {"evaluation_id": "e1", "primary_rule_id": "ECO-01",
+         "display_clip": {"start_sec": 10.0, "end_sec": 38.0},
+         "evidence_range": {"start_sec": 29.25, "end_sec": 30.75}},
+        {"evaluation_id": "e2", "primary_rule_id": "ADV-06",
+         "display_clip": {"start_sec": 0.0, "end_sec": 28.0},
+         "evidence_range": {"start_sec": 19.25, "end_sec": 20.75}},
+        {"evaluation_id": "e3", "primary_rule_id": "AIM-03",
+         "display_clip": {"start_sec": 0.0, "end_sec": 10.0},
+         "evidence_range": {"start_sec": 5.0, "end_sec": 6.0}},
+        {"evaluation_id": "e4", "primary_rule_id": "ECO-02", "display_clip": None},
+    ]}
+    capped, records = cap_display_clips(output, table)
+    by_id = {item["evaluation_id"]: item for item in capped["evaluations"]}
+    eco, adv = by_id["e1"]["display_clip"], by_id["e2"]["display_clip"]
+    assert eco["end_sec"] - eco["start_sec"] == pytest.approx(20.0)
+    assert adv["end_sec"] - adv["start_sec"] == pytest.approx(25.0)
+    for key in ("e1", "e2"):
+        clip, evidence = by_id[key]["display_clip"], by_id[key]["evidence_range"]
+        assert clip["start_sec"] <= evidence["start_sec"] <= evidence["end_sec"] <= clip["end_sec"]
+        assert evidence == next(i for i in output["evaluations"]
+                                if i["evaluation_id"] == key)["evidence_range"]
+    assert by_id["e3"] == output["evaluations"][2]  # within its 8-15 s policy
+    assert [r["rule_id"] for r in records] == ["ECO-01", "ADV-06"]
+    assert output["evaluations"][0]["display_clip"]["end_sec"] == 38.0  # input untouched
+
+
+def test_every_analyzed_clip_respects_its_maximum_length():
+    table = TemporalPolicyTable.load()
+    for number in range(1, 39):
+        result = make_analyzer().analyze(case_package(f"TC-{number:03d}", round_no=2))
+        for item in result.output["evaluations"]:
+            clip = item.get("display_clip")
+            if clip:
+                maximum = table.get(item["primary_rule_id"]).display_clip.max_seconds
+                assert clip["end_sec"] - clip["start_sec"] <= maximum + 1e-6
+
+
+def test_development_candidates_never_reach_scoring_or_storage():
+    from valorant_ai_coach.rules.policy_runtime import split_development_candidates
+
+    formal = case_package("TC-005", round_no=2)
+    tagged = deepcopy(formal)
+    for event in tagged["events"]:
+        event["event_id"] = "dev-" + event["event_id"]
+    for fact in tagged["deterministic_facts"]:
+        fact["fact_id"] = "dev-" + fact["fact_id"]
+        fact["provenance_event_ids"] = ["dev-" + e for e in fact["provenance_event_ids"]]
+    _, counts = split_development_candidates(tagged)
+    assert counts["formal_facts"] == 0 and counts["development_facts"] > 0
+    scored = [e for e in make_analyzer().analyze(formal).output["evaluations"]
+              if e["label"] != "unscored"]
+    result = make_analyzer().analyze(tagged)
+    assert scored  # the same observations as formal Facts are scored
+    assert [e for e in result.output["evaluations"] if e["label"] != "unscored"] == []
+    stored = result.round_package
+    assert not any(str(e["event_id"]).startswith("dev-") for e in stored["events"])
+    assert not any(str(f["fact_id"]).startswith("dev-") for f in stored["deterministic_facts"])

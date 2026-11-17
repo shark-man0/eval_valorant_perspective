@@ -41,8 +41,10 @@ from typing import Any, Protocol
 from valorant_ai_coach.facts import FactBuilder
 from valorant_ai_coach.rules import DeterministicRuleEngine, RuleSelector
 from valorant_ai_coach.rules.policy_runtime import (
+    DEVELOPMENT_ID_PREFIX,
     ProvisionalAdmissionTable,
     ProvisionalEvaluationPolicy,
+    split_development_candidates,
 )
 from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.storage import SQLiteRepository
@@ -150,7 +152,7 @@ class DerivedSampleFactProvider:
                 if kind not in _EVENT_TYPES:
                     self.unsupported_events[kind] += 1
                     continue
-                identifier = f"dev-{kind}-{stamp}"
+                identifier = f"{DEVELOPMENT_ID_PREFIX}{kind}-{stamp}"
                 ids.append(identifier)
                 events.append(
                     {
@@ -168,7 +170,7 @@ class DerivedSampleFactProvider:
             for key, value in sorted(values.items()):
                 facts.append(
                     {
-                        "fact_id": f"dev-{key}-{stamp}",
+                        "fact_id": f"{DEVELOPMENT_ID_PREFIX}{key}-{stamp}",
                         "key": key,
                         "value": value,
                         "time_sec": sec,
@@ -661,10 +663,12 @@ def build_report(
             label: labels.get(label, 0) for label in ("good", "improve", "unscored")
         },
         "round_timelines": [
-            {**row, "rule_candidate_counts": counts}
-            for row, counts in zip(
+            {**row, "rule_candidate_counts": counts,
+             "fact_counts": split_development_candidates(package)[1]}
+            for row, counts, package in zip(
                 evaluation.round_timelines,
                 evaluation.rule_candidates or [{}] * len(evaluation.round_timelines),
+                evaluation.packages,
                 strict=True,
             )
         ],

@@ -349,3 +349,101 @@ def occurrence_summaries(
             }
         )
     return result
+
+
+# ---------------------------------------------------------- display clip length
+
+CLIP_ADJUSTED = "display_clip_capped_to_policy"
+
+
+def cap_display_clips(
+    output: Mapping[str, Any], policies: TemporalPolicyTable
+) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
+    """Shorten display clips that exceed ``display_clip_policy.max_seconds``.
+
+    Only ``display_clip`` changes. The evidence range, the analysis scope and the frames
+    used for analysis are untouched, so no information needed for the decision is
+    lost. The evidence range stays inside the clip; the context before and after it is
+    shortened in proportion. Clips shorter than the minimum are left as they are (they
+    are bounded by the Round or the evidence) and are reported by the Match view.
+    """
+    value = deepcopy(dict(output))
+    records: list[dict[str, Any]] = []
+    for item in value.get("evaluations", []):
+        if not isinstance(item, dict) or not isinstance(item.get("display_clip"), dict):
+            continue
+        policy = policies.get(str(item.get("primary_rule_id")))
+        if policy is None:
+            continue
+        maximum = policy.display_clip.max_seconds
+        start = float(item["display_clip"]["start_sec"])
+        end = float(item["display_clip"]["end_sec"])
+        if end - start <= maximum + 1e-9:
+            continue
+        evidence = item.get("evidence_range") or item["display_clip"]
+        core_start = min(max(start, float(evidence["start_sec"])), end)
+        core_end = max(min(end, float(evidence["end_sec"])), core_start)
+        core = core_end - core_start
+        if core >= maximum:
+            new_start, new_end = core_start, core_start + maximum
+        else:
+            before, after = core_start - start, end - core_end
+            scale = (maximum - core) / (before + after)
+            new_start, new_end = core_start - before * scale, core_end + after * scale
+        item["display_clip"] = {"start_sec": round(new_start, 6), "end_sec": round(new_end, 6)}
+        records.append(
+            {
+                "evaluation_id": item.get("evaluation_id"),
+                "rule_id": policy.rule_id,
+                "action": CLIP_ADJUSTED,
+                "from_seconds": round(end - start, 6),
+                "to_seconds": round(new_end - new_start, 6),
+            }
+        )
+    return value, tuple(records)
+
+
+# ------------------------------------------------- formal vs development candidates
+
+DEVELOPMENT_ID_PREFIX = "dev-"
+DEVELOPMENT_QUALIFICATION = "development_only"
+
+
+def is_development_event(event: Mapping[str, Any]) -> bool:
+    attributes = event.get("attributes")
+    return str(event.get("event_id", "")).startswith(DEVELOPMENT_ID_PREFIX) or (
+        isinstance(attributes, Mapping)
+        and attributes.get("qualification") == DEVELOPMENT_QUALIFICATION
+    )
+
+
+def split_development_candidates(
+    package: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, int]]:
+    """Return the package with formal Facts/Events only, and the counts of each kind.
+
+    Development candidates (``dev-`` ids or ``qualification: development_only``, e.g.
+    from the P0 producers) never reach selection, the Rule Engine, the coach or
+    storage. Facts derived from a development Event are development candidates too.
+    """
+    value = dict(package)
+    events = list(package.get("events", []))
+    development_events = {str(e["event_id"]) for e in events if is_development_event(e)}
+    facts = list(package.get("deterministic_facts", []))
+
+    def development_fact(fact: Mapping[str, Any]) -> bool:
+        return str(fact.get("fact_id", "")).startswith(DEVELOPMENT_ID_PREFIX) or bool(
+            set(map(str, fact.get("provenance_event_ids", []))) & development_events
+        )
+
+    formal_facts = [fact for fact in facts if not development_fact(fact)]
+    formal_events = [event for event in events if str(event["event_id"]) not in development_events]
+    value["events"] = formal_events
+    value["deterministic_facts"] = formal_facts
+    counts = {
+        "formal_events": len(formal_events),
+        "development_events": len(events) - len(formal_events),
+        "formal_facts": len(formal_facts),
+        "development_facts": len(facts) - len(formal_facts),
+    }
+    return value, counts

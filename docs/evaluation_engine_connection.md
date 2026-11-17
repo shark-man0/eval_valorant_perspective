@@ -150,3 +150,14 @@ Match集計に `occurrence_summaries` を追加した。対象は `aggregate_rep
 
 - 合成fixture 38件：クリップ32本のうち26本が範囲内、6本が下限未満（POS-04、TEAM-02、OBJ-02、OBJ-03、ROLE-06。いずれも下限15秒のルール）。
 - 設定の食い違い：ECO-01、ECO-02、ADV-06、ADV-07は `suggested_clip_window_seconds`（合計28秒）が記述の上限（20秒または25秒）を超える。どちらを正とするかは判断が必要なため、値は変えていない。
+
+## 6. 2026-11-17 統合前の最終修正
+
+| 項目 | 決定 | 対応 |
+|---|---|---|
+| 表示クリップ長 | ECO-01・ECO-02・ADV-07は10〜20秒、ADV-06は10〜25秒を正とする | `display_clip_policy.max_seconds` を超える表示クリップを、`RoundAnalyzer` が評価後に上限まで短くする。根拠区間は必ずクリップ内に残し、前後の文脈を同じ比率で縮める |
+| 解析範囲と表示クリップの分離 | 解析に必要な情報は削減しない | `suggested_clip_window_seconds`（28秒）、根拠区間、解析範囲、フレームは変えない。変わるのは `display_clip` だけで、評価IDも変わらない |
+| 正式Factと開発用候補 | 区別する | `dev-` のIDまたは `qualification: development_only` を持つFact/Event（と、それに由来するFact）は、ルール選択・Rule Engine・coach・保存のどれにも入らない。レポートにはRoundごとに正式・開発用候補の件数を出す |
+| 部分評価・時間軸ゲート・総合スコア | 現状維持 | 変更なし |
+
+実動画（C003・DEV2）の再実行では、Round数、Roundに属さない秒、区間の衝突、Roundの扱い、評価件数、候補ルール数がすべて前回と一致した。保存されたRound Package 45件に、開発用候補は0件だった（レポート上の開発用候補はC003でEvent 706・Fact 1,682、DEV2でEvent 627・Fact 1,556）。

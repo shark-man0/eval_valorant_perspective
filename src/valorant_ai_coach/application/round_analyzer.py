@@ -14,6 +14,8 @@ from valorant_ai_coach.rules.policy_runtime import (
     GateRecord,
     ProvisionalEvaluationPolicy,
     RoundTimelineGate,
+    cap_display_clips,
+    split_development_candidates,
 )
 from valorant_ai_coach.rules.temporal_contract import TemporalPolicyTable
 from valorant_ai_coach.rules.temporal_scope import (
@@ -71,6 +73,7 @@ class RoundAnalysis:
     # (historical safe path, no scoring) or "provisional_partial" (opt-in #25 path).
     admission: str = "confirmed"
     timeline_gate: tuple[GateRecord, ...] = ()
+    clip_adjustments: tuple[dict[str, Any], ...] = ()
 
 
 ADMISSION_CONFIRMED = "confirmed"
@@ -113,6 +116,8 @@ class RoundAnalyzer:
         self, round_package: dict[str, Any], *, cancel_event: Event | None = None
     ) -> RoundAnalysis:
         self.validator.validate_round_package(round_package)
+        # Development candidates are kept out of every scoring and storage step.
+        round_package, _ = split_development_candidates(round_package)
         enriched = self.fact_builder.enrich(round_package)
         self.validator.validate_round_package(enriched)
         admission = ADMISSION_CONFIRMED
@@ -188,6 +193,8 @@ class RoundAnalyzer:
             analysis_scopes={rule_id: scope.to_prompt() for rule_id, scope in scopes.items()},
             cancel_event=cancel_event,
         )
+        # Display length follows display_clip_policy; analysis ranges do not change.
+        output, clip_adjustments = cap_display_clips(output, self.round_timeline_gate.policies)
         self.validator.validate_ai_output(
             output,
             round_package=enriched,
@@ -218,6 +225,7 @@ class RoundAnalyzer:
             scopes,
             admission=admission,
             timeline_gate=gate_records,
+            clip_adjustments=clip_adjustments,
         )
 
     def _admit_provisional_candidates(
