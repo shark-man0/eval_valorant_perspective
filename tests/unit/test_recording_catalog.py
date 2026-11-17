@@ -462,3 +462,118 @@ def test_path_map_keeps_canonical_paths_while_reading_a_mount(tmp_path):
     assert RecordingCatalog(root).verify(quarantine=False)["missing_locations"] == [
         f"{rid}:original"
     ]  # without the map the canonical path is simply not mounted here
+
+
+# ----------------------------------------------------- symbolic links (2026-11-17)
+
+symlinks = pytest.mark.skipif(
+    not hasattr(__import__("os"), "symlink") or __import__("os").name == "nt",
+    reason="symbolic links need extra privileges on Windows",
+)
+
+
+@symlinks
+def test_symlinked_copies_are_supported_but_never_count_as_backups(catalog, tmp_path):
+    import os
+
+    original = video(tmp_path / "desktop", "match.mp4", b"original match" * 40)
+    rid = catalog.register(original, physical_match_id="m", split="DEVELOPMENT").recording_id
+    managed = tmp_path / "registry" / "sources" / "m.mp4"
+    managed.parent.mkdir(parents=True)
+    managed.write_bytes(original.read_bytes())
+    catalog.register(managed, role="managed")
+    assert catalog.public_summary()["recordings_with_two_regular_copies"] == 1
+    # The user replaces the managed copy by a link to the original.
+    managed.unlink()
+    os.symlink(original, managed)
+    report = catalog.verify()
+    assert report["became_links"] == [f"{rid}:managed"] and report["changed_sources"] == []
+    catalog.register(managed, role="managed")  # adopt: content re-hashed, link recorded
+    assert catalog.state.recordings[rid].locations["managed"]["link_target"] == str(original)
+    assert catalog.public_summary()["recordings_with_two_regular_copies"] == 0
+    assert catalog.public_summary()["symlink_locations"] == 1
+    clean = catalog.verify()
+    assert (clean["became_links"], clean["retargeted_links"], clean["broken_links"]) == (
+        [], [], []
+    )
+
+
+@symlinks
+def test_broken_retargeted_and_changed_links_are_detected(catalog, tmp_path):
+    import os
+
+    original = video(tmp_path / "a", "match.mp4", b"first match" * 40)
+    other = video(tmp_path / "b", "other.mp4", b"some other!" * 40)
+    rid = catalog.register(original, physical_match_id="m", split="DEVELOPMENT").recording_id
+    link = tmp_path / "links" / "m.mp4"
+    link.parent.mkdir()
+    os.symlink(original, link)
+    catalog.register(link, role="managed")
+    link.unlink()
+    os.symlink(other, link)  # points somewhere else, with other content
+    report = catalog.verify(quarantine=False)
+    assert report["retargeted_links"] == [f"{rid}:managed"]
+    assert report["changed_sources"] == [f"{rid}:managed"]
+    link.unlink()
+    os.symlink(tmp_path / "missing.mp4", link)
+    report = catalog.verify(quarantine=False)
+    assert report["broken_links"] == [f"{rid}:managed"]
+    with pytest.raises(CatalogError):
+        catalog.register(link, role="managed")  # a broken link is never registered
+
+
+@symlinks
+def test_directory_intake_follows_links_through_a_path_map(tmp_path):
+    import os
+
+    mount = tmp_path / "mnt" / "desktop"
+    original = video(mount, "match.mp4", b"mounted match" * 30)
+    links = tmp_path / "mnt" / "registry"
+    links.mkdir(parents=True)
+    canonical_desktop = "/Users/someone/Desktop"
+    os.symlink(f"{canonical_desktop}/match.mp4", links / "m.mp4")  # link text is the Mac path
+    root = tmp_path / "private" / "cat"
+    RecordingCatalog.create(root, seed="s")
+    catalog = RecordingCatalog(root, path_map={canonical_desktop: str(mount)})
+    rid = catalog.register(original, physical_match_id="m", split="DEVELOPMENT").recording_id
+    results = catalog.register_directory(links, role="managed")
+    assert [r.recording_id for r in results] == [rid] and not results[0].added
+    assert catalog.verify()["broken_links"] == []
+
+
+# ------------------------------------------ continual-learning split adoption (#154)
+
+
+def test_existing_learning_registry_split_is_adopted_and_kept(catalog, tmp_path):
+    rows = []
+    for index, split in enumerate(["TRAIN", "VALIDATION", "FROZEN_TEST", "INDEPENDENT_TEST"]):
+        path = video(tmp_path / "v", f"{index}.mp4",
+                     f"match {index}".encode("ascii") * (30 + index))
+        result = catalog.register(path, physical_match_id=f"m{index}", split="DEVELOPMENT")
+        rows.append({"source_id": f"fm1_{index}", "physical_match_id": f"physical:fm1_{index}",
+                     "split": split,
+                     "source_video_sha256": catalog.state.recordings[
+                         result.recording_id].source_sha256})
+        catalog.register_artifact(kind="frames", parents=[result.recording_id],
+                                  producer={"name": "crop"},
+                                  path=video(tmp_path / "crops", f"fm1_{index}.zip",
+                                             f"crop {index}".encode("ascii") * 9))
+    registry = tmp_path / "dataset_registry.json"
+    registry.write_text(json.dumps({"seed": "continual-v1", "sources": rows}), encoding="utf-8")
+    report = catalog.import_learning_assignment(registry)
+    assert report["adopted"] == 3
+    assert report["conflicts"] == [{"source_id": "fm1_3",
+                                    "reason": "split_not_adoptable:INDEPENDENT_TEST"}]
+    view = {row["source_id"]: row for row in catalog.learning_archives()}
+    assert {k: view[k]["split"] for k in ("fm1_0", "fm1_1", "fm1_2")} == {
+        "fm1_0": "TRAIN", "fm1_1": "VALIDATION", "fm1_2": "DEV_COMPARISON"}
+    assert view["fm1_0"]["physical_match_id"] == "physical:fm1_0"
+    assert catalog.import_learning_assignment(registry)["already_present"] == 3
+    rows[0]["split"] = "VALIDATION"
+    registry.write_text(json.dumps({"seed": "continual-v1", "sources": rows}), encoding="utf-8")
+    assert {"source_id": "fm1_0", "reason": "learning_split_differs"} in (
+        catalog.import_learning_assignment(registry)["conflicts"]
+    )
+    assert catalog.public_summary()["learning_splits"] == {
+        "DEV_COMPARISON": 1, "TRAIN": 1, "VALIDATION": 1
+    }

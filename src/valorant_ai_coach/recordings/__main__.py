@@ -41,6 +41,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     register.add_argument("--confirm-distinct", action="store_true")
     register.add_argument("--derived-from", help="派生動画の派生元recording_id")
     register.add_argument("--max-new-files", type=int, help="1回に新規登録する最大本数")
+    learning_import = sub.add_parser("import-learning-assignment",
+                                     help="#154の学習登録簿の分割を引き継ぐ")
+    learning_import.add_argument("file", type=Path)
     legacy = sub.add_parser("import-legacy")
     legacy.add_argument("files", nargs="+", type=Path)
     exposure = sub.add_parser("expose")
@@ -113,6 +116,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                         path, workers=args.workers, probe=args.probe,
                         confirm_distinct=args.confirm_distinct,
                         max_new_files=args.max_new_files, split=args.split,
+                        role=args.role,
                     ))
                 else:
                     results.append(catalog.register(
@@ -123,6 +127,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print({"added": sum(r.added for r in results),
                     "already_registered": sum(not r.added for r in results),
                     "summary": catalog.public_summary()})
+        elif args.command == "import-learning-assignment":
+            _print(catalog.import_learning_assignment(args.file))
         elif args.command == "import-legacy":
             _print([catalog.import_legacy(path) for path in args.files])
         elif args.command == "expose":

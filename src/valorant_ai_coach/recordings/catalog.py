@@ -214,6 +214,9 @@ class Recording:
     exposures: list[dict[str, Any]] = field(default_factory=list)
     legacy: dict[str, Any] = field(default_factory=dict)
     legacy_anchors: list[str] = field(default_factory=list)
+    # Continual-learning sub-split adopted from an existing registry (#154), so that
+    # its fixed comparison set and learning curves stay comparable. Write-once.
+    learning: dict[str, Any] = field(default_factory=dict)
 
     @property
     def blind(self) -> bool:
@@ -260,6 +263,7 @@ class Recording:
             "exposures": [dict(item) for item in self.exposures],
             "legacy": dict(self.legacy),
             "legacy_anchors": list(self.legacy_anchors),
+            "learning": dict(self.learning),
         }
 
 
@@ -383,10 +387,27 @@ def _apply(state: CatalogState, event: Mapping[str, Any]) -> None:
             "path": data["path"],
             "size_bytes": data["size_bytes"],
             "mtime_ns": data["mtime_ns"],
+            "link_target": data.get("link_target"),
             "verified_at": event["at"],
         }
     elif kind == "metadata":
         state.recordings[data["recording_id"]].metadata = dict(data["metadata"])
+    elif kind == "learning_split":
+        record = state.recordings[data["recording_id"]]
+        if data["split"] not in LEARNING_SPLITS:
+            raise CatalogIntegrityError("学習用の分割が不正です")
+        if record.learning and record.learning["split"] != data["split"]:
+            raise CatalogIntegrityError("学習用の分割は変更できません")
+        for other in state.recordings.values():
+            if (
+                other.physical_match_id == record.physical_match_id
+                and other.learning
+                and other.learning["split"] != data["split"]
+            ):
+                raise CatalogIntegrityError("同じ物理試合が学習用の複数の分割にあります")
+        record.learning = {key: data.get(key) for key in (
+            "split", "registry_source_id", "registry_physical_match_id", "origin"
+        )}
     elif kind == "anchor":
         anchors = state.recordings[data["recording_id"]].legacy_anchors
         if data["sha256"] not in anchors:
@@ -624,23 +645,63 @@ class RecordingCatalog:
         return Path(stored)
 
     def canonical_path(self, local: Path) -> str:
-        text = str(Path(local).expanduser().resolve())
+        # The parent is resolved, the last component is not: a symlinked recording is
+        # stored under its own path, with its target recorded separately.
+        local = Path(local).expanduser()
+        text = str(local.parent.resolve() / local.name)
         for canonical, mounted in sorted(self.path_map.items(), key=lambda kv: -len(kv[1])):
             moved = self._rebase(text, str(Path(mounted).expanduser().resolve()), canonical)
             if moved is not None:
                 return moved
         return text
 
+    def inspect_location(self, local: Path) -> dict[str, Any]:
+        """Where the bytes of a location really are.
+
+        Symbolic links are a supported way to manage recordings (a managed name that
+        points at the original). They are never an independent copy. Returns
+        ``link_target`` (the link text, ``None`` for a regular file), the local path of
+        the content, and its size/mtime; ``content`` is ``None`` for a broken link.
+        """
+        local = Path(local)
+        if local.is_symlink():
+            target = os.readlink(local)
+            content = (
+                self.local_path(target) if os.path.isabs(target) or target.startswith("/")
+                else local.parent / target
+            )
+            if not content.is_file():
+                return {"link_target": target, "content": None}
+            stat = content.stat()
+            return {"link_target": target, "content": content,
+                    "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns}
+        if not local.is_file():
+            return {"link_target": None, "content": None}
+        stat = local.stat()
+        return {"link_target": None, "content": local,
+                "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns}
+
+    def _location_event(self, recording_id: str, role: str, path: Path) -> dict[str, Any]:
+        state = self.inspect_location(path)
+        if state["content"] is None:
+            raise CatalogError("リンク切れ、または読めない場所は登録できません")
+        return {"recording_id": recording_id, "role": role, "path": self.canonical_path(path),
+                "size_bytes": state["size_bytes"], "mtime_ns": state["mtime_ns"],
+                "link_target": state["link_target"]}
+
     # -- registration --------------------------------------------------------------
 
     def _known_location(self, path: Path) -> Recording | None:
-        stat = path.stat()
+        state = self.inspect_location(path)
+        if state["content"] is None:
+            return None
         for recording in self.state.recordings.values():
             for location in recording.locations.values():
                 if (
                     location["path"] == self.canonical_path(path)
-                    and location["size_bytes"] == stat.st_size
-                    and location["mtime_ns"] == stat.st_mtime_ns
+                    and location["size_bytes"] == state["size_bytes"]
+                    and location["mtime_ns"] == state["mtime_ns"]
+                    and location.get("link_target") == state["link_target"]
                 ):
                     return recording
         return None
@@ -664,9 +725,10 @@ class RecordingCatalog:
         It inherits the parent's physical match id and split; a conflicting
         ``physical_match_id`` or ``split`` is refused.
         """
-        path = Path(path).expanduser().resolve()
-        if not path.is_file() or path.is_symlink():
-            raise CatalogError("通常ファイルの録画が必要です")
+        path = Path(path).expanduser()
+        path = path.parent.resolve() / path.name
+        if self.inspect_location(path)["content"] is None:
+            raise CatalogError("録画ファイル（またはリンク先が存在するリンク）が必要です")
         with self._locked():
             return self._register_locked(
                 path,
@@ -693,7 +755,11 @@ class RecordingCatalog:
         confirm_distinct: bool,
         derived_from: str | None = None,
     ) -> RegistrationResult:
-        stat = path.stat()
+        inspected = self.inspect_location(path)
+        if inspected["content"] is None:
+            raise CatalogError("リンク切れ、または読めない場所は登録できません")
+        content: Path = inspected["content"]
+        size = int(inspected["size_bytes"])
         parent: Recording | None = None
         if derived_from is not None:
             parent = self.state.recordings.get(derived_from)
@@ -705,7 +771,7 @@ class RecordingCatalog:
                 raise SplitImmutableError("派生動画は派生元と同じsplitを継承します")
             physical_match_id = parent.physical_match_id
         known = self._known_location(path)
-        digest = source_sha256 or (known.source_sha256 if known else sha256_file(path))
+        digest = source_sha256 or (known.source_sha256 if known else sha256_file(content))
         _require_sha(digest)
         existing = self.state.by_sha(digest)
         if existing is not None:
@@ -713,13 +779,15 @@ class RecordingCatalog:
                 raise CatalogError("同じ内容の録画が別の物理試合として登録済みです")
             if split and split != existing.split:
                 raise SplitImmutableError("登録済み録画のsplitは変更できません")
-            stored = self.canonical_path(path)
-            if role not in existing.locations or existing.locations[role]["path"] != stored:
-                self._append(
-                    "location",
-                    {"recording_id": existing.recording_id, "role": role, "path": stored,
-                     "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns},
-                )
+            event = self._location_event(existing.recording_id, role, path)
+            current = existing.locations.get(role)
+            # A changed path, link state or stat is re-recorded (e.g. a managed copy that
+            # became a symbolic link). The content was just hashed to the same SHA-256.
+            if current is None or any(
+                current.get(key) != event[key]
+                for key in ("path", "size_bytes", "mtime_ns", "link_target")
+            ):
+                self._append("location", event)
             return RegistrationResult(existing.recording_id, False, existing.split)
         identifier = _safe_id(recording_id or f"rec_{digest[:12]}", "recording_id")
         if identifier in self.state.recordings:
@@ -729,7 +797,7 @@ class RecordingCatalog:
         similar = [
             r.recording_id
             for r in self.state.recordings.values()
-            if r.size_bytes == stat.st_size and r.physical_match_id != physical
+            if r.size_bytes == size and r.physical_match_id != physical
         ]
         if similar and not confirm_distinct and parent is None:
             raise CatalogError(
@@ -761,7 +829,7 @@ class RecordingCatalog:
             {
                 "recording_id": identifier,
                 "source_sha256": digest,
-                "size_bytes": stat.st_size,
+                "size_bytes": size,
                 "physical_match_id": physical,
                 "split": chosen,
                 "allocation": allocation,
@@ -769,11 +837,7 @@ class RecordingCatalog:
                 "origin": "intake" if parent is None else f"derived:{parent.recording_id}",
             },
         )
-        self._append(
-            "location",
-            {"recording_id": identifier, "role": role, "path": self.canonical_path(path),
-             "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns},
-        )
+        self._append("location", self._location_event(identifier, role, path))
         if metadata:
             self._append("metadata", {"recording_id": identifier, "metadata": dict(metadata)})
         return RegistrationResult(identifier, True, chosen, tuple(warnings))
@@ -788,6 +852,7 @@ class RecordingCatalog:
         confirm_distinct: bool = False,
         max_new_files: int | None = None,
         split: str | None = None,
+        role: str = "original",
     ) -> list[RegistrationResult]:
         """Incremental intake of every video file under ``directory``.
 
@@ -798,8 +863,9 @@ class RecordingCatalog:
         directory = Path(directory).expanduser().resolve()
         files = sorted(
             p for p in directory.rglob("*")
-            if p.is_file() and not p.is_symlink() and p.suffix.lower() in VIDEO_SUFFIXES
+            if (p.is_symlink() or p.is_file()) and p.suffix.lower() in VIDEO_SUFFIXES
             and not p.name.startswith(".")
+            and self.inspect_location(p)["content"] is not None
         )
         pending = [p for p in files if self._known_location(p) is None]
         if max_new_files is not None:
@@ -807,7 +873,12 @@ class RecordingCatalog:
             pending = pending[: max(0, max_new_files)]
             files = [p for p in files if p in set(pending) or self._known_location(p)]
         with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
-            hashes = dict(zip(pending, pool.map(sha256_file, pending), strict=True))
+            hashes = dict(zip(
+                pending,
+                pool.map(lambda item: sha256_file(self.inspect_location(item)["content"]),
+                         pending),
+                strict=True,
+            ))
         results: list[RegistrationResult] = []
         for path in files:
             known = self._known_location(path)
@@ -822,6 +893,7 @@ class RecordingCatalog:
                     metadata=metadata,
                     confirm_distinct=confirm_distinct,
                     split=split,
+                    role=role,
                 )
             )
         return results
@@ -902,13 +974,11 @@ class RecordingCatalog:
                     },
                 )
                 for role, location in locations.items():
-                    if self.local_path(str(location)).is_file():
-                        stat = self.local_path(str(location)).stat()
-                        self._append(
-                            "location",
-                            {"recording_id": rid, "role": role, "path": str(location),
-                             "size_bytes": stat.st_size, "mtime_ns": stat.st_mtime_ns},
-                        )
+                    local = self.local_path(str(location))
+                    if self.inspect_location(local)["content"] is not None:
+                        self._append("location", {
+                            **self._location_event(rid, role, local), "path": str(location)
+                        })
                 exposure = {
                     "DEVELOPMENT": "development_use",
                     "UNKNOWN_EXPOSURE": "unknown_prior_exposure",
@@ -1106,22 +1176,34 @@ class RecordingCatalog:
                     raise CatalogIntegrityError("信頼できるHEADの位置と履歴が一致しません")
             missing: list[str] = []
             changed: list[str] = []
+            broken_links: list[str] = []
+            retargeted: list[str] = []
+            became_links: list[str] = []
             jobs: list[tuple[Recording, str, Path]] = []
             for recording in sorted(self.state.recordings.values(), key=lambda r: r.recording_id):
                 if selected is not None and recording.recording_id not in selected:
                     continue
                 for role, location in sorted(recording.locations.items()):
-                    path = self.local_path(location["path"])
-                    if not path.is_file():
-                        missing.append(f"{recording.recording_id}:{role}")
+                    label = f"{recording.recording_id}:{role}"
+                    local = self.local_path(location["path"])
+                    if not (local.is_symlink() or local.exists()):
+                        missing.append(label)
                         continue
-                    stat = path.stat()
+                    state = self.inspect_location(local)
+                    recorded = location.get("link_target")
+                    if state["link_target"] is not None and recorded is None:
+                        became_links.append(label)
+                    elif state["link_target"] != recorded:
+                        retargeted.append(label)
+                    if state["content"] is None:
+                        broken_links.append(label)
+                        continue
                     same_stat = (
-                        stat.st_size == location["size_bytes"]
-                        and stat.st_mtime_ns == location["mtime_ns"]
+                        state["size_bytes"] == location["size_bytes"]
+                        and state["mtime_ns"] == location["mtime_ns"]
                     )
-                    if full or not same_stat:
-                        jobs.append((recording, role, path))
+                    if full or not same_stat or state["link_target"] != recorded:
+                        jobs.append((recording, role, state["content"]))
             with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
                 digests = list(pool.map(lambda job: sha256_file(job[2]), jobs))
             for (recording, role, _), digest in zip(jobs, digests, strict=True):
@@ -1136,7 +1218,7 @@ class RecordingCatalog:
                 1 for recording in self.state.recordings.values()
                 if selected is None or recording.recording_id in selected
                 for _ in recording.locations
-            ) - len(missing)
+            ) - len(missing) - len(broken_links)
             return {
                 "journal_events": self.state.events,
                 "journal_chain": "ok",
@@ -1144,6 +1226,10 @@ class RecordingCatalog:
                 "locations_checked": checked,
                 "missing_locations": missing,
                 "changed_sources": changed,
+                # Symbolic links are allowed but are never independent copies.
+                "broken_links": broken_links,
+                "retargeted_links": retargeted,
+                "became_links": became_links,
                 "locations_rehashed": len(jobs),
                 "bytes_rehashed": sum(job[2].stat().st_size for job in jobs),
                 "mode": "full_sha256" if full else "size_mtime_then_sha256",
@@ -1208,13 +1294,16 @@ class RecordingCatalog:
                 continue
             if recording.split != "DEVELOPMENT" and not include_authorised_exposed:
                 continue
-            bucket = hash_bucket(seed, recording.physical_match_id)
-            edge, sub = 0.0, LEARNING_SPLITS[-1]
-            for name in LEARNING_SPLITS:
-                edge += chosen[name]
-                if bucket < edge:
-                    sub = name
-                    break
+            if recording.learning:
+                sub = recording.learning["split"]
+            else:
+                bucket = hash_bucket(seed, recording.physical_match_id)
+                edge, sub = 0.0, LEARNING_SPLITS[-1]
+                for name in LEARNING_SPLITS:
+                    edge += chosen[name]
+                    if bucket < edge:
+                        sub = name
+                        break
             location = recording.locations.get("managed") or recording.locations.get("original")
             rows.append(
                 {
@@ -1269,11 +1358,15 @@ class RecordingCatalog:
                 rid for rid in recordings
                 if not self.state.recordings[rid].origin.startswith("derived:")
             ] or recordings
+            learning = self.state.recordings[originals[0]].learning
             rows.append(
                 {
-                    "source_id": artifact.artifact_id,
+                    # Identifiers already used by the continual-learning registry are
+                    # kept, so syncing into it is a no-op for archives it already has.
+                    "source_id": learning.get("registry_source_id") or artifact.artifact_id,
                     "source_video_sha256": self.state.recordings[originals[0]].source_sha256,
-                    "physical_match_id": artifact.physical_match_ids[0],
+                    "physical_match_id": learning.get("registry_physical_match_id")
+                    or artifact.physical_match_ids[0],
                     "archive": str(path),
                     "archive_sha256": artifact.sha256,
                     "archive_bytes": path.stat().st_size if path.is_file() else None,
@@ -1309,6 +1402,55 @@ class RecordingCatalog:
             existing += int(not is_new)
         return {"added": added, "already_present": existing}
 
+    def import_learning_assignment(self, path: Path) -> dict[str, Any]:
+        """Adopt the TRAIN/VALIDATION/DEV_COMPARISON decisions of an existing registry.
+
+        Accepts a #154 ``dataset_registry.json`` (``sources`` with ``source_id``,
+        ``physical_match_id``, ``split``, ``source_video_sha256``). Recordings are
+        matched by the SHA-256 of the original video. INDEPENDENT_TEST is never
+        adopted: the current recordings are exposed and cannot be independent tests.
+        """
+        path = Path(path).expanduser().resolve()
+        document = json.loads(path.read_text(encoding="utf-8"))
+        rows = document.get("sources") or document.get("assignments")
+        if not isinstance(rows, list):
+            raise CatalogError("sourcesを持つ学習登録簿が必要です")
+        origin = f"learning_registry:{sha256_file(path)[:16]}:seed={document.get('seed')}"
+        report: dict[str, Any] = {"adopted": 0, "already_present": 0, "conflicts": []}
+        with self._locked():
+            for row in rows:
+                split = {"FROZEN_TEST": "DEV_COMPARISON"}.get(str(row.get("split")),
+                                                              str(row.get("split")))
+                record = self.state.by_sha(str(row.get("source_video_sha256")))
+                if record is None:
+                    report["conflicts"].append({"source_id": row.get("source_id"),
+                                                "reason": "recording_not_in_catalog"})
+                    continue
+                if split not in LEARNING_SPLITS:
+                    report["conflicts"].append({"source_id": row.get("source_id"),
+                                                "reason": f"split_not_adoptable:{split}"})
+                    continue
+                if record.learning:
+                    if record.learning["split"] == split:
+                        report["already_present"] += 1
+                    else:
+                        report["conflicts"].append({"source_id": row.get("source_id"),
+                                                    "reason": "learning_split_differs"})
+                    continue
+                try:
+                    self._append("learning_split", {
+                        "recording_id": record.recording_id, "split": split,
+                        "registry_source_id": row.get("source_id"),
+                        "registry_physical_match_id": row.get("physical_match_id"),
+                        "origin": origin,
+                    })
+                except CatalogIntegrityError:
+                    report["conflicts"].append({"source_id": row.get("source_id"),
+                                                "reason": "physical_match_split_differs"})
+                    continue
+                report["adopted"] += 1
+        return report
+
     def recordings_under(self, prefix: Path) -> list[str]:
         """Recording ids with a location under ``prefix`` (e.g. one recording folder)."""
         root = self.canonical_path(Path(prefix))
@@ -1336,6 +1478,22 @@ class RecordingCatalog:
                 r.split in PROTECTED_SPLITS and r.development_authorised for r in recordings
             ),
             "quarantined": sum(r.status == "quarantined" for r in recordings),
+            "independent_evaluation_eligible": sum(
+                r.independent_until_opened for r in recordings
+            ),
+            "locations": sum(len(r.locations) for r in recordings),
+            "symlink_locations": sum(
+                1 for r in recordings for item in r.locations.values()
+                if item.get("link_target") is not None
+            ),
+            # A link to the original is not a backup: only regular files count.
+            "recordings_with_two_regular_copies": sum(
+                1 for r in recordings
+                if sum(item.get("link_target") is None for item in r.locations.values()) >= 2
+            ),
+            "learning_splits": dict(sorted(Counter(
+                r.learning["split"] for r in recordings if r.learning
+            ).items())),
             "artifacts_by_kind": dict(sorted(Counter(a.kind for a in
                                                      self.state.artifacts.values()).items())),
             "allocation_methods": dict(sorted(Counter(r.allocation for r in recordings).items())),
