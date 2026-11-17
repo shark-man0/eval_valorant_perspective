@@ -1258,9 +1258,14 @@ class RecordingCatalog:
             if len(artifact.physical_match_ids) != 1 or len(splits) != 1:
                 continue
             path = self.local_path(artifact.path)
+            originals = [
+                rid for rid in recordings
+                if not self.state.recordings[rid].origin.startswith("derived:")
+            ] or recordings
             rows.append(
                 {
                     "source_id": artifact.artifact_id,
+                    "source_video_sha256": self.state.recordings[originals[0]].source_sha256,
                     "physical_match_id": artifact.physical_match_ids[0],
                     "archive": str(path),
                     "archive_sha256": artifact.sha256,
@@ -1290,6 +1295,7 @@ class RecordingCatalog:
                 raise CatalogIntegrityError("学習用アーカイブの内容が登録時と異なります")
             _, is_new = registry.intake(
                 str(row["source_id"]), str(row["physical_match_id"]), archive,
+                source_video_sha256=str(row["source_video_sha256"]),
                 split=str(row["split"]), note="recording_catalog",
             )
             added += int(bool(is_new))

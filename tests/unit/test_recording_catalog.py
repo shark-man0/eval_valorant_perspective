@@ -383,7 +383,9 @@ class _FakeContinualRegistry:
     def __init__(self) -> None:
         self.rows: dict[str, tuple[str, str]] = {}
 
-    def intake(self, source_id, physical_match_id, archive, *, split=None, note=""):
+    def intake(self, source_id, physical_match_id, archive, *, source_video_sha256,
+               split=None, unexposed=False, note=""):
+        assert len(source_video_sha256) == 64 and not unexposed
         if source_id in self.rows:
             return self.rows[source_id], False
         for other_physical, other_split in self.rows.values():
