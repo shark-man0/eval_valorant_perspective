@@ -470,18 +470,19 @@ def test_requires_round_timeline_is_reported_but_never_becomes_a_scoring_gate() 
 # field -> files under src/valorant_ai_coach that read it at runtime (None = nobody).
 # If one of these changes, the audit document must be updated in the same change.
 RUNTIME_USERS: dict[str, set[str]] = {
-    "requires_round_timeline": {"ui/backend.py"},
-    "requires_previous_round_context": {"rules/temporal_scope.py"},
+    "requires_round_timeline": {"ui/backend.py", "rules/policy_runtime.py"},
+    "requires_previous_round_context": {"rules/temporal_scope.py", "rules/policy_runtime.py"},
     "event_window_seconds": {"rules/temporal_scope.py"},
-    "uses_whole_match_aggregation": set(),
+    "uses_whole_match_aggregation": {"rules/policy_runtime.py"},
     "display_clip_strategy": set(),
     "temporal_tolerance_policy": set(),
     "test_tolerance_seconds": set(),
     "automation_policy": set(),
     "candidate_selection": set(),
     "final_label_mode": set(),
-    "aggregate_repeated_occurrences": set(),
-    "summary_required_if_occurrences_at_least": set(),
+    # #31 §6-6: structured occurrence summary in the Match view (no text, no verdict).
+    "aggregate_repeated_occurrences": {"rules/policy_runtime.py"},
+    "summary_required_if_occurrences_at_least": {"rules/policy_runtime.py"},
     "deduplicate_same_rule_within_seconds": {"rules/aggregator.py"},
     "max_display_exemplars_per_match": {"rules/aggregator.py"},
     "suggested_clip_window_seconds": {"ai/coach.py"},
