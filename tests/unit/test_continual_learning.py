@@ -33,7 +33,7 @@ def test_registry_is_incremental_deterministic_and_leak_free(tmp_path: Path) -> 
     registry = DatasetRegistry(tmp_path / "reg.json")
     records = []
     for index in range(12):
-        archive = _archive(tmp_path, f"m{index}", f"content-{index}".encode())
+        archive = _archive(tmp_path, f"m{index}", f"content-{index}".encode("ascii"))
         record, added = registry.intake(f"m{index}", f"physical-{index}", archive,
                                         source_video_sha256=_sha(index))
         assert added and record.exposure == "DEVELOPMENT"
