@@ -114,7 +114,7 @@ python -m valorant_ai_coach.recordings --catalog "$PRIVATE_CATALOG" leak-check d
 | 独立評価の拒否 | 露出済みのFINAL_HOLDOUTを `final_evaluation` に使うと拒否 |
 | 履歴末尾の削除 | 写しの末尾2行を削除すると読み込みで拒否 |
 | 旧来の受領記録 | 既存の開発結果60フレームをカタログ由来の `SourcePolicy` で全件受理 |
-| 継続学習への接続 | HUD切り出しアーカイブ36件を #154 の登録簿へ（TRAIN 20、VALIDATION 6、DEV_COMPARISON 10、INDEPENDENT_TEST 0）。再実行は追加0 |
+| 継続学習への接続 | HUD切り出しアーカイブ36件を #154 の登録簿へ登録できることを確認（このときの分割20・6・10は、下記の「統合前の最終修正」で #154 の21・6・9に統一） |
 | 系譜 | アーカイブ36件、タイムライン2件、開発用評価2件を登録。評価から録画までたどれる |
 
 ## 統合前の最終修正（2026-11-17）
