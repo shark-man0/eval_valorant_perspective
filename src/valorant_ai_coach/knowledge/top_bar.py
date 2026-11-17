@@ -141,3 +141,19 @@ def official_portrait_anchors(knowledge: GameKnowledge, assets: ReferenceAssets,
             features.append(portrait_feature(rgb[y0:y0 + side, x0:x0 + side], size))
             labels.append(agent.name)
     return np.vstack(features), labels
+
+
+# Centre indicator: the round timer is replaced by a red spike icon after a plant.
+CENTRE_BOX = (885, 5, 1035, 85)  # 1920x1080 pixels
+SPIKE_RED_FILL = 0.04  # DEVELOPMENT: planted >= 0.06, timer < 0.02 on three matches
+
+
+def spike_planted_indicator(crop: NDArray[np.uint8]) -> tuple[bool, float]:
+    """(planted, red fraction) from the top-bar crop's centre indicator."""
+    full = _to_full(crop)
+    x0, y0, x1, y1 = CENTRE_BOX
+    hsv = cv2.cvtColor(full[y0:y1, x0 - BAR_ORIGIN[0]:x1 - BAR_ORIGIN[0]], cv2.COLOR_BGR2HSV)
+    red = (((hsv[:, :, 0] < 8) | (hsv[:, :, 0] > 170)) & (hsv[:, :, 1] > 150)
+           & (hsv[:, :, 2] > 150))
+    fraction = float(red.mean())
+    return fraction >= SPIKE_RED_FILL, fraction
