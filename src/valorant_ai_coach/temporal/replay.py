@@ -81,11 +81,15 @@ class SourcePolicy:
             raise ValueError("Protected source cannot be allowlisted")
         self.manifest_sha = policy["manifest_sha256"]
         self.allocation_sha = policy["allocation_sha256"]
-        # A legacy allow-list is only a request: when a recording catalog is known
-        # (policy "catalog_check" or VALORANT_RECORDING_CATALOG), the catalog decides.
-        from valorant_ai_coach.recordings.admission import check_allowlist, resolve_catalog
+        # A legacy allow-list is only a request: the recording catalog (policy
+        # "catalog_check" or VALORANT_RECORDING_CATALOG) decides.
+        from valorant_ai_coach.recordings.admission import check_allowlist, require_catalog
 
-        catalog = resolve_catalog(policy.get("catalog_check"))
+        # Formal operation requires the catalog; the allocation-file-only reading is
+        # kept only as an explicit compatibility mode.
+        catalog = require_catalog(
+            policy.get("catalog_check"), legacy_compat=bool(policy.get("legacy_compat"))
+        )
         self.catalog_checked = catalog is not None
         if catalog is not None:
             check_allowlist(catalog, self.allowed.values())

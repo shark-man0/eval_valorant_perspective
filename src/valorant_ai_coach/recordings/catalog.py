@@ -60,6 +60,10 @@ LEGACY_SPLIT_NAMES: Mapping[str, str] = {
     "FINAL_HOLDOUT": "FINAL_HOLDOUT",
     "FINAL_HOLDOUT_CANDIDATE": "FINAL_HOLDOUT",
 }
+LEARNING_SYNC_PROBLEMS: tuple[str, ...] = (
+    "archive_changed", "catalog_mismatch", "physical_split_conflict", "id_mismatch",
+    "physical_mismatch", "source_sha_mismatch", "archive_mismatch", "split_mismatch",
+)
 EXPOSURE_KINDS: tuple[str, ...] = (
     "development_use",
     "source_viewed",
@@ -898,7 +902,51 @@ class RecordingCatalog:
             )
         return results
 
-    def import_legacy(self, path: Path) -> dict[str, Any]:
+    def legacy_conflicts(self, records: Sequence[Mapping[str, Any]]) -> list[dict[str, str]]:
+        """What ``import_legacy`` would report as conflicts, without writing anything.
+
+        Uses the same reading of a legacy row (``*_CANDIDATE`` splits, the row id as the
+        physical match when none is given) and also catches rows of one file that
+        contradict each other.
+        """
+        conflicts: list[dict[str, str]] = []
+        split_of_match: dict[str, str] = {}
+        id_of_sha: dict[str, str] = {}
+        for row in records:
+            name = str(row.get("video_id") or row.get("source_id"))
+            try:
+                sha = _require_sha(str(row.get("source_sha256")))
+                rid = _safe_id(name, "recording_id")
+                physical = _safe_id(str(row.get("physical_match_id") or rid),
+                                    "physical_match_id")
+            except CatalogError:
+                conflicts.append({"recording_id": name, "reason": "invalid_identity"})
+                continue
+            split = LEGACY_SPLIT_NAMES.get(str(row.get("split")))
+            if split is None:
+                conflicts.append({"recording_id": rid, "reason": "unknown_split"})
+                continue
+            if row.get("status") == "rejected":
+                continue
+            existing = self.state.by_sha(sha)
+            if existing is not None:
+                if existing.split != split or existing.physical_match_id != physical:
+                    conflicts.append({"recording_id": rid, "reason": "split_or_match_differs"})
+                continue
+            bound = self.state.split_of_physical(physical) or split_of_match.get(physical)
+            if (
+                (bound is not None and bound != split)
+                or rid in self.state.recordings
+                or id_of_sha.get(sha, rid) != rid
+                or rid in id_of_sha.values() and id_of_sha.get(sha) != rid
+            ):
+                conflicts.append({"recording_id": rid, "reason": "identity_conflict"})
+                continue
+            split_of_match.setdefault(physical, split)
+            id_of_sha[sha] = rid
+        return conflicts
+
+    def import_legacy(self, path: Path, *, atomic: bool = False) -> dict[str, Any]:
         """Adopt an existing frozen allocation without re-deciding any split.
 
         Accepts the JSON written by ``scripts/diagnostics/register_private_sources``
@@ -916,6 +964,11 @@ class RecordingCatalog:
         report: dict[str, Any] = {"adopted": 0, "already_present": 0, "skipped_rejected": 0,
                                   "conflicts": []}
         with self._locked():
+            if atomic:
+                # Registration paths: either the whole allocation is adopted or nothing.
+                report["conflicts"] = self.legacy_conflicts(records)
+                if report["conflicts"]:
+                    return report
             for row in records:
                 sha = _require_sha(str(row.get("source_sha256")))
                 rid = _safe_id(str(row.get("video_id") or row.get("source_id")), "recording_id")
@@ -1379,50 +1432,97 @@ class RecordingCatalog:
             )
         return rows
 
+    def learning_sync_plan(
+        self, registry: Any, rows: Sequence[Mapping[str, Any]]
+    ) -> dict[str, int]:
+        """The checks shared by ``sync-learning --dry-run`` and the real sync.
+
+        Every row is checked against the catalog (archive content unchanged, split and
+        source video as recorded) and against the registry (same source id, physical
+        match, source video hash, archive hash and split; a new physical match may not
+        already sit in another split). Only counts are returned; nothing is written.
+        """
+        records = dict(getattr(registry, "records", {}))
+        by_video = {
+            str(getattr(record, "source_video_sha256", "")): record
+            for record in records.values()
+            if getattr(record, "source_video_sha256", "")
+        }
+        split_of_match: dict[str, str] = {}
+        for record in records.values():
+            split_of_match.setdefault(str(getattr(record, "physical_match_id", "")),
+                                      str(getattr(record, "split", "")))
+        plan = {"would_add": 0, "already_present": 0,
+                **{key: 0 for key in LEARNING_SYNC_PROBLEMS}}
+        for row in rows:
+            source_sha = str(row["source_video_sha256"])
+            archive = Path(str(row["archive"]))
+            recordings = [self.state.recordings.get(rid) for rid in row.get("recording_ids", [])]
+            if not archive.is_file() or sha256_file(archive) != row["archive_sha256"]:
+                plan["archive_changed"] += 1
+                continue
+            if any(
+                record is None
+                or (record.learning and record.learning.get("split") != row["split"])
+                for record in recordings
+            ) or (recordings and self.state.by_sha(source_sha) is None):
+                plan["catalog_mismatch"] += 1
+                continue
+            current = records.get(str(row["source_id"])) or by_video.get(source_sha)
+            if current is None:
+                bound = split_of_match.get(str(row["physical_match_id"]))
+                if bound is not None and bound != row["split"]:
+                    plan["physical_split_conflict"] += 1
+                else:
+                    plan["would_add"] += 1
+                continue
+            checks = (
+                ("id_mismatch", getattr(current, "source_id", None), row["source_id"]),
+                ("physical_mismatch", getattr(current, "physical_match_id", None),
+                 row["physical_match_id"]),
+                ("source_sha_mismatch", getattr(current, "source_video_sha256", "")
+                 or source_sha, source_sha),
+                ("archive_mismatch", getattr(current, "archive_sha256", None)
+                 or row["archive_sha256"], row["archive_sha256"]),
+                ("split_mismatch", getattr(current, "split", None), row["split"]),
+            )
+            problem = next((key for key, have, want in checks if str(have) != str(want)), None)
+            plan[problem or "already_present"] += 1
+        return plan
+
     def sync_learning_registry(
         self, registry: Any, rows: Sequence[Mapping[str, Any]], *, dry_run: bool = False
     ) -> dict[str, int]:
         """Feed rows into a continual-learning ``DatasetRegistry`` (#154) duck-typed.
 
-        The catalog decides the split; the registry's own hash bucket is not used. A
-        registry that already holds a physical match in another split raises its own
-        ``LeakageError`` and nothing is forced. ``dry_run`` only compares the rows with
-        ``registry.records`` and writes nothing (the check before formal use).
+        The catalog decides the split; the registry's own hash bucket is not used. The
+        dry run and the real sync run the same checks (``learning_sync_plan``); the real
+        sync writes nothing at all unless every check passes, then adds only new rows.
         """
+        plan = self.learning_sync_plan(registry, rows)
         if dry_run:
-            records = dict(getattr(registry, "records", {}))
-            by_video = {
-                str(getattr(record, "source_video_sha256", "")): record
-                for record in records.values()
-            }
-            plan = {"would_add": 0, "already_present": 0, "split_mismatch": 0,
-                    "id_mismatch": 0}
-            for row in rows:
-                current = records.get(str(row["source_id"])) or by_video.get(
-                    str(row["source_video_sha256"])
-                )
-                if current is None:
-                    plan["would_add"] += 1
-                elif getattr(current, "source_id", None) != row["source_id"]:
-                    plan["id_mismatch"] += 1
-                elif getattr(current, "split", None) != row["split"]:
-                    plan["split_mismatch"] += 1
-                else:
-                    plan["already_present"] += 1
             return plan
-        added = existing = 0
+        problems = {key: plan[key] for key in LEARNING_SYNC_PROBLEMS if plan[key]}
+        if problems:
+            raise LeakageError(
+                f"学習登録簿との整合性を確認できません（何も反映していません）: {problems}"
+            )
+        records = dict(getattr(registry, "records", {}))
+        known_videos = {
+            str(getattr(record, "source_video_sha256", "")) for record in records.values()
+        }
+        added = 0
         for row in rows:
-            archive = Path(str(row["archive"]))
-            if sha256_file(archive) != row["archive_sha256"]:
-                raise CatalogIntegrityError("学習用アーカイブの内容が登録時と異なります")
+            if str(row["source_id"]) in records or str(row["source_video_sha256"]) in known_videos:
+                continue
             _, is_new = registry.intake(
-                str(row["source_id"]), str(row["physical_match_id"]), archive,
+                str(row["source_id"]), str(row["physical_match_id"]),
+                Path(str(row["archive"])),
                 source_video_sha256=str(row["source_video_sha256"]),
                 split=str(row["split"]), note="recording_catalog",
             )
             added += int(bool(is_new))
-            existing += int(not is_new)
-        return {"added": added, "already_present": existing}
+        return {**plan, "would_add": 0, "added": added}
 
     def import_learning_assignment(self, path: Path) -> dict[str, Any]:
         """Adopt the TRAIN/VALIDATION/DEV_COMPARISON decisions of an existing registry.

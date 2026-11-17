@@ -4,7 +4,7 @@
 
 ## 準備
 
-カタログの場所と、別の環境でマウントした保存先の読み替えを環境変数で指定します。両方とも任意ですが、指定すると旧来の割当ファイルを使う処理もカタログで照合されます。
+正式運用では、録画カタログの指定が必須です。カタログを指定しないと、登録・予約・有効化・`SourcePolicy` はすべて止まります。
 
 ```sh
 export VALORANT_RECORDING_CATALOG="$PRIVATE_CATALOG"
@@ -15,8 +15,11 @@ alias rec='python -m valorant_ai_coach.recordings --catalog "$VALORANT_RECORDING
 
 | 環境変数 | 内容 |
 |---|---|
-| `VALORANT_RECORDING_CATALOG` | カタログのディレクトリ。`SourcePolicy`、段階的予約、2本目の有効化、`register_private_sources.py` がこのカタログで照合する |
+| `VALORANT_RECORDING_CATALOG` | カタログのディレクトリ。`SourcePolicy`、段階的予約、1本目・2本目の有効化、`register_private_sources.py` がこのカタログで照合する |
 | `VALORANT_RECORDING_PATH_MAP` | `{"保存されたパスの先頭": "この環境のパス"}` のJSON。CLIの `--path-map` と同じ |
+| `VALORANT_RECORDING_LEGACY_COMPAT` | `1` のときだけ、カタログを使わない旧方式（割当ファイルだけで判断）を許す互換モード。正式運用では設定しない |
+
+互換モードは、`--legacy-compat`（`register_private_sources.py register`、`second_validation activate`）、関数の `legacy_compat=True`、`SourcePolicy` の `"legacy_compat": true` でも指定できます。互換モードで作った割当と許可には `legacy_compat: true` が記録されるので、後から区別できます。
 
 ## 1. 新しい録画を登録する
 
@@ -29,7 +32,8 @@ rec head        # 表示された SEQ:SHA256 をカタログの外に控える
 - splitは指定しなければ `sha256(seed:physical_match_id)` で決まり、後から変えられません。映像を見る前に登録します。
 - 前半・後半など同じ試合の複数ファイルには、同じ `--physical-match-id` を付けます。
 - サイズが同じ別の録画は `--confirm-distinct` を付けるまで登録しません。
-- 旧来の取り込み（`scripts/diagnostics/register_private_sources.py register`）を使う場合は `--catalog` を付けるか環境変数を設定します。割当はそのままカタログへ取り込まれ、食い違いがあれば登録を中止します。
+- 旧来の取り込み（`scripts/diagnostics/register_private_sources.py register`）も、カタログを指定して使います。書き込む前にカタログと照合し、取り込みは全件か0件のどちらかです。食い違いがあれば、作りかけの登録結果（割当・管理コピー・結果ファイル）を消して中止します。元の録画には触れません。
+- 段階的予約（`register_six`）も同じで、カタログと食い違う予約は残しません。
 
 ## 2. 開発に使う
 
@@ -67,7 +71,10 @@ rec sync-learning --workspace "$WORKSPACE" --dry-run                  # 書き�
 rec sync-learning --workspace "$WORKSPACE"                            # 反映
 ```
 
-- `--dry-run` は `would_add`（追加予定）、`already_present`（登録済み）、`split_mismatch`（分割の食い違い）、`id_mismatch`（IDの食い違い）を返します。食い違いが1件でもあれば終了コード1で止まるので、反映せずに原因を確認します。
+- `--dry-run` と実際の反映は、同じ確認（`learning_sync_plan`）を行います。確認する項目は次のとおりです。
+  - カタログ側：アーカイブの内容が登録時と同じか（`archive_changed`）、録画と学習用の分割がカタログの記録と合うか（`catalog_mismatch`）
+  - 登録簿側：ID（`id_mismatch`）、物理試合ID（`physical_mismatch`）、元動画のハッシュ（`source_sha_mismatch`）、アーカイブのハッシュ（`archive_mismatch`）、分割（`split_mismatch`）が一致するか。新しい試合が別の分割にすでにないか（`physical_split_conflict`）
+- どれか1件でも食い違えば、`--dry-run` は終了コード1で止まり、実際の反映は1件も書かずに拒否します。
 - 反映できるのはTRAIN・VALIDATION・DEV_COMPARISONだけです。QUALIFICATIONとFINAL_HOLDOUTは登録簿に入れません。
 - #154が統合される前は、`sync-learning` は終了コード2で止まり、何も書きません。
 - モデルを登録するときは `rec artifact --kind model --parent <学習データのartifact>` とします。祖先に学習に使えない録画があれば拒否されます。
@@ -97,4 +104,4 @@ rec leak-check docs/*.md                 # Gitに入れる文書にIDやハッ�
 
 ## カタログを指定しない場合
 
-カタログを指定せず、環境変数もない場合は、旧来の割当ファイルだけで判断する従来の動作のままです（他の担当の作業手順を壊さないため）。この場合は漏洩防止の照合が働かないので、正式な運用では必ずカタログを指定します。
+カタログも互換モードも指定しない場合は、エラーで止まります。互換モードでは旧来の割当ファイルだけで判断するため、漏洩防止の照合は働きません。互換モードは、過去の受領記録の再確認など、カタログ導入前の手順を再現するときだけに使います。

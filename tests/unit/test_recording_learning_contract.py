@@ -7,13 +7,14 @@ the formal ``sync-learning`` step is checked the moment both are integrated.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
 
-from valorant_ai_coach.recordings import RecordingCatalog
+from valorant_ai_coach.recordings import LeakageError, RecordingCatalog
 
 
 def _catalog_with_archives(tmp_path: Path) -> tuple[RecordingCatalog, Path]:
@@ -45,8 +46,10 @@ def _catalog_with_archives(tmp_path: Path) -> tuple[RecordingCatalog, Path]:
 @dataclass
 class _Record:
     source_id: str
+    physical_match_id: str
     split: str
     source_video_sha256: str
+    archive_sha256: str
 
 
 class _Registry:
@@ -57,23 +60,66 @@ class _Registry:
                split=None, unexposed=False, note=""):
         if source_id in self.records:
             return self.records[source_id], False
-        self.records[source_id] = _Record(source_id, split, source_video_sha256)
+        self.records[source_id] = _Record(
+            source_id, physical_match_id, split, source_video_sha256,
+            hashlib.sha256(Path(archive).read_bytes()).hexdigest(),
+        )
         return self.records[source_id], True
 
 
-def test_dry_run_reports_without_writing_and_detects_split_drift(tmp_path):
+PROBLEMS = ("archive_changed", "catalog_mismatch", "physical_split_conflict", "id_mismatch",
+            "physical_mismatch", "source_sha_mismatch", "archive_mismatch", "split_mismatch")
+
+
+def test_dry_run_and_real_sync_share_every_check(tmp_path):
     catalog, _ = _catalog_with_archives(tmp_path)
     rows = catalog.learning_archives()
     registry = _Registry()
-    assert catalog.sync_learning_registry(registry, rows, dry_run=True) == {
-        "would_add": 3, "already_present": 0, "split_mismatch": 0, "id_mismatch": 0}
+    plan = catalog.sync_learning_registry(registry, rows, dry_run=True)
+    assert plan == {"would_add": 3, "already_present": 0, **dict.fromkeys(PROBLEMS, 0)}
     assert registry.records == {}
-    catalog.sync_learning_registry(registry, rows)
+    result = catalog.sync_learning_registry(registry, rows)
+    assert (result["added"], result["already_present"]) == (3, 0)
     assert catalog.sync_learning_registry(registry, rows, dry_run=True)[
         "already_present"] == 3
-    registry.records["fm1_0"].split = "VALIDATION"  # the registry drifted
+
+    drifts = {
+        "split_mismatch": ("split", "VALIDATION"),
+        "physical_mismatch": ("physical_match_id", "physical:other"),
+        "source_sha_mismatch": ("source_video_sha256", "f" * 64),
+        "archive_mismatch": ("archive_sha256", "e" * 64),
+    }
+    for problem, (field_name, value) in drifts.items():
+        record = registry.records["fm1_0"]
+        original = getattr(record, field_name)
+        setattr(record, field_name, value)
+        assert catalog.sync_learning_registry(registry, rows, dry_run=True)[problem] == 1
+        with pytest.raises(LeakageError):  # the real sync refuses on the same check
+            catalog.sync_learning_registry(registry, rows)
+        setattr(record, field_name, original)
+
+
+def test_real_sync_writes_nothing_when_any_row_fails(tmp_path):
+    catalog, _ = _catalog_with_archives(tmp_path)
+    rows = catalog.learning_archives()
+    registry = _Registry()
+    Path(rows[-1]["archive"]).write_bytes(b"replaced after registration")
     assert catalog.sync_learning_registry(registry, rows, dry_run=True)[
-        "split_mismatch"] == 1
+        "archive_changed"] == 1
+    with pytest.raises(LeakageError):
+        catalog.sync_learning_registry(registry, rows)
+    assert registry.records == {}  # the two good rows were not added either
+
+
+def test_new_match_already_in_another_split_is_refused(tmp_path):
+    catalog, _ = _catalog_with_archives(tmp_path)
+    rows = catalog.learning_archives()
+    registry = _Registry()
+    registry.records["other"] = _Record("other", rows[0]["physical_match_id"], "DEV_COMPARISON"
+                                        if rows[0]["split"] != "DEV_COMPARISON" else "TRAIN",
+                                        "d" * 64, "c" * 64)
+    assert catalog.sync_learning_registry(registry, rows, dry_run=True)[
+        "physical_split_conflict"] == 1
 
 
 def test_sync_into_the_real_continual_learning_registry(tmp_path):
@@ -81,10 +127,14 @@ def test_sync_into_the_real_continual_learning_registry(tmp_path):
     catalog, _ = _catalog_with_archives(tmp_path)
     rows = catalog.learning_archives()
     registry = learning.DatasetRegistry(tmp_path / "ws" / "dataset_registry.json")
-    assert catalog.sync_learning_registry(registry, rows, dry_run=True)["would_add"] == 3
-    assert catalog.sync_learning_registry(registry, rows) == {"added": 3,
-                                                              "already_present": 0}
+    plan = catalog.sync_learning_registry(registry, rows, dry_run=True)
+    assert plan["would_add"] == 3 and not any(plan[key] for key in PROBLEMS)
+    result = catalog.sync_learning_registry(registry, rows)
+    assert (result["added"], result["already_present"]) == (3, 0)
     assert {r.source_id: r.split for r in registry.records.values()} == {
         "fm1_0": "TRAIN", "fm1_1": "VALIDATION", "fm1_2": "DEV_COMPARISON"}
-    assert catalog.sync_learning_registry(registry, rows) == {"added": 0,
-                                                              "already_present": 3}
+    # The real registry's own fields (physical match, video and archive hashes) agree.
+    again = catalog.sync_learning_registry(registry, rows, dry_run=True)
+    assert again["already_present"] == 3 and not any(again[key] for key in PROBLEMS)
+    result = catalog.sync_learning_registry(registry, rows)
+    assert (result["added"], result["already_present"]) == (0, 3)

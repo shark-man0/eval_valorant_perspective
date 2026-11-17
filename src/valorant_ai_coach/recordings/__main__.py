@@ -13,7 +13,14 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from .catalog import ARTIFACT_KINDS, EXPOSURE_KINDS, PURPOSES, CatalogError, RecordingCatalog
+from .catalog import (
+    ARTIFACT_KINDS,
+    EXPOSURE_KINDS,
+    LEARNING_SYNC_PROBLEMS,
+    PURPOSES,
+    CatalogError,
+    RecordingCatalog,
+)
 
 
 def _print(value: object) -> None:
@@ -197,7 +204,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             registry = DatasetRegistry(args.workspace / "dataset_registry.json")
             result = catalog.sync_learning_registry(registry, rows, dry_run=args.dry_run)
             _print({**result, "registry": registry.summary()})
-            if args.dry_run and (result["split_mismatch"] or result["id_mismatch"]):
+            if any(result[key] for key in LEARNING_SYNC_PROBLEMS):
                 return 1
         elif args.command == "verify":
             report = catalog.verify(

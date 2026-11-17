@@ -223,3 +223,96 @@ def test_legacy_split_names_and_implicit_match_ids_are_read_like_import_legacy(
     catalog.record_exposure(recording.recording_id, "user_authorized_development_use",
                             note="test")
     assert check_allowlist(catalog, [legacy]) == [recording.recording_id]
+
+
+# ------------------------------------------- formal operation requires a catalog
+
+
+def test_formal_operation_requires_the_catalog_on_every_admission_path(
+    setup, tmp_path, monkeypatch  # noqa: F811
+):
+    from valorant_ai_coach.recordings import CatalogError
+    from valorant_ai_coach.recordings.admission import ENV_LEGACY_COMPAT
+
+    tmp, protocol, declaration, _ = setup
+    monkeypatch.delenv(ENV_LEGACY_COMPAT, raising=False)
+    with pytest.raises(CatalogError):
+        staged.register_six(declaration=declaration, protocol=protocol,
+                            registry=tmp / "formal", batch_id="six", prior_registries=[])
+    assert not (tmp / "formal" / "six").exists()
+    policy = _legacy_policy(tmp_path, "d" * 64)
+    with pytest.raises(CatalogError):
+        SourcePolicy(policy)
+    # Only the explicit compatibility mode runs the allocation-file-only reading.
+    assert SourcePolicy({**policy, "legacy_compat": True}).catalog_checked is False
+    allocation = staged.register_six(
+        declaration=declaration, protocol=protocol, registry=tmp / "compat",
+        batch_id="six", prior_registries=[], legacy_compat=True,
+    )
+    assert allocation["legacy_compat"] is True
+    with pytest.raises(CatalogError):
+        staged.activate_first_development(tmp / "compat" / "six")
+    policy_path = staged.activate_first_development(tmp / "compat" / "six",
+                                                    legacy_compat=True)
+    assert read_json(policy_path)["legacy_compat"] is True
+    assert SourcePolicy(read_json(policy_path)).catalog_checked is False
+
+
+def test_second_activation_requires_the_catalog(tmp_path, monkeypatch):
+    from valorant_ai_coach.recordings import CatalogError
+    from valorant_ai_coach.recordings.admission import ENV_LEGACY_COMPAT
+
+    batch, protocol, assessment = second_fixture(tmp_path, monkeypatch)
+    monkeypatch.delenv(ENV_LEGACY_COMPAT, raising=False)
+    with pytest.raises(CatalogError):
+        second.activate(batch=batch, protocol=protocol, assessment=assessment,
+                        allocation_sha256=file_sha(batch / "allocation.json"))
+    assert not (batch / "second_development").exists()
+
+
+# --------------------------------------------- all-or-nothing registration
+
+
+def test_a_conflict_found_at_adoption_leaves_no_reservation_and_no_journal_entry(
+    setup, catalog, tmp_path, monkeypatch  # noqa: F811
+):
+    """Even if the catalog changes between the check and the adoption (another
+    process), the reservation is removed and the catalog journal gains nothing."""
+    tmp, protocol, declaration, request = setup
+    first = request["records"][0]
+    clash = tmp_path / "clash.json"
+
+    def racing_precheck(bound, rows):
+        clash.write_text(json.dumps({"records": [{
+            "video_id": "racing_id", "source_sha256": "e" * 64,
+            "physical_match_id": first["physical_match_id"],
+            "split": "FINAL_HOLDOUT" if rows[0]["split"] != "FINAL_HOLDOUT"
+            else "DEVELOPMENT",
+            "status": "accepted", "exposure": "PROSPECTIVE_HELD_OUT",
+        }]}), encoding="utf-8")
+        RecordingCatalog(catalog.root).import_legacy(clash)
+
+    monkeypatch.setattr(staged, "precheck_allocation", racing_precheck)
+    with pytest.raises(ValueError):
+        staged.register_six(declaration=declaration, protocol=protocol,
+                            registry=tmp / "registry", batch_id="six",
+                            prior_registries=[], catalog=catalog.root)
+    assert not (tmp / "registry" / "six").exists()
+    after = RecordingCatalog(catalog.root)
+    # Only the racing import is in the journal; none of the six was adopted.
+    assert set(after.state.recordings) == {"racing_id"}
+
+
+def test_atomic_import_rejects_rows_that_contradict_each_other(tmp_path, catalog):
+    rows = [
+        {"video_id": "a_001", "source_sha256": "1" * 64, "physical_match_id": "m",
+         "split": "DEVELOPMENT", "status": "accepted"},
+        {"video_id": "a_002", "source_sha256": "2" * 64, "physical_match_id": "m",
+         "split": "FINAL_HOLDOUT_CANDIDATE", "status": "accepted"},
+    ]
+    path = tmp_path / "allocation.json"
+    path.write_text(json.dumps({"records": rows}), encoding="utf-8")
+    assert [c["reason"] for c in catalog.legacy_conflicts(rows)] == ["identity_conflict"]
+    report = catalog.import_legacy(path, atomic=True)
+    assert report["adopted"] == 0 and report["conflicts"]
+    assert RecordingCatalog(catalog.root).state.recordings == {}

@@ -6,6 +6,8 @@ and hand-written ``SourcePolicy`` files) decided admission from their own alloca
 files. This module lets them ask the catalog instead, without changing what they
 analyse:
 
+* ``require_catalog`` insists on a catalog unless the explicit compatibility mode
+  (``legacy_compat`` / ``VALORANT_RECORDING_LEGACY_COMPAT=1``) is chosen.
 * ``resolve_catalog`` finds the catalog given explicitly or through
   ``VALORANT_RECORDING_CATALOG`` (and an optional JSON path map in
   ``VALORANT_RECORDING_PATH_MAP`` for a mounted copy of the storage).
@@ -27,6 +29,12 @@ from .catalog import LEGACY_SPLIT_NAMES, CatalogError, LeakageError, RecordingCa
 
 ENV_CATALOG = "VALORANT_RECORDING_CATALOG"
 ENV_PATH_MAP = "VALORANT_RECORDING_PATH_MAP"
+ENV_LEGACY_COMPAT = "VALORANT_RECORDING_LEGACY_COMPAT"
+CATALOG_REQUIRED = (
+    "正式運用では録画カタログの指定が必要です（--catalog または "
+    f"{ENV_CATALOG}）。旧方式は互換モード（--legacy-compat または "
+    f"{ENV_LEGACY_COMPAT}=1）でのみ使えます"
+)
 
 
 def environment_path_map() -> dict[str, str]:
@@ -50,6 +58,28 @@ def resolve_catalog(
         return None
     mapping = dict(path_map) if path_map is not None else environment_path_map()
     return RecordingCatalog(Path(root), path_map=mapping)
+
+
+def legacy_compat_requested(explicit: bool = False) -> bool:
+    """The old allocation-file-only admission, only when asked for explicitly."""
+    return bool(explicit) or os.environ.get(ENV_LEGACY_COMPAT) == "1"
+
+
+def require_catalog(
+    explicit: str | Path | None = None,
+    *,
+    legacy_compat: bool = False,
+    path_map: Mapping[str, str] | None = None,
+) -> RecordingCatalog | None:
+    """The catalog, which formal operation requires.
+
+    ``None`` is returned only in the explicit compatibility mode; otherwise a missing
+    catalog is an error, so no admission path silently bypasses the leak prevention.
+    """
+    catalog = resolve_catalog(explicit, path_map=path_map)
+    if catalog is None and not legacy_compat_requested(legacy_compat):
+        raise CatalogError(CATALOG_REQUIRED)
+    return catalog
 
 
 def _legacy_split(row: Mapping[str, Any]) -> str | None:
@@ -128,29 +158,14 @@ def admit_for_development(
 
 
 def precheck_allocation(catalog: RecordingCatalog, records: Iterable[Mapping[str, Any]]) -> None:
-    """A new allocation may not contradict the catalog (same bytes or match elsewhere)."""
-    problems: list[str] = []
-    for row in records:
-        name = row.get("source_id") or row.get("video_id")
-        split, physical = _legacy_split(row), _legacy_physical(row)
-        if split is None or physical is None:
-            problems.append(f"{name}: splitまたは物理試合IDがない")
-            continue
-        recording = catalog.state.by_sha(str(row["source_sha256"]))
-        if recording is not None and (
-            recording.split != split
-            or recording.physical_match_id.casefold() != physical.casefold()
-        ):
-            problems.append(f"{name}: カタログと衝突")
-            continue
-        bound = next(
-            (
-                r.split for r in catalog.state.recordings.values()
-                if r.physical_match_id.casefold() == physical.casefold()
-            ),
-            None,
+    """A new allocation may not contradict the catalog (same bytes or match elsewhere).
+
+    Uses exactly the checks of the later ``import_legacy(atomic=True)``, so nothing is
+    written by the caller unless the import will succeed.
+    """
+    conflicts = catalog.legacy_conflicts(list(records))
+    if conflicts:
+        raise LeakageError(
+            "; ".join(f"{item['recording_id']}: カタログと衝突（{item['reason']}）"
+                      for item in conflicts)
         )
-        if bound is not None and bound != split:
-            problems.append(f"{name}: 物理試合が別split")
-    if problems:
-        raise LeakageError("; ".join(problems))

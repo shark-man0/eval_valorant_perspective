@@ -14,7 +14,7 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from valorant_ai_coach.recordings.admission import admit_for_development, resolve_catalog
+from valorant_ai_coach.recordings.admission import admit_for_development, require_catalog
 
 from .replay import SourcePolicy, file_sha, read_json, write_private
 from .staged_validation import (
@@ -54,13 +54,15 @@ def activate(
     assessment: Path,
     allocation_sha256: str,
     catalog: Path | None = None,
+    legacy_compat: bool = False,
 ) -> Path:
     """Metadata-only admission; does not open any recording content.
 
-    With a recording catalog the catalog decides the admission and journals the use.
+    The recording catalog decides the admission and journals the use; without one
+    only the explicit compatibility mode (``legacy_compat``) is accepted.
     """
     batch, protocol, assessment = map(_private, (batch, protocol, assessment))
-    bound = resolve_catalog(catalog)
+    bound = require_catalog(catalog, legacy_compat=legacy_compat)
     with _exclusive(batch / ".second_activation.lock"):
         original = batch / "allocation.json"
         if file_sha(original) != allocation_sha256:
@@ -109,6 +111,17 @@ def activate(
         stage = batch / "second_development"
         if stage.exists():
             raise ValueError("Second activation already exists; preserve first attempt")
+        protected = [r["source_sha256"] for r in records if r["video_id"] != selected]
+        catalog_policy = None
+        if bound is not None:
+            # Decided (and journaled) before anything is written for the activation.
+            catalog_policy = admit_for_development(
+                bound,
+                source_sha256=admitted[0]["source_sha256"],
+                split="DEVELOPMENT",
+                protected_source_sha256s=protected,
+                note=f"second development activation ({batch.name})",
+            )
         stage.mkdir(mode=0o700)
         manifest = {
             "records": [
@@ -123,17 +136,11 @@ def activate(
             "formal_outputs": 0,
         }
         write_private(stage / "manifest.json", manifest)
-        protected = [r["source_sha256"] for r in records if r["video_id"] != selected]
-        if bound is not None:
-            policy = admit_for_development(
-                bound,
-                source_sha256=admitted[0]["source_sha256"],
-                split="DEVELOPMENT",
-                protected_source_sha256s=protected,
-                note=f"second development activation ({batch.name})",
-            )
+        if catalog_policy is not None:
+            policy = catalog_policy
         else:
             policy = {
+                "legacy_compat": True,
                 "manifest": str(stage / "manifest.json"),
                 "allocation": str(original),
                 "manifest_sha256": file_sha(stage / "manifest.json"),
@@ -319,6 +326,10 @@ def main() -> None:
     activation.add_argument("--allocation-sha256", required=True)
     activation.add_argument(
         "--catalog", type=Path, help="録画カタログ（省略時は VALORANT_RECORDING_CATALOG）"
+    )
+    activation.add_argument(
+        "--legacy-compat", action="store_true",
+        help="カタログを使わない旧方式（互換モード。正式運用では使わない）",
     )
     inspect = commands.add_parser("confirm")
     inspect.add_argument("--stage", type=Path, required=True)

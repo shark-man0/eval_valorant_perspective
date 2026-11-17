@@ -150,9 +150,11 @@ python -m valorant_ai_coach.recordings --catalog "$PRIVATE_CATALOG" leak-check d
 | 1本目・2本目の有効化 | 割当ファイルから許可を作る | カタログの `guard` を通し、`development_use` を記録したうえでカタログ形式の `SourcePolicy` を返す |
 | `register_private_sources.py` | 割当ファイルだけを書く | 書いた割当をカタログへ取り込み、食い違いがあれば中止する |
 
-カタログは、引数（`--catalog`、`SourcePolicy` の `catalog_check`）か環境変数 `VALORANT_RECORDING_CATALOG` で指定します。保存先の読み替えは `VALORANT_RECORDING_PATH_MAP`（JSON）で指定できます。どれも指定しない場合は従来の動作のままで、他の担当の作業手順は変わりません。
+カタログは、引数（`--catalog`、`SourcePolicy` の `catalog_check`）か環境変数 `VALORANT_RECORDING_CATALOG` で指定します。保存先の読み替えは `VALORANT_RECORDING_PATH_MAP`（JSON）で指定できます。
 
-継続学習（#154）への反映は、`sync-learning --dry-run` で差分（追加予定、登録済み、分割の食い違い、IDの食い違い）を確かめてから行います。#154が統合されていない環境では、何も書かずに終了コード2で止まります。
+PR #162の最終修正で、正式運用ではカタログの指定を必須にしました。カタログがない場合は止まり、旧方式は明示的な互換モード（`--legacy-compat`、`legacy_compat=True`、`VALORANT_RECORDING_LEGACY_COMPAT=1`）でだけ動きます。登録（`register_six`、`register_private_sources.py`）は、カタログへの取り込みを全件か0件のどちらかで行い（`import_legacy(atomic=True)`）、食い違いがあれば作りかけの割当や登録結果を消します。書く前の照合と取り込み時の照合は、同じ判定（`legacy_conflicts`）です。
+
+継続学習（#154）への反映は、`sync-learning --dry-run` で差分を確かめてから行います。`--dry-run` と実際の反映は同じ確認を行い、物理試合ID・元動画ハッシュ・アーカイブハッシュ・splitのどれかが食い違えば、反映は1件も書きません。#154が統合されていない環境では、何も書かずに終了コード2で止まります。
 
 ### 実データでの確認（移行後）
 
