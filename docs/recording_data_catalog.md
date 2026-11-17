@@ -56,7 +56,7 @@ QUALIFICATIONとFINAL_HOLDOUTの録画は、Exposureが1件でもあれば `blin
 
 ## 継続学習基盤との接続
 
-`learning_view()` は、継続学習の登録簿（#105・PR #154の `DatasetRegistry`）と同じ項目（`source_id`、`physical_match_id`、`archive`、`archive_sha256`、`archive_bytes`、`split`）を返します。TRAIN・VALIDATION・FROZEN_TESTは、開発に使える録画の中で物理試合単位に分けます。QUALIFICATIONとFINAL_HOLDOUTは、学習側の非回帰ゲートで繰り返し使うと漏洩になるため、このビューには入れません。利用者が開発利用を認めた録画は、`include_authorised_exposed=True` のときだけ `exposed_holdout: true` を付けて入れます。
+`learning_view()` は、継続学習の登録簿（#105・PR #154の `DatasetRegistry`）と同じ項目（`source_id`、`physical_match_id`、`archive`、`archive_sha256`、`archive_bytes`、`split`）を返します。TRAIN・VALIDATION・DEV_COMPARISONは、開発に使える録画の中で物理試合単位に分けます。QUALIFICATIONとFINAL_HOLDOUTは、学習側の非回帰ゲートで繰り返し使うと漏洩になるため、このビューには入れません。利用者が開発利用を認めた録画は、`include_authorised_exposed=True` のときだけ `exposed_holdout: true` を付けて入れます。
 
 `plan(producer)` は、指定した生成器（名前・版・設定）でまだ処理していない録画を返します。処理後に結果をartifactとして登録すると、次の `plan` から外れます。
 

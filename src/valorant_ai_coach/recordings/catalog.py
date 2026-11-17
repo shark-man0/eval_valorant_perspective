@@ -95,6 +95,9 @@ PURPOSES: tuple[str, ...] = (
     "qualification",
     "final_evaluation",
 )
+# Development sub-splits of the continual-learning registry (#154). Its
+# INDEPENDENT_TEST is never fed from here: only blind hold-out opened for evaluation.
+LEARNING_SPLITS: tuple[str, ...] = ("TRAIN", "VALIDATION", "DEV_COMPARISON")
 DEFAULT_RATIOS: Mapping[str, float] = {
     "DEVELOPMENT": 0.6,
     "QUALIFICATION": 0.2,
@@ -1185,16 +1188,18 @@ class RecordingCatalog:
         ratios: Mapping[str, float] | None = None,
         include_authorised_exposed: bool = False,
     ) -> list[dict[str, Any]]:
-        """Records for the continual-learning registry (#105/#154): TRAIN/VALIDATION/FROZEN_TEST.
+        """Records for the continual-learning registry (#105/#154): TRAIN/VALIDATION/DEV_COMPARISON.
 
         All three come from development-authorised recordings only, sub-split by physical
         match. QUALIFICATION / FINAL_HOLDOUT never enter this view unless the user
         authorised their development use *and* ``include_authorised_exposed`` is set;
         they are then marked ``exposed_holdout``.
         """
-        chosen = dict(ratios or {"TRAIN": 0.6, "VALIDATION": 0.2, "FROZEN_TEST": 0.2})
-        if set(chosen) != {"TRAIN", "VALIDATION", "FROZEN_TEST"}:
-            raise CatalogError("学習用比率はTRAIN/VALIDATION/FROZEN_TESTです")
+        chosen = dict(ratios or {"TRAIN": 0.6, "VALIDATION": 0.2, "DEV_COMPARISON": 0.2})
+        if "FROZEN_TEST" in chosen:  # former #154 name of DEV_COMPARISON
+            chosen["DEV_COMPARISON"] = chosen.pop("FROZEN_TEST")
+        if set(chosen) != set(LEARNING_SPLITS):
+            raise CatalogError("学習用比率はTRAIN/VALIDATION/DEV_COMPARISONです")
         rows: list[dict[str, Any]] = []
         for order, (rid, recording) in enumerate(sorted(self.state.recordings.items())):
             if recording.status == "quarantined" or not recording.development_authorised:
@@ -1202,8 +1207,8 @@ class RecordingCatalog:
             if recording.split != "DEVELOPMENT" and not include_authorised_exposed:
                 continue
             bucket = hash_bucket(seed, recording.physical_match_id)
-            edge, sub = 0.0, "FROZEN_TEST"
-            for name in ("TRAIN", "VALIDATION", "FROZEN_TEST"):
+            edge, sub = 0.0, LEARNING_SPLITS[-1]
+            for name in LEARNING_SPLITS:
                 edge += chosen[name]
                 if bucket < edge:
                     sub = name
@@ -1237,7 +1242,7 @@ class RecordingCatalog:
         """Derived archives (e.g. HUD crop zips) for the continual-learning registry.
 
         Each archive inherits its recording's physical match id and authorisation, and
-        the TRAIN/VALIDATION/FROZEN_TEST sub-split is decided per physical match, so all
+        the TRAIN/VALIDATION/DEV_COMPARISON sub-split is decided per physical match, so all
         archives of one match land in the same sub-split.
         """
         by_recording = {
