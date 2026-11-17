@@ -226,3 +226,57 @@ def test_top_bar_alive_counts_and_packing() -> None:
     reading = read_top_bar(broken)
     assert not reading.consistent
     assert reading.numbers_state() is None
+
+
+def test_api_contract_used_by_map_recorder_pr157(knowledge) -> None:
+    """Pin the knowledge API that the Map recorder (PR #157) imports by name."""
+    from importlib import import_module
+
+    module = import_module("valorant_ai_coach.knowledge")
+    loader = import_module("valorant_ai_coach.knowledge.assets")
+    hud_module = import_module("valorant_ai_coach.knowledge.hud_abilities")
+    catalog = module.load_game_knowledge()
+    assert callable(loader.ReferenceAssets.load)
+    assert catalog.agent("Omen") is not None and catalog.agents
+    reader = hud_module.AbilityHudReader(catalog, _SyntheticAssets())
+    frame = np.full((1080, 1920, 3), 40, np.uint8)
+    x0, y0, x1, y1 = STRIP_BOX
+    frame[y0:y1, x0:x1] = _render_strip(catalog, "Omen", (True, True, True, False))
+    reading = reader.read(reader.strip_from_frame(frame))
+    ranked = reading.ranked(2)
+    assert reading.hud_present and len(ranked) == 2
+    winner, _ = ranked[0]
+    assert reading.agent_uuids.index(winner) >= 0
+    assert set(reading.slot_scores) == set(HUD_ABILITY_KEYS)
+    assert all(len(scores) == len(reading.agent_uuids) for scores in reading.slot_scores.values())
+    for agent in catalog.agents:
+        for variant in ("displayicon", "killfeedportrait"):
+            assert agent.asset_id(variant) == f"agent:{agent.uuid}:{variant}"
+
+
+def test_timeline_view_filters_identification(tmp_path: Path, knowledge) -> None:
+    from valorant_ai_coach.knowledge.timeline_view import TimelineView
+
+    compact = {"source_sha256": "a" * 64,
+               "states": [[0.0, "BUY", "ALIVE", "SELF", 1, "OBSERVED"],
+                          [10.0, "ACTIVE", "DEAD", "SPECTATOR", 1, "OBSERVED"],
+                          [20.0, "BUY", "ALIVE", "SELF", 2, "OBSERVED"]],
+               "events": [["round_start", 0.0, 0.2], ["death_hypothesis", 9.8, 10.0],
+                          ["round_end", 15.0, 15.2], ["round_start", 20.0, 20.2]]}
+    path = tmp_path / "timeline.json"
+    path.write_text(json.dumps(compact), "utf-8")
+    view = TimelineView.load(path)
+    assert view.self_live(1.0) and not view.self_live(12.0) and view.spectating(12.0)
+    assert view.state_at(30.0) is None  # beyond the gap limit: unknown, not extrapolated
+    assert [(r.start, r.end) for r in view.rounds()] == [(0.0, 15.2), (20.0, None)]
+    assert view.round_index(12.0) == 0 and view.round_index(17.0) is None
+    assert view.death_times() == [10.0]
+    reader = AbilityHudReader(knowledge, _SyntheticAssets())
+    own = reader.read(_render_strip(knowledge, "Fade", (True,) * 4))
+    other = reader.read(_render_strip(knowledge, "Omen", (True,) * 4))
+    readings = [own] * 20 + [other] * 25  # spectating outnumbers own frames
+    live = [True] * 20 + [False] * 25
+    assert knowledge.agent(identify_agent(readings).agent_uuid).name == "Omen"
+    ident = identify_agent(readings, self_live=live)
+    assert ident.basis == "timeline_self_live"
+    assert knowledge.agent(ident.agent_uuid).name == "Fade" and ident.vote_share == 1.0
