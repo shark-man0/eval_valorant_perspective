@@ -75,6 +75,13 @@ def normalise_glyph(gray: np.ndarray, box: tuple[int, int, int, int]) -> NDArray
     return canvas / norm if norm > 1e-6 else canvas
 
 
+# Round timer (m:ss) in the middle of the top bar, archive scale.
+TIMER_WINDOW = (255, 10, 325, 40)
+TIMER_MIN_HEIGHT, TIMER_MAX_HEIGHT = 10, 18
+MAX_TIMER_SEC = 120
+MINUTE_ONE_MIN_SCORE = 0.6
+
+
 @dataclass(frozen=True)
 class ScoreReading:
     ally: int | None
@@ -97,6 +104,8 @@ class ScoreReader:
         if not path.exists() or not manifest.exists():
             raise ScoreTemplatesUnavailable(f"missing {path}; run build_score_templates.py")
         meta = json.loads(manifest.read_text(encoding="utf-8"))
+        if meta.get("lineage", {}).get("split") != "TRAIN":
+            raise ScoreTemplatesUnavailable(f"{path} has no TRAIN-only lineage; rebuild it")
         if hashlib.sha256(path.read_bytes()).hexdigest() != meta["sha256"]:
             raise ScoreTemplatesUnavailable(f"{path} does not match its manifest")
         with np.load(path) as data:
@@ -118,6 +127,51 @@ class ScoreReader:
         if any(d is None for d in digits):
             return None
         return int("".join(str(d) for d in digits))
+
+    def read_timer(self, top_bar_crop: np.ndarray) -> int | None:
+        """Seconds shown by the round timer, or None (spike icon, other text).
+
+        Expects ``m:ss``: one minute digit, a colon (two small dots), two second
+        digits. Other formats (decimal countdowns, the planted-spike icon) are
+        not read.
+        """
+        x0, y0, x1, y1 = TIMER_WINDOW
+        window = top_bar_crop[y0:y1, x0:x1]
+        gray: np.ndarray = window if window.ndim == 2 else cv2.cvtColor(window,
+                                                                         cv2.COLOR_BGR2GRAY)
+        tophat = cv2.morphologyEx(gray, cv2.MORPH_TOPHAT, _TOPHAT)
+        mask: np.ndarray = cv2.dilate(((tophat > 40) & (gray > 150)).astype(np.uint8),
+                                      np.ones((3, 1), np.uint8))
+        count, _, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
+        parts: list[Box] = [(int(stats[i][0]), int(stats[i][1]), int(stats[i][2]),
+                             int(stats[i][3])) for i in range(1, count)]
+        digits = sorted(p for p in parts
+                        if TIMER_MIN_HEIGHT <= p[3] <= TIMER_MAX_HEIGHT and p[2] <= 10)
+        if len(digits) != 3:
+            return None
+        minute_box, tens_box, ones_box = digits
+        dots = [p for p in parts if p[3] <= 6 and p[2] <= 4
+                and minute_box[0] + minute_box[2] <= p[0] < tens_box[0]]
+        if len(dots) < 2:
+            return None
+        tens = self.digit(normalise_glyph(gray, tens_box))
+        ones = self.digit(normalise_glyph(gray, ones_box))
+        if tens is None or ones is None or tens > 5:
+            return None
+        # The leading digit is only ever 0 or 1: "0" is wide, "1" narrow; a
+        # middling glyph must clearly look like the "1" template.
+        width = minute_box[2]
+        if width >= 6:
+            minute = 0
+        elif width <= 4:
+            minute = 1
+        else:
+            one = float(self.templates[1] @ normalise_glyph(gray, minute_box).reshape(-1))
+            if one < MINUTE_ONE_MIN_SCORE:
+                return None
+            minute = 1
+        value = minute * 60 + tens * 10 + ones
+        return value if value <= MAX_TIMER_SEC else None
 
     def read(self, top_bar_crop: np.ndarray) -> ScoreReading:
         values = {}

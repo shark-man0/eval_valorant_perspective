@@ -260,15 +260,18 @@ def test_timeline_view_filters_identification(tmp_path: Path, knowledge) -> None
     compact = {"source_sha256": "a" * 64,
                "states": [[0.0, "BUY", "ALIVE", "SELF", 1, "OBSERVED"],
                           [10.0, "ACTIVE", "DEAD", "SPECTATOR", 1, "OBSERVED"],
-                          [20.0, "BUY", "ALIVE", "SELF", 2, "OBSERVED"]],
+                          [20.0, "BUY", "ALIVE", "SELF", 2, "OBSERVED"],
+                          [21.0, "BUY", "ALIVE", "SELF", 2, "OBSERVED"]],
                "events": [["round_start", 0.0, 0.2], ["death_hypothesis", 9.8, 10.0],
-                          ["round_end", 15.0, 15.2], ["round_start", 20.0, 20.2]]}
+                          ["round_end", 15.0, 15.2], ["round_start", 19.5, 20.2]]}
     path = tmp_path / "timeline.json"
     path.write_text(json.dumps(compact), "utf-8")
     view = TimelineView.load(path)
     assert view.self_live(1.0) and not view.self_live(12.0) and view.spectating(12.0)
     assert view.state_at(30.0) is None  # beyond the gap limit: unknown, not extrapolated
-    assert [(r.start, r.end) for r in view.rounds()] == [(0.0, 15.2), (20.0, None)]
+    # Rounds come from the timeline's round numbers, opened by its round_start events.
+    assert [(r.start, r.end, r.number) for r in view.rounds()] == [(0.0, 15.2, 1),
+                                                                  (19.5, None, 2)]
     assert view.round_index(12.0) == 0 and view.round_index(17.0) is None
     assert view.death_times() == [10.0]
     reader = AbilityHudReader(knowledge, _SyntheticAssets())

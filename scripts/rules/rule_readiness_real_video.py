@@ -32,6 +32,7 @@ from valorant_ai_coach.rules.development_readiness import (
     derive,
     rule_occurrences,
 )
+from valorant_ai_coach.rules.round_phases import PhaseRules
 
 
 def observe(archive: Path, reader: AbilityHudReader, feed_reader: KillFeedReader,
@@ -55,9 +56,11 @@ def observe(archive: Path, reader: AbilityHudReader, feed_reader: KillFeedReader
                 for e in feed_reader.read(sample.crops["kill_feed"]))
         carried = None
         score = None
+        timer = None
         if score_reader is not None and "top_bar" in sample.crops:
             reading = score_reader.read(sample.crops["top_bar"])
             score = (reading.ally, reading.enemy)
+            timer = score_reader.read_timer(sample.crops["top_bar"])
         if spike_reader is not None and "weapon_inventory" in sample.crops:
             carried = spike_reader.read(sample.crops["weapon_inventory"]).carried
         if hud is not None:
@@ -77,6 +80,7 @@ def observe(archive: Path, reader: AbilityHudReader, feed_reader: KillFeedReader
             feed=feed,
             spike_carried=carried,
             score=score,
+            timer=timer,
         ))
     ident = identify_agent(readings, self_live=live if timeline is not None else None)
     meta = {"video_id": crops.video_id, "samples": len(series), "status": ident.status,
@@ -124,7 +128,14 @@ def main() -> int:
         agent = knowledge.agent(meta["agent"]) if meta["agent"] else None  # type: ignore[arg-type]
         derivation = derive(series, agent.name if agent else None,
                             agent.role if agent else "unknown", timeline,
-                            rounds_per_half=int(knowledge.rule("regulation_rounds_per_half")))
+                            rounds_per_half=int(knowledge.rule("regulation_rounds_per_half")),
+                            phase_rules=PhaseRules(
+                                round_time_limit_sec=int(knowledge.rule("round_time_limit_sec")),
+                                buy_phase_sec=int(knowledge.rule("buy_phase_sec")),
+                                buy_phase_half_start_sec=int(
+                                    knowledge.rule("buy_phase_half_start_sec")),
+                                regulation_rounds_per_half=int(
+                                    knowledge.rule("regulation_rounds_per_half"))))
         derived = derivation.samples
         counts = rule_occurrences(rules, derived)
         recon = derivation.reconciliation
@@ -149,6 +160,11 @@ def main() -> int:
             "samples_with_score": sum(bool(o.score and None not in o.score) for o in series),
             "spike_carried_samples": sum(bool(o.spike_carried) for o in series),
         }
+        meta["phases"] = [
+            {"ordinal": p.ordinal, "score_update": p.score_update,
+             "buy_phase_start": p.buy_phase_start, "combat_start": p.combat_start,
+             "round_end": p.round_end, "bases": p.bases} for p in derivation.phases]
+        meta["timer_samples"] = sum(o.timer is not None for o in series)
         for rule_id, count in counts.items():
             totals[rule_id] += count
             matches_with[rule_id] += count > 0

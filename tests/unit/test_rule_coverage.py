@@ -69,7 +69,7 @@ def test_derived_candidates_and_rule_occurrences() -> None:
     ]
     derivation = derive(series, "Omen", "controller")
     samples = derivation.samples
-    assert derivation.sources["rounds"] == "top_bar_reset"
+    assert derivation.sources["rounds"] == "provisional_top_bar_reset"
     assert "utility_used" in samples[1].events and "kill" in samples[1].events
     assert samples[1].facts["first_kill_by_player"] is True
     assert samples[1].facts["first_death_by_player"] is False
@@ -115,8 +115,9 @@ def test_timeline_drives_self_view_and_rounds() -> None:
               _obs(10, "Omen", (1, 1, 1, 0), 4, 5),  # HUD still looks like Omen
               _obs(15, "Sova", (1, 1, 1, 0), 4, 5), _obs(30, "Omen", (1, 1, 1, 0), 5, 5)]
     derivation = derive(series, "Omen", "controller", timeline)
-    assert derivation.sources == {"rounds": "timeline", "self_view": "timeline",
-                                  "deaths": "kill_feed+timeline", "side": "unobserved"}
+    assert {k: derivation.sources[k] for k in ("rounds", "self_view", "deaths", "side")} == {
+        "rounds": "timeline", "self_view": "timeline", "deaths": "kill_feed+timeline",
+        "side": "unobserved"}
     assert "ability_state" not in derivation.samples[2].events  # timeline says spectating
     assert [s.sec for s in derivation.samples if "player_death" in s.events] == [10.0]
 
@@ -187,7 +188,7 @@ def test_side_facts_and_round_start_events() -> None:
     derivation = derive(series, "Omen", "controller", rounds_per_half=1)
     samples = derivation.samples
     assert derivation.sources["side"] == "half_structure"
-    assert derivation.sources["rounds"] == "score"
+    assert derivation.sources["rounds"] == "provisional_score"
     assert "round_start" in samples[0].events and "round_start" in samples[2].events
     assert "round_start" not in samples[1].events
     assert samples[0].facts["side"] == "attack" and samples[0].facts["spike_carried_by_player"]
@@ -235,3 +236,119 @@ def test_rounds_from_scores_ignore_spurious_resets() -> None:
     # A reset followed by a full 5 v 5 buy phase adds a round the score missed.
     extra = [r.start for r in rounds_from_scores([ally, enemy], resets, buy_phase_starts=[520.0])]
     assert extra[-1] == 520.0
+
+
+def test_template_sources_must_be_train_recordings(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    import json
+    import zipfile
+
+    import pytest
+
+    from valorant_ai_coach.knowledge.template_lineage import (
+        TemplateSourceRefused,
+        train_sources,
+    )
+
+    def archive(video_id: str) -> object:
+        path = tmp_path / f"{video_id}.zip"
+        with zipfile.ZipFile(path, "w") as handle:
+            handle.writestr("index.json", json.dumps(
+                {"video_id": video_id, "file_name": f"{video_id}.mp4", "size_bytes": 10}))
+        return path
+
+    sha = {"a": "1" * 64, "b": "2" * 64}
+    registry = tmp_path / "dataset_registry.json"
+    registry.write_text(json.dumps({"version": "v2", "seed": "s", "sources": [
+        {"source_id": "a", "physical_match_id": "pa", "split": "TRAIN",
+         "source_video_sha256": sha["a"]},
+        {"source_id": "b", "physical_match_id": "pb", "split": "FROZEN_TEST",
+         "source_video_sha256": sha["b"]}]}), encoding="utf-8")
+    hashes = {v: {"file_name": f"{v}.mp4", "size_bytes": 10, "sha256": sha[v]} for v in sha}
+    lineage, meta = train_sources(registry, [archive("a")], video_hashes=hashes)
+    assert meta["split"] == "TRAIN" and lineage[0].source_video_sha256 == sha["a"]
+    assert meta["sources"][0]["video_identity"] == "video_id+file_name+size+sha256"
+    with pytest.raises(TemplateSourceRefused, match="DEV_COMPARISON"):
+        train_sources(registry, [archive("a"), archive("b")])
+    with pytest.raises(TemplateSourceRefused, match="not registered"):
+        train_sources(registry, [archive("c")])
+    wrong = {**hashes, "a": {**hashes["a"], "sha256": "3" * 64}}
+    with pytest.raises(TemplateSourceRefused, match="does not match"):
+        train_sources(registry, [archive("a")], video_hashes=wrong)
+
+
+def test_round_phases_keep_score_buy_combat_and_end_apart() -> None:
+    from valorant_ai_coach.rules.round_phases import PhaseSample, round_phases
+
+    def at(sec: float, timer: int | None, ordinal: int, ally: int = 5, enemy: int = 5,
+           planted: bool = False) -> PhaseSample:
+        return PhaseSample(sec, timer, ordinal, ally, enemy, planted)
+
+    samples = [at(0, 40, 0), at(10, 30, 0), at(20, 95, 0), at(60, 55, 0, 3, 0),  # eliminated
+               at(70, None, 1, 5, 5), at(80, 22, 1), at(90, 97, 1), at(150, None, 1, planted=True),
+               at(200, None, 2)]
+    first, second, third = round_phases(samples)
+    assert first.buy_phase_start == -5 and first.bases["buy_phase_start"] == "buy_countdown"
+    assert first.combat_start == 15 and first.round_end == 60
+    assert first.bases["round_end"] == "team_eliminated" and first.score_update is None
+    assert second.score_update == 70 and second.buy_phase_start == 72  # 30 s buy countdown
+    assert second.combat_start == 87
+    # Planted, nobody eliminated: only the next score read bounds the end.
+    assert second.round_end == 200 and second.bases["round_end"] == "score_update_upper_bound"
+    assert third.combat_start is None
+
+
+def test_top_bar_rows_feed_the_shared_timeline() -> None:
+    from valorant_ai_coach.knowledge.score_reader import (
+        GLYPH_SIZE,
+        SCORE_WINDOWS,
+        ScoreReader,
+        glyph_boxes,
+        normalise_glyph,
+    )
+    from valorant_ai_coach.knowledge.top_bar_timeline import (
+        STREAM_KIND,
+        TOP_BAR_ROI,
+        top_bar_observation,
+    )
+    from valorant_ai_coach.temporal.game import DevelopmentGameTimeline
+
+    def draw(text: str) -> np.ndarray:
+        window = np.full((20, 40, 3), 60, np.uint8)
+        cv2.putText(window, text, (8, 16), cv2.FONT_HERSHEY_PLAIN, 1.0, (255, 255, 255), 1)
+        return window
+
+    templates = np.zeros((10, GLYPH_SIZE[1], GLYPH_SIZE[0]), np.float32)
+    for digit in range(10):
+        gray, boxes = glyph_boxes(draw(str(digit)))
+        templates[digit] = normalise_glyph(gray, boxes[0])
+    reader = ScoreReader(templates)
+    frame = np.full((1080, 1920, 3), 60, np.uint8)
+    for side, text in (("ally", "7"), ("enemy", "12")):
+        x0, y0, x1, y1 = SCORE_WINDOWS[side]
+        big = cv2.resize(draw(text), (2 * (x1 - x0), 2 * (y1 - y0)),
+                         interpolation=cv2.INTER_NEAREST)
+        fx, fy = TOP_BAR_ROI[0] + 2 * x0, TOP_BAR_ROI[1] + 2 * y0
+        frame[fy:fy + big.shape[0], fx:fx + big.shape[1]] = big
+    sample = {"source_id": "s", "source_sha256": "a" * 64, "acquisition_id": "e",
+              "native_epoch": "e", "native_pts_tick": 600, "native_time_base": "1/60",
+              "acquired_frame_sha256": "b" * 64, "native_pixel_sha256": "c" * 64,
+              "frame_size_px": [1920, 1080]}
+    row = top_bar_observation(frame, sample, reader)
+    assert row["context"]["score"] == [7, 12] and row["context"]["stream_kind"] == STREAM_KIND
+    assert row["qualification"] == "development_only" and row["signals"] == []
+    timeline = DevelopmentGameTimeline()
+    timeline.add(row)  # the timeline accepts the row as an ordinary supplier observation
+
+
+def test_kill_feed_death_needs_recorder_as_victim() -> None:
+    other = FeedKill("enemy", "ally", "Clove", False, True)  # highlight, but victim is Clove
+    own = FeedKill("enemy", "ally", "Omen", False, True)
+    series = [_obs(0, "Omen", (1, 1, 1, 0), 5, 5, feed=()),
+              _obs(5, "Omen", (1, 1, 1, 0), 4, 5, feed=(other,)),
+              _obs(10, "Sova", (1, 1, 1, 0), 4, 5, feed=(other,)),
+              _obs(15, "Omen", (1, 1, 1, 0), 3, 5, feed=(other, own)),
+              _obs(20, "Sova", (1, 1, 1, 0), 3, 5, feed=(other, own))]
+    derivation = derive(series, "Omen", "controller")
+    deaths = derivation.reconciliation.deaths
+    assert len(deaths) == 1 and deaths[0].sec >= 10  # nothing at 5 s (Clove's entry)
+    assert derivation.reconciliation.dropped["kill_feed_other_victim"] == 1
