@@ -197,8 +197,11 @@ def test_the_match_view_marks_an_uncertain_round_incomplete_and_counts_nothing_f
     assert alone.completeness.status == "verified_complete"  # nothing uncertain
     completeness = both.completeness
     assert completeness.status == "incomplete"  # not verified despite 2 of 2 supplied
-    assert completeness.rounds_timeline_not_complete == (2,)
-    assert "round_timeline_unavailable" in completeness.blocking_reasons
+    # Same reading as the stored view (aggregate_saved_match): withheld scoring means
+    # the Round was not evaluated, not that it was evaluated with zero findings.
+    assert completeness.rounds_not_evaluated == (2,)
+    assert "round_not_evaluated" in completeness.blocking_reasons
+    assert [r.status for r in both.rounds] == ["included", "not_evaluated"]
     # the uncertain Round adds no evaluation and does not disturb the confirmed Round's counts
     assert [r.evaluation_count for r in both.rounds] == [1, 0]
     assert both.evaluations == alone.evaluations
