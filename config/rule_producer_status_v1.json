@@ -292,8 +292,8 @@
   },
   "side": {
    "before": "none",
-   "after": "none",
-   "producer": "no producer"
+   "after": "development",
+   "producer": "spike header in the recorder's own weapon inventory marks an attack round; the round ordinal comes from the top-bar score and the regulation half structure (game knowledge) gives the other regulation rounds (this change)"
   },
   "site_incoming_damage_risk_observed": {
    "before": "none",
@@ -307,8 +307,8 @@
   },
   "spike_carried_by_player": {
    "before": "none",
-   "after": "none",
-   "producer": "no producer"
+   "after": "development",
+   "producer": "spike header in the recorder's own weapon inventory, matched with a private template built from DEVELOPMENT recordings; false on defense rounds (this change)"
   },
   "spike_planted": {
    "before": "contract",

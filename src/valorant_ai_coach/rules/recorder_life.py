@@ -24,6 +24,9 @@ from dataclasses import dataclass, field
 
 MERGE_WINDOW_SEC = 8.0  # one death seen by several sources / consecutive samples
 REVIVE_MIN_SAMPLES = 2
+RESET_AFTER_SCORE_SEC = 20.0  # score shows the new point during the round-end screen
+MIN_ROUND_SEC = 20.0  # two score rises closer than this are one boundary seen twice
+MIN_ROUND_GAP_SEC = 45.0  # buy phase plus the shortest round
 
 
 @dataclass(frozen=True)
@@ -69,9 +72,51 @@ def rounds_from_alive_counts(samples: Sequence[tuple[float, int | None, int | No
             for i, start in enumerate(starts)]
 
 
+def rounds_from_scores(tracks: Sequence[Sequence[tuple[float, int]]],
+                       resets: Sequence[float] = (),
+                       buy_phase_starts: Sequence[float] = ()) -> list[Round]:
+    """Rounds from the top-bar score: a round ends exactly when one team's
+    score rises, so, unlike boundary counting, a missed or spurious 5 v 5 reset
+    cannot add or drop rounds. ``tracks`` are confirmed (sec, score) reads per
+    team; either team alone is enough to place a boundary, which matters when
+    one score is unreadable for a while.
+
+    The score changes on the round-end screen and its first new read can also
+    come well into the next round, so ``resets`` (top-bar 5 v 5 resets) place
+    the start: the first reset after the last read of the old score and at most
+    ``RESET_AFTER_SCORE_SEC`` after the new read. Other resets are ignored,
+    except ``buy_phase_starts`` (resets followed by a whole buy phase at 5 v 5),
+    which add a boundary the score missed when no boundary is near.
+    """
+    first = min((track[0][0] for track in tracks if track), default=None)
+    if first is None:
+        return []
+    boundaries: list[float] = []
+    for track in tracks:
+        for (old_sec, old), (sec, value) in zip(track, track[1:], strict=False):
+            if value > old:
+                # A rise by n (score unreadable for a while) closes n rounds; the
+                # earliest n resets in the gap place them where they can.
+                between = sorted(r for r in resets if old_sec < r <= sec + RESET_AFTER_SCORE_SEC)
+                placed = between[:value - old]
+                boundaries.extend(placed if placed else [sec])
+    starts = [first]
+    for boundary in sorted(boundaries):
+        if boundary - starts[-1] >= MIN_ROUND_SEC:
+            starts.append(boundary)
+    for extra in buy_phase_starts:
+        if extra > first and all(abs(extra - start) >= MIN_ROUND_GAP_SEC for start in starts):
+            starts.append(extra)
+    starts.sort()
+    return [Round(start, starts[i + 1] if i + 1 < len(starts) else None)
+            for i, start in enumerate(starts)]
+
+
 def _round_of(rounds: Sequence[Round], sec: float) -> int | None:
-    for index, span in enumerate(rounds):
-        if span.contains(sec):
+    # Latest round first: a sample exactly at a boundary belongs to the round that
+    # starts there (spans share their boundary with the next start).
+    for index in range(len(rounds) - 1, -1, -1):
+        if rounds[index].contains(sec):
             return index
     return None
 

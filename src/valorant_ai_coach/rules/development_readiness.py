@@ -15,6 +15,7 @@ from typing import Any
 
 from valorant_ai_coach.knowledge.timeline_view import TimelineView
 
+from ..knowledge.score_reader import score_track
 from .recorder_life import (
     Reconciliation,
     RecorderDeath,
@@ -22,11 +23,16 @@ from .recorder_life import (
     _round_of,
     reconcile,
     rounds_from_alive_counts,
+    rounds_from_scores,
 )
+from .side import DEFENSE, RoundOrdinal, SideInference, infer_sides
 
 SELF_VIEW_MIN_SCORE = 0.6
 CHARGE_DROP = 0.25
 FEED_REPEAT_SEC = 7.0
+TEAM_SIZE = 5
+BUY_PHASE_MIN_SEC = 20.0  # 5 v 5 held this long after a reset: a real buy phase
+MIN_SCORE_ROUNDS = 3  # fewer score-delimited rounds: fall back to boundary sources
 CONFIRM_WINDOW_SEC = 12.0
 
 
@@ -50,6 +56,8 @@ class Observation:
     enemy_alive: int | None
     spike_planted: bool | None = None
     feed: tuple[FeedKill, ...] | None = None  # None: kill feed not captured
+    spike_carried: bool | None = None  # spike header in the viewed inventory
+    score: tuple[int | None, int | None] | None = None  # top-bar ally, enemy score
 
 
 @dataclass
@@ -64,6 +72,7 @@ class Derivation:
     samples: list[DerivedSample]
     reconciliation: Reconciliation
     sources: dict[str, str]
+    sides: SideInference
 
 
 def _new_feed_kills(series: Sequence[Observation]) -> dict[float, list[FeedKill]]:
@@ -90,7 +99,7 @@ def _new_feed_kills(series: Sequence[Observation]) -> dict[float, list[FeedKill]
 
 
 def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_role: str,
-           timeline: TimelineView | None = None) -> Derivation:
+           timeline: TimelineView | None = None, *, rounds_per_half: int = 12) -> Derivation:
     """Candidate facts/events per sample. Facts are omitted (missing) when unobserved.
 
     With a shared timeline, the recorder's own live view and deaths come from
@@ -107,8 +116,24 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
             return timeline.self_live(obs.sec)
         return hud_self(obs)
 
+    score_tracks = [score_track([(o.sec, o.score[side] if o.score else None) for o in series])
+                    for side in (0, 1)]
+    ordinal = RoundOrdinal(*score_tracks)
     bar_rounds = rounds_from_alive_counts([(o.sec, o.ally_alive, o.enemy_alive) for o in series])
-    if timeline is not None and timeline.rounds():
+    def buy_phase_follows(start: float) -> bool:
+        window = [o for o in series if start <= o.sec < start + BUY_PHASE_MIN_SEC + 0.1]
+        return (len(window) >= 2 and window[-1].sec - start >= BUY_PHASE_MIN_SEC - 0.1
+                and all(o.ally_alive == TEAM_SIZE and o.enemy_alive == TEAM_SIZE
+                        for o in window))
+
+    score_rounds = rounds_from_scores(
+        score_tracks, resets=[r.start for r in bar_rounds],
+        buy_phase_starts=[r.start for r in bar_rounds if buy_phase_follows(r.start)])
+    if len(score_rounds) >= MIN_SCORE_ROUNDS:
+        # The score cannot over- or under-count rounds the way boundary detection can.
+        rounds = score_rounds
+        round_source = "score"
+    elif timeline is not None and timeline.rounds():
         # The timeline owns round boundaries; top-bar resets only fill rounds the
         # timeline did not delimit.
         rounds = [Round(r.start, r.end) for r in timeline.rounds()]
@@ -150,6 +175,22 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
                 hud_deaths.append(obs.sec)
             previous = obs
         candidates["hud"] = hud_deaths
+    # The recorder cannot be dead while the top bar shows the whole ally team
+    # alive at the candidate and the next sample (round-transition HUD changes).
+    by_sec = {o.sec: index for index, o in enumerate(series)}
+
+    def full_team_alive(sec: float) -> bool:
+        index = by_sec.get(sec)
+        if index is None:
+            return False
+        window = series[index:index + 2]
+        return len(window) == 2 and all(o.ally_alive == TEAM_SIZE for o in window)
+
+    full_team_drops = 0
+    for source in list(candidates):
+        kept = [sec for sec in candidates[source] if not full_team_alive(sec)]
+        full_team_drops += len(candidates[source]) - len(kept)
+        candidates[source] = kept
     # Revive evidence: own live view mid-round (not everyone alive, which would be
     # a fresh round whose reset the round source missed).
     live = [o.sec for o in series if self_view(o) and o.ally_alive is not None
@@ -160,12 +201,18 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
         spectating_at=timeline.spectating if timeline is not None else None,
         live_samples=live)
     reconciliation.dropped["kill_feed_unconfirmed"] = unconfirmed
+    reconciliation.dropped["full_team_alive"] = full_team_drops
     death_samples: dict[float, RecorderDeath] = {}
     for recorded in reconciliation.deaths:
         later = [o.sec for o in series if o.sec >= recorded.sec - 0.5]
         if later:
             death_samples[later[0]] = recorded
     first_kill_round: set[int] = set()
+    # Side: a spike header in the recorder's own live view marks an attack round;
+    # the half structure (game knowledge) extends it to the other regulation rounds.
+    attack_ordinals = {ordinal.at(o.sec) for o in series
+                       if o.spike_carried and self_view(o)} - {None}
+    sides = infer_sides(attack_ordinals, rounds_per_half=rounds_per_half)  # type: ignore[arg-type]
 
     samples: list[DerivedSample] = []
     previous = None
@@ -178,6 +225,16 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
         round_index = _round_of(rounds, obs.sec)
         if recorder_agent is not None:
             facts["player_role"] = recorder_role
+        if round_index is not None and (
+                previous is None or _round_of(rounds, previous.sec) != round_index):
+            events.add("round_start")
+        side = sides.side(ordinal.at(obs.sec))
+        if side is not None:
+            facts["side"] = side[0]
+            if side[0] == DEFENSE:
+                facts["spike_carried_by_player"] = False
+        if own and obs.spike_carried:
+            facts["spike_carried_by_player"] = True
         bar_ok = obs.ally_alive is not None and obs.enemy_alive is not None
         if bar_ok and obs.ally_alive and obs.enemy_alive:
             ally, enemy = int(obs.ally_alive), int(obs.enemy_alive)
@@ -235,8 +292,9 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
         previous = obs
     sources = {"rounds": round_source,
                "self_view": "timeline" if timeline is not None else "ability_hud",
-               "deaths": "+".join(sorted(candidates))}
-    return Derivation(samples, reconciliation, sources)
+               "deaths": "+".join(sorted(candidates)),
+               "side": sides.status}
+    return Derivation(samples, reconciliation, sources, sides)
 
 
 def _predicate(value: Any, op: str, expected: Any) -> bool:

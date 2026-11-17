@@ -20,6 +20,8 @@ from valorant_ai_coach.knowledge import load_game_knowledge
 from valorant_ai_coach.knowledge.assets import ReferenceAssets
 from valorant_ai_coach.knowledge.hud_abilities import AbilityHudReader, identify_agent
 from valorant_ai_coach.knowledge.kill_feed import KillFeedReader
+from valorant_ai_coach.knowledge.score_reader import ScoreReader, ScoreTemplatesUnavailable
+from valorant_ai_coach.knowledge.spike_carrier import SpikeCarrierReader, SpikeTemplateUnavailable
 from valorant_ai_coach.knowledge.timeline_view import TimelineView
 from valorant_ai_coach.knowledge.top_bar import read_top_bar, spike_planted_indicator
 from valorant_ai_coach.learning.archives import CropArchive
@@ -33,11 +35,13 @@ from valorant_ai_coach.rules.development_readiness import (
 
 
 def observe(archive: Path, reader: AbilityHudReader, feed_reader: KillFeedReader,
-            timeline: TimelineView | None) -> tuple[list[Observation], dict[str, object]]:
+            timeline: TimelineView | None, spike_reader: SpikeCarrierReader | None = None,
+            score_reader: ScoreReader | None = None,
+            ) -> tuple[list[Observation], dict[str, object]]:
     crops = CropArchive(archive)
     readings, series, live = [], [], []
     names = {agent.uuid: agent.name for agent in reader.knowledge.agents}
-    for sample in crops.iter_samples(("abilities", "top_bar", "kill_feed")):
+    for sample in crops.iter_samples(("abilities", "top_bar", "kill_feed", "weapon_inventory")):
         hud = reader.read(sample.crops["abilities"]) if "abilities" in sample.crops else None
         bar = read_top_bar(sample.crops["top_bar"]) if "top_bar" in sample.crops else None
         spike = spike_planted_indicator(sample.crops["top_bar"])[0] \
@@ -49,6 +53,13 @@ def observe(archive: Path, reader: AbilityHudReader, feed_reader: KillFeedReader
                          e.victim if e.victim_score >= 0.6 else None,
                          e.recorder_killer, e.recorder_victim)
                 for e in feed_reader.read(sample.crops["kill_feed"]))
+        carried = None
+        score = None
+        if score_reader is not None and "top_bar" in sample.crops:
+            reading = score_reader.read(sample.crops["top_bar"])
+            score = (reading.ally, reading.enemy)
+        if spike_reader is not None and "weapon_inventory" in sample.crops:
+            carried = spike_reader.read(sample.crops["weapon_inventory"]).carried
         if hud is not None:
             readings.append(hud)
             live.append(timeline.self_live(sample.sec) if timeline is not None else False)
@@ -64,6 +75,8 @@ def observe(archive: Path, reader: AbilityHudReader, feed_reader: KillFeedReader
             enemy_alive=bar.enemy.alive if bar is not None and bar.consistent else None,
             spike_planted=spike,
             feed=feed,
+            spike_carried=carried,
+            score=score,
         ))
     ident = identify_agent(readings, self_live=live if timeline is not None else None)
     meta = {"video_id": crops.video_id, "samples": len(series), "status": ident.status,
@@ -87,6 +100,16 @@ def main() -> int:
     assets = ReferenceAssets.load(args.cache)
     reader = AbilityHudReader(knowledge, assets)
     feed_reader = KillFeedReader(knowledge, assets)
+    try:
+        spike_reader: SpikeCarrierReader | None = SpikeCarrierReader.load(args.cache)
+    except SpikeTemplateUnavailable as exc:
+        print(f"spike carrier disabled: {exc}")
+        spike_reader = None
+    try:
+        score_reader: ScoreReader | None = ScoreReader.load(args.cache)
+    except ScoreTemplatesUnavailable as exc:
+        print(f"score reader disabled: {exc}")
+        score_reader = None
     timelines = (json.loads(args.timeline_map.read_text(encoding="utf-8"))
                  if args.timeline_map else {})
     rules = load_rules()
@@ -96,10 +119,12 @@ def main() -> int:
     for archive in sorted(args.archives):
         timeline_path = timelines.get(archive.stem)
         timeline = TimelineView.load(Path(timeline_path)) if timeline_path else None
-        series, meta = observe(archive, reader, feed_reader, timeline)
+        series, meta = observe(archive, reader, feed_reader, timeline, spike_reader,
+                               score_reader)
         agent = knowledge.agent(meta["agent"]) if meta["agent"] else None  # type: ignore[arg-type]
         derivation = derive(series, agent.name if agent else None,
-                            agent.role if agent else "unknown", timeline)
+                            agent.role if agent else "unknown", timeline,
+                            rounds_per_half=int(knowledge.rule("regulation_rounds_per_half")))
         derived = derivation.samples
         counts = rule_occurrences(rules, derived)
         recon = derivation.reconciliation
@@ -115,6 +140,14 @@ def main() -> int:
             "dropped": recon.dropped,
             "by_sources": {"+".join(sorted(d.sources)): sum(
                 1 for x in recon.deaths if x.sources == d.sources) for d in recon.deaths},
+        }
+        sides = derivation.sides
+        meta["side"] = {
+            "status": sides.status, "first_half_side": sides.first_half_side,
+            "observed_attack_ordinals": list(sides.observed),
+            "samples_with_side": sum("side" in d.facts for d in derivation.samples),
+            "samples_with_score": sum(bool(o.score and None not in o.score) for o in series),
+            "spike_carried_samples": sum(bool(o.spike_carried) for o in series),
         }
         for rule_id, count in counts.items():
             totals[rule_id] += count
