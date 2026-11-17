@@ -66,3 +66,27 @@ def test_public_reference_alignment_is_advisory_and_blank_view_is_unknown(tmp_pa
         module.PublicMapPixels(
             index, layout, verified_references=[("VerifiedOnly", "m", extra, "e"*64)],
         )
+
+
+def test_exact_search_recovery_requires_agreeing_geometry(monkeypatch):
+    reader = object.__new__(module.PublicMapPixels)
+    reader.matcher = object()
+    reader.exact_matcher = object()
+    baseline = {
+        "map_id": "test", "inliers": 17,
+        "reference_to_roi_homography_candidate": [[1, 0, 1], [0, 1, 1], [0, 0, 1]],
+    }
+    candidate = {**baseline, "inliers": 23}
+
+    def inspect(image, matcher):
+        exact = matcher is reader.exact_matcher
+        return {"raw": {"reference_ranking": [candidate if exact else baseline],
+                        "map_name_candidates": [candidate] if exact else [],
+                        "roi_pixel_bounds": [0, 0, 200, 200]}}
+
+    monkeypatch.setattr(reader, "_inspect", inspect)
+    pixels = np.zeros((240, 240, 3), np.uint8)
+    assert not reader.inspect(pixels)["raw"]["map_name_candidates"]
+    assert reader.inspect(pixels, recover_alignment=True)["raw"]["map_name_candidates"]
+    candidate["reference_to_roi_homography_candidate"] = [[1, 0, 25], [0, 1, 1], [0, 0, 1]]
+    assert not reader.inspect(pixels, recover_alignment=True)["raw"]["map_name_candidates"]

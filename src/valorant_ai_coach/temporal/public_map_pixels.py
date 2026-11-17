@@ -35,6 +35,7 @@ class PublicMapPixels:
         self.layout = HudLayout.load(layout_path)
         self.orb: Any = cast(Any, cv2).SIFT_create(nfeatures=1200, contrastThreshold=0.008)
         self.matcher = cv2.FlannBasedMatcher(dict(algorithm=1, trees=3), dict(checks=32))
+        self.exact_matcher = cv2.BFMatcher(cv2.NORM_L2)
         self.references = []
         assets = {}
         paths: dict[str, tuple[str, Path, str | None]] = {}
@@ -83,7 +84,40 @@ class PublicMapPixels:
         }
         self.fingerprint = digest(self.bindings)
 
-    def inspect(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+    def inspect(
+        self, image: NDArray[np.uint8], *, recover_alignment: bool = False,
+    ) -> dict[str, Any]:
+        baseline = self._inspect(image, self.matcher)
+        raw = baseline["raw"]
+        ranks = raw["reference_ranking"]
+        if not recover_alignment or raw["map_name_candidates"] or not ranks:
+            return baseline
+        old = ranks[0]
+        if old["inliers"] < 12:
+            return baseline
+        recovered = self._inspect(image, self.exact_matcher)
+        candidates = recovered["raw"]["map_name_candidates"]
+        if not candidates or candidates[0]["map_id"] != old["map_id"]:
+            return baseline
+        new = candidates[0]
+        left, top, right, bottom = raw["roi_pixel_bounds"]
+        audit = np.array([
+            [.3*(right-left), .3*(bottom-top), 1.],
+            [.7*(right-left), .3*(bottom-top), 1.],
+            [.3*(right-left), .7*(bottom-top), 1.],
+            [.7*(right-left), .7*(bottom-top), 1.],
+        ]).T
+        try:
+            original = np.linalg.solve(old["reference_to_roi_homography_candidate"], audit)
+            exact = np.linalg.solve(new["reference_to_roi_homography_candidate"], audit)
+        except np.linalg.LinAlgError:
+            return baseline
+        if float(np.linalg.norm(original[:2] - exact[:2], axis=0).max()) > 12.:
+            return baseline
+        recovered["raw"]["alignment_recovery"] = "agreeing_exact_descriptor_search"
+        return recovered
+
+    def _inspect(self, image: NDArray[np.uint8], matcher: Any) -> dict[str, Any]:
         if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:
             raise ValueError("Native BGR pixels required")
         h, w = image.shape[:2]
@@ -94,7 +128,7 @@ class PublicMapPixels:
         ranking = []
         if descriptors is not None and len(keypoints) >= 4:
             for name, identity, reference_points, reference_descriptors, size in self.references:
-                pairs = self.matcher.knnMatch(reference_descriptors, descriptors, k=2)
+                pairs = matcher.knnMatch(reference_descriptors, descriptors, k=2)
                 good = [p[0] for p in pairs if len(p) == 2 and p[0].distance < 0.75 * p[1].distance]
                 unique: dict[int, Any] = {}
                 for match in sorted(good, key=lambda m: m.distance):

@@ -265,3 +265,51 @@ def test_knowledge_and_legacy_competing_physical_markers_remove_path_witness(mon
     assert result["support_candidate_index"] is None
     assert result["support_count"] == 0
     assert result["ownership"] == "UNKNOWN"
+
+
+def test_short_uuid_recovery_requires_same_scope_and_current_marker(monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
+
+    portrait = _image(80)[55:66, 75:86].copy()
+    knowledge = KnowledgeRecorderMap(
+        hud=SimpleNamespace(agent_uuids=("recorder", "rival")),
+        catalog=SimpleNamespace(agent=lambda name: SimpleNamespace(uuid="recorder", name=name)),
+        portraits=[("recorder", portrait), ("rival", np.fliplr(portrait))], provenance={},
+        recover_track=True,
+    )
+
+    def observe(x, tick, *, current_uuid, has_marker=True):
+        image = _image(x)
+        pool = [{"center_frame_px": [x, 60]}]
+        frame = _context(image, tick, pool)
+        sample = frame["sample"]
+        panel = observation(
+            sample=sample, producer="c"*64, signals=["owner_hud"],
+            context={"stream_kind": "camera_panel"},
+            raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                  "own_ability_bar_score": .90},
+                 "qualified": False, "formal_outputs": 0},
+        )
+        frame["camera"]["evidence_ids"] = frame["observation_ids"] = [panel["observation_id"]]
+        marker, = measure_marker_geometry(image, pool)
+        assert marker
+        monkeypatch.setattr(knowledge, "_hud_uuid", lambda image: current_uuid)
+        monkeypatch.setattr(knowledge, "_matches", lambda *args, **kwargs: (
+            ((0, marker), "matched_agent_uuid") if has_marker else (None, "ambiguous")
+        ))
+        baseline = MapRecorderSelector([]).observe(
+            image, pool, sample, frame, observations=[panel],
+        )
+        return knowledge.observe(image, pool, sample, frame, [panel], baseline)
+
+    assert observe(80, 6, current_uuid="recorder")["selection_status"] == "RESEARCH_SELECTED"
+    recovered = observe(81, 18, current_uuid=None)
+    assert recovered["selection_status"] == "RESEARCH_SELECTED"
+    assert recovered["support_count"] == 2
+    assert recovered["ownership"] == "UNKNOWN"
+    assert observe(82, 30, current_uuid=None)["knowledge_reason"] == "ability_hud_unresolved"
+    assert observe(83, 42, current_uuid="recorder")["selection_status"] == "RESEARCH_SELECTED"
+    assert observe(84, 54, current_uuid=None, has_marker=False)["selection_status"] == "ABSTAIN"
+    assert observe(85, 66, current_uuid=None)["selection_status"] == "ABSTAIN"

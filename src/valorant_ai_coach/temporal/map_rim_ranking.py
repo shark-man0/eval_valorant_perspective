@@ -24,13 +24,29 @@ def measure_warm_rims(
         raise ValueError("Native BGR frame required")
     height, width = image.shape[:2]
     scale = width / 1920
-    hue, sat, value = cv2.split(cv2.cvtColor(image, cv2.COLOR_BGR2HSV))
+    extent = max(1, math.ceil(20 * scale))
+    centers_px = [tuple(map(round, row["center_frame_px"])) for row in candidates]
+    valid = [(x, y) for x, y in centers_px
+             if extent <= x < width - extent and extent <= y < height - extent]
+    output: list[dict[str, Any]] = [
+        {"candidate_index": index, "features": None} for index in range(len(candidates))
+    ]
+    if not valid:
+        return output
+    left = min(x for x, _ in valid) - extent
+    top = min(y for _, y in valid) - extent
+    right = max(x for x, _ in valid) + extent + 1
+    bottom = max(y for _, y in valid) + extent + 1
+    bounds = np.s_[top:bottom, left:right]
+    # Convert the full native image first. OpenCV may round differently when
+    # converting a crop that changes the SIMD lane boundaries.
+    hue, sat, value = cv2.split(cv2.cvtColor(image, cv2.COLOR_BGR2HSV)[bounds])
     strength = (
         ((hue >= 13) & (hue <= 42))
         * np.clip((sat.astype(np.float32) - 20) / 65, 0, 1)
         * np.clip((value.astype(np.float32) - 138) / 85, 0, 1)
     )
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).astype(np.float32)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)[bounds].astype(np.float32)
     angles = np.arange(24) * math.tau / 24
     base_radii = np.arange(3, 17)
     rad = base_radii[:, None] * scale
@@ -39,21 +55,18 @@ def measure_warm_rims(
     offset = np.arange(-4, 5, 2) * scale
     ox, oy = np.meshgrid(np.rint(offset).astype(int), np.rint(offset).astype(int))
     offsets = np.stack((ox.ravel(), oy.ravel()), axis=1)
-    extent = max(1, math.ceil(20 * scale))
-    output = []
-    for index, candidate in enumerate(candidates):
-        x, y = map(round, candidate["center_frame_px"])
-        item: dict[str, Any] = {"candidate_index": index, "features": None}
-        output.append(item)
+    for (x, y), item in zip(centers_px, output, strict=True):
         if not (extent <= x < width - extent and extent <= y < height - extent):
             continue
         centers = offsets + [x, y]
         sx = centers[:, 0, None, None] + dx[None, :, :]
         sy = centers[:, 1, None, None] + dy[None, :, :]
-        ring = strength[sy, sx]
+        local_y, local_x = sy - top, sx - left
+        ring = strength[local_y, local_x]
         inner = ring[:, :3, :].mean(axis=(1, 2))
         outside = ring[:, -2:, :].mean(axis=(1, 2))
-        interior = np.clip(gray[sy[:, :3, :], sx[:, :3, :]].std(axis=(1, 2)) / 36, 0, 1)
+        inner_gray = gray[local_y[:, :3, :], local_x[:, :3, :]]
+        interior = np.clip(inner_gray.std(axis=(1, 2)) / 36, 0, 1)
         # Sector support rewards an enclosing rim, and penalizes a warm filled
         # icon or map surface even if it also contains an outward projection.
         shell = ring[:, 3:10, :].max(axis=1)

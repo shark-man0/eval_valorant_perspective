@@ -19,6 +19,7 @@ from .evidence import digest, freeze_native_sample, native_time, source_scope
 from .map_marker_geometry import MarkerGeometry, measure_marker_geometry, same_marker
 from .map_recorder_camera import measure_recorder_view
 from .map_recorder_path import ReferenceCallouts
+from .map_recorder_selection import _partial_portrait
 from .map_rim_ranking import measure_warm_rims, rank_rim_candidates
 from .map_shape_ranking import rank_marker_context
 from .replay import read_json
@@ -43,6 +44,8 @@ class _Match:
     round_token: str | None
     camera_fingerprint: str
     count: int
+    hud_time: Fraction
+    partial: bool
 
 
 class KnowledgeRecorderMap:
@@ -52,7 +55,9 @@ class KnowledgeRecorderMap:
         self, *, hud: Any, catalog: Any,
         portraits: Sequence[tuple[str, NDArray[np.uint8]]], provenance: dict[str, Any],
         map_references: Sequence[tuple[str, str, Path, str]] = (),
+        recover_track: bool = False,
     ) -> None:
+        self._recover_track = recover_track
         self._hud = hud
         self._catalog = catalog
         self.provenance = provenance
@@ -84,7 +89,9 @@ class KnowledgeRecorderMap:
         self._previous: _Match | None = None
 
     @classmethod
-    def load(cls, asset_cache: Path, map_catalog: Path) -> KnowledgeRecorderMap:
+    def load(
+        cls, asset_cache: Path, map_catalog: Path, *, recover_track: bool = False,
+    ) -> KnowledgeRecorderMap:
         # PR #153 is an opt-in dependency. The ordinary Map exporter remains
         # available in a checkout that does not contain the Knowledge package.
         try:
@@ -126,7 +133,7 @@ class KnowledgeRecorderMap:
             hud=hud_module.AbilityHudReader(catalog, assets), catalog=catalog, portraits=portraits,
             provenance={"knowledge_asset_digest": assets.content_digest,
                         "minimap_portrait_sha256": hashes},
-            map_references=map_references,
+            map_references=map_references, recover_track=recover_track,
         )
 
     @staticmethod
@@ -209,27 +216,46 @@ class KnowledgeRecorderMap:
         ranked = rank_rim_candidates(
             rank_marker_context(image, pool), rims, rim_weight=6, direction_weight=2,
         )
-        # Geometry of all warm-shell candidates can veto or duplicate a match.
-        indices = [row["candidate_index"] for row in ranked if row["rim_support"] >= .30]
-        geometry = measure_marker_geometry(image, [pool[i] for i in indices])
         target = self._uuids.index(uuid)
         matches: list[tuple[int, MarkerGeometry]] = []
         rivals: list[MarkerGeometry] = []
-        for index, marker in zip(indices, geometry, strict=True):
-            if marker is None or marker.palette != "WARM":
-                if marker is not None:
+
+        def evaluate(indices: list[int], *, require_tip: bool) -> None:
+            geometry = measure_marker_geometry(image, [pool[i] for i in indices])
+            for index, marker in zip(indices, geometry, strict=True):
+                if marker is None:
+                    continue
+                if marker.palette != "WARM":
                     rivals.append(marker)
-                continue
-            scores = self._portrait_scores(image, marker.center)
-            if scores is None:
-                continue
-            best = float(scores[target])
-            rival = float(np.delete(scores, target).max())
-            if best < .75 or best - rival < .12 or marker.support < .65:
-                rivals.append(marker)
-                continue
-            if all(not same_marker(marker, other) for _, other in matches):
-                matches.append((index, marker))
+                    continue
+                scores = self._portrait_scores(image, marker.center)
+                if scores is None:
+                    continue
+                best = float(scores[target])
+                rival = float(np.delete(scores, target).max())
+                if (best < .75 or best - rival < .12 or marker.support < .65
+                        or (require_tip and (marker.support < .84 or marker.tip is None))):
+                    rivals.append(marker)
+                    continue
+                if all(not same_marker(marker, other) for _, other in matches):
+                    matches.append((index, marker))
+
+        indices = [row["candidate_index"] for row in ranked if row["rim_support"] >= .30]
+        evaluate(indices, require_tip=False)
+        reason = "matched_agent_uuid"
+        if self._recover_track and not matches:
+            # A weak prescreen can miss a dim portrait. Only the same UUID plus
+            # a fully fitted directional rim can rescue a new observation here.
+            weak = [
+                row["candidate_index"] for row in ranked
+                if .15 <= row["rim_support"] < .30
+                and pool[row["candidate_index"]].get("proposal_kind") == "loose_hough_circle"
+                and (rims[row["candidate_index"]]["features"] or {}).get(
+                    "opposing_shell_support", 0,
+                ) >= .18
+            ]
+            evaluate(weak, require_tip=True)
+            reason = "fully_fitted_rim_from_weak_prescreen"
         if not matches:
             return None, "portrait_agent_unresolved"
         if len(matches) > 1:
@@ -238,7 +264,42 @@ class KnowledgeRecorderMap:
         if any(not same_marker(marker, other) and
                math.dist(marker.center, other.center) <= marker.radius * 2 for other in rivals):
             return None, "competing_marker_or_overlap"
-        return (index, marker), "matched_agent_uuid"
+        return (index, marker), reason
+
+    def _recover_local_portrait(
+        self, image: NDArray[np.uint8], pool: list[dict[str, Any]],
+        previous: _Match, uid: str, reach: float,
+    ) -> tuple[int, MarkerGeometry] | None:
+        if previous.partial:
+            return None
+        local = [(i, c) for i, c in enumerate(pool)
+                 if math.dist(c["center_frame_px"], previous.marker.center) <= reach + 8]
+        if not local:
+            return None
+        features = measure_warm_rims(image, [candidate for _, candidate in local])
+        target = self._uuids.index(uid)
+        matches: list[tuple[int, MarkerGeometry]] = []
+        for (index, _), row in zip(local, features, strict=True):
+            rim = row["features"]
+            marker = _partial_portrait(image, rim, previous.marker.radius) if rim else None
+            if marker is None or math.dist(marker.center, previous.marker.center) > reach:
+                continue
+            scores = self._portrait_scores(image, marker.center)
+            if scores is None or scores[target] < .80:
+                continue
+            if scores[target] - np.delete(scores, target).max() < .16:
+                continue
+            if all(not same_marker(marker, other) for _, other in matches):
+                matches.append((index, marker))
+        if len(matches) != 1:
+            return None
+        index, marker = matches[0]
+        neighbors = measure_marker_geometry(image, [candidate for _, candidate in local])
+        if any(other is not None and not same_marker(marker, other)
+               and math.dist(marker.center, other.center) <= 2 * marker.radius
+               for other in neighbors):
+            return None
+        return index, marker
 
     def observe(
         self, image: NDArray[np.uint8], pool: list[dict[str, Any]], sample: dict[str, Any],
@@ -268,9 +329,30 @@ class KnowledgeRecorderMap:
             "ordered_candidate_pool_digest")
         if (supplied != digest(pool) if supplied is not None else mapped.get("candidates") != pool):
             return baseline
+        now = native_time(sample)
+        round_token = frame.get("round_token")
+        adjacent = None
+        reach = 0.
+        if previous is not None:
+            gap = now - native_time(previous.sample)
+            if (
+                0 < gap <= Fraction(1, 4)
+                and source_scope(sample) == source_scope(previous.sample)
+                and previous.sample["native_pixel_sha256"] != sample["native_pixel_sha256"]
+                and previous.round_token == round_token
+                and previous.camera_fingerprint == camera
+                and frame.get("continuity", {}).get("carry_allowed") is True
+            ):
+                adjacent = previous
+                reach = image.shape[1] / 1920 * (3 + 35 * float(gap))
         uid = self._hud_uuid(image)
+        hud_time = now
         if uid is None:
-            return {**baseline, "knowledge_reason": "ability_hud_unresolved"}
+            if (not self._recover_track or adjacent is None or not round_token
+                    or now - adjacent.hud_time > Fraction(1, 4)):
+                return {**baseline, "knowledge_reason": "ability_hud_unresolved"}
+            uid = adjacent.uuid
+            hud_time = adjacent.hud_time
         view = frame.get("viewed_identity") or {}
         anchor = view.get("recording_player_anchor")
         if view.get("agent_signature_relation") == "DIFFERENT":
@@ -286,28 +368,26 @@ class KnowledgeRecorderMap:
             if known is not None and known.uuid != uid:
                 return _conflict(baseline, "ability_hud_conflicts_with_anchor")
         chosen, reason = self._matches(image, pool, uid)
+        partial = False
+        if (self._recover_track and chosen is None and reason == "portrait_agent_unresolved"
+                and adjacent is not None and adjacent.uuid == uid and round_token):
+            chosen = self._recover_local_portrait(image, pool, adjacent, uid, reach)
+            partial = chosen is not None
+            if partial:
+                reason = "locally_observed_partial_portrait"
         if chosen is None:
             if (baseline["selection_status"] == "RESEARCH_SELECTED"
                     and reason in {"distinct_matching_markers", "competing_marker_or_overlap"}):
                 return _conflict(baseline, reason)
             return {**baseline, "knowledge_reason": reason}
         index, marker = chosen
-        round_token = frame.get("round_token")
         count = 1
-        if previous is not None:
-            gap = native_time(sample) - native_time(previous.sample)
-            if (
-                0 < gap <= Fraction(1, 4)
-                and source_scope(sample) == source_scope(previous.sample)
-                and previous.sample["native_pixel_sha256"] != sample["native_pixel_sha256"]
-                and previous.round_token == round_token and previous.uuid == uid
-                and previous.camera_fingerprint == camera
-                and frame.get("continuity", {}).get("carry_allowed") is True
-                and math.dist(marker.center, previous.marker.center)
-                <= image.shape[1] / 1920 * (3 + 35*float(gap))
-            ):
-                count = previous.count + 1
-        self._previous = _Match(marker, uid, sample, round_token, camera, count)
+        if (adjacent is not None and adjacent.uuid == uid
+                and math.dist(marker.center, adjacent.marker.center) <= reach):
+            count = adjacent.count + 1
+        if hud_time != now and count == 1:
+            return {**baseline, "knowledge_reason": "local_track_disagrees"}
+        self._previous = _Match(marker, uid, sample, round_token, camera, count, hud_time, partial)
         accepted = count >= 2 or (marker.tip is not None and marker.support >= .84)
         if accepted and baseline["selection_status"] == "RESEARCH_SELECTED":
             legacy_index = baseline["research_candidate_index"]
