@@ -280,3 +280,22 @@ def test_timeline_view_filters_identification(tmp_path: Path, knowledge) -> None
     ident = identify_agent(readings, self_live=live)
     assert ident.basis == "timeline_self_live"
     assert knowledge.agent(ident.agent_uuid).name == "Fade" and ident.vote_share == 1.0
+
+
+def test_kill_feed_entry_teams_and_local_player_highlight(knowledge) -> None:
+    from valorant_ai_coach.knowledge.kill_feed import FEED_BOX, KillFeedReader
+
+    width, height = FEED_BOX[2] - FEED_BOX[0], FEED_BOX[3] - FEED_BOX[1]
+    feed = np.zeros((height, width, 3), np.uint8)
+    feed[40:72, 60:260] = (160, 190, 40)  # killer half: teal (recorder's team), BGR
+    feed[40:72, 260:470] = (60, 60, 220)  # victim half: red (opponents)
+    feed[90:122, 60:260] = (60, 60, 220)  # second entry: enemy killed ...
+    feed[90:122, 260:470] = (160, 190, 40)  # ... a teammate
+    feed[86:126, 380:478:3] = (40, 220, 240)  # local-player frame (yellow) on the victim end
+    reader = KillFeedReader(knowledge, _SyntheticAssets())
+    entries = reader.read(feed)
+    assert [(e.killer_team, e.victim_team) for e in entries] == [("ally", "enemy"),
+                                                                 ("enemy", "ally")]
+    assert [e.recorder_victim for e in entries] == [False, True]
+    half = cv2.resize(feed, None, fx=0.75, fy=0.75, interpolation=cv2.INTER_AREA)
+    assert len(reader.read(half)) == 2

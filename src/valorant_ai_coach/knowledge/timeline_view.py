@@ -103,13 +103,18 @@ class TimelineView:
         return bool(state and state.spectating)
 
     def rounds(self) -> list[RoundSpan]:
-        """Round spans from round_start/round_end events (end None if unseen)."""
+        """Round spans from round_start/round_end events.
+
+        A round whose end was not seen is bounded by the next round start; only
+        the last round can stay open (end None).
+        """
         starts = [lo for kind, lo, _ in self.events if kind == "round_start"]
         ends = [hi for kind, _, hi in self.events if kind == "round_end"]
         spans = []
         for index, start in enumerate(starts):
-            limit = starts[index + 1] if index + 1 < len(starts) else float("inf")
-            end = next((e for e in ends if start < e <= limit), None)
+            following = starts[index + 1] if index + 1 < len(starts) else None
+            limit = following if following is not None else float("inf")
+            end = next((e for e in ends if start < e <= limit), following)
             spans.append(RoundSpan(start, end))
         return spans
 
