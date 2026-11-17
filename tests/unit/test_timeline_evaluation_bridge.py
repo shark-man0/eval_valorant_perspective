@@ -278,3 +278,77 @@ def test_p0_derived_samples_reach_the_selector_but_never_a_score():
     assert evaluation.rule_candidates[0]  # the production selector saw candidates
     assert all(a.output["evaluations"] == [] for a in evaluation.analyses)
     assert check_consistency(evaluation) == []
+
+
+# ----------------------------------------------------- formal Fact/Event supply
+
+
+def test_formal_facts_reach_storage_gui_and_report(tmp_path: Path):
+    """When a formal Fact/Event producer is plugged in, the whole chain still works.
+
+    The producer here replays the confirmed TC-005 Facts/Events inside Round 1 and the
+    analyzer has the #25 opt-in turned on (test only; the application default stays
+    off). The scored row must survive storage, the stored-match view the GUI reads,
+    the GUI result view and every report format, and must agree everywhere.
+    """
+    from match_fixtures import case_package
+    from test_result_view_model import MemoryCredentials
+
+    from valorant_ai_coach.application.timeline_evaluation import default_round_analyzer
+    from valorant_ai_coach.rules.policy_runtime import (
+        ProvisionalAdmissionTable,
+        ProvisionalEvaluationPolicy,
+    )
+    from valorant_ai_coach.settings import AppSettings, SettingsStore
+    from valorant_ai_coach.ui.backend import BackendFacade
+
+    confirmed = case_package("TC-005", round_no=1)
+
+    class FormalProvider:
+        def facts_for(self, bundle, round_):
+            if round_.round_no != 1:
+                return [], []
+            return deepcopy(confirmed["events"]), deepcopy(confirmed["deterministic_facts"])
+
+    bundle = bundle_from([1] * 100 + [2] * 20)
+    video = {**SOURCE_VIDEO, "duration_sec": 120.0}
+    # Default analyzer: the same supply is still withheld (no silent change).
+    withheld = evaluate_timeline(bundle, match_id="DEV-formal", source_video=video,
+                                 fact_provider=FormalProvider())
+    assert all(a.output["evaluations"] == [] for a in withheld.analyses)
+
+    policy = ProvisionalEvaluationPolicy(ProvisionalAdmissionTable.load(), enabled=True)
+    evaluation = evaluate_timeline(
+        bundle, match_id="DEV-formal", source_video=video, fact_provider=FormalProvider(),
+        analyzer=default_round_analyzer(provisional_policy=policy),
+    )
+    scored = [e for a in evaluation.analyses for e in a.output["evaluations"]]
+    assert [(e["primary_rule_id"], e["label"]) for e in scored] == [("AIM-03", "good")]
+    assert check_consistency(evaluation) == []
+
+    # Stored through the GUI's own repository so the GUI and report read the same rows.
+    store = SettingsStore(tmp_path / "settings.json", credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    backend = BackendFacade(store)
+    repository = backend.services.repository
+    stored = persist_evaluation(repository, evaluation, source_video_path=tmp_path / "v.mp4",
+                                source=bundle["source"])
+    checkpoint = repository.get_job_checkpoint("DEV-formal")["checkpoint"]
+    assert checkpoint["provisional_evaluation"] == "boundary_independent_v1"
+    assert check_consistency(evaluation, stored) == []
+    assert [e["evaluation_id"] for e in stored["evaluations"]] == [
+        e["evaluation_id"] for e in scored]
+
+    view = backend.get_match_result("DEV-formal")
+    assert view.match_aggregation_error is None
+    assert [(e.rule_id, e.label, e.round_no) for e in view.evaluations] == [
+        ("AIM-03", "good", 1)]
+    assert view.match_aggregation["evaluations"] == stored["evaluations"]
+
+    for fmt in ("json", "csv", "html"):
+        destination = tmp_path / f"report.{fmt}"
+        backend.export_report("DEV-formal", destination, fmt)
+        assert "AIM-03" in destination.read_text(encoding="utf-8")
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
+    assert [e["evaluation_id"] for e in report["evaluations"]] == [
+        e["evaluation_id"] for e in scored]

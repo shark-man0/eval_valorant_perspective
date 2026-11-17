@@ -14,6 +14,8 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
+from valorant_ai_coach.recordings.admission import admit_for_development, resolve_catalog
+
 from .replay import SourcePolicy, file_sha, read_json, write_private
 from .staged_validation import (
     RUN_FLAGS,
@@ -45,9 +47,20 @@ def settings(protocol: dict[str, Any]) -> dict[str, Any]:
     return {**normalized, **{k: frozen[k] for k in EXTRA_FLAGS}}
 
 
-def activate(*, batch: Path, protocol: Path, assessment: Path, allocation_sha256: str) -> Path:
-    """Metadata-only admission; does not open any recording content."""
+def activate(
+    *,
+    batch: Path,
+    protocol: Path,
+    assessment: Path,
+    allocation_sha256: str,
+    catalog: Path | None = None,
+) -> Path:
+    """Metadata-only admission; does not open any recording content.
+
+    With a recording catalog the catalog decides the admission and journals the use.
+    """
     batch, protocol, assessment = map(_private, (batch, protocol, assessment))
+    bound = resolve_catalog(catalog)
     with _exclusive(batch / ".second_activation.lock"):
         original = batch / "allocation.json"
         if file_sha(original) != allocation_sha256:
@@ -110,16 +123,24 @@ def activate(*, batch: Path, protocol: Path, assessment: Path, allocation_sha256
             "formal_outputs": 0,
         }
         write_private(stage / "manifest.json", manifest)
-        policy = {
-            "manifest": str(stage / "manifest.json"),
-            "allocation": str(original),
-            "manifest_sha256": file_sha(stage / "manifest.json"),
-            "allocation_sha256": allocation_sha256,
-            "allowed_source_sha256s": [admitted[0]["source_sha256"]],
-            "protected_source_sha256s": [
-                r["source_sha256"] for r in records if r["video_id"] != selected
-            ],
-        }
+        protected = [r["source_sha256"] for r in records if r["video_id"] != selected]
+        if bound is not None:
+            policy = admit_for_development(
+                bound,
+                source_sha256=admitted[0]["source_sha256"],
+                split="DEVELOPMENT",
+                protected_source_sha256s=protected,
+                note=f"second development activation ({batch.name})",
+            )
+        else:
+            policy = {
+                "manifest": str(stage / "manifest.json"),
+                "allocation": str(original),
+                "manifest_sha256": file_sha(stage / "manifest.json"),
+                "allocation_sha256": allocation_sha256,
+                "allowed_source_sha256s": [admitted[0]["source_sha256"]],
+                "protected_source_sha256s": protected,
+            }
         write_private(stage / "policy_PRIVATE.json", policy)
         SourcePolicy(policy)
         write_private(
@@ -296,6 +317,9 @@ def main() -> None:
     activation.add_argument("--protocol", type=Path, required=True)
     activation.add_argument("--assessment", type=Path, required=True)
     activation.add_argument("--allocation-sha256", required=True)
+    activation.add_argument(
+        "--catalog", type=Path, help="録画カタログ（省略時は VALORANT_RECORDING_CATALOG）"
+    )
     inspect = commands.add_parser("confirm")
     inspect.add_argument("--stage", type=Path, required=True)
     inspect.add_argument("--check", type=Path, required=True)

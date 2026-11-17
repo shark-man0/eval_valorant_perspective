@@ -277,12 +277,17 @@ def main() -> None:
                 unused_and_distinct=args.user_confirmed_unused_and_distinct,
                 unedited=args.user_confirmed_unedited, ffprobe=args.ffprobe, ffmpeg=args.ffmpeg,
             )
-            if args.catalog is not None:
-                from valorant_ai_coach.recordings import RecordingCatalog
+            from valorant_ai_coach.recordings.admission import resolve_catalog
 
-                imported = RecordingCatalog(args.catalog).import_legacy(batch / "manifest.json")
+            # The catalog (explicit or VALORANT_RECORDING_CATALOG) adopts the batch at
+            # once; a contradiction is an error, never a silent second allocation.
+            catalog = resolve_catalog(args.catalog)
+            if catalog is not None:
+                imported = catalog.import_legacy(batch / "manifest.json")
                 summary["catalog_import"] = {k: imported[k] if k != "conflicts"
                                              else len(imported[k]) for k in imported}
+                if imported["conflicts"]:
+                    raise ValueError("Registered batch conflicts with the recording catalog")
         else:
             summary = verify(args.batch, args.trusted_manifest_sha256,
                              args.trusted_allocation_sha256)

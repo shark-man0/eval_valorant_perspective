@@ -88,6 +88,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     sync.add_argument("--workspace", type=Path, required=True)
     sync.add_argument("--kind", default="frames")
     sync.add_argument("--include-authorised-exposed", action="store_true")
+    sync.add_argument("--dry-run", action="store_true", help="書き込まずに差分だけを表示")
     sub.add_parser("summary")
     listing = sub.add_parser("list-ids", help="録画IDの一覧（分割実行用。公開しないこと）")
     listing.add_argument("--location-prefix", type=Path)
@@ -179,7 +180,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             ))
         elif args.command == "sync-learning":
             # Imported dynamically: the continual-learning package (#154) is optional.
-            learning = importlib.import_module("valorant_ai_coach.learning.registry")
+            try:
+                learning = importlib.import_module("valorant_ai_coach.learning.registry")
+            except ModuleNotFoundError:
+                print(
+                    "継続学習基盤（#154）がこの環境にありません。#154の統合後に実行してください",
+                    file=sys.stderr,
+                )
+                return 2
             DatasetRegistry = learning.DatasetRegistry  # noqa: N806
 
             rows = catalog.learning_archives(
@@ -187,8 +195,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                 include_authorised_exposed=args.include_authorised_exposed,
             )
             registry = DatasetRegistry(args.workspace / "dataset_registry.json")
-            _print({**catalog.sync_learning_registry(registry, rows),
-                    "registry": registry.summary()})
+            result = catalog.sync_learning_registry(registry, rows, dry_run=args.dry_run)
+            _print({**result, "registry": registry.summary()})
+            if args.dry_run and (result["split_mismatch"] or result["id_mismatch"]):
+                return 1
         elif args.command == "verify":
             report = catalog.verify(
                 full=not args.quick, recording_ids=args.recordings,

@@ -81,6 +81,14 @@ class SourcePolicy:
             raise ValueError("Protected source cannot be allowlisted")
         self.manifest_sha = policy["manifest_sha256"]
         self.allocation_sha = policy["allocation_sha256"]
+        # A legacy allow-list is only a request: when a recording catalog is known
+        # (policy "catalog_check" or VALORANT_RECORDING_CATALOG), the catalog decides.
+        from valorant_ai_coach.recordings.admission import check_allowlist, resolve_catalog
+
+        catalog = resolve_catalog(policy.get("catalog_check"))
+        self.catalog_checked = catalog is not None
+        if catalog is not None:
+            check_allowlist(catalog, self.allowed.values())
 
     def _from_catalog(self, policy: dict[str, Any]) -> None:
         """Admission from the recording catalog (#62), the single source of truth.
@@ -89,11 +97,12 @@ class SourcePolicy:
         recording with an explicit user authorisation). Receipts written under the
         legacy manifests stay valid through the anchors recorded at import.
         """
-        from valorant_ai_coach.recordings import RecordingCatalog
+        from valorant_ai_coach.recordings.admission import resolve_catalog
 
-        catalog = RecordingCatalog(
-            Path(policy["catalog"]), path_map=policy.get("path_map") or None
-        )
+        catalog = resolve_catalog(policy["catalog"], path_map=policy.get("path_map"))
+        if catalog is None:
+            raise ValueError("Recording catalog required")
+        self.catalog_checked = True
         identifiers = list(policy.get("allowed_recording_ids") or [])
         if not identifiers or len(set(identifiers)) != len(identifiers):
             raise ValueError("Explicit existing source allowlist required")

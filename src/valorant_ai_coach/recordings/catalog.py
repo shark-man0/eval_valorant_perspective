@@ -1380,14 +1380,36 @@ class RecordingCatalog:
         return rows
 
     def sync_learning_registry(
-        self, registry: Any, rows: Sequence[Mapping[str, Any]]
+        self, registry: Any, rows: Sequence[Mapping[str, Any]], *, dry_run: bool = False
     ) -> dict[str, int]:
         """Feed rows into a continual-learning ``DatasetRegistry`` (#154) duck-typed.
 
         The catalog decides the split; the registry's own hash bucket is not used. A
         registry that already holds a physical match in another split raises its own
-        ``LeakageError`` and nothing is forced.
+        ``LeakageError`` and nothing is forced. ``dry_run`` only compares the rows with
+        ``registry.records`` and writes nothing (the check before formal use).
         """
+        if dry_run:
+            records = dict(getattr(registry, "records", {}))
+            by_video = {
+                str(getattr(record, "source_video_sha256", "")): record
+                for record in records.values()
+            }
+            plan = {"would_add": 0, "already_present": 0, "split_mismatch": 0,
+                    "id_mismatch": 0}
+            for row in rows:
+                current = records.get(str(row["source_id"])) or by_video.get(
+                    str(row["source_video_sha256"])
+                )
+                if current is None:
+                    plan["would_add"] += 1
+                elif getattr(current, "source_id", None) != row["source_id"]:
+                    plan["id_mismatch"] += 1
+                elif getattr(current, "split", None) != row["split"]:
+                    plan["split_mismatch"] += 1
+                else:
+                    plan["already_present"] += 1
+            return plan
         added = existing = 0
         for row in rows:
             archive = Path(str(row["archive"]))
