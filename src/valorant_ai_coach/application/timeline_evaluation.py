@@ -52,6 +52,7 @@ from .match_aggregation_service import aggregate_saved_match
 from .round_analyzer import MockCoachAdapter, RoundAnalysis, RoundAnalyzer
 
 VERSION = "timeline_evaluation_bridge.v1"
+DEVELOPMENT_MATCH_PREFIX = "DEV-"
 REPORT_KIND = "development_timeline_match_evaluation"
 _STATE_DOMAINS: tuple[str, ...] = ("round_state", "life_state", "camera_state")
 _SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$")
@@ -98,6 +99,88 @@ class NoFactProvider:
         return [], []
 
 
+_EVENT_TYPES: frozenset[str] = frozenset(
+    {"state_snapshot", "kill", "player_death", "utility_used", "ability_state"}
+)
+_EVENT_ACTORS: Mapping[str, str] = {
+    "player_death": "player",
+    "utility_used": "player",
+    "ability_state": "player",
+    "kill": "team",
+    "state_snapshot": "system",
+}
+
+
+class DerivedSampleFactProvider:
+    """Connects the P0 producers (#155 ``development_readiness.derive``).
+
+    ``samples`` are its ``DerivedSample`` objects or their JSON form
+    (``{"sec", "facts", "events"}``). Each becomes schema-v2 Events and Facts inside
+    the Round whose half-open window holds its second. They are development
+    candidates: confidence is recorded as 0.0 (unqualified) and every Event carries
+    ``qualification: development_only``, so they can be counted by the production
+    selector but can never become a scored evaluation.
+    """
+
+    SOURCE = "development_readiness.derive"
+
+    def __init__(self, samples: Sequence[Any]) -> None:
+        rows: list[tuple[float, dict[str, Any], tuple[str, ...]]] = []
+        for sample in samples:
+            if isinstance(sample, Mapping):
+                sec, facts, events = sample["sec"], sample["facts"], sample["events"]
+            else:
+                sec, facts, events = sample.sec, sample.facts, sample.events
+            rows.append((float(sec), dict(facts), tuple(sorted(events))))
+        self.samples = sorted(rows, key=lambda row: row[0])
+        self.unsupported_events: Counter[str] = Counter()
+
+    def facts_for(
+        self, bundle: Mapping[str, Any], round_: TimelineRound
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        del bundle
+        events: list[dict[str, Any]] = []
+        facts: list[dict[str, Any]] = []
+        for sec, values, kinds in self.samples:
+            if not round_.start_sec <= sec < round_.end_sec:
+                continue
+            stamp = f"{sec:.3f}"
+            ids: list[str] = []
+            for kind in kinds:
+                if kind not in _EVENT_TYPES:
+                    self.unsupported_events[kind] += 1
+                    continue
+                identifier = f"dev-{kind}-{stamp}"
+                ids.append(identifier)
+                events.append(
+                    {
+                        "event_id": identifier,
+                        "time_sec": sec,
+                        "type": kind,
+                        "actor": _EVENT_ACTORS[kind],
+                        "attributes": {
+                            "qualification": "development_only",
+                            "producer": self.SOURCE,
+                        },
+                        "confidence": 0.0,
+                    }
+                )
+            for key, value in sorted(values.items()):
+                facts.append(
+                    {
+                        "fact_id": f"dev-{key}-{stamp}",
+                        "key": key,
+                        "value": value,
+                        "time_sec": sec,
+                        "time_range": None,
+                        "confidence": 0.0,
+                        "source": "derived_code",
+                        "provenance_event_ids": list(ids),
+                    }
+                )
+        return events, facts
+
+
 @dataclass(frozen=True, slots=True)
 class TimelineEvaluation:
     match_id: str
@@ -108,6 +191,7 @@ class TimelineEvaluation:
     round_timelines: tuple[dict[str, Any], ...]
     unsegmented_seconds: int
     conflicts: tuple[dict[str, Any], ...] = field(default_factory=tuple)
+    rule_candidates: tuple[dict[str, int], ...] = field(default_factory=tuple)
 
 
 # ----------------------------------------------------------------- segmentation
@@ -138,11 +222,11 @@ def segment_rounds(
 ) -> tuple[tuple[TimelineRound, ...], tuple[dict[str, Any], ...]]:
     """Group recording seconds by their round-number candidate.
 
-    The window of Round *n* spans its first to its last second carrying *n*. Seconds in
-    that window without *n* are reported as missing. Interleaved readings (a later
-    Round number appearing before an earlier one ends) are returned as conflicts and the
-    windows are kept as read, so that the Match view reports the overlap instead of the
-    bridge choosing one reading.
+    The window of Round *n* is half-open: from its first second carrying *n* to one
+    past its last. Seconds in that window without *n* are reported as missing.
+    Interleaved readings are reported as conflicts and the contested seconds are
+    removed from both Rounds, so windows never overlap and no second belongs to two
+    Rounds.
     """
     rows = bundle["seconds"]
     seconds_by_round: dict[int, list[int]] = {}
@@ -164,17 +248,48 @@ def segment_rounds(
                 missing_intervals=_intervals([s for s in range(start, end) if s not in known]),
             )
         )
+    # No two Rounds may share a second. Where readings interleave, the contested
+    # seconds are cut from *both* windows (neither reading is chosen) and reported.
     conflicts: list[dict[str, Any]] = []
-    for earlier, later in zip(rounds, rounds[1:], strict=False):
-        if later.start_sec < earlier.end_sec:
+    bounds = {item.round_no: [item.start_sec, item.end_sec] for item in rounds}
+    for index, earlier in enumerate(rounds):
+        for later in rounds[index + 1 :]:
+            low = max(bounds[earlier.round_no][0], bounds[later.round_no][0])
+            high = min(bounds[earlier.round_no][1], bounds[later.round_no][1])
+            if low >= high:
+                continue
             conflicts.append(
                 {
                     "code": "round_number_interleaved",
                     "rounds": [earlier.round_no, later.round_no],
-                    "overlap_seconds": [later.start_sec, min(earlier.end_sec, later.end_sec)],
+                    "contested_seconds": [low, high],
                 }
             )
-    return tuple(rounds), tuple(conflicts)
+            bounds[earlier.round_no][1] = min(bounds[earlier.round_no][1], low)
+            bounds[later.round_no][0] = max(bounds[later.round_no][0], high)
+    trimmed: list[TimelineRound] = []
+    for item in rounds:
+        start, end = bounds[item.round_no]
+        present = [s for s in seconds_by_round[item.round_no] if start <= s < end]
+        if end <= start or not present:
+            conflicts.append({"code": "round_dropped_after_trim", "rounds": [item.round_no]})
+            continue
+        start, end = present[0], present[-1] + 1
+        known = set(present)
+        trimmed.append(
+            TimelineRound(
+                round_no=item.round_no,
+                start_sec=start,
+                end_sec=end,
+                seconds_with_round_number=len(present),
+                missing_intervals=_intervals([s for s in range(start, end) if s not in known]),
+            )
+        )
+    ordered = sorted(trimmed, key=lambda item: item.start_sec)
+    for earlier, later in zip(ordered, ordered[1:], strict=False):
+        if later.start_sec < earlier.end_sec:  # pragma: no cover - guarded above
+            raise TimelineEvaluationError("Round区間の重複を解消できませんでした")
+    return tuple(trimmed), tuple(conflicts)
 
 
 # ---------------------------------------------------------------- Round Package
@@ -210,9 +325,17 @@ def build_round_package(
 ) -> dict[str, Any]:
     events, facts = (fact_provider or NoFactProvider()).facts_for(bundle, round_)
     for item in [*events, *facts]:
-        time_sec = item.get("time_sec")
-        if isinstance(time_sec, int | float) and not (
-            round_.start_sec <= float(time_sec) <= round_.end_sec
+        span = item.get("time_range")
+        times = (
+            [float(span["start_sec"]), float(span["end_sec"])]
+            if isinstance(span, Mapping)
+            else [float(item["time_sec"])] if isinstance(item.get("time_sec"), int | float)
+            else []
+        )
+        # Half-open membership [start, end): a boundary second belongs to the later
+        # Round only, so one Fact/Event can never sit in two Round Packages.
+        if any(not round_.start_sec <= value < round_.end_sec for value in times[:1]) or any(
+            not round_.start_sec < value <= round_.end_sec for value in times[1:]
         ):
             raise TimelineEvaluationError(
                 f"R{round_.round_no}: FactProviderの出力がRound窓の外にあります"
@@ -324,6 +447,20 @@ def _require_development_bundle(bundle: Mapping[str, Any]) -> None:
         raise TimelineEvaluationError("development_onlyの共通タイムライン（正式出力0）が必要です")
 
 
+def _require_single_membership(packages: Sequence[Mapping[str, Any]]) -> None:
+    owners: dict[str, int] = {}
+    for package in packages:
+        for kind, key in (("events", "event_id"), ("deterministic_facts", "fact_id")):
+            for item in package.get(kind, []):
+                identifier = f"{kind}:{item[key]}"
+                if identifier in owners:
+                    raise TimelineEvaluationError(
+                        f"{item[key]} がR{owners[identifier]}とR{package['round_no']}の"
+                        "両方に属しています"
+                    )
+                owners[identifier] = int(package["round_no"])
+
+
 def evaluate_timeline(
     bundle: Mapping[str, Any],
     *,
@@ -346,6 +483,7 @@ def evaluate_timeline(
         )
         for item in rounds
     )
+    _require_single_membership(packages)
     analyses = tuple(engine.analyze(package) for package in packages)
     aggregation = (
         MatchAggregator()
@@ -353,6 +491,14 @@ def evaluate_timeline(
         .to_dict()
     )
     covered = {s for item in rounds for s in range(item.start_sec, item.end_sec)}
+    # Development counts: which rules the production selector would consider on the
+    # supplied candidates. Not evaluations; scoring stays withheld for these Rounds.
+    candidates = tuple(
+        dict(sorted(Counter(
+            item.rule_id for item in engine.selector.select(engine.fact_builder.enrich(package))
+        ).items()))
+        for package in packages
+    )
     return TimelineEvaluation(
         match_id=match_id,
         rounds=rounds,
@@ -362,6 +508,7 @@ def evaluate_timeline(
         round_timelines=tuple(round_timeline_summary(bundle, item) for item in rounds),
         unsegmented_seconds=len(bundle["seconds"]) - len(covered),
         conflicts=conflicts,
+        rule_candidates=candidates,
     )
 
 
@@ -371,8 +518,27 @@ def persist_evaluation(
     *,
     source_video_path: Path,
     source: Mapping[str, Any],
+    replace_development: bool = False,
 ) -> dict[str, Any]:
-    """Store through the same repository rows the GUI and JSON export read."""
+    """Store through the same repository rows the GUI and JSON export read.
+
+    Development evaluations live in their own ``DEV-`` namespace and never replace a
+    formal analysis: an existing Match is only replaced when this bridge created it,
+    and only with ``replace_development=True``.
+    """
+    if not evaluation.match_id.startswith(DEVELOPMENT_MATCH_PREFIX):
+        raise TimelineEvaluationError(
+            f"開発用評価のmatch_idは{DEVELOPMENT_MATCH_PREFIX}で始めてください"
+        )
+    existing = repository.get_match(evaluation.match_id)
+    if existing is not None:
+        origin = (existing.get("metadata") or {}).get("origin")
+        if origin != VERSION:
+            raise TimelineEvaluationError("既存の正式解析結果は上書きできません")
+        if not replace_development:
+            raise TimelineEvaluationError(
+                "同じmatch_idの開発用評価があります（置き換える場合は明示してください）"
+            )
     repository.create_match(
         evaluation.match_id,
         source_video_path,
@@ -489,7 +655,17 @@ def build_report(
         "evaluation_counts": {
             label: labels.get(label, 0) for label in ("good", "improve", "unscored")
         },
-        "round_timelines": list(evaluation.round_timelines),
+        "round_timelines": [
+            {**row, "rule_candidate_counts": counts}
+            for row, counts in zip(
+                evaluation.round_timelines,
+                evaluation.rule_candidates or [{}] * len(evaluation.round_timelines),
+                strict=True,
+            )
+        ],
+        "rule_candidate_totals": dict(sorted(sum(
+            (Counter(counts) for counts in evaluation.rule_candidates), Counter()
+        ).items())),
         "match_aggregation": evaluation.aggregation,
         "stored_in_repository": stored,
         "consistency_problems": list(consistency),
@@ -547,6 +723,8 @@ def run(
     match_id: str,
     database: Path | None = None,
     source_video_path: Path | None = None,
+    derived_samples: Path | None = None,
+    replace_development: bool = False,
 ) -> dict[str, Any]:
     bundle = json.loads(timeline_path.read_text(encoding="utf-8"))
     _require_development_bundle(bundle)
@@ -567,7 +745,14 @@ def run(
         "height": 1,
         "duration_sec": float(recording.get("end_timestamp") or len(bundle["seconds"])),
     }
-    evaluation = evaluate_timeline(bundle, match_id=match_id, source_video=source_video)
+    provider = None
+    if derived_samples is not None:
+        provider = DerivedSampleFactProvider(
+            json.loads(derived_samples.read_text(encoding="utf-8"))
+        )
+    evaluation = evaluate_timeline(
+        bundle, match_id=match_id, source_video=source_video, fact_provider=provider
+    )
     stored_view = None
     if database is not None:
         stored_view = persist_evaluation(
@@ -575,11 +760,17 @@ def run(
             evaluation,
             source_video_path=source_video_path or timeline_path,
             source=source,
+            replace_development=replace_development,
         )
     consistency = check_consistency(evaluation, stored_view)
     report = build_report(
         evaluation, source=source, consistency=consistency, stored=database is not None
     )
+    report["fact_provider"] = None if provider is None else {
+        "name": provider.SOURCE,
+        "samples": len(provider.samples),
+        "unsupported_event_types": dict(sorted(provider.unsupported_events.items())),
+    }
     output.mkdir(parents=True, mode=0o700)
     _write_private(
         output / "match_evaluation_PRIVATE.json",
@@ -602,6 +793,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     evaluate.add_argument("--match-id", required=True)
     evaluate.add_argument("--database", type=Path)
     evaluate.add_argument("--source-video", type=Path)
+    evaluate.add_argument("--derived-samples", type=Path,
+                          help="#155 development_readiness.derive の出力（JSON）")
+    evaluate.add_argument("--replace-development", action="store_true")
     sub.add_parser("admission-table", help="#25 境界非依存ルールの分類表を出力")
     args = parser.parse_args(argv)
     if args.command == "admission-table":
@@ -613,6 +807,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         match_id=args.match_id,
         database=args.database,
         source_video_path=args.source_video,
+        derived_samples=args.derived_samples,
+        replace_development=args.replace_development,
     )
     print(
         json.dumps(

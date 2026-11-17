@@ -65,10 +65,19 @@ def test_segmentation_keeps_gaps_as_missing_and_never_bridges_rounds():
     assert conflicts == ()
 
 
-def test_interleaved_round_numbers_are_reported_not_resolved():
-    rounds, conflicts = segment_rounds(bundle_from([1, 2, 1, 2]))
-    assert [(r.round_no, r.start_sec, r.end_sec) for r in rounds] == [(1, 0, 3), (2, 1, 4)]
-    assert conflicts[0]["code"] == "round_number_interleaved"
+def test_interleaved_round_numbers_never_produce_overlapping_rounds():
+    rounds, conflicts = segment_rounds(bundle_from([1, 1, 2, 1, 2, 2]))
+    assert [(r.round_no, r.start_sec, r.end_sec) for r in rounds] == [(1, 0, 2), (2, 4, 6)]
+    assert conflicts[0] == {"code": "round_number_interleaved", "rounds": [1, 2],
+                            "contested_seconds": [2, 4]}
+    windows = sorted((r.start_sec, r.end_sec) for r in rounds)
+    assert all(a[1] <= b[0] for a, b in zip(windows, windows[1:], strict=False))
+    rounds, _ = segment_rounds(bundle_from([1, 2, 1, 2]))
+    assert [(r.round_no, r.start_sec, r.end_sec) for r in rounds] == [(1, 0, 1), (2, 3, 4)]
+    # A Round whose every second is contested disappears and is reported.
+    rounds, conflicts = segment_rounds(bundle_from([1, 2, 1, 1]))
+    assert [r.round_no for r in rounds] == [1]
+    assert {"code": "round_dropped_after_trim", "rounds": [2]} in conflicts
 
 
 def test_packages_are_schema_valid_provisional_and_fact_free():
@@ -87,7 +96,7 @@ def test_packages_are_schema_valid_provisional_and_fact_free():
 def test_full_path_withholds_scoring_and_all_views_agree(tmp_path: Path):
     bundle = bundle_from([None, 1, 1, 1, None, 2, 2, 2, 2, 3, 3])
     before = deepcopy(bundle)
-    evaluation = evaluate_timeline(bundle, match_id="M-dev", source_video=SOURCE_VIDEO)
+    evaluation = evaluate_timeline(bundle, match_id="DEV-match", source_video=SOURCE_VIDEO)
     assert bundle == before
     assert {a.admission for a in evaluation.analyses} == {"provisional_withheld"}
     assert all(a.output["evaluations"] == [] for a in evaluation.analyses)
@@ -100,9 +109,9 @@ def test_full_path_withholds_scoring_and_all_views_agree(tmp_path: Path):
         repository, evaluation, source_video_path=tmp_path / "video.mp4",
         source=bundle["source"],
     )
-    assert repository.get_match("M-dev")["status"] == "completed"
+    assert repository.get_match("DEV-match")["status"] == "completed"
     # The GUI and JSON export read exactly this function.
-    assert aggregate_saved_match(repository, "M-dev")["rounds"] == stored["rounds"]
+    assert aggregate_saved_match(repository, "DEV-match")["rounds"] == stored["rounds"]
     assert stored["rounds"] == [
         {**row, "status": "not_evaluated",
          "failure": "Practical/unknownまたは不正な境界のため採点保留"}
@@ -185,7 +194,7 @@ def test_real_application_bundle_runs_through_cli(tmp_path: Path):
     path.write_text(json.dumps(bundle), encoding="utf-8")
     out = tmp_path / "out"
     code = main(["evaluate", "--timeline", str(path), "--output", str(out),
-                 "--match-id", "M-cli", "--database", str(tmp_path / "app.db")])
+                 "--match-id", "DEV-cli", "--database", str(tmp_path / "app.db")])
     report = json.loads((out / "match_evaluation_PRIVATE.json").read_text(encoding="utf-8"))
     assert code == 0 and report["consistency_problems"] == []
     assert report["formal_outputs"] == 0 and report["qualification"] == "development_only"
@@ -193,4 +202,79 @@ def test_real_application_bundle_runs_through_cli(tmp_path: Path):
     assert (out / "match_evaluation_PRIVATE.md").read_text(encoding="utf-8").startswith("# ")
     assert "a" * 64 not in (out / "match_evaluation_PRIVATE.json").read_text(encoding="utf-8")
     with pytest.raises(TimelineEvaluationError):  # never overwrite an output
-        main(["evaluate", "--timeline", str(path), "--output", str(out), "--match-id", "M2"])
+        main(["evaluate", "--timeline", str(path), "--output", str(out), "--match-id", "DEV-2"])
+
+
+# --------------------------------------------------------- 2026-11-17 review
+
+
+def _fact(fact_id: str, time_sec: float) -> dict:
+    return {"fact_id": fact_id, "key": "weapon", "value": "Vandal", "time_sec": time_sec,
+            "confidence": 0.9, "source": "hud", "provenance_event_ids": []}
+
+
+def test_boundary_second_belongs_to_exactly_one_round():
+    class AtBoundary:
+        def facts_for(self, bundle, round_):
+            return [], [_fact(f"F{round_.round_no}", float(round_.end_sec))]
+
+    bundle = bundle_from([1, 1, 2, 2])
+    rounds, _ = segment_rounds(bundle)
+    with pytest.raises(TimelineEvaluationError):  # end is exclusive
+        build_round_package(bundle, rounds[0], match_id="DEV-x", source_video=SOURCE_VIDEO,
+                            fact_provider=AtBoundary())
+
+    class SameIdTwice:
+        def facts_for(self, bundle, round_):
+            return [], [_fact("F-shared", float(round_.start_sec))]
+
+    with pytest.raises(TimelineEvaluationError):
+        evaluate_timeline(bundle, match_id="DEV-x", source_video=SOURCE_VIDEO,
+                          fact_provider=SameIdTwice())
+
+
+def test_development_results_never_overwrite_formal_results(tmp_path: Path):
+    repository = SQLiteRepository(tmp_path / "app.db")
+    repository.create_match("DEV-formal", tmp_path / "v.mp4", metadata={"origin": "pipeline"},
+                            status="completed")
+    evaluation = evaluate_timeline(bundle_from([1, 1, 2]), match_id="DEV-formal",
+                                   source_video=SOURCE_VIDEO)
+    with pytest.raises(TimelineEvaluationError):
+        persist_evaluation(repository, evaluation, source_video_path=tmp_path / "v.mp4",
+                           source={})
+    assert repository.get_match("DEV-formal")["metadata"] == {"origin": "pipeline"}
+    plain = evaluate_timeline(bundle_from([1, 1]), match_id="M-1", source_video=SOURCE_VIDEO)
+    with pytest.raises(TimelineEvaluationError):  # outside the DEV- namespace
+        persist_evaluation(repository, plain, source_video_path=tmp_path / "v.mp4", source={})
+    dev = evaluate_timeline(bundle_from([1, 1]), match_id="DEV-a", source_video=SOURCE_VIDEO)
+    persist_evaluation(repository, dev, source_video_path=tmp_path / "v.mp4", source={})
+    with pytest.raises(TimelineEvaluationError):  # re-run needs explicit replacement
+        persist_evaluation(repository, dev, source_video_path=tmp_path / "v.mp4", source={})
+    persist_evaluation(repository, dev, source_video_path=tmp_path / "v.mp4", source={},
+                       replace_development=True)
+
+
+def test_p0_derived_samples_reach_the_selector_but_never_a_score():
+    from valorant_ai_coach.application.timeline_evaluation import DerivedSampleFactProvider
+
+    samples = [
+        {"sec": 1.0, "facts": {"player_role": "duelist", "utility_available_count": 2,
+                               "ultimate_available": False, "player_died": False},
+         "events": ["ability_state"]},
+        {"sec": 2.0, "facts": {"player_died": True, "utility_available_count": 2},
+         "events": ["player_death", "made_up_event"]},
+        {"sec": 5.0, "facts": {"numbers_state": "even"}, "events": ["state_snapshot", "kill"]},
+    ]
+    provider = DerivedSampleFactProvider(samples)
+    bundle = bundle_from([1, 1, 1, 1, 2, 2])
+    evaluation = evaluate_timeline(bundle, match_id="DEV-p0", source_video=SOURCE_VIDEO,
+                                   fact_provider=provider)
+    first, second = evaluation.packages
+    assert {e["type"] for e in first["events"]} == {"ability_state", "player_death"}
+    assert {e["type"] for e in second["events"]} == {"state_snapshot", "kill"}
+    assert all(f["confidence"] == 0.0 for p in evaluation.packages
+               for f in p["deterministic_facts"])
+    assert provider.unsupported_events == {"made_up_event": 1}
+    assert evaluation.rule_candidates[0]  # the production selector saw candidates
+    assert all(a.output["evaluations"] == [] for a in evaluation.analyses)
+    assert check_consistency(evaluation) == []

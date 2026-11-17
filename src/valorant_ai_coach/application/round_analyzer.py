@@ -15,6 +15,7 @@ from valorant_ai_coach.rules.policy_runtime import (
     ProvisionalEvaluationPolicy,
     RoundTimelineGate,
 )
+from valorant_ai_coach.rules.temporal_contract import TemporalPolicyTable
 from valorant_ai_coach.rules.temporal_scope import (
     AnalysisScope,
     TemporalScopeResolver,
@@ -97,7 +98,11 @@ class RoundAnalyzer:
         # and the Round-timeline policy is reported only. Turning either on changes
         # evaluation semantics and is an approval item (#25, #31 §6-1).
         self.provisional_policy = provisional_policy
-        self.round_timeline_gate = round_timeline_gate
+        # The Round-timeline gate always runs; by default it only reports (approved
+        # 2026-11-17). The Match view recomputes the same report from stored rows.
+        self.round_timeline_gate = round_timeline_gate or RoundTimelineGate(
+            TemporalPolicyTable.load()
+        )
         self.fact_builder = fact_builder
         self.selector = selector
         self.rule_engine = rule_engine

@@ -246,3 +246,72 @@ def test_gui_summary_lists_rules_that_reached_the_summary_threshold():
     assert "繰り返し集約の対象: MOV-01 3件（Round 3）" in text
     small = MatchAggregator().aggregate([round_input("TC-003")], match_id=MATCH).to_dict()
     assert "繰り返し集約" not in format_match_summary(small)
+
+
+# ------------------------------------------------------------- 2026-11-17 review
+
+
+def test_round_timeline_gate_report_always_runs_in_every_view(tmp_path):
+    from valorant_ai_coach.application.match_aggregation_service import aggregate_saved_match
+    from valorant_ai_coach.storage import SQLiteRepository
+
+    package = _incomplete(case_package("TC-001"))
+    default = make_analyzer().analyze(package)  # no gate passed in
+    assert default.timeline_gate and {r.action for r in default.timeline_gate} == {"reported"}
+    view = MatchAggregator().aggregate([default], match_id=MATCH).to_dict()
+    gate = view["round_timeline_gate"]
+    assert gate["mode"] == "report_only"
+    assert {row["evaluation_id"] for row in gate["affected"]} == {
+        r.evaluation_id for r in default.timeline_gate
+    }
+    repository = SQLiteRepository(tmp_path / "app.db")
+    repository.create_match(MATCH, tmp_path / "v.mp4", status="completed")
+    repository.save_round_package(default.round_package)
+    repository.save_analysis_result(default.output)
+    repository.save_job_checkpoint(MATCH, "completed", {"completed_rounds": [1],
+                                                        "failed_rounds": []})
+    assert aggregate_saved_match(repository, MATCH)["round_timeline_gate"] == gate
+
+
+def test_display_clip_policy_is_transcribed_not_invented():
+    import json
+    import re
+
+    rules = json.loads(resource_path("config/valorant_evaluation_rules_v4.json").read_text(
+        encoding="utf-8"))["rules"]
+    table = TemporalPolicyTable.load()
+    assert len(rules) == 44
+    for rule in rules:
+        text = rule["temporal_context"]["display_clip_strategy"]
+        clip = table.get(rule["id"]).display_clip
+        low, high = map(float, re.search(r"(\d+)〜(\d+)", text).groups())
+        assert (clip.min_seconds, clip.max_seconds) == (low, high)
+        assert (clip.clips_per_evaluation == 1) == ("1クリップ" in text)
+        assert (clip.max_clips_per_match is not None) == ("最大" in text)
+        assert clip.supplement_required == ("併記" in text or "＋" in text)
+
+
+def test_display_clip_policy_rejects_numbers_not_in_the_text():
+    import json
+    from copy import deepcopy
+
+    from valorant_ai_coach.rules.temporal_contract import ContractValidationError
+
+    config = json.loads(resource_path("config/valorant_evaluation_rules_v4.json").read_text(
+        encoding="utf-8"))
+    broken = deepcopy(config)
+    broken["rules"][0]["temporal_context"]["display_clip_policy"]["max_seconds"] = 30
+    with pytest.raises(ContractValidationError):
+        TemporalPolicyTable.from_config(broken)
+
+
+def test_display_clip_report_measures_clips_without_changing_them():
+    rounds = [round_input("TC-003", round_no=n) for n in (1, 2, 3)]
+    before = [deepcopy(r.output) for r in rounds]
+    view = MatchAggregator().aggregate(rounds, match_id=MATCH).to_dict()
+    assert [r.output for r in rounds] == before
+    rows = {row["rule_id"]: row for row in view["display_clip_report"]}
+    mov = rows["MOV-01"]
+    assert mov["clips"] == 3 and mov["within_length"] + mov["shorter"] + mov["longer"] == 3
+    assert mov["policy"]["min_seconds"] == 8.0 and mov["policy"]["max_seconds"] == 15.0
+    assert mov["exceeds_max_clips_per_match"] is False

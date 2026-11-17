@@ -370,6 +370,10 @@ class MatchAggregation:
     rules: tuple[RuleAggregate, ...]
     evaluations: tuple[EvaluationRef, ...]
     issues: tuple[AggregationIssue, ...]
+    # Always computed (report only): requires_round_timeline (#31 §6-1) and the
+    # structured display_clip_policy. Neither changes a label, clip or count.
+    round_timeline_gate: tuple[dict[str, Any], ...] = ()
+    display_clip_report: tuple[dict[str, Any], ...] = ()
     schema_version: str = SCHEMA_VERSION
     counting_basis: str = COUNTING_BASIS
 
@@ -393,6 +397,11 @@ class MatchAggregation:
             "issues": [item.to_dict() for item in self.issues],
             # #31 §6-6: structured, verdict-free repeated-occurrence view.
             "occurrence_summaries": occurrence_summaries(rules, evaluations),
+            "round_timeline_gate": {
+                "mode": "report_only",
+                "affected": [dict(item) for item in self.round_timeline_gate],
+            },
+            "display_clip_report": [dict(item) for item in self.display_clip_report],
         }
 
 
@@ -501,7 +510,72 @@ class MatchAggregator:
             rules=rules,
             evaluations=tuple(refs),
             issues=tuple(issues),
+            round_timeline_gate=self._round_timeline_gate(summaries, refs),
+            display_clip_report=self._display_clip_report(refs),
         )
+
+    # -- report-only policy consumers ------------------------------------------------
+
+    def _round_timeline_gate(
+        self, summaries: Sequence[RoundSummary], refs: Sequence[EvaluationRef]
+    ) -> tuple[dict[str, Any], ...]:
+        """Scored evaluations of requires_round_timeline rules in incomplete Rounds."""
+        timeline = {
+            item.round_no: item.timeline for item in summaries if item.status == "included"
+        }
+        rows: list[dict[str, Any]] = []
+        for ref in refs:
+            status = timeline.get(ref.round_no)
+            policy = self.policies.get(ref.primary_rule_id)
+            if (
+                status is None
+                or status == "complete"
+                or ref.label not in {"good", "improve"}
+                or policy is None
+                or not policy.requires_round_timeline
+            ):
+                continue
+            rows.append(
+                {
+                    "evaluation_id": ref.evaluation_id,
+                    "round_no": ref.round_no,
+                    "rule_id": ref.primary_rule_id,
+                    "round_timeline": status,
+                    "action": "reported",
+                }
+            )
+        return tuple(rows)
+
+    def _display_clip_report(self, refs: Sequence[EvaluationRef]) -> tuple[dict[str, Any], ...]:
+        """Display clips measured against the structured display_clip_policy."""
+        by_rule: dict[str, list[float]] = {}
+        for ref in refs:
+            clip = ref.display_clip
+            if clip is None:
+                continue
+            by_rule.setdefault(ref.primary_rule_id, []).append(
+                float(clip["end_sec"]) - float(clip["start_sec"])
+            )
+        rows: list[dict[str, Any]] = []
+        for rule_id in sorted(by_rule):
+            policy = self.policies.get(rule_id)
+            if policy is None:
+                continue
+            lengths = by_rule[rule_id]
+            clip_policy = policy.display_clip
+            maximum = clip_policy.max_clips_per_match
+            rows.append(
+                {
+                    "rule_id": rule_id,
+                    "clips": len(lengths),
+                    "within_length": sum(clip_policy.contains(value) for value in lengths),
+                    "shorter": sum(value < clip_policy.min_seconds for value in lengths),
+                    "longer": sum(value > clip_policy.max_seconds for value in lengths),
+                    "policy": clip_policy.to_dict(),
+                    "exceeds_max_clips_per_match": maximum is not None and len(lengths) > maximum,
+                }
+            )
+        return tuple(rows)
 
     # -- input handling -------------------------------------------------------------
 
