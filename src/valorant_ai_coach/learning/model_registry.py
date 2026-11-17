@@ -1,8 +1,10 @@
 """Versioned model registry with a non-regression gate and rollback.
 
 ``ACTIVE`` means active for development consumers of this registry only. No
-model here is wired into production recognizers; that needs a separate,
-explicit approval.
+model here is wired into production recognizers. ``promote_formal`` is the only
+way to mark a model formal, and it refuses any model without a recorded
+INDEPENDENT_TEST evaluation on enough unexposed recordings and an explicit
+approval.
 """
 
 from __future__ import annotations
@@ -17,6 +19,11 @@ from typing import Any
 import numpy as np
 
 STATUSES = ("CANDIDATE", "ACTIVE", "RETIRED", "REJECTED", "ROLLED_BACK")
+MIN_INDEPENDENT_MATCHES = 5
+
+
+class PromotionRefused(RuntimeError):
+    """A model may not become a formal recognizer."""
 
 
 @dataclass(frozen=True)
@@ -51,6 +58,8 @@ class ModelVersion:
     status: str = "CANDIDATE"
     parent: str | None = None
     decision: dict[str, Any] = field(default_factory=dict)
+    independent: dict[str, Any] = field(default_factory=dict)
+    formal: bool = False
 
 
 def _now() -> str:
@@ -152,6 +161,42 @@ class ModelRegistry:
         self._log("decide", version_id=candidate_id, **decision)
         return decision
 
+    # Formal promotion ---------------------------------------------------------
+    def record_independent(self, version_id: str, report: dict[str, Any]) -> None:
+        """Store an INDEPENDENT_TEST evaluation of ``version_id`` (reporting only)."""
+        if report.get("active") != version_id:
+            raise ValueError("report does not belong to this version")
+        self.versions[version_id].independent = dict(report)
+        self._save()
+        self._log("independent", version_id=version_id,
+                  matches=int(report.get("independent_matches", 0)))
+
+    def promote_formal(self, version_id: str, *, approval: str,
+                       min_matches: int = MIN_INDEPENDENT_MATCHES) -> ModelVersion:
+        """Mark a model formal. Refused without an independent evaluation.
+
+        Requirements: the version is ACTIVE, an INDEPENDENT_TEST evaluation of
+        this exact version on at least ``min_matches`` unexposed recordings is
+        recorded, and ``approval`` names who approved the promotion.
+        """
+        version = self.versions[version_id]
+        reasons = []
+        if version.status != "ACTIVE":
+            reasons.append(f"status is {version.status}, not ACTIVE")
+        matches = int(version.independent.get("independent_matches", 0))
+        if matches < max(1, min_matches):
+            reasons.append(f"independent evaluation covers {matches} matches (< {min_matches})")
+        if not approval.strip():
+            reasons.append("no approval recorded")
+        if reasons:
+            self._log("promote_refused", version_id=version_id, reasons=reasons)
+            raise PromotionRefused("; ".join(reasons))
+        version.formal = True
+        self._save()
+        self._log("promote_formal", version_id=version_id, approval=approval,
+                  independent_matches=matches)
+        return version
+
     def rollback(self, task: str) -> str | None:
         """Re-activate the parent of the active model (or the last retired one)."""
         active_id = self.active_id(task)
@@ -166,6 +211,7 @@ class ModelRegistry:
         if target is None:
             return None
         active.status = "ROLLED_BACK"
+        active.formal = False
         self.versions[target].status = "ACTIVE"
         self._save()
         self._log("rollback", task=task, from_version=active_id, to_version=target)

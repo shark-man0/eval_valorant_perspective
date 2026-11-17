@@ -167,11 +167,13 @@ def evaluate_independent(workspace: Workspace, context: Context,
     model = task.PortraitModel(models.versions[active].config, arrays["projection_mean"],
                                arrays["projection_components"], arrays["projection_scale"],
                                tuple(str(c) for c in arrays["classes"]), arrays["prototypes"])
-    result: dict[str, Any] = {"active": active,
+    result: dict[str, Any] = {"active": active, "independent_matches": len(matches),
                               **_prefixed("independent", task.evaluate(model, matches))}
     if reviewed_labels:
         result.update(_prefixed("independent",
                                 task.reviewed_accuracy(model, matches, reviewed_labels)))
+    # Recorded for formal promotion only; adoption gating never reads it.
+    models.record_independent(active, result)
     return result
 
 

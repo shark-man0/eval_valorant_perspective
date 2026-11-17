@@ -44,6 +44,14 @@ PYTHONPATH=src python -m valorant_ai_coach.learning rollback --workspace PRIVATE
 
 採否ゲート（`GatePolicy`）はVALIDATIONの指標だけを読む。弱参照との整合率が0.005以上改善し、味方チーム再現率が下がらず、棄権率が5ポイント以上増えないときだけ採用する。VALIDATION以外の指標をゲートに指定すると `ValueError` になる。DEV_COMPARISONは報告専用で、採否には使わない。
 
+ゲートで採用された `ACTIVE` は開発用の採用で、正式な認識器ではない。正式な認識器への昇格は `ModelRegistry.promote_formal` だけが行い、次の条件をすべて満たさないと `PromotionRefused` で拒否する（拒否も履歴に残る）。
+
+- その版が `ACTIVE` である
+- その版自身について、INDEPENDENT_TEST（登録時に未露出と申告した録画）での評価が5試合以上記録されている（`independent` コマンドが自動で記録する）
+- 承認者が記録されている
+
+ロールバックすると正式の印も外れる。現時点ではINDEPENDENT_TESTの録画が0件なので、どのモデルも昇格できない。
+
 ## 最初の課題：上部マッチバーのポートレートのエージェント特定
 
 上部バーのポートレート（縮小された顔画像）から、各プレイヤーのエージェントを特定する。味方・敵の構成が分かれば、ロールや武器の文脈、キルフィードの照合に使える。

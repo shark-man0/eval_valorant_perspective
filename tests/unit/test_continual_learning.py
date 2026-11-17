@@ -126,6 +126,29 @@ def test_model_registry_gate_reads_validation_only_and_rolls_back(tmp_path: Path
         GatePolicy(metric="dev_comparison_weak_ref_consistency")
 
 
+def test_formal_promotion_requires_independent_evaluation(tmp_path: Path) -> None:
+    from valorant_ai_coach.learning.model_registry import PromotionRefused
+
+    registry = ModelRegistry(tmp_path)
+    model = registry.register("t", "f", {"w": np.zeros(2)}, {}, {"validation_accuracy": 0.8}, "d")
+    with pytest.raises(PromotionRefused):  # CANDIDATE, no independent evaluation
+        registry.promote_formal(model.version_id, approval="lead")
+    registry.decide(model.version_id, GatePolicy())
+    with pytest.raises(PromotionRefused, match="independent evaluation covers 0"):
+        registry.promote_formal(model.version_id, approval="lead")
+    registry.record_independent(model.version_id,
+                                {"active": model.version_id, "independent_matches": 2})
+    with pytest.raises(PromotionRefused):  # too few unexposed matches
+        registry.promote_formal(model.version_id, approval="lead")
+    registry.record_independent(model.version_id,
+                                {"active": model.version_id, "independent_matches": 6})
+    with pytest.raises(PromotionRefused, match="approval"):
+        registry.promote_formal(model.version_id, approval=" ")
+    assert registry.promote_formal(model.version_id, approval="lead").formal
+    assert ModelRegistry(tmp_path).versions[model.version_id].formal
+    assert "promote_refused" in [e["event"] for e in registry.history()]
+
+
 def test_feature_store_computes_once(tmp_path: Path) -> None:
     store = FeatureStore(tmp_path)
     calls = []
