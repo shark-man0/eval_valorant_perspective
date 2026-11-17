@@ -601,17 +601,31 @@ class RecordingCatalog:
 
     # -- paths ---------------------------------------------------------------------
 
+    @staticmethod
+    def _rebase(text: str, prefix: str, target: str) -> str | None:
+        """``text`` under ``prefix`` moved to ``target``, separators in target style."""
+        base = prefix.rstrip("/\\")
+        if text != base and not (
+            text.startswith(base) and text[len(base) : len(base) + 1] in {"/", "\\"}
+        ):
+            return None
+        rest = text[len(base) :]
+        separator = "\\" if "\\" in target and "/" not in target else "/"
+        return target.rstrip("/\\") + rest.replace("\\", "/").replace("/", separator)
+
     def local_path(self, stored: str) -> Path:
         for canonical, local in sorted(self.path_map.items(), key=lambda kv: -len(kv[0])):
-            if stored == canonical or stored.startswith(canonical.rstrip("/") + "/"):
-                return Path(local + stored[len(canonical):])
+            moved = self._rebase(stored, canonical, local)
+            if moved is not None:
+                return Path(moved)
         return Path(stored)
 
     def canonical_path(self, local: Path) -> str:
         text = str(Path(local).expanduser().resolve())
         for canonical, mounted in sorted(self.path_map.items(), key=lambda kv: -len(kv[1])):
-            if text == mounted or text.startswith(mounted.rstrip("/") + "/"):
-                return canonical + text[len(mounted):]
+            moved = self._rebase(text, str(Path(mounted).expanduser().resolve()), canonical)
+            if moved is not None:
+                return moved
         return text
 
     # -- registration --------------------------------------------------------------
@@ -1288,7 +1302,7 @@ class RecordingCatalog:
         return sorted(
             rid for rid, recording in self.state.recordings.items()
             if any(
-                item["path"] == root or item["path"].startswith(root.rstrip("/\\") + os.sep)
+                self._rebase(item["path"], root, root) is not None
                 for item in recording.locations.values()
             )
         )
