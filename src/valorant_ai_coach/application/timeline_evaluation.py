@@ -51,6 +51,7 @@ from valorant_ai_coach.facts.second_feature_promotion import (
     records_source_sha256,
 )
 from valorant_ai_coach.facts.timeline_promotion import (
+    EVENT_ID_PREFIX,
     FORMAL_QUALIFICATION,
     PromotionResult,
     RoundPromotion,
@@ -1015,6 +1016,28 @@ def build_report(
     admissions = Counter(analysis.admission for analysis in evaluation.analyses)
     formal_counts = [split_development_candidates(package)[1] for package in evaluation.packages]
     formal_events = sum(item["formal_events"] for item in formal_counts)
+    promoted_events = [
+        event for package in evaluation.packages for event in package.get("events", [])
+        if str(event.get("event_id", "")).startswith(EVENT_ID_PREFIX)
+    ]
+    result_tiers = {
+        # dev- candidates: excluded from scoring and storage.
+        "development": {
+            "events": sum(item["development_events"] for item in formal_counts),
+            "facts": sum(item["development_facts"] for item in formal_counts),
+        },
+        # tl- Events promoted from the shared timeline under development-calibrated
+        # evidence conditions; GOOD/IMPROVE only from the Rule Engine (or a real API run).
+        "promoted_from_shared_timeline": {
+            "events": len(promoted_events),
+            "events_labelled": sum(
+                1 for event in promoted_events
+                if (event.get("attributes") or {}).get("qualification") == FORMAL_QUALIFICATION
+            ),
+        },
+        # Needs a pass on unexposed recordings; none exist yet.
+        "independently_qualified": {"events": 0, "facts": 0},
+    }
     formal_facts = sum(
         len(analysis.round_package.get("deterministic_facts", []))
         for analysis in evaluation.analyses
@@ -1030,6 +1053,7 @@ def build_report(
         ),
         "second_feature_promotion": evaluation.second_features,
         "scorability": scorability(evaluation),
+        "result_tiers": result_tiers,
         "formal_input_counts": {
             "qualification": FORMAL_QUALIFICATION,
             "formal_events": formal_events,

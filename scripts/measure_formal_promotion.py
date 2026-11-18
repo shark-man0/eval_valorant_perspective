@@ -99,6 +99,7 @@ def measure(
                     "rejected": feature["rejected"],
                     "cross_reader_checks": feature["cross_reader_checks"],
                 },
+                "result_tiers": report["result_tiers"],
                 "scorability": report["scorability"]["totals"],
                 "scorability_per_rule": report["scorability"]["per_rule"],
                 "consistency_problems": len(report["consistency_problems"]),
@@ -119,6 +120,8 @@ def measure(
         for key in ("rounds_segmented", "rounds_confirmed", "formal_events", "formal_facts",
                     "state_snapshots", "consistency_problems"):
             totals[key] += int(row[key])
+        for tier, counts in row["result_tiers"].items():
+            totals.update({f"tier:{tier}:{k}": v for k, v in counts.items()})
         totals.update({f"event:{k}": v for k, v in row["formal_event_counts"].items()})
         totals.update({f"label:{k}": v for k, v in row["evaluation_counts"].items()})
         for kind, counts in row["independent_signal_checks"].items():

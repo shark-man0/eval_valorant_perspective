@@ -51,12 +51,17 @@
     "utility_confidence": 0.85,
     "kill_confidence": 0.85,
     "feed_match_window_sec": 3.0,
+    "feed_repeat_sec": 2.0,
     "spike_clear_score": 0.9,
     "revive_min_live_sec": 5,
     "snapshot_min_interval_sec": 5,
     "top_bar_min_coverage": 0.9,
     "death_drop_before_sec": 4,
     "death_drop_after_sec": 2,
-    "recovered_death_confidence": 0.7
+    "death_feed_lookback_sec": 10,
+    "recovered_death_confidence": 0.7,
+    "score_min_reads": 3,
+    "score_min_share": 0.6,
+    "enemy_eco_confidence": 0.8
   }
 }

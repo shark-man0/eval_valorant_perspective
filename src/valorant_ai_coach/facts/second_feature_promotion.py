@@ -20,16 +20,21 @@ recognition and no state machine of its own:
   the timeline's own live seconds; charges are used only when the HUD shows that
   agent. Kill-feed recorder entries need the game's own-player highlight and, when
   the victim portrait was identified, the recorder's agent.
-* A death stays the timeline's. The kill feed never creates or removes one; it
-  only upgrades the death's evidence to elimination order (``kill_feed``) when the
-  Round's feed was read throughout and the recorder entry is unambiguous, so that
-  ``first_death_by_player`` can be derived. Revives (own live view again after a
-  death) and DOWNED seconds are reported apart from deaths.
+* A death stays the timeline's. Elimination order comes from the top-bar alive
+  counts, which only decrease by eliminations. The kill feed never creates or
+  removes an elimination: each new feed entry is assigned to at most one top-bar
+  drop of its victim's team (exclusive use), entries left over are reported as
+  phantom, and only an assigned entry can name the recorder as killer or victim or
+  order two eliminations read in the same second. Revives (own live view again
+  after a death) and DOWNED seconds are reported apart from deaths.
+* A frame image is one piece of evidence. Keyframes whose acquired frame was
+  already used at an earlier time (static frames) are dropped, so a repeated
+  image never supports its own stability check.
 
 Field confidences are policy constants for readings that passed the stability and
 consistency gates (``config/timeline_promotion_v1.json`` ``second_features``).
-They are development values: the #155 producer qualification (independent,
-human-reviewed) is not met by any of these producers and is reported as such.
+They are development values (``promoted_from_shared_timeline``), not
+``independently_qualified``.
 """
 
 from __future__ import annotations
@@ -45,7 +50,7 @@ from typing import Any
 from valorant_ai_coach.events.source_contract import EventSourceContract
 from valorant_ai_coach.knowledge import GameKnowledge, load_game_knowledge
 from valorant_ai_coach.resources import resource_path
-from valorant_ai_coach.rules.development_readiness import FeedKill, Observation, _new_feed_kills
+from valorant_ai_coach.rules.development_readiness import FEED_REPEAT_SEC, FeedKill, Observation
 from valorant_ai_coach.rules.second_series import SecondRecord, load_second_records
 from valorant_ai_coach.rules.side import ATTACK, SideObservation, infer_sides
 
@@ -65,6 +70,81 @@ _CHARGE_AVAILABLE = 0.25  # same split as #155 development_readiness
 
 
 @dataclass(frozen=True, slots=True)
+class FeedArrival:
+    """One new kill-feed entry, at the sample where it first appears.
+
+    ``kind`` is ``elimination`` (counted by the killer's team; the victim is the
+    other team) or ``highlight`` (the own-player highlight on the killer or the
+    victim side, counted apart because it flickers independently of the row).
+    """
+
+    sec: float
+    kind: str
+    killer_team: str
+    victim_team: str
+    recorder_killer: bool = False
+    recorder_victim: bool = False
+
+
+_OTHER_TEAM = {"ally": "enemy", "enemy": "ally"}
+
+
+def _arrivals(
+    series: Sequence[Observation], keys: Any, repeat_sec: float,
+) -> list[tuple[float, Any]]:
+    out: list[tuple[float, Any]] = []
+    history: list[tuple[float, Counter[Any]]] = []
+    for obs in series:
+        if obs.feed is None:
+            continue
+        history = [(t, c) for t, c in history if obs.sec - t <= repeat_sec]
+        now: Counter[Any] = Counter(key for kill in obs.feed for key in keys(kill))
+        for key, count in sorted(now.items(), key=lambda kv: str(kv[0])):
+            before = max((c[key] for _, c in history), default=0)
+            out.extend((obs.sec, key) for _ in range(count - before))
+        history.append((obs.sec, now))
+    return out
+
+
+def feed_arrivals(
+    series: Sequence[Observation], repeat_sec: float = FEED_REPEAT_SEC,
+) -> list[FeedArrival]:
+    """New kill-feed entries, counted by multiplicity.
+
+    Entries persist in the feed for several seconds, drop out of single reads, and
+    the victim's team colour, the victim name and the own-player highlight flicker
+    from read to read. So an entry is keyed by its killer's team only (the
+    highlight fixes the recorder's side to ``ally``), and an arrival is counted when
+    the number of entries with that key in a read exceeds the most seen in any read
+    of the previous ``repeat_sec`` seconds. Highlights are counted the same way in a
+    stream of their own.
+    """
+
+    def killer(kill: FeedKill) -> list[str]:
+        team = "ally" if kill.recorder_killer else kill.killer_team
+        return [team] if team in _OTHER_TEAM else []
+
+    def highlight(kill: FeedKill) -> list[str]:
+        if kill.recorder_victim and not kill.recorder_killer:
+            return ["victim"]
+        if kill.recorder_killer and not kill.recorder_victim:
+            return ["killer"]
+        return []
+
+    out = [
+        FeedArrival(sec, "elimination", team, _OTHER_TEAM[team])
+        for sec, team in _arrivals(series, killer, repeat_sec)
+    ]
+    for sec, side in _arrivals(series, highlight, repeat_sec):
+        out.append(FeedArrival(
+            sec, "highlight", "enemy" if side == "victim" else "ally",
+            "ally" if side == "victim" else "enemy",
+            recorder_killer=side == "killer", recorder_victim=side == "victim",
+        ))
+    return sorted(out, key=lambda a: (a.sec, a.kind))
+
+
+@dataclass(frozen=True, slots=True)
 class SecondFeaturePolicy:
     agent_min_score: float
     agent_min_frames: int
@@ -74,13 +154,18 @@ class SecondFeaturePolicy:
     utility_confidence: float
     kill_confidence: float
     feed_match_window_sec: float
+    feed_repeat_sec: float
     top_bar_min_coverage: float
     death_drop_before_sec: int
     death_drop_after_sec: int
+    death_feed_lookback_sec: int
     recovered_death_confidence: float
     spike_clear_score: float
     revive_min_live_sec: int
     snapshot_min_interval_sec: int
+    score_min_reads: int
+    score_min_share: float
+    enemy_eco_confidence: float
 
     @classmethod
     def load(cls, path: Path | None = None) -> SecondFeaturePolicy:
@@ -95,15 +180,22 @@ class SecondFeaturePolicy:
             utility_confidence=float(raw["utility_confidence"]),
             kill_confidence=float(raw["kill_confidence"]),
             feed_match_window_sec=float(raw["feed_match_window_sec"]),
+            feed_repeat_sec=float(raw["feed_repeat_sec"]),
             top_bar_min_coverage=float(raw["top_bar_min_coverage"]),
             death_drop_before_sec=int(raw["death_drop_before_sec"]),
             death_drop_after_sec=int(raw["death_drop_after_sec"]),
+            death_feed_lookback_sec=int(raw["death_feed_lookback_sec"]),
             recovered_death_confidence=float(raw["recovered_death_confidence"]),
             spike_clear_score=float(raw["spike_clear_score"]),
             revive_min_live_sec=int(raw["revive_min_live_sec"]),
             snapshot_min_interval_sec=int(raw["snapshot_min_interval_sec"]),
+            score_min_reads=int(raw["score_min_reads"]),
+            score_min_share=float(raw["score_min_share"]),
+            enemy_eco_confidence=float(raw["enemy_eco_confidence"]),
         )
-        for name in ("alive_confidence", "utility_confidence", "kill_confidence"):
+        for name in (
+            "alive_confidence", "utility_confidence", "kill_confidence", "enemy_eco_confidence"
+        ):
             if not 0.0 < getattr(policy, name) <= 1.0:
                 raise PromotionError(f"second_features.{name} は (0, 1] で指定してください")
         return policy
@@ -219,16 +311,24 @@ class SecondFeaturePromoter:
             raise PromotionError("特徴量と共通タイムラインの元動画（SHA-256）が一致しません")
         view = TimelineView(bundle)
         by_second: dict[int, Observation] = {}
+        used_frames: set[str] = set()
         for record in sorted(records, key=lambda r: r.observation.sec):
             # Timeline second s covers [s, s + 1); keyframes fall anywhere inside it.
             second = math.floor(record.observation.sec)
-            if 0 <= second < len(view) and second not in by_second:
-                by_second[second] = record.observation
-                ref = (frame_refs or {}).get(float(record.observation.sec))
-                if ref:
-                    self._refs[second] = ref
-            elif 0 <= second < len(view):
+            if not 0 <= second < len(view):
+                continue
+            ref = (frame_refs or {}).get(float(record.observation.sec))
+            if ref and ref in used_frames:
+                # The same image already counted at an earlier time (static frame).
+                report.counts["reused_frame_readings_dropped"] += 1
+                continue
+            if second in by_second:
                 report.counts["second_duplicate_readings"] += 1
+                continue
+            by_second[second] = record.observation
+            if ref:
+                used_frames.add(ref)
+                self._refs[second] = ref
         report.counts["aligned_seconds"] = len(by_second)
         agent = self._recorder_agent(view, by_second, report)
         role = "unknown"
@@ -239,7 +339,14 @@ class SecondFeaturePromoter:
         self._timeline_refs = {
             row.index: row.evidence_refs for row in view.seconds if row.evidence_refs
         }
-        feed_new = _new_feed_kills([by_second[s] for s in sorted(by_second)])
+        feed_new = feed_arrivals(
+            [by_second[s] for s in sorted(by_second)], self.policy.feed_repeat_sec
+        )
+        report.counts["feed_arrivals"] = len(feed_new)
+        self._feed_refs = {
+            index: self._refs[int(arrival.sec)]
+            for index, arrival in enumerate(feed_new) if int(arrival.sec) in self._refs
+        }
         sides = self._sides(view, by_second, result, agent, report)
         for item in result.rounds:
             if not item.confirmed:
@@ -266,6 +373,7 @@ class SecondFeaturePromoter:
                         else "derived_event_builder"
                     )
             report.per_round[item.round_no] = stats
+        self._enemy_economy(by_second, result, report)
         report.checks = self._checks(by_second, feed_new, result, agent, sides, report)
         return report
 
@@ -273,17 +381,19 @@ class SecondFeaturePromoter:
 
     def _checks(
         self, by_second: Mapping[int, Observation],
-        feed_new: Mapping[float, Sequence[FeedKill]], result: PromotionResult,
+        feed_new: Sequence[FeedArrival], result: PromotionResult,
         agent: str | None, sides: Mapping[int, tuple[str, str]],
         report: SecondFeatureReport,
     ) -> dict[str, dict[str, int]]:
         """Consistency between different readers of the same recording (not labels).
 
-        * ``top_bar_vs_kill_feed``: per Round, eliminations from the top bar equal the
-          new kill-feed entries (#155 counting).
+        * ``top_bar_vs_kill_feed``: per Round, every top-bar elimination got its own
+          kill-feed entry and no feed entry was left over (``counts`` has the totals
+          of assigned, missing and phantom entries).
+        * ``recorder_death_vs_kill_feed``: the feed entry assigned to the recorder's
+          death drop carries the own-player highlight on the victim side.
         * ``first_death_vs_kill_feed``: a recorder death derived as first (not first)
-          must (must not) be the Round's first new kill-feed entry, which carries the
-          own-player highlight on the victim side.
+          must (must not) be the earliest assigned feed entry of the Round.
         * ``recorder_death_recall``: a Round whose top bar shows the recorder's team
           at 0 must have a promoted recorder death (``missed`` otherwise).
         * ``side_defense``: a Round given ``defense`` must show no spike header in the
@@ -291,8 +401,8 @@ class SecondFeaturePromoter:
         """
         counts: dict[str, Counter[str]] = {
             k: Counter() for k in (
-                "top_bar_vs_kill_feed", "first_death_vs_kill_feed",
-                "recorder_death_recall", "side_defense",
+                "top_bar_vs_kill_feed", "recorder_death_vs_kill_feed",
+                "first_death_vs_kill_feed", "recorder_death_recall", "side_defense",
             )
         }
         for item in result.rounds:
@@ -302,33 +412,31 @@ class SecondFeaturePromoter:
             stats = report.per_round.get(item.round_no, {})
             if "top_bar_eliminations" in stats:
                 counts["top_bar_vs_kill_feed"][
-                    "agree" if stats["top_bar_eliminations"] == stats["feed_new_entries"]
-                    else "disagree"
+                    "agree" if stats["top_bar_eliminations"] == stats["feed_assigned"]
+                    and stats["feed_phantom"] == 0 else "disagree"
                 ] += 1
             deaths = [e for e in item.events if e["type"] == "player_death"]
             kills = [e for e in item.events if e["type"] == "kill"]
-            new_entries = sorted(
-                (
-                    (when, kill) for when, kills_at in feed_new.items()
-                    if item.start.time_sec <= int(when) <= item.end.time_sec
-                    for kill in kills_at
-                ),
-                key=lambda entry: entry[0],
-            )
+            feed_secs = [
+                float(e["attributes"]["feed_sec"]) for e in kills
+                if "feed_sec" in e["attributes"]
+            ]
             for death in deaths:
+                attribution = death["attributes"].get("kill_feed_attribution")
                 proof = death["attributes"]["evidence_provenance"]
+                if attribution == "recorder_victim":
+                    counts["recorder_death_vs_kill_feed"]["agree"] += 1
+                elif attribution == "conflict":
+                    counts["recorder_death_vs_kill_feed"]["disagree"] += 1
+                elif attribution is not None:
+                    counts["recorder_death_vs_kill_feed"]["undetermined"] += 1
                 if proof.get("elimination_coverage") != "top_bar_alive_counts":
                     continue
-                first = not any(
-                    float(k["time_sec"]) < float(proof["elimination_sec"])
-                    or (float(k["time_sec"]) == float(proof["elimination_sec"])
-                        and k["attributes"].get("order_ambiguous"))
-                    for k in kills
-                )
-                if not new_entries:
+                first = _first_elimination(death, kills)
+                if "feed_sec" not in proof:
                     counts["first_death_vs_kill_feed"]["undetermined"] += 1
                     continue
-                feed_first = new_entries[0][1].recorder_victim
+                feed_first = all(float(proof["feed_sec"]) < sec for sec in feed_secs)
                 counts["first_death_vs_kill_feed"][
                     "agree" if feed_first == first else "disagree"
                 ] += 1
@@ -616,7 +724,7 @@ class SecondFeaturePromoter:
 
     def _eliminations(
         self, view: TimelineView, by_second: Mapping[int, Observation],
-        feed_new: Mapping[float, Sequence[FeedKill]], item: RoundPromotion,
+        feed_new: Sequence[FeedArrival], item: RoundPromotion,
         report: SecondFeatureReport, stats: dict[str, Any],
     ) -> None:
         """Elimination order from the top-bar alive counts (#153 top_bar reader).
@@ -667,90 +775,357 @@ class SecondFeaturePromoter:
                 if pair[slot] < previous[slot]:
                     drops.append((previous_at, second, team, previous[slot] - pair[slot]))
             previous, previous_at = pair, second
+        units = [
+            (index, number) for index, drop in enumerate(drops) for number in range(drop[3])
+        ]
+        assigned, highlighted = self._assign_feed(feed_new, drops, units, item, report, stats)
+
+        def unit_sec(unit: tuple[int, int]) -> float | None:
+            arrival = assigned.get(unit)
+            return None if arrival is None else feed_new[arrival].sec
+
+        def resolved(unit: tuple[int, int], others: Sequence[tuple[int, int]]) -> bool:
+            # The feed orders two eliminations read in the same top-bar interval only
+            # when both entries were assigned and first appeared in different reads.
+            mine = unit_sec(unit)
+            return mine is not None and all(
+                (theirs := unit_sec(other)) is not None and theirs != mine for other in others
+            )
+
+        def overlapping(index: int) -> list[tuple[int, int]]:
+            low, high = drops[index][0], drops[index][1]
+            return [
+                unit for unit in units
+                if unit[0] != index and drops[unit[0]][0] < high and low < drops[unit[0]][1]
+            ]
+
         deaths = [e for e in item.events if e["type"] == "player_death"]
-        claimed: dict[int, int] = {}
+        claimed: dict[tuple[int, int], dict[str, Any]] = {}
+        complete = True
         for death in deaths:
             when = int(death["time_sec"])
-            matches = [
-                i for i, (low, high, team, _) in enumerate(drops)
-                if team == "ally" and when - self.policy.death_drop_before_sec <= high
-                and low <= when + self.policy.death_drop_after_sec
+            free = [unit for unit in units if unit not in claimed and drops[unit[0]][2] == "ally"]
+            near = [
+                unit for unit in free
+                if when - self.policy.death_drop_before_sec <= drops[unit[0]][1]
+                and drops[unit[0]][0] <= when + self.policy.death_drop_after_sec
             ]
-            if len(matches) != 1:
+            # The spectator view starts after the death camera, a few seconds after
+            # the elimination: a drop the feed names as the recorder's may lie up to
+            # death_feed_lookback_sec earlier, if the timeline never observes the
+            # recorder's own live view after it.
+            named = [
+                unit for unit in free
+                if unit in highlighted and feed_new[highlighted[unit]].recorder_victim
+                and when - self.policy.death_feed_lookback_sec <= drops[unit[0]][1]
+                and drops[unit[0]][0] <= when + self.policy.death_drop_after_sec
+                and not any(
+                    self._own_live(view.row(s))
+                    for s in range(drops[unit[0]][1] + 1, when)
+                )
+            ]
+            named_anywhere = [
+                unit for unit in free
+                if unit in highlighted and feed_new[highlighted[unit]].recorder_victim
+            ]
+            death["attributes"]["kill_feed_attribution"] = (
+                "recorder_victim" if named else "none_assigned"
+            )
+            if len(named) == 1:
+                unit = named[0]
+            elif named:
+                report.rejected["death_feed_ambiguous"] += 1
+                complete = False
+                continue
+            elif named_anywhere:
+                # The feed names the recorder as victim at another drop than the one
+                # the timeline death is near: the attribution conflicts.
+                death["attributes"]["kill_feed_attribution"] = "conflict"
+                report.rejected["death_feed_attribution_conflict"] += 1
+                complete = False
+                continue
+            elif len({u[0] for u in near}) == 1 and drops[near[0][0]][3] == 1:
+                unit = near[0]
+            else:
                 report.rejected[
-                    "death_top_bar_unmatched" if not matches else "death_top_bar_ambiguous"
+                    "death_top_bar_unmatched" if not near else "death_top_bar_ambiguous"
                 ] += 1
+                complete = False
                 continue
-            index = matches[0]
+            index = unit[0]
             low, high, _, count = drops[index]
+            same_drop = [u for u in units if u[0] == index and u != unit]
+            others = overlapping(index) + same_drop
             earlier = [d for d in drops[:index] if d[1] <= low]
-            overlapping = [
-                d for j, d in enumerate(drops) if j != index and d[0] < high and low < d[1]
-            ]
-            if overlapping or (count > 1 and not earlier):
-                # Another elimination in the same interval: the order is unknown.
+            if others and not resolved(unit, others):
                 report.rejected["death_top_bar_order_ambiguous"] += 1
+                complete = False
                 continue
-            claimed[index] = claimed.get(index, 0) + 1
+            if count > 1 and not earlier and not resolved(unit, same_drop):
+                report.rejected["death_top_bar_order_ambiguous"] += 1
+                complete = False
+                continue
+            claimed[unit] = death
             provenance = death["attributes"]["evidence_provenance"]
             provenance["elimination_coverage"] = "top_bar_alive_counts"
             provenance["elimination_sec"] = high
-            if high in self._refs and self._refs[high] not in provenance["evidence_refs"]:
-                provenance["evidence_refs"].append(self._refs[high])
+            if (feed_sec := unit_sec(unit)) is not None:
+                provenance["feed_sec"] = feed_sec
+            refs = provenance["evidence_refs"]
+            for ref in (self._refs.get(high), self._feed_refs.get(assigned.get(unit, -1))):
+                if ref and ref not in refs:
+                    refs.append(ref)
             death["attributes"]["top_bar_coverage"] = stats["top_bar_coverage"]
             report.counts["deaths_with_elimination_order"] += 1
-        for index, (low, high, team, count) in enumerate(drops):
-            ambiguous = any(
-                j != index and d[0] < high and low < d[1] for j, d in enumerate(drops)
+        coverage_kind = "top_bar_alive_counts" if complete else "top_bar_partial"
+        if not complete:
+            # A recorder death without its drop: the Round's elimination list is not
+            # known to be complete, so no first-elimination fact may be derived.
+            report.rejected["round_elimination_order_incomplete"] += 1
+        for unit in units:
+            if unit in claimed:
+                continue
+            index, number = unit
+            low, high, team, count = drops[index]
+            others = overlapping(index)
+            ambiguous = bool(others) and not resolved(unit, others)
+            arrival = assigned.get(unit)
+            entry = None if arrival is None else feed_new[arrival]
+            mark = highlighted.get(unit)
+            actor = "enemy" if team == "ally" else "unknown"
+            if (
+                team == "enemy" and mark is not None and feed_new[mark].recorder_killer
+                and self._recorder_live(view, low, high)
+            ):
+                actor = "player"
+            attributes: dict[str, Any] = {
+                "victim_team": team,
+                "drop_bracket_sec": [low, high],
+                "order_ambiguous": ambiguous,
+                "producer": PRODUCER,
+                "promotion_rule": "top_bar_alive_count_drop_in_confirmed_combat",
+                "evidence_provenance": {"elimination_coverage": coverage_kind},
+            }
+            if entry is not None:
+                attributes["feed_sec"] = entry.sec
+                attributes["kill_feed_killer_team"] = entry.killer_team
+            feed_ref = None if arrival is None else self._feed_refs.get(arrival)
+            refs = tuple(dict.fromkeys(
+                ref for ref in (self._refs.get(high), feed_ref) if ref
+            ))
+            event = TimelinePromoter._event(
+                "kill", item.round_no, high, actor=actor,
+                confidence=self.policy.kill_confidence,
+                attributes=attributes,
+                evidence_refs=refs,
             )
-            for number in range(count - claimed.get(index, 0)):
-                actor = "enemy" if team == "ally" else "unknown"
-                if team == "enemy" and not ambiguous and count == 1 and self._recorder_kill(
-                    view, feed_new, low, high
-                ):
-                    actor = "player"
-                event = TimelinePromoter._event(
-                    "kill", item.round_no, high, actor=actor,
-                    confidence=self.policy.kill_confidence,
-                    attributes={
-                        "victim_team": team,
-                        "drop_bracket_sec": [low, high],
-                        "order_ambiguous": ambiguous,
-                        "producer": PRODUCER,
-                        "promotion_rule": "top_bar_alive_count_drop_in_confirmed_combat",
-                        "evidence_provenance": {
-                            "elimination_coverage": "top_bar_alive_counts"
-                        },
-                    },
-                    evidence_refs=(self._refs[high],) if high in self._refs else (),
-                )
-                event["event_id"] = f"{event['event_id']}-{team}-{index}-{number}"
-                item.events.append(event)
-                report.counts["kill_events"] += 1
-                if actor == "player":
-                    report.counts["kills_by_recorder"] += 1
+            event["event_id"] = f"{event['event_id']}-{team}-{index}-{number}"
+            item.events.append(event)
+            report.counts["kill_events"] += 1
+            if actor == "player":
+                report.counts["kills_by_recorder"] += 1
         stats["kill_events"] = sum(1 for e in item.events if e["type"] == "kill")
         stats["top_bar_drops"] = len(drops)
-        stats["feed_new_entries"] = sum(
-            len(kills) for when, kills in feed_new.items()
-            if item.start.time_sec <= int(when) <= item.end.time_sec
-        )
-        stats["top_bar_eliminations"] = sum(d[3] for d in drops)
+        stats["top_bar_eliminations"] = len(units)
+        stats["ally_eliminations"] = sum(1 for unit in units if drops[unit[0]][2] == "ally")
+        stats["elimination_order_complete"] = complete
 
-    def _recorder_kill(
-        self, view: TimelineView, feed_new: Mapping[float, Sequence[FeedKill]],
-        low: int, high: int,
-    ) -> bool:
-        """A kill-feed entry with the own-player highlight on the killer side, new in
-        the drop interval (± the feed delay), while the recorder was live."""
+    def _assign_feed(
+        self, feed_new: Sequence[FeedArrival], drops: Sequence[tuple[int, int, str, int]],
+        units: Sequence[tuple[int, int]], item: RoundPromotion,
+        report: SecondFeatureReport, stats: dict[str, Any],
+    ) -> tuple[dict[tuple[int, int], int], dict[tuple[int, int], int]]:
+        """Assign each new kill-feed entry to at most one top-bar elimination.
+
+        Eliminations are taken in time order and each takes the earliest unused
+        entry whose victim team is the dropping team, within the feed delay of the
+        drop interval. Highlight arrivals (the recorder as victim or as killer) are
+        assigned the same way in their own pass. Entries left over are phantom
+        reads and name nobody. Returns (elimination entry, highlight entry) per
+        elimination.
+        """
+        assert item.start is not None and item.end is not None
         window = self.policy.feed_match_window_sec
-        named = any(
-            kill.recorder_killer and not kill.recorder_victim
-            for when, kills in feed_new.items() if low - window <= when <= high + window
-            for kill in kills
+        in_round = [
+            i for i, arrival in enumerate(feed_new)
+            if item.start.time_sec <= arrival.sec <= item.end.time_sec + window
+        ]
+        ordered = sorted(units, key=lambda u: (drops[u[0]][1], drops[u[0]][0], u))
+        used: set[int] = set()
+
+        def assign(kind: str) -> dict[tuple[int, int], int]:
+            out: dict[tuple[int, int], int] = {}
+            for unit in ordered:
+                low, high, team, _ = drops[unit[0]]
+                for i in in_round:
+                    arrival = feed_new[i]
+                    if (
+                        i not in used and arrival.kind == kind
+                        and arrival.victim_team == team
+                        and low - window <= arrival.sec <= high + window
+                    ):
+                        out[unit] = i
+                        used.add(i)
+                        break
+            return out
+
+        assigned = assign("elimination")
+        highlighted = assign("highlight")
+        inside = [i for i in in_round if feed_new[i].sec <= item.end.time_sec]
+        phantom = [i for i in inside if i not in used]
+        eliminations = [i for i in inside if feed_new[i].kind == "elimination"]
+        stats["feed_new_entries"] = len(eliminations) + sum(
+            1 for i in assigned.values() if feed_new[i].sec > item.end.time_sec
         )
-        live = any(self._own_live(view.row(s)) for s in range(max(0, low - 3), high + 1))
-        return named and live
+        stats["feed_assigned"] = len(assigned)
+        stats["feed_phantom"] = len(phantom)
+        report.counts["feed_assigned"] += len(assigned)
+        report.counts["feed_highlights_assigned"] += len(highlighted)
+        report.counts["feed_phantom"] += len(phantom)
+        report.counts["eliminations_without_feed"] += len(units) - len(assigned)
+        return assigned, highlighted
+
+    def _recorder_live(self, view: TimelineView, low: int, high: int) -> bool:
+        return any(self._own_live(view.row(s)) for s in range(max(0, low - 3), high + 1))
+
+    # -- economy ---------------------------------------------------------------------------
+
+    def _score_before(
+        self, by_second: Mapping[int, Observation], item: RoundPromotion,
+        previous_end: int | None,
+    ) -> tuple[tuple[int, int], tuple[str, ...]] | None:
+        """Top-bar score shown before the Round's result, by stable-read majority.
+
+        The score changes only with a Round's result, so every read from the end of
+        the previous confirmed Round (or this Round's buy phase) to just before this
+        Round's end shows the score before it. Only reads repeated in the next
+        second and adding up to the Round number minus one (the timeline's Round
+        number) are votes; the winner needs ``score_min_reads`` votes and
+        ``score_min_share`` of them.
+        """
+        assert item.window is not None and item.end is not None
+        votes: Counter[tuple[int, int]] = Counter()
+        seconds: dict[tuple[int, int], list[int]] = {}
+        first = item.window[0] if previous_end is None else min(item.window[0], previous_end + 2)
+        for second in range(first, item.end.time_sec - 1):
+            obs, following = by_second.get(second), by_second.get(second + 1)
+            score = None if obs is None else obs.score
+            if (
+                score is None or following is None or following.score != score
+                or not all(isinstance(v, int) and not isinstance(v, bool) for v in score)
+            ):
+                continue
+            pair = (int(score[0]), int(score[1]))  # type: ignore[arg-type]
+            if sum(pair) != item.round_no - 1:
+                continue
+            votes[pair] += 1
+            seconds.setdefault(pair, []).append(second)
+        if not votes:
+            return None
+        pair, count = votes.most_common(1)[0]
+        if (
+            count < self.policy.score_min_reads
+            or count / sum(votes.values()) < self.policy.score_min_share
+        ):
+            return None
+        refs = tuple(dict.fromkeys(self._refs[s] for s in seconds[pair] if s in self._refs))
+        return pair, refs[:3]
+
+    def _enemy_economy(
+        self, by_second: Mapping[int, Observation], result: PromotionResult,
+        report: SecondFeatureReport,
+    ) -> None:
+        """``enemy_eco_likely`` from the score chain and the game's credit rules.
+
+        After the half's first Round, every player started that half with
+        ``credits_half_start``. If the recorder's team won it, each enemy can carry
+        at most the half-start credits, the first loss bonus, the spike-plant bonus
+        and the kill rewards of that Round (no spending assumed). When even that
+        upper bound of the enemy's average credits is below the cheapest full buy
+        (highest rifle cost plus heavy shield), the enemy cannot full-buy and the
+        Round gets ``enemy_eco_likely = True``. Nothing proves the opposite (saved
+        weapons, uneven credits), so ``False`` is never produced.
+        """
+        knowledge = self.knowledge
+        per_half = int(knowledge.rule("regulation_rounds_per_half"))
+        team = int(knowledge.rule("team_size"))
+        full_buy = max(
+            w.cost for w in knowledge.weapons if w.category == "Rifle" and w.cost
+        ) + int(knowledge.rule("heavy_shield_cost"))
+        confirmed = {item.round_no: item for item in result.rounds if item.confirmed}
+        scores: dict[int, tuple[tuple[int, int], tuple[str, ...]]] = {}
+        for number, item in confirmed.items():
+            before = confirmed.get(number - 1)
+            previous_end = None if before is None or before.end is None else before.end.time_sec
+            read = self._score_before(by_second, item, previous_end)
+            # The shared timeline's own score consensus (#164 round_meta) comes first;
+            # the top-bar reader fills Rounds without it and must not contradict it.
+            timeline = item.round_meta.get("score_before")
+            if isinstance(timeline, dict) and None not in (
+                timeline.get("ally"), timeline.get("enemy")
+            ):
+                pair = (int(timeline["ally"]), int(timeline["enemy"]))
+                if read is not None and read[0] != pair:
+                    report.rejected["score_timeline_reader_conflict"] += 1
+                    continue
+                if read is not None:
+                    report.counts["score_timeline_reader_agree"] += 1
+                scores[number] = (pair, read[1] if read is not None else ())
+            elif read is not None:
+                scores[number] = read
+        report.counts["rounds_with_score"] = len(scores)
+        for number, item in sorted(confirmed.items()):
+            half_first = number - 1
+            if half_first not in {1, per_half + 1} or number not in scores:
+                continue
+            (ally, enemy), refs = scores[number]
+            previous = scores.get(half_first)
+            won = (ally, enemy) == (1, 0) if half_first == 1 else (
+                previous is not None and (ally, enemy) == (
+                    previous[0][0] + 1, previous[0][1]
+                )
+            ) or (
+                half_first in confirmed
+                and confirmed[half_first].round_meta.get("round_result") == "win"
+                and ally + enemy == per_half + 1
+            )
+            if not won:
+                report.counts["economy_rounds_not_after_won_pistol"] += 1
+                continue
+            stats = report.per_round.get(half_first, {})
+            kills = stats.get("ally_eliminations")
+            if not isinstance(kills, int) or not stats.get("elimination_order_complete"):
+                kills = 2 * team  # unread: a generous bound (revives included)
+            bound = (
+                int(knowledge.rule("credits_half_start"))
+                + int(knowledge.rule("round_loss_credits")[0])
+                + int(knowledge.rule("spike_plant_credits"))
+                + int(knowledge.rule("kill_credits")) * kills / team
+            )
+            bound = min(bound, float(knowledge.rule("credits_cap")))
+            if bound >= full_buy:
+                report.counts["economy_bound_not_below_full_buy"] += 1
+                continue
+            target = next(
+                (e for e in item.events if e["type"] == "buy_phase"),
+                next((e for e in item.events if e["type"] == "round_start"), None),
+            )
+            if target is None:
+                report.rejected["enemy_eco_no_round_event"] += 1
+                continue
+            target["attributes"]["enemy_economy"] = {
+                "enemy_eco_likely": True,
+                "confidence": self.policy.enemy_eco_confidence,
+                "enemy_average_credits_upper_bound": round(bound),
+                "full_buy_min_cost": full_buy,
+                "score_before": [ally, enemy],
+                "after_won_round": half_first,
+                "ally_eliminations_used": kills,
+                "rule_source": "community_economy_references",
+                "evidence_refs": list(refs),
+            }
+            report.counts["enemy_eco_rounds"] += 1
+            report.per_round.setdefault(number, {})["enemy_eco_likely"] = True
 
     # -- revive and DOWNED ----------------------------------------------------------------
 
@@ -782,16 +1157,24 @@ class SecondFeaturePromoter:
         )
 
 
-def _event_order(event: Mapping[str, Any]) -> tuple[float, int]:
+def _event_order(event: Mapping[str, Any]) -> tuple[float, float, int]:
     """Time order; a death matched to a top-bar drop sits at that drop's second, so
-    FactBuilder reads the elimination order from the list order."""
+    FactBuilder reads the elimination order from the list order. Within one second
+    an elimination with an assigned kill-feed entry is ordered by that entry."""
     attributes = event.get("attributes") or {}
     provenance = attributes.get("evidence_provenance") or {}
     when = float(provenance.get("elimination_sec", event["time_sec"]))
+    feed = provenance.get("feed_sec", attributes.get("feed_sec"))
     rank = {"round_start": 0, "buy_phase": 1, "player_death": 2, "kill": 3}.get(
         str(event["type"]), 4 if event["type"] != "round_end" else 9
     )
-    return when, rank
+    return when, float(feed) if feed is not None else math.inf, rank
+
+
+def _first_elimination(death: Mapping[str, Any], kills: Sequence[Mapping[str, Any]]) -> bool:
+    """Whether the death precedes every kill Event in the promoted order."""
+    mine = _event_order(death)
+    return not any(_event_order(kill) < mine for kill in kills)
 
 
 def _bar_pair(obs: Observation | None) -> tuple[int, int] | None:

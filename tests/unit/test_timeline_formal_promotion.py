@@ -321,6 +321,12 @@ def test_cli_writes_the_promotion_report_and_independent_checks(tmp_path: Path):
     report = json.loads((out / "match_evaluation_PRIVATE.json").read_text(encoding="utf-8"))
     assert report["formal_input_counts"]["rounds_confirmed"] == 2
     assert report["formal_input_counts"]["formal_events"] > 0
+    tiers = report["result_tiers"]
+    promoted = tiers["promoted_from_shared_timeline"]
+    assert promoted["events"] == promoted["events_labelled"] == (
+        report["formal_input_counts"]["formal_events"]
+    )
+    assert tiers["independently_qualified"] == {"events": 0, "facts": 0}
     checks = report["independent_signal_checks"]["counts"]
     assert checks["round_start"] == {"correct": 2}
     assert checks["round_result"] == {"correct": 1, "undetermined": 1}
