@@ -21,7 +21,31 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from valorant_ai_coach.application.timeline_evaluation import run
+from valorant_ai_coach.application.timeline_evaluation import load_bundle, run
+from valorant_ai_coach.facts.second_feature_promotion import records_source_sha256
+
+# One input per recording: a full HUD bundle beats a replay projection.
+_KIND_PRIORITY = {"timeline": 0, "replay": 1}
+
+
+def deduplicate(
+    inputs: Sequence[tuple[str, str, Path]],
+) -> tuple[list[tuple[str, str, Path, str]], list[dict[str, str]]]:
+    """Keep one input per source SHA-256 so no recording is counted twice."""
+    keyed: dict[str, tuple[str, str, Path, str]] = {}
+    skipped: list[dict[str, str]] = []
+    for name, kind, path in inputs:
+        sha = str((load_bundle(path if kind == "timeline" else None,
+                               path if kind == "replay" else None).get("source") or {})
+                  .get("source_sha256"))
+        current = keyed.get(sha)
+        if current is None or _KIND_PRIORITY[kind] < _KIND_PRIORITY[current[1]]:
+            if current is not None:
+                skipped.append({"name": current[0], "kept": name, "source_sha256": sha})
+            keyed[sha] = (name, kind, path, sha)
+        else:
+            skipped.append({"name": name, "kept": current[0], "source_sha256": sha})
+    return list(keyed.values()), skipped
 
 
 def _pair(text: str) -> tuple[str, Path]:
@@ -32,11 +56,14 @@ def _pair(text: str) -> tuple[str, Path]:
 
 
 def measure(
-    inputs: Sequence[tuple[str, str, Path]], output: Path
+    inputs: Sequence[tuple[str, str, Path]], output: Path,
+    features: Sequence[Path] = (), catalog: Path | None = None,
 ) -> dict[str, Any]:
     output.mkdir(parents=True, mode=0o700)
+    unique, skipped = deduplicate(inputs)
+    by_sha = {str(records_source_sha256(path)): path for path in features}
     rows: list[dict[str, Any]] = []
-    for name, kind, path in inputs:
+    for name, kind, path, sha in unique:
         started = time.perf_counter()
         report = run(
             timeline_path=path if kind == "timeline" else None,
@@ -44,7 +71,9 @@ def measure(
             output=output / name,
             match_id=f"DEV-{name}",
             database=output / f"{name}.db",
+            second_features_path=by_sha.get(sha),
         )
+        feature = report.get("second_feature_promotion") or {}
         promotion = report["formal_promotion"] or {}
         checks = report.get("independent_signal_checks", {}).get("counts", {})
         rows.append(
@@ -63,6 +92,15 @@ def measure(
                 "abstentions": promotion.get("abstentions", {}),
                 "rejected_candidates": promotion.get("rejected_candidates", {}),
                 "independent_signal_checks": checks,
+                "second_features": None if not feature else {
+                    "recorder_agent": feature["recorder_agent"],
+                    "side_status": feature["side_status"],
+                    "counts": feature["counts"],
+                    "rejected": feature["rejected"],
+                    "cross_reader_checks": feature["cross_reader_checks"],
+                },
+                "scorability": report["scorability"]["totals"],
+                "scorability_per_rule": report["scorability"]["per_rule"],
                 "consistency_problems": len(report["consistency_problems"]),
                 "seconds": round(time.perf_counter() - started, 2),
             }
@@ -70,7 +108,14 @@ def measure(
     totals: Counter[str] = Counter()
     checks: dict[str, Counter[str]] = {}
     rules: dict[str, Counter[str]] = {}
+    ready: dict[str, Counter[str]] = {}
     for row in rows:
+        for rule, counts in row["scorability_per_rule"].items():
+            ready.setdefault(rule, Counter()).update(counts)
+        feature = row["second_features"] or {}
+        totals.update({f"feature:{k}": v for k, v in feature.get("counts", {}).items()})
+        for kind, counts in feature.get("cross_reader_checks", {}).items():
+            checks.setdefault(f"feature:{kind}", Counter()).update(counts)
         for key in ("rounds_segmented", "rounds_confirmed", "formal_events", "formal_facts",
                     "state_snapshots", "consistency_problems"):
             totals[key] += int(row[key])
@@ -80,10 +125,21 @@ def measure(
             checks.setdefault(kind, Counter()).update(counts)
         for rule, counts in row["rule_outputs"].items():
             rules.setdefault(rule, Counter()).update(counts)
+    covered = {sha for *_, sha in unique}
+    without_timeline: list[str] = []
+    if catalog is not None:
+        recordings = json.loads(catalog.read_text(encoding="utf-8"))["recordings"]
+        without_timeline = sorted(
+            r["recording_id"] for r in recordings if r["source_sha256"] not in covered
+        )
     summary = {
         "qualification": "development_only",
         "inputs": len(rows),
         "distinct_sources": len({row["source_id"] for row in rows}),
+        "duplicates_skipped": skipped,
+        "recordings_without_timeline": without_timeline,
+        "scorability_per_rule": {k: dict(sorted(v.items())) for k, v in sorted(ready.items())},
+        "rules_ready_for_api": sorted(r for r, c in ready.items() if c.get("ready_for_api")),
         "totals": dict(sorted(totals.items())),
         "independent_signal_checks": {k: dict(sorted(v.items())) for k, v in checks.items()},
         "rules_with_output": {k: dict(sorted(v.items())) for k, v in sorted(rules.items())},
@@ -130,6 +186,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--timeline", type=_pair, action="append", default=[])
     parser.add_argument("--replay", type=_pair, action="append", default=[])
+    parser.add_argument("--features", type=Path, action="append", default=[],
+                        help="extract_second_features.py の出力（SHA-256で自動対応）")
+    parser.add_argument("--catalog", type=Path, help="録画カタログ（タイムライン未作成の一覧用）")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     inputs = [(n, "timeline", p) for n, p in args.timeline] + [
@@ -137,9 +196,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     ]
     if not inputs:
         parser.error("--timeline か --replay を1件以上指定してください")
-    summary = measure(inputs, args.output)
+    summary = measure(inputs, args.output, args.features, args.catalog)
     print(json.dumps({k: summary[k] for k in ("inputs", "distinct_sources", "totals",
-                                              "independent_signal_checks")},
+                                              "independent_signal_checks",
+                                              "rules_ready_for_api")},
                      ensure_ascii=False))
     return 1 if summary["totals"].get("consistency_problems") else 0
 

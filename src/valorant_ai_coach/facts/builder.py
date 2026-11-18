@@ -282,20 +282,49 @@ class FactBuilder:
                     timestamp,
                     provenance,
                 )
-            elif event_type == "kill" and str(event.get("actor", "")) == "player":
+            elif event_type == "kill":
                 earlier_eliminations = [
                     candidate
                     for candidate in events[:index]
                     if candidate["type"] in {"kill", "player_death"}
                 ]
-                add(
-                    "first_kill_by_player",
-                    not earlier_eliminations,
-                    min(confidence, 0.9),
-                    "derived_code",
-                    timestamp,
-                    provenance,
-                )
+                by_player = str(event.get("actor", "")) == "player"
+                proof = attributes.get("evidence_provenance")
+                # Every elimination of the Round is an Event (kill feed or top-bar
+                # alive counts read throughout the combat phase).
+                complete_feed = isinstance(proof, dict) and proof.get(
+                    "elimination_coverage"
+                ) in {"kill_feed", "top_bar_alive_counts"}
+                if by_player:
+                    add(
+                        "first_kill_by_player",
+                        not earlier_eliminations,
+                        min(confidence, 0.9),
+                        "derived_code",
+                        timestamp,
+                        provenance,
+                    )
+                if complete_feed and not earlier_eliminations:
+                    # The Round's whole kill feed was read and this kill is its first
+                    # elimination; the recorder's own death is a player_death Event, so
+                    # the first death was not the recorder's.
+                    add(
+                        "first_death_by_player",
+                        False,
+                        min(confidence, 0.9),
+                        "derived_code",
+                        timestamp,
+                        provenance,
+                    )
+                    if str(event.get("actor", "")) in {"ally", "enemy"}:
+                        add(
+                            "first_kill_by_player",
+                            False,
+                            min(confidence, 0.9),
+                            "derived_code",
+                            timestamp,
+                            provenance,
+                        )
             elif event_type == "ability_state":
                 add(
                     "utility_available_count",

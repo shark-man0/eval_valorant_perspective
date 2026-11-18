@@ -44,6 +44,12 @@ from threading import Event
 from typing import Any, Protocol
 
 from valorant_ai_coach.facts import FactBuilder
+from valorant_ai_coach.facts.second_feature_promotion import (
+    SecondFeaturePromoter,
+    load_frame_refs,
+    load_records,
+    records_source_sha256,
+)
 from valorant_ai_coach.facts.timeline_promotion import (
     FORMAL_QUALIFICATION,
     PromotionResult,
@@ -57,6 +63,7 @@ from valorant_ai_coach.facts.timeline_promotion import (
 from valorant_ai_coach.rules import DeterministicRuleEngine, RuleSelector
 from valorant_ai_coach.rules.policy_runtime import (
     DEVELOPMENT_ID_PREFIX,
+    SCORED_CONFIDENCE_FLOOR,
     ProvisionalAdmissionTable,
     ProvisionalEvaluationPolicy,
     enforce_confidence_floor,
@@ -76,6 +83,7 @@ from .round_analyzer import (
 )
 
 VERSION = "timeline_evaluation_bridge.v1"
+API_NOT_RUN_MESSAGE = "AIコーチ（API）を実行していないため採点していません"
 DEVELOPMENT_MATCH_PREFIX = "DEV-"
 REPORT_KIND = "development_timeline_match_evaluation"
 _STATE_DOMAINS: tuple[str, ...] = ("round_state", "life_state", "camera_state")
@@ -224,6 +232,7 @@ class TimelineEvaluation:
     conflicts: tuple[dict[str, Any], ...] = field(default_factory=tuple)
     rule_candidates: tuple[dict[str, int], ...] = field(default_factory=tuple)
     promotion: PromotionResult | None = None
+    second_features: dict[str, Any] | None = None
 
 
 # ----------------------------------------------------------------- segmentation
@@ -442,10 +451,10 @@ def build_round_package(
         all_events = [*(dict(e) for e in formal.events), *events]
         snapshots = [dict(snapshot) for snapshot in formal.snapshots]
         meta = {
-            "side": "unknown",
+            "side": str(formal.round_meta.get("side", "unknown")),
             "map": "unknown",
-            "player_agent": "unknown",
-            "player_role": "unknown",
+            "player_agent": str(formal.round_meta.get("player_agent", "unknown")),
+            "player_role": str(formal.round_meta.get("player_role", "unknown")),
             "round_result": str(formal.round_meta.get("round_result", "unknown")),
             "score_before": formal.round_meta.get("score_before"),
             "economy_context": None,
@@ -594,6 +603,32 @@ class MissingFactAbstentionCoach:
             analysis_scopes=analysis_scopes,
             cancel_event=cancel_event,
         )
+        # Without the API coach no GOOD/IMPROVE is formal unless the deterministic rule
+        # engine decided that very label. Anything else the offline evaluator scored is
+        # kept as UNSCORED ("AI coach not run"), never stored as a coaching result.
+        decided = deterministic_decisions or {}
+        guarded = []
+        for item in output.get("evaluations", []):
+            decision = decided.get(str(item.get("primary_rule_id")))
+            if item.get("label") in {"good", "improve"} and not (
+                decision is not None and decision.get("label") == item["label"]
+            ):
+                item = {
+                    **item,
+                    "label": "unscored",
+                    "decision_source": "deterministic",
+                    "clip_id": None,
+                    "display_clip": None,
+                    "improvement": None,
+                    "fact_refs": [],
+                    "evidence": [],
+                    "evidence_range": None,
+                    "confidence": 0.0,
+                    "missing_information": [API_NOT_RUN_MESSAGE],
+                    "unscored_reason_code": "other",
+                }
+            guarded.append(item)
+        output["evaluations"] = guarded
         covered = {
             str(item.get("primary_rule_id")) for item in output.get("evaluations", [])
         } | {
@@ -690,6 +725,8 @@ def evaluate_timeline(
     analyzer: RoundAnalyzer | None = None,
     fact_provider: FactProvider | None = None,
     promoter: TimelinePromoter | None = None,
+    second_features: tuple[Sequence[Any], str | None] | None = None,
+    frame_refs: Mapping[float, str] | None = None,
 ) -> TimelineEvaluation:
     _require_development_bundle(bundle)
     if not _SAFE_ID.match(match_id):
@@ -700,11 +737,20 @@ def evaluate_timeline(
     engine = analyzer or default_round_analyzer()
     promotion: PromotionResult | None = None
     view: TimelineView | None = None
+    feature_report: dict[str, Any] | None = None
+    if second_features is not None and promoter is None:
+        raise TimelineEvaluationError("特徴量の昇格には共通タイムラインの昇格が必要です")
     if promoter is not None:
         view = TimelineView(bundle)
         promotion = promoter.promote(
             bundle, [(item.round_no, item.start_sec, item.end_sec) for item in rounds]
         )
+        if second_features is not None:
+            records, records_sha256 = second_features
+            feature_report = SecondFeaturePromoter().augment(
+                bundle, promotion, records, records_sha256=records_sha256,
+                frame_refs=frame_refs,
+            ).to_dict()
         rounds = formal_rounds(rounds, promotion, view)
     packages = tuple(
         build_round_package(
@@ -743,6 +789,7 @@ def evaluate_timeline(
         conflicts=conflicts,
         rule_candidates=candidates,
         promotion=promotion,
+        second_features=feature_report,
     )
 
 
@@ -894,6 +941,65 @@ def _rule_outputs(evaluation: TimelineEvaluation) -> dict[str, dict[str, int]]:
     return {rule: dict(sorted(c.items())) for rule, c in sorted(counts.items())}
 
 
+def scorability(evaluation: TimelineEvaluation) -> dict[str, Any]:
+    """Which candidate rules could be scored, decided without any API call.
+
+    Per confirmed Round and selected candidate rule:
+
+    * ``deterministic_decided``: the deterministic rule engine produced the label.
+    * ``ready_for_api``: every required fact is present at or above the 0.55 floor;
+      the label needs the AI coach (``llm_contextual``), which was not run here.
+    * ``low_confidence``: required facts are present but one is below the floor.
+    * ``missing_facts``: a required fact is not observed (stored as UNSCORED).
+    """
+    registry = json.loads(
+        Path(_resource("config/rule_trigger_registry_v2.json")).read_text(encoding="utf-8")
+    )["rules"]
+    per_rule: dict[str, Counter[str]] = {}
+    missing: dict[str, Counter[str]] = {}
+    for analysis in evaluation.analyses:
+        if analysis.admission != "confirmed":
+            continue
+        facts = analysis.round_package.get("deterministic_facts", [])
+        best: dict[str, float] = {}
+        for fact in facts:
+            key = str(fact["key"])
+            best[key] = max(best.get(key, 0.0), float(fact["confidence"]))
+        for candidate in analysis.candidates:
+            rule = registry.get(candidate.rule_id, {})
+            required = [str(p["fact_key"]) for p in rule.get("required_state_predicates", [])]
+            if candidate.rule_id in analysis.deterministic_decisions:
+                status = "deterministic_decided"
+            elif candidate.missing_fact_keys:
+                status = "missing_facts"
+                missing.setdefault(candidate.rule_id, Counter()).update(
+                    candidate.missing_fact_keys
+                )
+            elif any(best.get(key, 0.0) < SCORED_CONFIDENCE_FLOOR for key in required):
+                status = "low_confidence"
+            else:
+                status = "ready_for_api"
+            per_rule.setdefault(candidate.rule_id, Counter())[status] += 1
+    totals: Counter[str] = Counter()
+    for counts in per_rule.values():
+        totals.update(counts)
+    return {
+        "method": "offline_fact_sufficiency",
+        "note": "ready_for_api is not a label: the AI coach decides it",
+        "totals": dict(sorted(totals.items())),
+        "rules_ready_for_api": sorted(
+            rule for rule, c in per_rule.items() if c.get("ready_for_api")
+        ),
+        "rules_deterministic_decided": sorted(
+            rule for rule, c in per_rule.items() if c.get("deterministic_decided")
+        ),
+        "per_rule": {rule: dict(sorted(c.items())) for rule, c in sorted(per_rule.items())},
+        "missing_fact_keys": {
+            rule: dict(sorted(c.items())) for rule, c in sorted(missing.items())
+        },
+    }
+
+
 def build_report(
     evaluation: TimelineEvaluation,
     *,
@@ -922,6 +1028,8 @@ def build_report(
         "formal_promotion": (
             None if evaluation.promotion is None else evaluation.promotion.report()
         ),
+        "second_feature_promotion": evaluation.second_features,
+        "scorability": scorability(evaluation),
         "formal_input_counts": {
             "qualification": FORMAL_QUALIFICATION,
             "formal_events": formal_events,
@@ -1092,6 +1200,7 @@ def run(
     promote: bool = True,
     promotion_policy: Path | None = None,
     coach: RoundCoach | None = None,
+    second_features_path: Path | None = None,
 ) -> dict[str, Any]:
     bundle = load_bundle(timeline_path, replay_path)
     _require_development_bundle(bundle)
@@ -1124,6 +1233,11 @@ def run(
         from valorant_ai_coach.facts.timeline_promotion import PromotionPolicy
 
         promoter = TimelinePromoter(PromotionPolicy.load(promotion_policy))
+    features = None
+    if second_features_path is not None:
+        features = (
+            load_records(second_features_path), records_source_sha256(second_features_path)
+        )
     evaluation = evaluate_timeline(
         bundle,
         match_id=match_id,
@@ -1131,6 +1245,8 @@ def run(
         analyzer=default_round_analyzer(coach=coach),
         fact_provider=provider,
         promoter=promoter,
+        second_features=features,
+        frame_refs=load_frame_refs(second_features_path) if second_features_path else None,
     )
     stored_view = None
     if database is not None:
@@ -1188,6 +1304,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                           help="正式昇格を行わず、従来どおり全Roundを暫定境界のまま通す")
     evaluate.add_argument("--promotion-policy", type=Path,
                           help="config/timeline_promotion_v1.json の代替")
+    evaluate.add_argument("--second-features", type=Path,
+                          help="#155 extract_second_features.py の出力（.jsonl / .jsonl.gz）")
     evaluate.add_argument("--coach", choices=("mock", "openai"), default="mock")
     evaluate.add_argument("--model", default="gpt-4o-mini", help="--coach openai のモデルID")
     sub.add_parser("admission-table", help="#25 境界非依存ルールの分類表を出力")
@@ -1207,6 +1325,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         promote=not args.no_promotion,
         promotion_policy=args.promotion_policy,
         coach=openai_coach(args.model) if args.coach == "openai" else None,
+        second_features_path=args.second_features,
     )
     print(
         json.dumps(
