@@ -16,7 +16,7 @@ from typing import Any, Protocol
 from valorant_ai_coach.clips import ClipArtifact, ClipGenerationError
 from valorant_ai_coach.hud import HudAnalyzer, HudObservations
 from valorant_ai_coach.rules import EvaluationAggregator
-from valorant_ai_coach.rules.policy_runtime import GATE_REPORT_ONLY
+from valorant_ai_coach.rules.policy_runtime import GATE_REPORT_ONLY, enforce_confidence_floor
 from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.video import FrameSample, VideoMetadata
@@ -935,21 +935,8 @@ class MatchAnalysisPipeline:
 
     @staticmethod
     def _enforce_confidence_policy(evaluation: dict[str, Any]) -> dict[str, Any]:
-        item = deepcopy(evaluation)
-        confidence = float(item["confidence"])
-        if item["label"] in {"good", "improve"} and confidence < 0.55:
-            item.update(
-                {
-                    "label": "unscored",
-                    "clip_id": None,
-                    "display_clip": None,
-                    "improvement": None,
-                    "missing_information": list(item["missing_information"])
-                    or ["評価信頼度が0.55未満です"],
-                    "unscored_reason_code": "low_confidence",
-                }
-            )
-        return item
+        # Shared with the timeline bridge (policy_runtime.enforce_confidence_floor).
+        return enforce_confidence_floor(evaluation)
 
     def _aggregate_round_evaluations(
         self, round_results: list[Any]
