@@ -699,9 +699,12 @@ def _life_pass(
             revise(frame, "life", "ALIVE", ["ALIVE"],
                    _score_ids(frame) + frame["camera"]["evidence_ids"],
                    "new_round_since_death_and_current_owner_hud")
-    # An open death hypothesis cannot outlive the Round it was raised in: after a
-    # higher score every player has respawned. Without a fresh death cue the
-    # stale value is withdrawn; with a current owner HUD the recorder is alive.
+    # An open death hypothesis cannot outlive the Round it was raised in. The score
+    # rises when the Round result is shown, while the dead recorder keeps spectating
+    # until the next purchase phase, so a higher score alone does not end the
+    # Round: a purchase phase or a Round start bracket must also lie after the run
+    # began. Then, without a fresh death cue, the stale value is withdrawn; with a
+    # current owner HUD the recorder is alive.
     run_score: tuple[int, ...] | None = None
     run_at = 0
     for k, i in enumerate(segment):
@@ -721,9 +724,10 @@ def _life_pass(
             or any(c < d for c, d in zip(current, run_score, strict=True))
             or sum(current) <= sum(run_score)
             or weak & {"death", "downed", "recorder_elimination_display", "spectator"}
+            or not _new_round_seen(states, segment, run_at, k, starts)
         ):
             continue
-        if _respawned(frame, weak) and _new_round_seen(states, segment, run_at, k, starts):
+        if _respawned(frame, weak):
             revise(frame, "life", "ALIVE", ["ALIVE"],
                    _score_ids(frame) + frame["camera"]["evidence_ids"],
                    "new_round_since_death_and_current_owner_hud")

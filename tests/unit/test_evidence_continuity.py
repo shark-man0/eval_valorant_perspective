@@ -327,3 +327,19 @@ def test_purchase_countdown_to_the_projected_start_is_purchase_and_alive():
     # One reading is not enough.
     rows = rows[:9] + [at(s, score=(5, 3)) for s in range(9, 20)] + rows[20:]
     assert values(run(rows), "round")[8] != "BUY"
+
+
+def test_death_hypothesis_survives_the_score_update_until_a_new_round_is_seen():
+    # The score rises when the result is shown; the dead recorder keeps
+    # spectating until the next purchase phase, so the hypothesis is kept.
+    rows = [at(0, ["buy", "owner_hud"], (0, 0)), at(1, ["active", "owner_hud"], (0, 0)),
+            at(2, ["spectator", "report", "recorder_elimination_display"], (0, 0)),
+            at(3, ["report"], (0, 0)), at(4, ["report", "result"], (0, 1)),
+            at(5, ["report"], (0, 1)), at(6, ["report"], (0, 1))]
+    result = run(rows)
+    assert values(result, "life")[2:] == ["DEAD"] * 5
+    assert {f["life"]["reason"] for f in result["frames"][2:]} == {
+        "victim_display_and_owned_spectator_hypothesis"}
+    # After a measured purchase phase every player is alive again.
+    later = run(rows + [at(7, ["buy"], (0, 1)), at(8, ["report"], (0, 1))])
+    assert values(later, "life")[7:] == ["ALIVE", "ALIVE"]

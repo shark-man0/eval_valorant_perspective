@@ -35,7 +35,7 @@ match specific conditions and no threshold changes in any recognizer.
 | Not alive, not first person | DEAD without an open alternative, no owner HUD/remote/revival cue | A recorder that is not alive cannot hold the first-person view | Camera `SPECTATOR` |
 | Purchase phase | BUY Round state (measured or same-score bracket), no spectator/remote/death cue | All players are alive in the purchase phase | Unknown life becomes ALIVE |
 | Respawn | Score higher than at the last measured death **and** a measured BUY or a Round start candidate since the death **and** a current owner HUD inside a BUY/ACTIVE phase, no death/spectator/report cue | A new Round respawns every player | Life ALIVE |
-| Stale death hypothesis | An open (`UNKNOWN`-alternative) death hypothesis still latched after the score increased | A death hypothesis cannot outlive its Round | Withdrawn to UNKNOWN, or ALIVE under the respawn conditions above |
+| Stale death hypothesis | An open (`UNKNOWN`-alternative) death hypothesis still latched after the score increased **and** a measured BUY or a Round start candidate since the hypothesis began | A death hypothesis cannot outlive its Round; the score rises with the result while the dead recorder keeps spectating until the next purchase phase | Withdrawn to UNKNOWN, or ALIVE under the respawn conditions above |
 
 ### Consistency after revision
 
@@ -78,11 +78,11 @@ first reproduced the baseline exactly: 21,999 rows, UNKNOWN Round 7,230 / Life
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Round UNKNOWN seconds | 7,230 | 3,202 |
-| Life UNKNOWN seconds | 5,322 | 2,771 |
-| Camera UNKNOWN seconds | 4,118 | 4,019 |
+| Life UNKNOWN seconds | 5,322 | 2,031 |
+| Camera UNKNOWN seconds | 4,118 | 4,016 |
 | Matches where any UNKNOWN count rose | – | 0 of 10 |
-| Seconds changed between two known values | – | Life DEAD to ALIVE 445, Camera SPECTATOR to SELF 3 (all inside a purchase countdown) |
-| Life seconds withdrawn from DEAD to UNKNOWN (abstentions) | – | 772 |
+| Seconds changed between two known values | – | Life DEAD to ALIVE 451, Camera SPECTATOR to SELF 9 (all inside a purchase countdown) |
+| Life seconds withdrawn from DEAD to UNKNOWN (abstentions) | – | 33 |
 | Fixed 69 attributes: correct / incorrect / abstained | 69 / 0 / 0 | 69 / 0 / 0 |
 | Supplemental 9 and 6 attributes | 9/9, 6/6 | 9/9, 6/6 |
 | Rounds with a start candidate (229 Rounds) | 167 | 221 (220 indexable by a later score reading) |
@@ -90,14 +90,17 @@ first reproduced the baseline exactly: 21,999 rows, UNKNOWN Round 7,230 / Life
 | Duplicate start/end candidates for one Round | 0 / 0 | 0 / 0 |
 | Start bracket width median / p90 / max (s) | 1 / 3 / 5 | 1 / 3 / 5 |
 | End bracket width median / p90 / max (s) | 1 / 2 / 3 | 3 / 5 / 14 |
-| Frames: DEAD recorder with a first-person camera | 223 | 200 |
+| Frames: DEAD recorder with a first-person camera | 223 | 215 |
 | Frames: DEAD recorder in a purchase phase | – | 0 |
 | Named or state edges disagreeing with their frames | 57 | 0 |
 | Formal Facts/Events | 0 | 0 |
 
 Before the purchase countdown rule (9b76cae) the same replay gave Round 3,975,
 Life 3,401, Camera 4,016 and 1,138 withdrawn seconds; the Round start and end
-candidates are identical with and without that rule.
+candidates are identical with and without that rule. Before the stale death
+hypothesis rule required a new Round (see the run-level review below) it gave
+Life 2,771 with 772 withdrawn seconds; Round and the 69 attributes are
+identical.
 
 End brackets are wider on purpose: in 3 of 6 reviewed score-update edges the
 post-round countdown was already visible at the old lower frame, so the previous
@@ -117,9 +120,8 @@ visually by the implementing agent (not human GT):
 | Result-to-ACTIVE and countdown-narrowed starts, 12 | 12/12 contain the start |
 | Start brackets against the countdown switch (0:00 to 1:39) read every 0.5 s, 16 (10 added, 6 existing) | 16/16 contain the switch; bracket midpoint error median 0.25 s, max 2.25 s (an existing 5 s bracket) |
 
-Withdrawn seconds (772 now, 1,138 before the purchase countdown rule) are
-therefore not confirmed errors: the reviewed sample of the first version found
-4 wrong and 2 correct values among 6 decidable frames.
+Withdrawn seconds are therefore not confirmed errors; the run-level review of
+the fresh run below measures them.
 
 ### Fresh full-length analysis: all ten matches (2026-11-18)
 
@@ -131,11 +133,11 @@ without the pass. Holdout recordings were not used.
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Round UNKNOWN seconds | 7,071 | 3,154 |
-| Life UNKNOWN seconds | 4,059 | 2,208 |
+| Life UNKNOWN seconds | 4,059 | 1,620 |
 | Camera UNKNOWN seconds | 3,333 | 3,218 |
 | Matches where any UNKNOWN count rose | – | 0 of 10 |
-| Seconds changed between two known values | – | Round ACTIVE to BUY 13, Life DEAD to ALIVE 444, Camera SPECTATOR to SELF 2 |
-| Life seconds withdrawn to UNKNOWN | – | 598 |
+| Seconds changed between two known values | – | Round ACTIVE to BUY 13, Life DEAD to ALIVE 451, Camera SPECTATOR to SELF 9 |
+| Life seconds withdrawn to UNKNOWN | – | 10 |
 | Round start candidates (229 Rounds) | 183 | 221 |
 | Starts of the replayed run (221) with a fresh candidate within 2 s | 166 | 221 |
 | Fresh candidates more than 2 s from every replayed start | 12 | 0 |
@@ -144,15 +146,15 @@ without the pass. Holdout recordings were not used.
 | Human labels sampled by the fresh run (72 of 78): correct / abstained / incorrect | 72 / 0 / 0 | 72 / 0 / 0 |
 
 Per match (Round, Life UNKNOWN seconds before to after): DEV2 465 to 132, 554
-to 206; issue_oldfull001 531 to 276, 535 to 268; issue_oldfull002 951 to 474,
-288 to 204; issue_oldfull004 622 to 257, 309 to 139; issue_newfull001 759 to
-346, 428 to 229; issue_newfull002 874 to 392, 367 to 212; issue_freshfull003
-739 to 369, 367 to 210; issue_newfull004 942 to 425, 519 to 317;
-issue_freshfull005 477 to 154, 266 to 158; first_new_cold 711 to 329, 426 to
-265.
+to 186; issue_oldfull001 531 to 276, 535 to 228; issue_oldfull002 951 to 474,
+288 to 113; issue_oldfull004 622 to 257, 309 to 108; issue_newfull001 759 to
+346, 428 to 118; issue_newfull002 874 to 392, 367 to 174; issue_freshfull003
+739 to 369, 367 to 149; issue_newfull004 942 to 425, 519 to 189;
+issue_freshfull005 477 to 154, 266 to 132; first_new_cold 711 to 329, 426 to
+223.
 
 The fresh run agrees with the replay of the stored observations: of 21,999
-seconds, Round differs between two known values in 41 seconds, Life in 30 and
+seconds, Round differs between two known values in 28 seconds, Life in 96 and
 Camera in 44 (the base engine alone differs in 38, 82 and 44).
 
 Implementing-agent visual review (not human GT):
@@ -164,6 +166,23 @@ Implementing-agent visual review (not human GT):
 | Camera SPECTATOR to SELF, both seconds | 2 show the recorder's own view in the purchase phase |
 | Withdrawn DEAD in issue_oldfull002, 5 seconds | 5 show the recorder alive with its own HUD (the DEAD was wrong) |
 | Early start candidates retired, 5 in issue_freshfull003 | 5 inside the purchase phase, before its countdown ends |
+
+Run-level review of every changed run (one or more frames per run decoded at
+the native PTS, implementing agent, not human GT):
+
+| Changed runs | Result |
+| --- | --- |
+| Life DEAD to ALIVE, all 22 runs (43 frames) | 43 consistent (own HUD with health or the purchase phase), 0 contradicted |
+| Life DEAD to ALIVE added by the new-Round condition, 7 seconds | 7 consistent (3 frames checked directly, 4 by the adjacent second) |
+| Life DEAD withdrawn, before the new-Round condition: all 121 runs | 57 the DEAD was wrong, 53 the DEAD was right (spectator label visible, mostly after the result), 11 undecidable |
+| Life DEAD withdrawn, now: 3 runs, 10 seconds | 3 the DEAD was wrong (own HUD with health) |
+
+All 121 withdrawals came from the stale death hypothesis rule. The 53 correct
+values were withdrawn because the score rose with the Round result while the
+recorder was still spectating; the stored observations of those rows hold no
+other cue. The rule now also needs a measured purchase phase or a Round start
+candidate after the hypothesis began, which keeps all 53 and leaves 53 of the 57
+wrong values as they were in the base timeline.
 
 The early candidates came from single unmeasured ACTIVE frames
 (`observed_purchase_barrier_loss`) inside the purchase phase; the base timeline
