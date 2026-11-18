@@ -9,7 +9,7 @@ nothing here is a formal Fact, Event or evaluation (formal_outputs = 0).
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -26,12 +26,21 @@ from .recorder_life import (
     rounds_from_scores,
 )
 from .round_phases import PhaseRules, PhaseSample, RoundPhases, round_phases
-from .side import DEFENSE, RoundOrdinal, SideInference, infer_sides
+from .side import (
+    ATTACK,
+    DEFENSE,
+    RoundOrdinal,
+    SideInference,
+    SideObservation,
+    infer_sides,
+    outcome_sides,
+)
 
 SELF_VIEW_MIN_SCORE = 0.6
 CHARGE_DROP = 0.25
 FEED_REPEAT_SEC = 7.0
 TEAM_SIZE = 5
+HUD_SWITCH_HOLD_SEC = 3.0
 BUY_PHASE_MIN_SEC = 20.0  # 5 v 5 held this long after a reset: a real buy phase
 MIN_SCORE_ROUNDS = 3  # fewer score-delimited rounds: fall back to boundary sources
 CONFIRM_WINDOW_SEC = 12.0
@@ -58,6 +67,7 @@ class Observation:
     spike_planted: bool | None = None
     feed: tuple[FeedKill, ...] | None = None  # None: kill feed not captured
     spike_carried: bool | None = None  # spike header in the viewed inventory
+    spike_score: float | None = None  # the spike reader's score for that reading
     score: tuple[int | None, int | None] | None = None  # top-bar ally, enemy score
     timer: int | None = None  # round timer seconds (m:ss) in the top bar
 
@@ -101,10 +111,109 @@ def _new_feed_kills(series: Sequence[Observation]) -> dict[float, list[FeedKill]
     return out
 
 
+END_ALIVE_MAX_GAP_SEC = 1.5  # alive counts must be read this close to the round end
+MAX_END_GAP_SEC = 3.0  # the spike end must be bracketed this tightly
+WINNER_WINDOW_SEC = 60.0  # score reads used to tell which team won the round
+TIMEOUT_TIMER_MAX = 1  # combat clock at 0:01 or 0:00 with nobody planting
+TIMEOUT_MIN_COMBAT_SEC = 95.0  # ... at least this long after combat started (limit 100 s)
+CLEAR_SPIKE_SCORE = 0.9
+SPIKE_OFF_HOLD = 3  # samples the planted indicator must stay off
+SPIKE_END_SCORE_SEC = 40.0
+
+
+def _planted_round_outcomes(
+        series: Sequence[Observation], phases: Sequence[RoundPhases],
+        tracks: Sequence[Sequence[tuple[float, int]]],
+        ordinal_at: Callable[[float], int | None],
+) -> list[tuple[int, str | None, float | None, float | None, float | None, float | None,
+                bool]]:
+    """Per planted round: winner, plant interval, spike-indicator-off interval and
+    whether both teams were still alive when the indicator went off.
+
+    The planted-spike indicator goes off when the spike detonates or is defused
+    (or the round ends), and it is read every sample, so it dates the end of
+    the spike far better than the score, which is often unreadable for a while.
+    The winner is the team whose score rises by one across that moment.
+    """
+    out: list[tuple[int, str | None, float | None, float | None, float | None,
+                    float | None, bool]] = []
+    for phase in phases:
+        rows = [o for o in series if ordinal_at(o.sec) == phase.ordinal]
+        start = next((i for i, o in enumerate(rows) if o.spike_planted), None)
+        if start is None or start == 0 or rows[start - 1].spike_planted is not False:
+            continue
+        plant_lo, plant_hi = rows[start - 1].sec, rows[start].sec
+        # The indicator must stay off (it flickers under overlays).
+        stop = next((i for i in range(start + 1, len(rows) - SPIKE_OFF_HOLD + 1)
+                     if all(r.spike_planted is False for r in rows[i:i + SPIKE_OFF_HOLD])),
+                    None)
+        if stop is None:
+            continue
+        off_lo, off_hi = rows[stop - 1].sec, rows[stop].sec
+        if off_hi - off_lo > MAX_END_GAP_SEC:
+            continue
+        around = [o for o in series
+                  if off_lo - END_ALIVE_MAX_GAP_SEC <= o.sec <= off_hi + END_ALIVE_MAX_GAP_SEC + 1
+                  and o.ally_alive is not None and o.enemy_alive is not None]
+        both = bool(around) and all(o.ally_alive and o.enemy_alive for o in around)
+        # A detonation or a defuse ends the round at once: the new score must be
+        # read shortly after the indicator goes off.
+        winner = None
+        for name, track in zip(("ally", "enemy"), tracks, strict=True):
+            before = [v for sec, v in track
+                      if plant_lo - WINNER_WINDOW_SEC <= sec <= off_hi]
+            after = [v for sec, v in track if off_hi <= sec <= off_hi + SPIKE_END_SCORE_SEC]
+            if before and after and after[0] == before[-1] + 1:
+                winner = name if winner is None else None
+        out.append((phase.ordinal, winner, plant_lo, plant_hi, off_lo, off_hi, both))
+    return out
+
+
+def _round_winner(tracks: Sequence[Sequence[tuple[float, int]]], lo: float, hi: float
+                  ) -> str | None:
+    winner = None
+    for name, track in zip(("ally", "enemy"), tracks, strict=True):
+        before = [v for sec, v in track if lo - WINNER_WINDOW_SEC <= sec <= hi]
+        after = [v for sec, v in track if hi <= sec <= hi + WINNER_WINDOW_SEC]
+        if before and after and after[0] == before[-1] + 1:
+            winner = name if winner is None else None
+    return winner
+
+
+def _timeout_sides(series: Sequence[Observation], phases: Sequence[RoundPhases],
+                   tracks: Sequence[Sequence[tuple[float, int]]],
+                   ordinal_at: Callable[[float], int | None]) -> list[SideObservation]:
+    """Rounds that ran out of time with no plant: only defenders win those."""
+    out = []
+    for phase in phases:
+        if phase.combat_start is None:
+            continue
+        rows = [o for o in series if ordinal_at(o.sec) == phase.ordinal
+                and o.sec >= phase.combat_start]
+        if any(o.spike_planted for o in rows):
+            continue
+        # The combat clock must actually have run down (not a buy countdown).
+        expiry = next((o for o in rows if o.timer is not None and o.timer <= TIMEOUT_TIMER_MAX
+                       and o.sec - phase.combat_start >= TIMEOUT_MIN_COMBAT_SEC), None)
+        if expiry is None:
+            continue
+        around = [o for o in series if expiry.sec - 1 <= o.sec <= expiry.sec + 4
+                  and o.ally_alive is not None and o.enemy_alive is not None]
+        if not around or not all(o.ally_alive and o.enemy_alive for o in around):
+            continue
+        winner = _round_winner(tracks, expiry.sec, expiry.sec + 4)
+        if winner is None:
+            continue
+        out.append(SideObservation(phase.ordinal, DEFENSE if winner == "ally" else ATTACK,
+                                   "timeout_win"))
+    return out
+
+
 def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_role: str,
            timeline: TimelineView | None = None, *, rounds_per_half: int = 12,
            phase_rules: PhaseRules | None = None,
            additions: Mapping[float, tuple[set[str], dict[str, Any]]] | None = None,
+           spike_detonation_sec: float = 45.0,
            ) -> Derivation:
     """Candidate facts/events per sample. Facts are omitted (missing) when unobserved.
 
@@ -170,7 +279,15 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
         another player's HUD or no live own view.
         """
         window = [o for o in series if sec <= o.sec <= sec + CONFIRM_WINDOW_SEC and o.hud_present]
-        return any(not self_view(o) for o in window)
+        # The other view must hold (one misread frame is not enough at 1 s sampling).
+        for index, obs in enumerate(window):
+            if self_view(obs):
+                continue
+            held = [o for o in window[index:] if o.sec - obs.sec <= HUD_SWITCH_HOLD_SEC]
+            if not any(self_view(o) for o in held) and (
+                    held[-1].sec - obs.sec >= HUD_SWITCH_HOLD_SEC - 0.5 or len(held) == 1):
+                return True
+        return False
 
     def recorder_victim(kill: FeedKill) -> bool:
         # The highlight marks the recorder's entry; when the victim portrait was
@@ -190,11 +307,20 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
     else:
         hud_deaths = []
         previous: Observation | None = None
-        for obs in series:
+
+        def other_view_holds(index: int) -> bool:
+            """Another agent's HUD for ``HUD_SWITCH_HOLD_SEC`` (a one-frame misread
+            at a high sampling rate is not a death)."""
+            start = series[index].sec
+            span = [o for o in series[index:] if o.sec - start <= HUD_SWITCH_HOLD_SEC]
+            return all(o.viewed_agent != recorder_agent for o in span if o.hud_present)
+
+        for index, obs in enumerate(series):
             if (previous is not None and hud_self(previous) and obs.hud_present
                     and obs.viewed_agent not in (None, recorder_agent)
                     and obs.sec - previous.sec <= 10
-                    and _round_of(rounds, previous.sec) == _round_of(rounds, obs.sec)):
+                    and _round_of(rounds, previous.sec) == _round_of(rounds, obs.sec)
+                    and other_view_holds(index)):
                 hud_deaths.append(obs.sec)
             previous = obs
         candidates["hud"] = hud_deaths
@@ -234,14 +360,29 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
     first_kill_round: set[int] = set()
     # Side: a spike header in the recorder's own live view marks an attack round;
     # the half structure (game knowledge) extends it to the other regulation rounds.
-    attack_ordinals = {ordinal_at(o.sec) for o in series
-                       if o.spike_carried and self_view(o)} - {None}
-    sides = infer_sides(attack_ordinals, rounds_per_half=rounds_per_half)  # type: ignore[arg-type]
+    # A round counts as a spike-carrier observation with two sightings in the
+    # recorder's own view, or one clear one (borderline single frames are the
+    # look-alike panels the spike reader cannot fully rule out).
+    sightings: dict[int, list[float]] = {}
+    for o in series:
+        seen_in = ordinal_at(o.sec)
+        if o.spike_carried and self_view(o) and seen_in is not None:
+            sightings.setdefault(seen_in, []).append(o.spike_score or 0.0)
+    attack_ordinals = {seen for seen, scores in sightings.items()
+                       if len(scores) >= 2 or max(scores) >= CLEAR_SPIKE_SCORE}
     # Phases: score update, buy phase start, combat start and round end, apart.
     phase_rules = phase_rules or PhaseRules(regulation_rounds_per_half=rounds_per_half)
     phases = round_phases([PhaseSample(o.sec, o.timer, ordinal_at(o.sec), o.ally_alive,
                                        o.enemy_alive, o.spike_planted) for o in series],
                           phase_rules)
+    side_observations: list[SideObservation] = [
+        SideObservation(o, ATTACK, "spike_carried") for o in attack_ordinals
+        if o is not None]
+    side_observations += outcome_sides(
+        _planted_round_outcomes(series, phases, score_tracks, ordinal_at),
+        detonation_sec=spike_detonation_sec)
+    side_observations += _timeout_sides(series, phases, score_tracks, ordinal_at)
+    sides = infer_sides(side_observations, rounds_per_half=rounds_per_half)
 
     def phase_of(sec: float) -> tuple[RoundPhases | None, str | None]:
         """("buy" | "combat" | None) for a time, by the latest phase anchor."""

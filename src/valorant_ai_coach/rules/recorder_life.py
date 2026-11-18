@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 
 MERGE_WINDOW_SEC = 8.0  # one death seen by several sources / consecutive samples
 REVIVE_MIN_SAMPLES = 2
+REVIVE_MIN_SPAN_SEC = 5.0  # own live view must last this long between two deaths
 RESET_AFTER_SCORE_SEC = 20.0  # score shows the new point during the round-end screen
 MIN_ROUND_SEC = 20.0  # two score rises closer than this are one boundary seen twice
 MIN_ROUND_GAP_SEC = 45.0  # buy phase plus the shortest round
@@ -154,7 +155,9 @@ def reconcile(rounds: Sequence[Round], candidates: Mapping[str, Sequence[float]]
             alive_again = [t for t in live_samples
                            if last.sec + MERGE_WINDOW_SEC < t < sec
                            and (self_live_at is None or self_live_at(t))]
-            if len(alive_again) < REVIVE_MIN_SAMPLES:
+            # Time-based, so 1 s and 5 s sampling ask for the same evidence.
+            if (len(alive_again) < REVIVE_MIN_SAMPLES
+                    or alive_again[-1] - alive_again[0] < REVIVE_MIN_SPAN_SEC):
                 dropped["duplicate"] += 1
                 last.sources.add(source)
                 continue

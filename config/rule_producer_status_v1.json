@@ -55,8 +55,8 @@
   },
   "engagement_start": {
    "before": "contract",
-   "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+   "after": "development",
+   "producer": "first shot after a 3 s pause (this change)"
   },
   "hold_angle": {
    "before": "contract",
@@ -66,7 +66,7 @@
   "info_peek": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
   },
   "kill": {
    "before": "contract",
@@ -76,7 +76,7 @@
   "movement_state": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
   },
   "objective_state": {
    "before": "contract",
@@ -86,7 +86,7 @@
   "peek": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
   },
   "player_death": {
    "before": "development",
@@ -130,8 +130,8 @@
   },
   "shot": {
    "before": "contract",
-   "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+   "after": "development",
+   "producer": "magazine count drop between per-second keyframes in the recorder's own view (knowledge fire-rate cap, sidearm-switch guard); reviewed 28/30 correct (this change)"
   },
   "site_state": {
    "before": "contract",
@@ -227,13 +227,13 @@
   },
   "first_shot_detected": {
    "before": "contract",
-   "after": "contract",
-   "producer": "visual_analyzer"
+   "after": "development",
+   "producer": "first shot after a 3 s pause (this change)"
   },
   "first_shot_stationary": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer"
+   "producer": "visual_analyzer; gated off with the movement detector (precision 4/9) (this change)"
   },
   "line_of_sight_state": {
    "before": "none",
@@ -277,8 +277,8 @@
   },
   "round_time_remaining_sec": {
    "before": "contract",
-   "after": "contract",
-   "producer": "hud timer"
+   "after": "development",
+   "producer": "top-bar round timer (TRAIN-built digit templates; 23/23 correct on a fresh held-out review) (this change)"
   },
   "save_context_observed": {
    "before": "contract",
@@ -288,12 +288,12 @@
   "shot_while_moving": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer"
+   "producer": "visual_analyzer; gated off with the movement detector (precision 4/9) (this change)"
   },
   "side": {
    "before": "none",
    "after": "development",
-   "producer": "spike header in the recorder's own weapon inventory marks an attack round; the round ordinal comes from the top-bar score and the regulation half structure (game knowledge) gives the other regulation rounds (this change)"
+   "producer": "spike header in the recorder's own weapon inventory (two sightings or one clear) and spike detonation wins mark rounds; the round ordinal comes from the shared timeline or the top-bar score, and the regulation half structure (game knowledge) gives the other regulation rounds (this change)"
   },
   "site_incoming_damage_risk_observed": {
    "before": "none",

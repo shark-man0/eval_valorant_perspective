@@ -92,9 +92,9 @@ def test_round_reconciliation_dedupes_revives_and_bounds() -> None:
     rounds = rounds_from_alive_counts([(0, 5, 5), (10, 3, 4), (40, 5, 5), (60, 2, 2)])
     assert [(r.start, r.end) for r in rounds] == [(0, 40), (40, None)]
     result = reconcile(rounds, {"timeline": [12.0, 50.0], "kill_feed": [14.0, 30.0, -5.0]},
-                       live_samples=[21.0, 25.0, 45.0])
+                       live_samples=[21.0, 27.0, 45.0])
     deaths = [(d.round_index, d.sec, sorted(d.sources), d.after_revive) for d in result.deaths]
-    # 12 + 14 merge; 30 is a second death after the recorder was live again at 21/25 (revive).
+    # 12 + 14 merge; 30 is a second death after the recorder was live again 21-27 s (revive).
     assert deaths == [(0, 12.0, ["kill_feed", "timeline"], False), (0, 30.0, ["kill_feed"], True),
                       (1, 50.0, ["timeline"], False)]
     assert result.dropped["outside_round"] == 1
@@ -180,7 +180,8 @@ def test_side_facts_and_round_start_events() -> None:
     def obs(sec: float, ally: int, enemy: int, carried: bool, score: tuple[int, int]
             ) -> Observation:
         return Observation(sec, True, "Omen", 0.9, (1, 1, 1, 0), ally, enemy,
-                           spike_carried=carried, score=score)
+                           spike_carried=carried, spike_score=1.0 if carried else 0.1,
+                           score=score)
 
     series = [obs(0, 5, 5, True, (0, 0)), obs(50, 4, 5, False, (0, 0)),  # recorder carries
               obs(100, 5, 5, False, (1, 0)), obs(150, 5, 4, False, (1, 0)),
@@ -352,3 +353,61 @@ def test_kill_feed_death_needs_recorder_as_victim() -> None:
     deaths = derivation.reconciliation.deaths
     assert len(deaths) == 1 and deaths[0].sec >= 10  # nothing at 5 s (Clove's entry)
     assert derivation.reconciliation.dropped["kill_feed_other_victim"] == 1
+
+
+def test_shots_from_magazine_drops() -> None:
+    from valorant_ai_coach.rules.second_series import (
+        SecondRecord,
+        WeaponLimits,
+        detect_shots,
+        second_additions,
+    )
+
+    def rec(sec: float, magazine: int | None) -> SecondRecord:
+        return SecondRecord(Observation(sec, True, "Omen", 0.9, (1, 1, 1, 0), 5, 5),
+                            magazine, None, 0)
+
+    limits = WeaponLimits(max_fire_rate=10.0, switch_magazines=frozenset({12}))
+    records = [rec(0, 25), rec(1, 22), rec(2, None), rec(3, 20),  # gap of one unread second
+               rec(4, 12),  # 20 -> 12: the pistol comes out, not 8 shots
+               rec(5, 12), rec(10, 11),  # 5 s apart: not compared
+               rec(11, 30), rec(12, 0)]  # reload, then a 30-round drop in 1 s: misread
+    live = [True] * len(records)
+    shots = detect_shots(records, live, limits=limits)
+    assert [(s.sec, s.count, s.first) for s in shots] == [(1, 3, True), (3, 2, False)]
+    assert detect_shots(records, [False] * len(records), limits=limits) == []
+    additions = second_additions(records, live, limits)
+    assert additions[1][0] == {"shot", "engagement_start"}
+    assert additions[1][1] == {"first_shot_detected": True}  # no movement facts (gated off)
+
+
+def test_detonation_wins_give_sides() -> None:
+    from valorant_ai_coach.rules.side import outcome_sides
+
+    rows = [(4, "ally", 100.0, 101.0, 146.0, 147.0, True),   # 45 s: detonation, ally attacked
+            (5, "enemy", 200.0, 201.0, 246.0, 247.0, True),  # enemy detonated: ally defended
+            (6, "ally", 300.0, 301.0, 320.0, 321.0, True),   # early end: not used
+            (7, "ally", 400.0, 401.0, 446.0, 447.0, False)]  # someone eliminated: not used
+    assert [(o.ordinal, o.side, o.source) for o in outcome_sides(rows)] == [
+        (4, "attack", "detonation_win"), (5, "defense", "detonation_win")]
+
+
+def test_promotion_needs_reviewed_independent_and_approved_evidence() -> None:
+    from pathlib import Path
+
+    from valorant_ai_coach.rules.qualification import (
+        load_qualification,
+        qualification,
+        wilson_lower,
+    )
+
+    assert wilson_lower(160, 160) > 0.97 and wilson_lower(28, 30) < 0.8
+    strong = {"reviewed": 400, "correct": 399, "coverage": 0.8}
+    assert qualification({"development": strong, "independent": {**strong, "matches": 6},
+                          "approval": "lead"})["qualified"]
+    missing = qualification({"development": strong, "independent": {}, "approval": ""})
+    assert not missing["qualified"]
+    assert "independent: no INDEPENDENT_TEST evidence" in missing["missing"]
+    assert "no approval recorded" in missing["missing"]
+    report = load_qualification(Path("config/producer_qualification_v1.json"))
+    assert report and not any(item["qualified"] for item in report.values())

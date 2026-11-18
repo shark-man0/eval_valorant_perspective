@@ -1,0 +1,74 @@
+{
+ "version": "v1",
+ "development_only": true,
+ "note": "Evidence for promoting development producers to formal Facts/Events (rules/qualification.py). Reviews are visual labels on samples; review files are private.",
+ "producers": {
+  "top_bar_score": {
+   "development": {
+    "reviewed": 160,
+    "correct": 160,
+    "coverage": 0.678,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "score values"
+   },
+   "independent": {},
+   "approval": ""
+  },
+  "top_bar_timer": {
+   "development": {
+    "reviewed": 23,
+    "correct": 23,
+    "coverage": 0.52,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "timer readings"
+   },
+   "independent": {},
+   "approval": ""
+  },
+  "magazine_count": {
+   "development": {
+    "reviewed": 55,
+    "correct": 55,
+    "coverage": 0.846,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "magazine readings"
+   },
+   "independent": {},
+   "approval": ""
+  },
+  "shot_event": {
+   "development": {
+    "reviewed": 30,
+    "correct": 28,
+    "coverage": 0.576,
+    "split": "all 36 (mixed)",
+    "unit": "shot events; coverage = own-view kills with a shot within [-4 s, +1 s]"
+   },
+   "independent": {},
+   "approval": ""
+  },
+  "combat_start": {
+   "development": {
+    "reviewed": 141,
+    "correct": 139,
+    "coverage": 0.968,
+    "split": "10 timeline matches",
+    "unit": "within 2 s of the timeline BUY->ACTIVE transition"
+   },
+   "independent": {},
+   "approval": ""
+  },
+  "movement_state": {
+   "development": {
+    "reviewed": 9,
+    "correct": 4,
+    "coverage": 0.8,
+    "split": "TRAIN",
+    "unit": "seconds labelled moving by the detector; coverage = recall"
+   },
+   "independent": {},
+   "approval": "",
+   "gated_off": true
+  }
+ }
+}
