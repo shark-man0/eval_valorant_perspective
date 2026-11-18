@@ -431,6 +431,9 @@ class CompositeViewObserver:
                 )
                 if self.marker_context
                 else None,
+                "marker_identity_code_sha256": file_sha(
+                    Path(__file__).with_name("map_marker_identity.py")
+                ) if self.marker_context else None,
                 "opencv": cv2.__version__,
                 "numpy": np.__version__,
             }
@@ -477,8 +480,16 @@ class CompositeViewObserver:
             if len(mapped) == 1:
                 raw["marker_context_rankings"] = rank_marker_context(
                     image, mapped[0]["map_candidates"]
-                )[:10]
+                )[:64]
                 raw["marker_candidate_supplier"] = mapped[0]["producer_fingerprint"]
+                from .map_marker_identity import pixel_rank
+
+                raw["marker_identity_supplier"] = mapped[0]["producer_fingerprint"]
+                raw["marker_identity_pool_digest"] = digest(mapped[0]["map_candidates"])
+                raw["marker_identity_pixels"] = pixel_rank(
+                    image, mapped[0]["map_candidates"],
+                    mapped[0]["raw"].get("roi_xywh_native"),
+                )
         suppliers.append(
             {
                 "producer_fingerprint": self.view_fingerprint,
