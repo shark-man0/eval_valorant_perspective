@@ -5,8 +5,12 @@ expected Round number, temporal scope, confidence, or score is inferred.
 """
 from __future__ import annotations
 
+import json
+from functools import lru_cache
 from typing import Any
 
+from valorant_ai_coach.resources import resource_path
+from valorant_ai_coach.rules import RuleSelector
 from valorant_ai_coach.rules.policy_runtime import ProvisionalAdmissionTable
 from valorant_ai_coach.storage import SQLiteRepository
 
@@ -30,6 +34,14 @@ def _provisional_rows_admissible(stored: list[dict[str, Any]]) -> bool:
         and all(str(rule) in admissible for rule in row.get("related_rule_ids", []) or [])
         for row in stored
     )
+
+
+@lru_cache(maxsize=1)
+def _selector() -> RuleSelector:
+    registry = json.loads(
+        resource_path("config/rule_trigger_registry_v2.json").read_text(encoding="utf-8")
+    )
+    return RuleSelector(registry)
 
 
 def _round_numbers(value: object) -> set[int]:
@@ -70,6 +82,9 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
     failed = _round_numbers(checkpoint.get("failed_rounds"))
     inputs: list[RoundInput] = []
     seen: set[int] = set()
+    # Whether every Round with stored evaluations had its rule candidates re-selected,
+    # so each rule's time scope is the live one (otherwise the view says so).
+    scopes_restored = True
     for package in packages:
         if not isinstance(package, dict) or package.get("match_id") != match_id:
             raise MatchAggregationError("保存済みRound Packageのmatch_idが不正です")
@@ -103,6 +118,7 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
                     "evaluations": stored,
                 }
                 inputs.append(RoundInput(round_package=package, output=output))
+                scopes_restored = False
                 continue
             if stored:
                 # A valid Practical Round with scores is a storage-contract violation.
@@ -118,6 +134,20 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
                 "round_no": round_no,
                 "evaluations": stored,
             }
+            # The stored package is the enriched one, so selecting again yields the
+            # live candidates; the aggregator resolves each rule's time scope from
+            # them exactly as the live view does (as Pipeline._restore_round does).
+            # Without this the stored view reported every scope as "unknown".
+            candidates = tuple(_selector().select(package))
+            inputs.append(
+                RoundInput(
+                    round_package=package,
+                    output=output,
+                    candidates=candidates,
+                    candidate_rule_ids=frozenset(c.rule_id for c in candidates),
+                )
+            )
+            continue
         else:
             reason = "評価結果または完了チェックポイントがありません"
         if round_no in failed:
@@ -182,7 +212,7 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
             if checkpoint.get("canonical_evaluation_set") == _FULL_SET_MARKER
             else "legacy_or_unverified"
         ),
-        "candidate_scopes_restored": False,
+        "candidate_scopes_restored": scopes_restored,
         "missing_failed_round_packages": missing_failed,
         "missing_completed_round_packages": missing_completed,
     }

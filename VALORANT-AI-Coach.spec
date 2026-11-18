@@ -31,6 +31,7 @@ for relative in (
     "config/role_contract_v1.json",
     "config/rule_producer_status_v1.json",
     "config/rule_trigger_registry_v2.json",
+    "config/timeline_promotion_v1.json",
     "config/valorant_evaluation_rules_v4.json",
     "config/weapon_visual_registry_contract_v1.json",
 ):

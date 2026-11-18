@@ -403,6 +403,34 @@ def cap_display_clips(
     return value, tuple(records)
 
 
+# ------------------------------------------------------------- confidence floor
+
+SCORED_CONFIDENCE_FLOOR = 0.55
+
+
+def enforce_confidence_floor(evaluation: Mapping[str, Any]) -> dict[str, Any]:
+    """D-1b: a GOOD/IMPROVE below the 0.55 floor is stored as UNSCORED (low_confidence).
+
+    Shared by the video pipeline and the timeline bridge so every stored evaluation
+    obeys the same floor whichever path produced it. Idempotent.
+    """
+    item = deepcopy(dict(evaluation))
+    confidence = float(item["confidence"])
+    if item["label"] in {"good", "improve"} and confidence < SCORED_CONFIDENCE_FLOOR:
+        item.update(
+            {
+                "label": "unscored",
+                "clip_id": None,
+                "display_clip": None,
+                "improvement": None,
+                "missing_information": list(item["missing_information"])
+                or [f"評価信頼度が{SCORED_CONFIDENCE_FLOOR}未満です"],
+                "unscored_reason_code": "low_confidence",
+            }
+        )
+    return item
+
+
 # ------------------------------------------------- formal vs development candidates
 
 DEVELOPMENT_ID_PREFIX = "dev-"
