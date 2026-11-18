@@ -118,7 +118,10 @@ because DEAD values were withdrawn.
 
 Changes between known values: life DEAD to ALIVE 657 seconds, camera
 SPECTATOR to SELF 89, SELF to REMOTE 87, SELF to SPECTATOR 4. Life withdrawn
-to UNKNOWN: 336 seconds (332 DEAD, 4 ALIVE).
+to UNKNOWN: 336 seconds (332 DEAD, 4 ALIVE). In the sampled frames below every
+DEAD that became ALIVE showed the recorder's own HUD with health, mostly in the
+purchase phase after a death in the previous Round; the old DEAD was a death
+hypothesis carried past its Round.
 
 The fresh run reproduces the replay of the stored observations: Camera agrees
 in 21,925 of 21,999 seconds, differs between two known values in 8 and is
@@ -138,7 +141,10 @@ Frames decoded at the exact native PTS from the original recordings.
 | of which camera SPECTATOR to SELF (12) | 11 | 0 | 1 |
 | of which life DEAD to UNKNOWN (8) | old DEAD wrong in 5 | | 3 |
 | Fresh DEV2 changes (24) | 21 | 0 | 0 (3 abstentions were correct DEAD) |
-| Fresh life DEAD to ALIVE in issue_oldfull002 and issue_newfull001 (16) | 16 | 0 | 0 |
+| Fresh life DEAD to ALIVE, all nine matches with such seconds (62 of 657 seconds) | 62 | 0 | 0 |
+| Fresh camera SPECTATOR to SELF, six matches (16 of 89 seconds) | 16 | 0 | 0 |
+| Fresh camera SELF to SPECTATOR (all 4 seconds) | 0 | 0 | 4 (match result screens) |
+| Fresh life DEAD to ALIVE added only when combined with #150 (12 of 158 seconds) | 12 | 0 | 0 |
 | REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
 | Owl Drone views in a 252-frame sweep of one match | 11 of 11 read REMOTE | | |
 
@@ -160,7 +166,8 @@ result screens.
   for the first seconds of the buy menu (one event of two seconds seen).
 - The fresh run repeats the same ten development matches; generalization to
   unseen matches is unmeasured.
-- In the fresh run, 641 of the 657 DEAD to ALIVE seconds and all SPECTATOR to
-  SELF seconds outside the samples above have not been viewed.
+- In the fresh run, 595 of the 657 DEAD to ALIVE seconds and 73 of the 89
+  SPECTATOR to SELF seconds have not been viewed; the viewed samples were drawn
+  at random across matches.
 - Pixel identity depends on the decoder: the recording machine's acquisitions
   and the container's acquisition each match their own decoder only.
