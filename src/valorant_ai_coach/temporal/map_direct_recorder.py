@@ -87,8 +87,10 @@ class DensePortraitSearch:
     def __init__(
         self, templates: Sequence[tuple[str, ColorImage]], *, augment: bool,
         fast_search: bool = False,
+        rim_guided: bool = False,
         learned_templates: Mapping[str, ColorImage] | None = None,
     ) -> None:
+        self.rim_guided = rim_guided
         self._fast = fast_search
         self._templates: dict[str, list[ColorImage]] = {}
         for uuid, portrait in templates:
@@ -143,6 +145,15 @@ class DensePortraitSearch:
             response = cv2.matchTemplate(image, patch, cv2.TM_CCOEFF_NORMED)
             np.maximum(scored, response, out=scored)
         hsv = cast(ColorImage, cv2.cvtColor(roi, cv2.COLOR_BGR2HSV))
+        if self.rim_guided:
+            # Sparse yellow pixels on opposite arcs can survive partial occlusion.
+            # Apply the spatial prior before NMS so unrelated UI cannot spend the peak budget.
+            warm_mask = cv2.inRange(hsv, (13, 32, 152), (42, 255, 255))
+            radius = max(2, round(8 * scale))
+            kernel = np.zeros((2*radius+1, 2*radius+1), np.uint8)
+            cv2.circle(kernel, (radius, radius), radius, 1, max(1, round(3*scale)))
+            votes = cv2.filter2D(warm_mask // 255, cv2.CV_32F, kernel)
+            scored[votes[half:height-half, half:width-half] < 4] = -1
         fence = extent - half
         if fence > 0:
             scored[:fence] = scored[-fence:] = -1
@@ -190,7 +201,9 @@ class DirectRecorderTracker:
     def __init__(
         self, search: DensePortraitSearch, identity: RecorderUUID, portrait_reader: Any, *,
         fallback_search: DensePortraitSearch | None = None,
+        compare_centers: bool = False,
     ):
+        self.compare_centers = compare_centers
         self.search = search
         self.fallback_search = fallback_search
         self.identity = identity
@@ -244,10 +257,10 @@ class DirectRecorderTracker:
         roi = image[top:bottom, left:right]
         peaks = self.search.peaks(roi, self.identity.uuid, scale=scale)
         accepted = self._confirmed_peaks(image, peaks, left, top)
-        if not accepted and self.fallback_search is not None:
+        if self.fallback_search is not None and (not accepted or self.compare_centers):
             additional = self.fallback_search.peaks(roi, self.identity.uuid, scale=scale)
             confirmed = self._confirmed_peaks(image, additional, left, top)
-            accepted = [(index + len(peaks), score, margin) for index, score, margin in confirmed]
+            accepted.extend((i + len(peaks), score, margin) for i, score, margin in confirmed)
             peaks.extend(additional)
         pool = [
             {"center_frame_px": [p.center[0]+left, p.center[1]+top], "proposal_kind": VERSION}
@@ -321,3 +334,35 @@ class DirectRecorderTracker:
 
 def digest_pixels(image: ColorImage) -> str:
     return hashlib.sha256(image.tobytes()).hexdigest()
+
+def corroborate_direct_selection(
+    direct: dict[str, Any], legacy: dict[str, Any], scale: float,
+) -> dict[str, Any]:
+    """Reconcile independent proposal centers on one current image."""
+    if (not direct.get("support_count") or not direct.get("sample_sha256")
+            or direct["sample_sha256"] != legacy.get("sample_sha256")):
+        return direct
+    if legacy.get("selection_reason") == "recorder_selection_conflict":
+        conflict = True
+    elif legacy.get("selection_status") == "RESEARCH_SELECTED":
+        center = legacy.get("support_center_frame_px")
+        conflict = center is None or math.dist(center, direct["support_center_frame_px"]) > 5*scale
+        uid = legacy.get("recorder_agent_uuid_candidate")
+        if uid and uid != direct.get("recording_agent_uuid"):
+            conflict = True
+        if (not conflict and uid and direct.get("selection_reason")
+                == "direct_portrait_needs_adjacent_observation"
+                and legacy.get("selection_method") == "knowledge_agent_uuid"
+                and legacy.get("knowledge_reason") == "matched_agent_uuid"):
+            return {**direct, "selection_status": "RESEARCH_SELECTED",
+                    "selection_reason": "current_fitted_marker_agrees",
+                    "research_candidate_index": direct["support_candidate_index"],
+                    "research_marker_center_frame_px": direct["support_center_frame_px"]}
+    else:
+        return direct
+    if conflict:
+        return {**direct, "selection_status": "ABSTAIN",
+                "selection_reason": "direct_and_fitted_marker_conflict", "support_count": 0,
+                "support_candidate_index": None, "research_candidate_index": None,
+                "support_center_frame_px": None, "research_marker_center_frame_px": None}
+    return direct

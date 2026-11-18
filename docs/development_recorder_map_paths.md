@@ -208,3 +208,30 @@ comparison assigned by physical match. The learned kernel tied the
 augmentation baseline on the validation recording (8 of 21 eligible
 seconds with a position, 7 of 21 with a native edge). The model gate
 rejected the new kernel. The exporter does not load trained weights.
+
+### Rim-guided search and recording Map identity
+
+Use `--direct-detector guided` with `--knowledge-asset-cache` and
+`--recover-map-alignment` to compare the augmented grayscale proposals with a
+full-color search. The color search counts warm annular pixels before choosing
+peaks. Both searches verify each proposal against competing Agent portraits.
+Spatially distinct accepted markers cause an abstention.
+
+The Map reader can recover a rejected projection after three spaced accepted
+registrations bind a Map UUID to the recording. It requires a fresh alignment
+on contrast-enhanced pixels, the same leading Map in the original image, and
+agreement of the two transforms across the ROI. When a recent native
+registration exists, it checks relative rotation and scale. It reports the
+recording Map UUID alongside the development-only one-second output.
+
+To compare an existing fitted-marker stream on the same native images, add
+`--corroborate-direct-with-legacy`. A matching measured UUID and fitted center
+can corroborate a provisional direct marker. A current conflict drops both
+its selection and its path support.
+
+For a development learning experiment, `fit_registered_rendering` fits a
+shared BGR transform from external portrait patches and weak 9×9 patches
+in the continual-learning feature store. Supply acquisition hashes, extractor
+IDs and feature file digests for the TRAIN recordings. Compare the resulting
+rendering on validation recordings before adopting it. The learned color
+transform supplies proposals only in the research comparison.
