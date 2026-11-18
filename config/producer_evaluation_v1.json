@@ -1,0 +1,117 @@
+{
+ "version": "producer_evaluation_v1",
+ "note": "開発用生成器の評価記録。昇格判定は行わない。正式Event/Factへの昇格は共通タイムラインの昇格器（facts.timeline_promotion、#164、閾値はconfig/timeline_promotion_v1.json）だけが行う。",
+ "evaluation_classes": {
+  "development": "露出済みの開発用録画（36試合）での目視確認。結果は開発候補（dev-、development_only、採点対象外）の品質の目安であり、資格付けではない。",
+  "promoted_from_shared_timeline": "#164の昇格器が共通タイムラインの証拠条件で昇格させた正式Event/Fact（tl-）。閾値は開発用36試合で較正した運用値で、独立評価ではない。",
+  "independently_qualified": "未露出の独立評価用録画での評価に合格したもの。録画カタログの露出記録で未露出と確認できる録画がまだないため、現在0件。"
+ },
+ "producers": {
+  "top_bar_score": {
+   "timeline_supply": "hud_observations.ally_score / enemy_score + context.score",
+   "formal_promotion_by_164": "state_snapshot.score_ally / score_enemy, round result",
+   "development_evaluation": {
+    "reviewed": 160,
+    "correct": 160,
+    "coverage": 0.678,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "score values"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   }
+  },
+  "top_bar_timer": {
+   "timeline_supply": "hud_observations.timer (m:ss) + context.timer_seconds, active signal",
+   "formal_promotion_by_164": "state_snapshot.round_time_remaining_sec, round_boundary",
+   "development_evaluation": {
+    "reviewed": 23,
+    "correct": 23,
+    "coverage": 0.52,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "timer readings"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   }
+  },
+  "magazine_count": {
+   "timeline_supply": "hud_observations.ammo_current",
+   "formal_promotion_by_164": null,
+   "development_evaluation": {
+    "reviewed": 55,
+    "correct": 55,
+    "coverage": 0.846,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "magazine readings"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   }
+  },
+  "shot_event": {
+   "timeline_supply": "development candidate only (rules.second_series)",
+   "formal_promotion_by_164": null,
+   "development_evaluation": {
+    "reviewed": 30,
+    "correct": 28,
+    "coverage": 0.576,
+    "split": "all 36 (mixed)",
+    "unit": "shot events; coverage = own-view kills with a shot within [-4 s, +1 s]"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   }
+  },
+  "combat_start": {
+   "timeline_supply": "derived by the shared timeline from the active signal (BUY->ACTIVE)",
+   "formal_promotion_by_164": "round_boundary / buy_phase",
+   "development_evaluation": {
+    "reviewed": 141,
+    "correct": 139,
+    "coverage": 0.968,
+    "split": "10 timeline matches",
+    "unit": "within 2 s of the timeline BUY->ACTIVE transition"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   }
+  },
+  "movement_state": {
+   "timeline_supply": "none (gated off)",
+   "formal_promotion_by_164": null,
+   "development_evaluation": {
+    "reviewed": 9,
+    "correct": 4,
+    "coverage": 0.8,
+    "split": "TRAIN",
+    "unit": "seconds labelled moving by the detector; coverage = recall"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   },
+   "gated_off": true
+  },
+  "magazine_reserve": {
+   "timeline_supply": "per-second rows `reserve` (extract_second_features.py, --ammo-only); used by rules.second_series to tell a weapon switch from firing",
+   "formal_promotion_by_164": null,
+   "development_evaluation": {
+    "reviewed": 268,
+    "correct": 268,
+    "coverage": 0.8,
+    "split": "VALIDATION+DEV_COMPARISON",
+    "unit": "reserve readings where the magazine was read; 18 checked by eye, 250 by agreement with Tesseract; 8 cut-digit misreads found by eye were removed by the cut-digit guard before this count"
+   },
+   "independent_evaluation": {
+    "matches": 0,
+    "status": "not_run"
+   }
+  }
+ }
+}

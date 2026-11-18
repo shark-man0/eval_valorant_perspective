@@ -45,6 +45,10 @@ class TimelineState:
 class RoundSpan:
     start: float
     end: float | None
+    number: int | None = None  # the timeline's own round number (1-based), if any
+
+
+ROUND_NUMBER_SUPPORT = 2  # states carrying a round number before it opens a round
 
 
 class TimelineView:
@@ -103,11 +107,19 @@ class TimelineView:
         return bool(state and state.spectating)
 
     def rounds(self) -> list[RoundSpan]:
-        """Round spans from round_start/round_end events.
+        """Round spans, taken only from the shared timeline's own output.
 
-        A round whose end was not seen is bounded by the next round start; only
-        the last round can stay open (end None).
+        The timeline's round numbers (read from the score and the round phase)
+        define the rounds: each number seen in ``ROUND_NUMBER_SUPPORT`` states,
+        in increasing order, is one round. A round starts at the timeline
+        round_start event that opens it (if one lies between the previous
+        round's last state and its own first state), else at its first state;
+        it ends at the timeline round_end event inside it, else at the next
+        round's start. Exports without round numbers fall back to the events.
         """
+        numbered = self._numbered_rounds()
+        if numbered:
+            return numbered
         starts = [lo for kind, lo, _ in self.events if kind == "round_start"]
         ends = [hi for kind, _, hi in self.events if kind == "round_end"]
         spans = []
@@ -118,9 +130,43 @@ class TimelineView:
             spans.append(RoundSpan(start, end))
         return spans
 
+    def _numbered_rounds(self) -> list[RoundSpan]:
+        counts: dict[int, int] = {}
+        for state in self.states:
+            if state.round_number is not None:
+                counts[state.round_number] = counts.get(state.round_number, 0) + 1
+        first: dict[int, float] = {}
+        last: dict[int, float] = {}
+        current = 0
+        for state in self.states:
+            number = state.round_number
+            if number is None or counts[number] < ROUND_NUMBER_SUPPORT or number < current:
+                continue
+            current = number
+            first.setdefault(number, state.sec)
+            last[number] = state.sec
+        numbers = sorted(first)
+        starts_events = [lo for kind, lo, _ in self.events if kind == "round_start"]
+        ends = [hi for kind, _, hi in self.events if kind == "round_end"]
+        starts = []
+        for index, number in enumerate(numbers):
+            begin = first[number]
+            floor = last[numbers[index - 1]] if index > 0 else float("-inf")
+            opening = [lo for lo in starts_events if floor < lo <= begin]
+            starts.append(opening[-1] if opening else begin)
+        spans = []
+        for index, number in enumerate(numbers):
+            following = starts[index + 1] if index + 1 < len(starts) else None
+            limit = following if following is not None else float("inf")
+            end = next((e for e in ends if starts[index] < e <= limit), following)
+            spans.append(RoundSpan(starts[index], end, number))
+        return spans
+
     def round_index(self, sec: float) -> int | None:
         """Index of the round span containing ``sec`` (start <= sec <= end)."""
-        for index, span in enumerate(self.rounds()):
+        spans = self.rounds()
+        for index in range(len(spans) - 1, -1, -1):
+            span = spans[index]
             if span.start <= sec and (span.end is None or sec <= span.end):
                 return index
         return None
