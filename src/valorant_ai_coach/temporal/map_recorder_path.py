@@ -50,8 +50,12 @@ def project_recorder_witness(
     reference = candidates[0]
     map_id = reference.get("map_id")
     sha = reference_sha256s.get(map_id, "")
+    evidence = reference.get("evidence")
+    flow_recovery = alignment.get("alignment_recovery") == "native_flow"
+    expected_evidence = ("adjacent_optical_flow_and_current_reference" if flow_recovery
+                         else "public_reference_feature_alignment")
     if (
-        not is_sha(sha) or reference.get("evidence") != "public_reference_feature_alignment"
+        not is_sha(sha) or evidence != expected_evidence
         or reference.get("position_authority") is not False
         or reference.get("qualified") is not False
     ):
@@ -91,6 +95,7 @@ def project_recorder_witness(
         "recorder_agent_candidate": selection.get("recorder_agent_candidate"),
         "fit_residual_p95_reference_px": residual,
         "qualified": False, "position_authority": False,
+        **({"alignment_recovery": "native_flow"} if flow_recovery else {}),
         **({"selection_method": selection["selection_method"],
             "track_anchor": selection["track_anchor"],
             "recorder_agent_uuid_candidate": selection["recorder_agent_uuid_candidate"]}

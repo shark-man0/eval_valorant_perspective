@@ -87,8 +87,10 @@ class DensePortraitSearch:
     def __init__(
         self, templates: Sequence[tuple[str, ColorImage]], *, augment: bool,
         fast_search: bool = False,
+        rim_guided: bool = False,
         learned_templates: Mapping[str, ColorImage] | None = None,
     ) -> None:
+        self.rim_guided = rim_guided
         self._fast = fast_search
         self._templates: dict[str, list[ColorImage]] = {}
         for uuid, portrait in templates:
@@ -143,6 +145,15 @@ class DensePortraitSearch:
             response = cv2.matchTemplate(image, patch, cv2.TM_CCOEFF_NORMED)
             np.maximum(scored, response, out=scored)
         hsv = cast(ColorImage, cv2.cvtColor(roi, cv2.COLOR_BGR2HSV))
+        if self.rim_guided:
+            # Sparse yellow pixels on opposite arcs can survive partial occlusion.
+            # Apply the spatial prior before NMS so unrelated UI cannot spend the peak budget.
+            warm_mask = cv2.inRange(hsv, (13, 32, 152), (42, 255, 255))
+            radius = max(2, round(8 * scale))
+            kernel = np.zeros((2*radius+1, 2*radius+1), np.uint8)
+            cv2.circle(kernel, (radius, radius), radius, 1, max(1, round(3*scale)))
+            votes = cv2.filter2D(warm_mask // 255, cv2.CV_32F, kernel)
+            scored[votes[half:height-half, half:width-half] < 4] = -1
         fence = extent - half
         if fence > 0:
             scored[:fence] = scored[-fence:] = -1
@@ -190,7 +201,10 @@ class DirectRecorderTracker:
     def __init__(
         self, search: DensePortraitSearch, identity: RecorderUUID, portrait_reader: Any, *,
         fallback_search: DensePortraitSearch | None = None,
+        compare_centers: bool = False,
     ):
+        self._rejection_stage = 0
+        self.compare_centers = compare_centers
         self.search = search
         self.fallback_search = fallback_search
         self.identity = identity
@@ -243,11 +257,12 @@ class DirectRecorderTracker:
         scale = image.shape[1] / 1920
         roi = image[top:bottom, left:right]
         peaks = self.search.peaks(roi, self.identity.uuid, scale=scale)
+        self._rejection_stage = 0
         accepted = self._confirmed_peaks(image, peaks, left, top)
-        if not accepted and self.fallback_search is not None:
+        if self.fallback_search is not None and (not accepted or self.compare_centers):
             additional = self.fallback_search.peaks(roi, self.identity.uuid, scale=scale)
             confirmed = self._confirmed_peaks(image, additional, left, top)
-            accepted = [(index + len(peaks), score, margin) for index, score, margin in confirmed]
+            accepted.extend((i + len(peaks), score, margin) for i, score, margin in confirmed)
             peaks.extend(additional)
         pool = [
             {"center_frame_px": [p.center[0]+left, p.center[1]+top], "proposal_kind": VERSION}
@@ -258,13 +273,23 @@ class DirectRecorderTracker:
         # Shifted renderings may fire a second time inside the same portrait.
         # Keep truly separated peaks as ambiguous irrespective of their rank.
         unique: list[tuple[int, float, float]] = []
-        for candidate in sorted(accepted, key=lambda row: (-row[1], row[0])):
+        def priority(row: tuple[int, float, float]) -> tuple[bool, float, int]:
+            index, score, margin = row
+            standalone = self.compare_centers and _strong_peak(peaks[index], score, margin)
+            return (not standalone, -score, index)
+
+        for candidate in sorted(accepted, key=priority):
             if all(math.dist(peaks[candidate[0]].center, peaks[r[0]].center) > 6*scale
                    for r in unique):
                 unique.append(candidate)
         if len(unique) != 1:
             if unique:
                 result["selection_reason"] = "ambiguous_direct_portraits"
+            else:
+                result["portrait_rejection"] = (
+                    "weak_texture_or_no_peak", "rim_sectors", "portrait_score",
+                    "agent_margin", "rival_rim",
+                )[self._rejection_stage]
             return pool, result
         index, score, margin = unique[0]
         chosen = peaks[index]
@@ -287,10 +312,7 @@ class DirectRecorderTracker:
             support_candidate_index=index, support_count=count,
             support_center_frame_px=list(center),
         )
-        if count < 2 and not (
-            score >= .87 and margin >= .20 and chosen.warm_sectors >= 9
-            and chosen.opposite_pairs >= 3
-        ):
+        if count < 2 and not _strong_peak(chosen, score, margin):
             result["selection_reason"] = "direct_portrait_needs_adjacent_observation"
             return pool, result
         result.update(
@@ -306,18 +328,65 @@ class DirectRecorderTracker:
         accepted = []
         target = self.portrait_reader._uuids.index(self.identity.uuid)
         for index, peak in enumerate(peaks):
-            if peak.response < .68 or peak.warm_sectors < 5 or peak.opposite_pairs < 1:
+            if peak.response < .68:
                 continue
+            self._rejection_stage = max(self._rejection_stage, 1)
+            if peak.warm_sectors < 5 or peak.opposite_pairs < 1:
+                continue
+            self._rejection_stage = max(self._rejection_stage, 2)
             center = (peak.center[0]+left, peak.center[1]+top)
             scores = self.portrait_reader._portrait_scores(image, center)
             if scores is None:
                 continue
             score = float(scores[target])
             margin = score - float(np.delete(scores, target).max())
-            if score >= .77 and margin >= .14 and peak.chromatic_rivals <= 5:
+            if score < .77:
+                continue
+            self._rejection_stage = max(self._rejection_stage, 3)
+            if margin < .14:
+                continue
+            self._rejection_stage = 4
+            if peak.chromatic_rivals <= 5:
                 accepted.append((index, score, margin))
         return accepted
 
 
+def _strong_peak(peak: DirectPeak, score: float, margin: float) -> bool:
+    return (score >= .87 and margin >= .20 and peak.warm_sectors >= 9
+            and peak.opposite_pairs >= 3)
+
+
 def digest_pixels(image: ColorImage) -> str:
     return hashlib.sha256(image.tobytes()).hexdigest()
+
+def corroborate_direct_selection(
+    direct: dict[str, Any], legacy: dict[str, Any], scale: float,
+) -> dict[str, Any]:
+    """Reconcile independent proposal centers on one current image."""
+    if (not direct.get("support_count") or not direct.get("sample_sha256")
+            or direct["sample_sha256"] != legacy.get("sample_sha256")):
+        return direct
+    if legacy.get("selection_reason") == "recorder_selection_conflict":
+        conflict = True
+    elif legacy.get("selection_status") == "RESEARCH_SELECTED":
+        center = legacy.get("support_center_frame_px")
+        conflict = center is None or math.dist(center, direct["support_center_frame_px"]) > 5*scale
+        uid = legacy.get("recorder_agent_uuid_candidate")
+        if uid and uid != direct.get("recording_agent_uuid"):
+            conflict = True
+        if (not conflict and uid and direct.get("selection_reason")
+                == "direct_portrait_needs_adjacent_observation"
+                and legacy.get("selection_method") == "knowledge_agent_uuid"
+                and legacy.get("knowledge_reason") == "matched_agent_uuid"):
+            return {**direct, "selection_status": "RESEARCH_SELECTED",
+                    "selection_reason": "current_fitted_marker_agrees",
+                    "research_candidate_index": direct["support_candidate_index"],
+                    "research_marker_center_frame_px": direct["support_center_frame_px"]}
+    else:
+        return direct
+    if conflict:
+        return {**direct, "selection_status": "ABSTAIN",
+                "selection_reason": "direct_and_fitted_marker_conflict", "support_count": 0,
+                "support_candidate_index": None, "research_candidate_index": None,
+                "support_center_frame_px": None, "research_marker_center_frame_px": None}
+    return direct
