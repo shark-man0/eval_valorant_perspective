@@ -21,7 +21,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from valorant_ai_coach.application.timeline_evaluation import load_bundle, run
+from valorant_ai_coach.application.timeline_evaluation import load_bundle, openai_coach, run
 from valorant_ai_coach.facts.second_feature_promotion import records_source_sha256
 
 # One input per recording: a full HUD bundle beats a replay projection.
@@ -58,7 +58,10 @@ def _pair(text: str) -> tuple[str, Path]:
 def measure(
     inputs: Sequence[tuple[str, str, Path]], output: Path,
     features: Sequence[Path] = (), catalog: Path | None = None,
+    coach_model: str | None = None,
 ) -> dict[str, Any]:
+    """``coach_model`` runs the OpenAI coach (API key required); otherwise the offline
+    coach, whose GOOD/IMPROVE are never formal (only Rule Engine decisions are)."""
     output.mkdir(parents=True, mode=0o700)
     unique, skipped = deduplicate(inputs)
     by_sha = {str(records_source_sha256(path)): path for path in features}
@@ -72,6 +75,7 @@ def measure(
             match_id=f"DEV-{name}",
             database=output / f"{name}.db",
             second_features_path=by_sha.get(sha),
+            coach=None if coach_model is None else openai_coach(coach_model),
         )
         feature = report.get("second_feature_promotion") or {}
         promotion = report["formal_promotion"] or {}
@@ -137,6 +141,9 @@ def measure(
         )
     summary = {
         "qualification": "development_only",
+        # Labels are AI-coach results only when the API ran; otherwise GOOD/IMPROVE
+        # come from the deterministic Rule Engine alone.
+        "coach": "openai:" + coach_model if coach_model else "offline_no_api",
         "inputs": len(rows),
         "distinct_sources": len({row["source_id"] for row in rows}),
         "duplicates_skipped": skipped,
@@ -193,14 +200,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="extract_second_features.py の出力（SHA-256で自動対応）")
     parser.add_argument("--catalog", type=Path, help="録画カタログ（タイムライン未作成の一覧用）")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--coach-model", help="指定するとOpenAI APIで採点する（APIキーが必要）")
     args = parser.parse_args(argv)
     inputs = [(n, "timeline", p) for n, p in args.timeline] + [
         (n, "replay", p) for n, p in args.replay
     ]
     if not inputs:
         parser.error("--timeline か --replay を1件以上指定してください")
-    summary = measure(inputs, args.output, args.features, args.catalog)
-    print(json.dumps({k: summary[k] for k in ("inputs", "distinct_sources", "totals",
+    summary = measure(inputs, args.output, args.features, args.catalog, args.coach_model)
+    print(json.dumps({k: summary[k] for k in ("coach", "inputs", "distinct_sources", "totals",
                                               "independent_signal_checks",
                                               "rules_ready_for_api")},
                      ensure_ascii=False))
