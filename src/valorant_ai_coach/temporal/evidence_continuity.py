@@ -303,7 +303,7 @@ def _purchase_pass(
 
 def _purchase_countdown_pass(
     states: list[dict[str, Any]], observations: dict[str, Any], segment: list[int],
-    revise: _Reviser,
+    revise: _Reviser, brackets: list[tuple[tuple[str, ...], Fraction, Fraction]],
 ) -> None:
     """Rows showing the purchase countdown to a projected combat start are BUY.
 
@@ -312,7 +312,9 @@ def _purchase_countdown_pass(
     ``t + r = S`` (integer display tolerance) display the purchase countdown of
     that Round. Two such readings are required, any other reading before ``S``
     or a result or intermission cue stops the rule, and only rows from the first
-    reading up to ``S`` are revised.
+    reading up to ``S`` are revised. The interval (from the earlier anchor when it
+    is a measured BUY) is recorded so that Round start candidates inside it are
+    retired.
     """
     anchors = [
         k for k, i in enumerate(segment)
@@ -360,6 +362,8 @@ def _purchase_countdown_pass(
         if conflict or len(matches) < 2:
             continue
         evidence = ids + clock_ids + _score_ids(states[segment[left_at]])
+        first = low if low["round"]["value"] == "BUY" else states[segment[matches[0]]]
+        brackets.append((source_scope(first["sample"]), native_time(first["sample"]), start - 1))
         for k in range(matches[0], b):
             frame = states[segment[k]]
             if native_time(frame["sample"]) > start - 1:
@@ -769,7 +773,7 @@ def apply_evidence_continuity(
     archive = superseded if superseded is not None else []
     for segment in _segments(states):
         brackets: list[tuple[tuple[str, ...], Fraction, Fraction]] = []
-        _purchase_countdown_pass(states, observations, segment, revise)
+        _purchase_countdown_pass(states, observations, segment, revise, brackets)
         _purchase_pass(states, observations, segment, revise, brackets)
         if transitions is not None and brackets:
             _retire_starts_in_purchase(transitions, brackets, archive)
