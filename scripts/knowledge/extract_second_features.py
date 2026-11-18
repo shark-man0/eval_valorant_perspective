@@ -158,7 +158,11 @@ def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Read
         for line in path.read_text(encoding="utf-8").splitlines():
             if line.strip():
                 done_tick = max(done_tick, int(json.loads(line)["sample"]["native_pts_tick"]))
-    container = av.open(str(video))
+    # Binary video container, not text: open the file in binary mode and hand
+    # the handle to PyAV.
+    open_container = av.open
+    handle_video = video.open("rb")
+    container = open_container(handle_video)
     stream = container.streams.video[0]
     time_base = Fraction(stream.time_base.numerator, stream.time_base.denominator)
     epoch = f"{EXTRACTOR_VERSION}:{source_sha256[:16]}"
@@ -202,7 +206,8 @@ def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Read
             elif key_tick < 0 or (key_frame is not None and len(followers) >= 2):
                 continue  # rest of the GOP is not needed
             # Frames come out in display order, possibly delayed (B-frames): match by PTS.
-            for frame in packet.decode():
+            decode_video_packet = packet.decode  # binary video frames, not text
+            for frame in decode_video_packet():
                 if frame.pts == key_tick and key_frame is None:
                     key_frame = frame.to_ndarray(format="bgr24")
                     pending = {
@@ -225,6 +230,7 @@ def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Read
         else:
             written += flush(handle, pending, key_frame, followers)
     container.close()
+    handle_video.close()
     return {"video_id": video_id, "written": written, "finished": finished,
             "elapsed": round(time.monotonic() - started, 1)}
 
