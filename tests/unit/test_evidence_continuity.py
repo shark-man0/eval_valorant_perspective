@@ -305,3 +305,25 @@ def test_overlapping_round_start_candidates_keep_the_narrower_one():
     assert [e["candidate_id"] for e in transitions] == ["a", "c"]
     assert superseded[0]["rule_transition"]["candidate_id"] == "b"
     assert superseded[0]["retained_candidate_id"] == "a"
+
+
+def test_purchase_countdown_to_the_projected_start_is_purchase_and_alive():
+    # Result at 0-1 s, then a purchase countdown (unread phase) reaching the
+    # combat start that the ACTIVE countdown projects at 20 s.
+    rows = [at(0, ["result"], (5, 3)), at(1, ["result"], (5, 3))]
+    rows += [at(s, score=(5, 3)) for s in range(2, 8)]
+    rows += [at(s, score=(5, 3), timer=20 - s) for s in range(8, 14)]
+    rows += [at(s, score=(5, 3)) for s in range(14, 20)]
+    rows += [at(20, ["active"], (5, 3), timer=100), at(21, ["active"], (5, 3), timer=99)]
+    result = run(rows)
+    rounds = values(result, "round")
+    assert rounds[8:20] == ["BUY"] * 12
+    assert result["frames"][8]["round"]["reason"] == "purchase_countdown_before_projected_start"
+    assert rounds[2:8] == values(run(rows, False), "round")[2:8]
+    assert values(result, "life")[8:20] == ["ALIVE"] * 12
+    # A reading that does not count down to the projected start stops the rule.
+    rows[10] = at(10, score=(5, 3), timer=40)
+    assert values(run(rows), "round")[8] != "BUY"
+    # One reading is not enough.
+    rows = rows[:9] + [at(s, score=(5, 3)) for s in range(9, 20)] + rows[20:]
+    assert values(run(rows), "round")[8] != "BUY"
