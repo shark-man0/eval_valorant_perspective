@@ -235,3 +235,11 @@ in the continual-learning feature store. Supply acquisition hashes, extractor
 IDs and feature file digests for the TRAIN recordings. Compare the resulting
 rendering on validation recordings before adopting it. The learned color
 transform supplies proposals only in the research comparison.
+
+With guided search, `--recover-native-flow` can recover an adjacent frame's
+projection using tracked minimap features and a current reference match.
+It checks forward/backward flow, inlier spread around the actual marker, and
+agreement with the current reference transform at four locations. The anchor
+must have a projected, selected marker on the same native acquisition and
+track within 250 ms. Each recovery consumes the anchor. A recovered transform
+cannot start another recovery.

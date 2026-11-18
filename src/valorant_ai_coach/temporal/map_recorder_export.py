@@ -31,7 +31,7 @@ from .map_recorder_path import (
     project_recorder_witness,
 )
 from .map_recorder_selection import MapRecorderSelector
-from .map_recording_alignment import RecordingMapAlignment
+from .map_recording_alignment import NativeMapFlowAlignment, RecordingMapAlignment
 from .public_map_pixels import PublicMapPixels
 from .replay import SourcePolicy, file_sha, read_json, write_private
 
@@ -103,6 +103,7 @@ def export_recorder_paths(
     recover_supported_portraits: bool = False, knowledge_asset_cache: Path | None = None,
     recover_knowledge_track: bool = False, recover_map_alignment: bool = False,
     direct_detector: str | None = None, corroborate_direct_with_legacy: bool = False,
+    recover_native_flow: bool = False,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -136,8 +137,8 @@ def export_recorder_paths(
     native = bundle["native_frames"]
     if not inputs.keys() <= native.keys():
         raise ValueError("Image manifest contains a sample absent from the common timeline")
-    if corroborate_direct_with_legacy and direct_detector != "guided":
-        raise ValueError("Legacy comparison requires guided direct search")
+    if (corroborate_direct_with_legacy or recover_native_flow) and direct_detector != "guided":
+        raise ValueError("Optional fitted-marker and native-flow checks require guided search")
     direct = None
     binding = None
     if direct_detector and knowledge is not None:
@@ -155,6 +156,7 @@ def export_recorder_paths(
             direct = DirectRecorderTracker(search, binding, knowledge, fallback_search=fallback,
                                            compare_centers=direct_detector == "guided")
     alignment = RecordingMapAlignment(projector) if direct_detector == "guided" else None
+    flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
     operable: set[str] = set()
     direct_stages: Counter[str] = Counter()
@@ -166,6 +168,8 @@ def export_recorder_paths(
         key = sample["sample_sha256"]
         packet = inputs.get(key)
         if packet is None:
+            if flow is not None:
+                flow.anchor = None
             tracker.reset()
             if knowledge is not None:
                 knowledge.reset()
@@ -231,11 +235,19 @@ def export_recorder_paths(
                 if result["selection_reason"] == "recorder_selection_conflict":
                     tracker.reset()
         if result["support_count"] <= 0:
+            if flow is not None:
+                flow.anchor = None
             rows.append(None)
             continue
         raw = projector.inspect(image, recover_alignment=recover_map_alignment)["raw"]
         if alignment is not None:
             raw = alignment.inspect(image, sample, raw)
+            if flow is not None:
+                raw = flow.recover(
+                    image, sample, result["track_anchor"], raw, result["support_center_frame_px"],
+                    alignment.map_uuid,
+                    carry=frame.get("continuity", {}).get("carry_allowed") is True,
+                )
         projected = project_recorder_witness(
             image, sample, pool, result,
             raw,
@@ -245,6 +257,10 @@ def export_recorder_paths(
             direct_stages["projection_attempted"] += 1
             if projected is not None:
                 direct_stages["projection_available"] += 1
+        if (flow is not None and projected is not None
+                and raw.get("alignment_recovery") != "native_flow"
+                and result["selection_status"] == "RESEARCH_SELECTED"):
+            flow.remember(image, sample, result["track_anchor"], raw)
         rows.append(projected)
     callouts = (KnowledgeRecorderMap.callouts(knowledge_asset_cache, catalog)
                 if knowledge_asset_cache else [])
@@ -287,6 +303,7 @@ def main() -> None:
     parser.add_argument("--knowledge-asset-cache", type=Path)
     parser.add_argument("--recover-knowledge-track", action="store_true")
     parser.add_argument("--recover-map-alignment", action="store_true")
+    parser.add_argument("--recover-native-flow", action="store_true")
     parser.add_argument("--corroborate-direct-with-legacy", action="store_true")
     parser.add_argument("--direct-detector",
                         choices=("external", "augmented", "fast", "cascade", "guided"))

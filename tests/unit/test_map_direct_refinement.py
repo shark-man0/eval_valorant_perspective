@@ -102,3 +102,40 @@ def test_aligned_proposals_keep_the_strong_single_frame_witness():
     img = np.zeros((100, 1920, 3), np.uint8)
     _, result = tracker._observe_measured(img, (0, 0, 100, 100), sample, {}, "camera")
     assert result["research_marker_center_frame_px"] == list(strong.center)
+
+
+def test_native_flow_needs_current_landmarks_and_cannot_chain():
+    import cv2
+
+    from valorant_ai_coach.temporal.map_recording_alignment import NativeMapFlowAlignment
+
+    flow = NativeMapFlowAlignment()
+    image = np.random.default_rng(13).integers(0, 255, (160, 160, 3), np.uint8)
+    matrix = np.eye(3)
+    matrix[:2, 2] = (2, 1)
+    moved = cv2.warpAffine(image, matrix[:2], (160, 160))
+    previous = {"source_id": "m", "source_sha256": "src", "acquisition_id": "a",
+                "native_epoch": "e", "native_time_base": "1/10", "native_pts_tick": 40,
+                "native_pixel_sha256": "original", "frame_size_px": [160, 160]}
+    sample = {**previous, "native_pts_tick": 42, "native_pixel_sha256": "new"}
+    hit = {"map_id": "map", "reference_to_roi_homography_candidate": np.eye(3).tolist(),
+           "fit_residual_p95_reference_px": 1.}
+    anchor = {"map_name_candidates": [hit], "roi_pixel_bounds": [0, 0, 160, 160]}
+    ranked = {**hit, "inliers": 17, "reference_to_roi_homography_candidate": matrix.tolist()}
+    current = {**anchor, "map_name_candidates": [], "reference_ranking": [ranked]}
+
+    def recover(s, row):
+        return flow.recover(moved, s, "track", row, (80, 80), "map", carry=True)
+
+    flow.remember(image, previous, "track", anchor)
+    result = recover(sample, current)
+    assert result["alignment_recovery"] == "native_flow"
+    assert recover(sample, current) == current
+    for s, row in [
+        ({**sample, "native_pts_tick": 44}, current),
+        ({**sample, "native_epoch": "disconnected"}, current),
+        (sample, {**current, "reference_ranking": []}),
+        (sample, {**current, "reference_ranking": [{**ranked, "map_id": "other"}]}),
+    ]:
+        flow.remember(image, previous, "track", anchor)
+        assert recover(s, row) == row
