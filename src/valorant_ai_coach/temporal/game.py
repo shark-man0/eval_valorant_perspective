@@ -1203,7 +1203,7 @@ class DevelopmentGameTimeline:
             from .visual_state import reconcile_visual_transitions as reconcile_edges
 
             continuity_history, added_events = apply_evidence_continuity(
-                states, self._observations, _estimate, transitions
+                states, self._observations, _estimate, transitions, superseded_transitions
             )
             superseded_transitions.extend(reconcile_edges(transitions, states))
             continuity_events = merge_continuity_events(transitions, added_events)

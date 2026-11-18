@@ -11,6 +11,13 @@ measured displays together exclude the alternatives:
   ACTIVE-ACTIVE or ENDED-ENDED bracket keeps that phase. An ACTIVE anchor extends
   only to the last frame still displaying its score; an ENDED anchor extends back
   only to the first frame displaying its own score.
+* The purchase phase precedes the combat phase of its Round and never follows
+  it. After a measured BUY anchor and before the next measured BUY anchor, or
+  before the combat start projected from two consistent countdown readings, at
+  equal score readings, an unmeasured ACTIVE value (a single visual cue, never a
+  measured anchor) is a purchase frame, and a Round start candidate lying wholly
+  inside that interval is retired. Two start candidates within one second of
+  each other are one boundary; the narrower bracket is kept.
 * A one-point score increment after a measured ACTIVE phase is a Round decision
   candidate; a same-score BUY or ENDED to ACTIVE bracket is a Round start
   candidate whose bracket keeps the unobserved purchase phase inside it. Two
@@ -64,6 +71,7 @@ _OWN_REASONS = {
     "new_round_since_death_and_current_owner_hud",
     "death_hypothesis_outlived_its_round",
     "active_countdown_since_projected_start",
+    "purchase_resumes_at_same_score",
 }
 
 
@@ -231,6 +239,121 @@ def _event(kind: str, low: dict[str, Any], high: dict[str, Any], evidence: list[
     }
     result["candidate_id"] = digest(result)
     return result
+
+
+def _purchase_pass(
+    states: list[dict[str, Any]], observations: dict[str, Any], segment: list[int],
+    revise: _Reviser, brackets: list[tuple[tuple[str, ...], Fraction, Fraction]],
+) -> None:
+    """Unmeasured ACTIVE values inside a same-score purchase interval.
+
+    The interval runs from a measured BUY anchor to the next measured BUY anchor,
+    or to the combat start projected from the countdown after the next measured
+    ACTIVE anchor. The purchase phase never follows the combat phase within one
+    Round, so such a value is a purchase frame. The interval is recorded so that
+    Round start candidates lying wholly inside it can be retired.
+    """
+    anchors = [
+        k for k, i in enumerate(segment) if _anchor(states[i]["round"], {"BUY", "ACTIVE"})
+    ]
+    for a, b in zip(anchors, anchors[1:], strict=False):
+        if b - a < 2:
+            continue
+        low, high = states[segment[a]], states[segment[b]]
+        if low["round"]["value"] != "BUY":
+            continue
+        inner = [segment[k] for k in range(a + 1, b)]
+        span = native_time(high["sample"]) - native_time(low["sample"])
+        if span > PHASE_LIMITS["BUY"] or any(
+            states[i]["round"]["value"] not in {"BUY", "ACTIVE", "UNKNOWN"}
+            or _anchor(states[i]["round"], {"ACTIVE"})
+            or _signals(_rows(states[i], observations)) & {"result", "intermission"}
+            for i in inner
+        ):
+            continue
+        left, left_at = _nearest_score(states, segment, a, -1)
+        right, right_at = _nearest_score(states, segment, b, 1)
+        if left is None or right != left or _readings(states, segment, a, b) - {left}:
+            continue
+        evidence = low["round"]["evidence_ids"] + high["round"]["evidence_ids"] + [
+            x for k in (left_at, right_at) if k is not None
+            for x in _score_ids(states[segment[k]])
+        ]
+        until = native_time(high["sample"])
+        if high["round"]["value"] == "ACTIVE":
+            # The combat countdown fixes when this Round's combat phase began;
+            # the purchase phase lasts until then.
+            projected = _countdown_start(states, observations, segment, b, left)
+            if projected is None or projected[0] < native_time(low["sample"]) - 1:
+                continue
+            until = projected[0] - 1
+            evidence = evidence + projected[1]
+        targets = [
+            i for i in inner
+            if states[i]["round"]["value"] == "ACTIVE" and native_time(states[i]["sample"]) <= until
+        ]
+        if not targets:
+            continue
+        for i in targets:
+            revise(states[i], "round", "BUY", ["BUY"], evidence,
+                   "purchase_resumes_at_same_score")
+        brackets.append((source_scope(low["sample"]), native_time(low["sample"]), until))
+
+
+def _retire_starts_in_purchase(
+    transitions: list[dict[str, Any]], brackets: list[tuple[tuple[str, ...], Fraction, Fraction]],
+    superseded: list[dict[str, Any]],
+) -> None:
+    """Archive Round start candidates that lie wholly inside a purchase bracket."""
+    kept = []
+    for event in transitions:
+        lo, hi = native_time(event["lower_sample"]), native_time(event["upper_sample"])
+        scope = source_scope(event["upper_sample"])
+        if event["kind"] == "round_start" and any(
+            scope == sc and a <= lo and hi <= b for sc, a, b in brackets
+        ):
+            superseded.append({
+                "rule_transition": deepcopy(event), "status": "superseded",
+                "reason": "start_inside_same_score_purchase_bracket", "qualified": False,
+            })
+            continue
+        kept.append(event)
+    transitions[:] = kept
+
+
+def _merge_overlapping_starts(
+    transitions: list[dict[str, Any]], superseded: list[dict[str, Any]]
+) -> None:
+    """Keep one of two Round start candidates whose brackets overlap.
+
+    Two Round starts are separated by at least a decided Round and a purchase
+    phase, so candidates within one second of each other are the same boundary.
+    The narrower bracket is kept; the other is archived.
+    """
+    starts = sorted(
+        (e for e in transitions if e["kind"] == "round_start"),
+        key=lambda e: (source_scope(e["upper_sample"]), native_time(e["lower_sample"])),
+    )
+    drop: set[int] = set()
+    kept: dict[str, Any] | None = None
+    for event in starts:
+        if (
+            kept is not None
+            and source_scope(kept["upper_sample"]) == source_scope(event["upper_sample"])
+            and native_time(event["lower_sample"]) - 1 <= native_time(kept["upper_sample"])
+        ):
+            width = native_time(event["upper_sample"]) - native_time(event["lower_sample"])
+            kept_width = native_time(kept["upper_sample"]) - native_time(kept["lower_sample"])
+            loser, kept = (event, kept) if width >= kept_width else (kept, event)
+            drop.add(id(loser))
+            superseded.append({
+                "rule_transition": deepcopy(loser), "status": "superseded",
+                "reason": "overlapping_round_start_candidate", "retained_candidate_id":
+                kept.get("candidate_id"), "qualified": False,
+            })
+            continue
+        kept = event
+    transitions[:] = [e for e in transitions if id(e) not in drop]
 
 
 def _round_pass(
@@ -553,12 +676,24 @@ def apply_evidence_continuity(
     states: list[dict[str, Any]], observations: dict[str, Any],
     estimate: Callable[..., dict[str, Any]],
     transitions: list[dict[str, Any]] | None = None,
+    superseded: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Return revision history and added unqualified event candidates."""
+    """Return revision history and added unqualified event candidates.
+
+    Retired Round start candidates are removed from ``transitions`` and archived
+    in ``superseded``.
+    """
     revise = _Reviser(estimate)
     events: list[dict[str, Any]] = []
+    archive = superseded if superseded is not None else []
     for segment in _segments(states):
+        brackets: list[tuple[tuple[str, ...], Fraction, Fraction]] = []
+        _purchase_pass(states, observations, segment, revise, brackets)
+        if transitions is not None and brackets:
+            _retire_starts_in_purchase(transitions, brackets, archive)
         _round_pass(states, observations, segment, revise, events)
+        if transitions is not None:
+            _merge_overlapping_starts(transitions, archive)
         starts = [
             (native_time(e["lower_sample"]), native_time(e["upper_sample"]))
             for e in [*(transitions or []), *events] if e["kind"] == "round_start"

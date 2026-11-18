@@ -220,3 +220,88 @@ def test_revisions_keep_frames_map_and_edges_consistent():
     summary = run(rows)["evidence_continuity_summary"]
     assert summary["withdrawn_meaning"] == "abstention_not_a_verified_error_count"
     assert summary["revised_frames_by_rule"]
+
+
+def _flicker(rows, second, start=True):
+    """Disabled-pass frames with one unmeasured ACTIVE value and its start edge."""
+    from valorant_ai_coach.temporal.game import _estimate
+
+    result = run(rows, False)
+    frames = result["frames"]
+    k = next(i for i, f in enumerate(frames) if f["sample"]["native_pts_tick"] == second * 10)
+    frames[k]["round"] = _estimate(
+        "ACTIVE", alternatives=["ACTIVE", "BUY"], reason="observed_purchase_barrier_loss",
+        origin="visual_state_projection",
+    )
+    transitions = []
+    if start:
+        transitions.append({
+            "kind": "round_start", "lower_sample": frames[k - 1]["sample"],
+            "upper_sample": frames[k]["sample"], "evidence_ids": [], "candidate_id": "flicker",
+        })
+    observations = {o["observation_id"]: o for o in result["observations"]}
+    return frames, observations, transitions, k
+
+
+def test_unmeasured_active_between_same_score_purchase_anchors_is_purchase():
+    from valorant_ai_coach.temporal.evidence_continuity import apply_evidence_continuity
+    from valorant_ai_coach.temporal.game import _estimate
+
+    rows = [at(s, ["buy"], (2, 1)) for s in range(0, 4)] + [at(4, score=(2, 1))]
+    rows += [at(s, ["buy"], (2, 1)) for s in range(5, 9)]
+    frames, observations, transitions, k = _flicker(rows, 4)
+    superseded: list = []
+    history, _ = apply_evidence_continuity(frames, observations, _estimate, transitions, superseded)
+    assert frames[k]["round"]["value"] == "BUY"
+    assert frames[k]["round"]["reason"] == "purchase_resumes_at_same_score"
+    assert frames[k]["round"]["rule_estimate"]["value"] == "ACTIVE"
+    assert transitions == []
+    assert superseded[0]["reason"] == "start_inside_same_score_purchase_bracket"
+    assert superseded[0]["rule_transition"]["candidate_id"] == "flicker"
+    # A different score inside the bracket stops the rule.
+    rows[4] = at(4, score=(2, 2))
+    frames, observations, transitions, k = _flicker(rows, 4)
+    apply_evidence_continuity(frames, observations, _estimate, transitions, [])
+    assert frames[k]["round"]["value"] == "ACTIVE"
+    assert len(transitions) == 1
+
+
+def test_unmeasured_active_before_the_countdown_start_is_purchase():
+    from valorant_ai_coach.temporal.evidence_continuity import apply_evidence_continuity
+    from valorant_ai_coach.temporal.game import _estimate
+
+    rows = [at(0, ["buy"], (1, 1))] + [at(s, score=(1, 1)) for s in range(1, 20)]
+    rows += [at(20, ["active"], (1, 1), timer=97), at(21, ["active"], (1, 1), timer=96)]
+    frames, observations, transitions, k = _flicker(rows, 3)
+    superseded: list = []
+    _, added = apply_evidence_continuity(frames, observations, _estimate, transitions, superseded)
+    assert frames[k]["round"]["value"] == "BUY"
+    assert [s["reason"] for s in superseded] == ["start_inside_same_score_purchase_bracket"]
+    # The start is placed from the countdown instead (displayed 1:37 at 20 s).
+    assert [bounds(e) for e in added if e["kind"] == "round_start"] == [(160, 180)]
+    # Without countdown readings the unmeasured value is kept.
+    rows[-2:] = [at(20, ["active"], (1, 1)), at(21, ["active"], (1, 1))]
+    frames, observations, transitions, k = _flicker(rows, 3)
+    apply_evidence_continuity(frames, observations, _estimate, transitions, [])
+    assert frames[k]["round"]["value"] == "ACTIVE"
+    assert len(transitions) == 1
+
+
+def test_overlapping_round_start_candidates_keep_the_narrower_one():
+    from valorant_ai_coach.temporal.evidence_continuity import _merge_overlapping_starts
+
+    def start(lo, hi, cid):
+        sample = {"source_id": "s", "source_sha256": "h", "acquisition_id": "a",
+                  "native_epoch": 0, "frame_size_px": [1, 1]}
+        return {
+            "kind": "round_start", "candidate_id": cid,
+            "lower_sample": {**sample, "native_pts_tick": lo, "native_time_base": "1/1"},
+            "upper_sample": {**sample, "native_pts_tick": hi, "native_time_base": "1/1"},
+        }
+
+    transitions = [start(248, 249, "a"), start(250, 255, "b"), start(300, 301, "c")]
+    superseded: list = []
+    _merge_overlapping_starts(transitions, superseded)
+    assert [e["candidate_id"] for e in transitions] == ["a", "c"]
+    assert superseded[0]["rule_transition"]["candidate_id"] == "b"
+    assert superseded[0]["retained_candidate_id"] == "a"
