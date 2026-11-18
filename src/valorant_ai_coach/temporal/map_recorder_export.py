@@ -159,6 +159,7 @@ def export_recorder_paths(
     operable: set[str] = set()
     direct_stages: Counter[str] = Counter()
     direct_reasons: Counter[str] = Counter()
+    portrait_rejections: Counter[str] = Counter()
     for frame in native.values():
         sample = freeze_native_sample(frame["sample"])
         policy.admit(sample)
@@ -206,6 +207,8 @@ def export_recorder_paths(
                     tracker.reset()
                     knowledge.reset()
             direct_reasons[result["selection_reason"]] += 1
+            if "portrait_rejection" in result:
+                portrait_rejections[result["portrait_rejection"]] += 1
             if pool:
                 direct_stages["dense_candidate"] += 1
             if result["support_count"]:
@@ -265,6 +268,7 @@ def export_recorder_paths(
         report["recording_map_uuid"] = alignment.map_uuid if alignment else None
         report["direct_detector"] = direct_detector
         report["direct_stage_counts"] = dict(direct_stages)
+        report["portrait_rejection_counts"] = dict(portrait_rejections)
         report["direct_selection_reasons"] = dict(direct_reasons)
         report["recording_agent_uuid_binding"] = {
             "uuid": binding.uuid, "evidence_samples": list(binding.evidence_samples),

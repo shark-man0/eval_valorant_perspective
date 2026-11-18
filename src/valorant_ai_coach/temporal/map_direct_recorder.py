@@ -203,6 +203,7 @@ class DirectRecorderTracker:
         fallback_search: DensePortraitSearch | None = None,
         compare_centers: bool = False,
     ):
+        self._rejection_stage = 0
         self.compare_centers = compare_centers
         self.search = search
         self.fallback_search = fallback_search
@@ -256,6 +257,7 @@ class DirectRecorderTracker:
         scale = image.shape[1] / 1920
         roi = image[top:bottom, left:right]
         peaks = self.search.peaks(roi, self.identity.uuid, scale=scale)
+        self._rejection_stage = 0
         accepted = self._confirmed_peaks(image, peaks, left, top)
         if self.fallback_search is not None and (not accepted or self.compare_centers):
             additional = self.fallback_search.peaks(roi, self.identity.uuid, scale=scale)
@@ -271,13 +273,23 @@ class DirectRecorderTracker:
         # Shifted renderings may fire a second time inside the same portrait.
         # Keep truly separated peaks as ambiguous irrespective of their rank.
         unique: list[tuple[int, float, float]] = []
-        for candidate in sorted(accepted, key=lambda row: (-row[1], row[0])):
+        def priority(row: tuple[int, float, float]) -> tuple[bool, float, int]:
+            index, score, margin = row
+            standalone = self.compare_centers and _strong_peak(peaks[index], score, margin)
+            return (not standalone, -score, index)
+
+        for candidate in sorted(accepted, key=priority):
             if all(math.dist(peaks[candidate[0]].center, peaks[r[0]].center) > 6*scale
                    for r in unique):
                 unique.append(candidate)
         if len(unique) != 1:
             if unique:
                 result["selection_reason"] = "ambiguous_direct_portraits"
+            else:
+                result["portrait_rejection"] = (
+                    "weak_texture_or_no_peak", "rim_sectors", "portrait_score",
+                    "agent_margin", "rival_rim",
+                )[self._rejection_stage]
             return pool, result
         index, score, margin = unique[0]
         chosen = peaks[index]
@@ -300,10 +312,7 @@ class DirectRecorderTracker:
             support_candidate_index=index, support_count=count,
             support_center_frame_px=list(center),
         )
-        if count < 2 and not (
-            score >= .87 and margin >= .20 and chosen.warm_sectors >= 9
-            and chosen.opposite_pairs >= 3
-        ):
+        if count < 2 and not _strong_peak(chosen, score, margin):
             result["selection_reason"] = "direct_portrait_needs_adjacent_observation"
             return pool, result
         result.update(
@@ -319,17 +328,32 @@ class DirectRecorderTracker:
         accepted = []
         target = self.portrait_reader._uuids.index(self.identity.uuid)
         for index, peak in enumerate(peaks):
-            if peak.response < .68 or peak.warm_sectors < 5 or peak.opposite_pairs < 1:
+            if peak.response < .68:
                 continue
+            self._rejection_stage = max(self._rejection_stage, 1)
+            if peak.warm_sectors < 5 or peak.opposite_pairs < 1:
+                continue
+            self._rejection_stage = max(self._rejection_stage, 2)
             center = (peak.center[0]+left, peak.center[1]+top)
             scores = self.portrait_reader._portrait_scores(image, center)
             if scores is None:
                 continue
             score = float(scores[target])
             margin = score - float(np.delete(scores, target).max())
-            if score >= .77 and margin >= .14 and peak.chromatic_rivals <= 5:
+            if score < .77:
+                continue
+            self._rejection_stage = max(self._rejection_stage, 3)
+            if margin < .14:
+                continue
+            self._rejection_stage = 4
+            if peak.chromatic_rivals <= 5:
                 accepted.append((index, score, margin))
         return accepted
+
+
+def _strong_peak(peak: DirectPeak, score: float, margin: float) -> bool:
+    return (score >= .87 and margin >= .20 and peak.warm_sectors >= 9
+            and peak.opposite_pairs >= 3)
 
 
 def digest_pixels(image: ColorImage) -> str:

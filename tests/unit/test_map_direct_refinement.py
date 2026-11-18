@@ -76,3 +76,29 @@ def test_color_rendering_preserves_alpha_and_requires_supported_train_examples()
     assert np.array_equal(render_portrait(image, matrix)[:, :, 3], image[:, :, 3])
     with pytest.raises(ValueError, match="Insufficient"):
         fit_portrait_rendering([("a", rgb)], [])
+
+
+def test_aligned_proposals_keep_the_strong_single_frame_witness():
+    from valorant_ai_coach.temporal.map_direct_recorder import (
+        DirectPeak,
+        DirectRecorderTracker,
+        RecorderUUID,
+    )
+
+    strong = DirectPeak((52, 61), .89, 12, 4, 0)
+    marginal = DirectPeak((53, 61), .96, 6, 1, 0)
+
+    def scores(image, center):
+        return np.array([.89 if center == strong.center else .96, .30])
+
+    tracker = DirectRecorderTracker(
+        SimpleNamespace(peaks=lambda *a, **kw: [strong]),
+        RecorderUUID("s", "a", ("p",)),
+        SimpleNamespace(_uuids=("a", "b"), _portrait_scores=scores),
+        fallback_search=SimpleNamespace(peaks=lambda *a, **kw: [marginal]),
+        compare_centers=True,
+    )
+    sample = {"sample_sha256": "x", "source_sha256": "s"}
+    img = np.zeros((100, 1920, 3), np.uint8)
+    _, result = tracker._observe_measured(img, (0, 0, 100, 100), sample, {}, "camera")
+    assert result["research_marker_center_frame_px"] == list(strong.center)
