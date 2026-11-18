@@ -21,9 +21,13 @@ from .recorder_life import (
     RecorderDeath,
     Round,
     _round_of,
+    ally_revives,
+    buy_phase_restarts,
+    combat_starts,
     reconcile,
     rounds_from_alive_counts,
     rounds_from_scores,
+    score_rises,
 )
 from .round_phases import PhaseRules, PhaseSample, RoundPhases, round_phases
 from .side import (
@@ -77,6 +81,7 @@ class DerivedSample:
     sec: float
     facts: dict[str, Any]
     events: set[str] = field(default_factory=set)
+    round_index: int | None = None  # the shared timeline's round (None between rounds)
 
 
 @dataclass
@@ -342,13 +347,23 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
         candidates[source] = kept
     # Revive evidence: own live view mid-round (not everyone alive, which would be
     # a fresh round whose reset the round source missed).
+    # The recorder alive means at least one ally (the recorder) alive; a HUD seen
+    # with none is a replay or the round-end screen.
     live = [o.sec for o in series if self_view(o) and o.ally_alive is not None
-            and o.enemy_alive is not None and o.ally_alive + o.enemy_alive < 10]
+            and o.enemy_alive is not None and o.ally_alive + o.enemy_alive < 10
+            and o.ally_alive >= 1]
+    clock_rules = phase_rules or PhaseRules(regulation_rounds_per_half=rounds_per_half)
     reconciliation = reconcile(
         rounds, candidates,
         self_live_at=timeline.self_live if timeline is not None else None,
         spectating_at=timeline.spectating if timeline is not None else None,
-        live_samples=live)
+        live_samples=live,
+        revives=ally_revives([(o.sec, o.ally_alive) for o in series]),
+        restarts=sorted(buy_phase_restarts(
+            [(o.sec, o.timer) for o in series],
+            buy_lengths=(clock_rules.buy_phase_sec, clock_rules.buy_phase_half_start_sec))
+            + combat_starts([(o.sec, o.timer) for o in series])
+            + score_rises([(o.sec, *(o.score or (None, None))) for o in series])))
     reconciliation.dropped["kill_feed_unconfirmed"] = unconfirmed
     reconciliation.dropped["kill_feed_other_victim"] = len(highlighted) - len(feed_candidates)
     reconciliation.dropped["full_team_alive"] = full_team_drops
@@ -485,7 +500,7 @@ def derive(series: Sequence[Observation], recorder_agent: str | None, recorder_r
             extra_events, extra_facts = additions[obs.sec]
             events |= extra_events
             facts.update(extra_facts)
-        samples.append(DerivedSample(obs.sec, facts, events))
+        samples.append(DerivedSample(obs.sec, facts, events, round_index))
         previous = obs
     sources = {"rounds": round_source,
                "self_view": "timeline" if timeline is not None else "ability_hud",

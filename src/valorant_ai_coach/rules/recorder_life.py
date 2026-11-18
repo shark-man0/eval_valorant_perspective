@@ -14,7 +14,10 @@ Deaths are assigned to rounds and reconciled: at most one death per round
 unless the recorder is seen alive and in their own view again inside the same
 round (a revive), detections that would span a round boundary are dropped, and
 HUD-based detections inside a timeline SPECTATOR interval are dropped (the
-recorder was already dead). Nothing here is a formal Fact or Event.
+recorder was already dead). A buy-phase clock restart between two deaths of one
+round means the round source merged two rounds: the later death is kept as a
+death of an unsplit round (``after_round_restart``), never as a revive, and the
+revive evidence must lie before the restart. Nothing here is a formal Fact or Event.
 """
 
 from __future__ import annotations
@@ -45,6 +48,7 @@ class RecorderDeath:
     sec: float
     sources: set[str] = field(default_factory=set)
     after_revive: bool = False
+    after_round_restart: bool = False  # the round source missed a boundary before it
 
 
 @dataclass
@@ -122,17 +126,99 @@ def _round_of(rounds: Sequence[Round], sec: float) -> int | None:
     return None
 
 
+BUY_RESTART_MAX_GAP_SEC = 15.0
+BUY_RESTART_FROM_MAX = 12  # post-round countdown / end of the previous clock
+
+
+def buy_phase_restarts(clock: Sequence[tuple[float, int | None]], *,
+                       buy_lengths: tuple[int, ...] = (30, 45)) -> list[float]:
+    """When combat of a new round can start, from buy countdowns: a low reading
+    followed, within ``BUY_RESTART_MAX_GAP_SEC``, by a reading no longer than a buy
+    phase that the next reading confirms by counting down; the time returned is
+    the end of that countdown. A jump to the combat clock (about 100 s) is the
+    same round and is not a restart."""
+    readings = [(sec, value) for sec, value in clock if value is not None]
+    longest = max(buy_lengths)
+    out: list[float] = []
+    for (t0, v0), (t1, v1), (t2, v2) in zip(readings, readings[1:], readings[2:], strict=False):
+        if (v0 <= BUY_RESTART_FROM_MAX and v1 <= longest and v1 >= v0 + 10
+                and t1 - t0 <= BUY_RESTART_MAX_GAP_SEC
+                and 0 <= v1 - v2 <= (t2 - t1) + 2 and t2 - t1 <= BUY_RESTART_MAX_GAP_SEC):
+            combat = t1 + v1  # no one can die before the buy countdown ends
+            if not out or combat - out[-1] > 20:
+                out.append(combat)
+    return out
+
+
+MAX_SCORE_STEP = 3
+COMBAT_CLOCK_MIN = 90  # the combat clock starts at 1:40
+COMBAT_START_FROM_MAX = 5
+COMBAT_START_MAX_GAP_SEC = 8.0
+
+
+def combat_starts(clock: Sequence[tuple[float, int | None]]) -> list[float]:
+    """Times the combat clock starts (a buy countdown near zero, then about 100 s,
+    confirmed by the next reading counting down). It starts once per round, so
+    two deaths with a combat start between them are in different rounds."""
+    readings = [(sec, value) for sec, value in clock if value is not None]
+    out: list[float] = []
+    for (t0, v0), (t1, v1), (t2, v2) in zip(readings, readings[1:], readings[2:], strict=False):
+        if (v0 <= COMBAT_START_FROM_MAX and v1 >= COMBAT_CLOCK_MIN
+                and t1 - t0 <= COMBAT_START_MAX_GAP_SEC
+                and 0 <= v1 - v2 <= (t2 - t1) + 2 and t2 - t1 <= COMBAT_START_MAX_GAP_SEC):
+            out.append(t1)
+    return out
+
+
+def score_rises(scores: Sequence[tuple[float, int | None, int | None]]) -> list[float]:
+    """After each confirmed rise of the total score (a round ended), the earliest
+    time the next round can be under way: the rise plus ``RESET_AFTER_SCORE_SEC``
+    (round-end screen and buy phase). Unconfirmed misreads and drops are ignored."""
+    readings = [(sec, a + e) for sec, a, e in scores if a is not None and e is not None]
+    out: list[float] = []
+    stable: int | None = None
+    for (t0, v0), (_, v1) in zip(readings, readings[1:], strict=False):
+        if v0 != v1:
+            continue
+        if stable is None:
+            stable = v0
+        elif 0 < v0 - stable <= MAX_SCORE_STEP:  # rounds whose end was not read count once
+            out.append(t0 + RESET_AFTER_SCORE_SEC)
+            stable = v0
+    return out
+
+
+ALLY_RISE_MAX_GAP_SEC = 6.0
+
+
+def ally_revives(counts: Sequence[tuple[float, int | None]], team_size: int = 5) -> list[float]:
+    """Times the allied alive count goes up mid-round (someone was revived); a
+    reset to a full team is a new round. Used only between two death detections
+    that already have the recorder's own live view in between, so a single
+    reading suffices (another death may follow the revive within a second)."""
+    readings = [(sec, value) for sec, value in counts if value is not None]
+    return [t1 for (t0, v0), (t1, v1) in zip(readings, readings[1:], strict=False)
+            if 0 < v0 < v1 < team_size and t1 - t0 <= ALLY_RISE_MAX_GAP_SEC]
+
+
 def reconcile(rounds: Sequence[Round], candidates: Mapping[str, Sequence[float]],
               self_live_at: Callable[[float], bool] | None = None,
               spectating_at: Callable[[float], bool] | None = None,
-              live_samples: Sequence[float] = ()) -> Reconciliation:
+              live_samples: Sequence[float] = (),
+              restarts: Sequence[float] = (),
+              revives: Sequence[float] | None = None) -> Reconciliation:
     """Merge per-source death times into at most one death per life per round.
 
     ``self_live_at``/``spectating_at`` come from the timeline when available.
     ``live_samples`` are sample times at which the recorder was seen in their
-    own live view (used to recognise a revive inside a round).
+    own live view (used to recognise a revive inside a round); ``restarts`` are
+    times a new round was under way (``buy_phase_restarts``, ``combat_starts``,
+    ``score_rises``). ``revives`` (``ally_revives``), when given, must show a
+    revive between two deaths of one round; without one, a recorder seen alive
+    in their own view long after the first death was never dead then, so the
+    later detection replaces it (``superseded``).
     """
-    dropped = {"outside_round": 0, "while_spectating": 0, "duplicate": 0}
+    dropped = {"outside_round": 0, "while_spectating": 0, "duplicate": 0, "superseded": 0}
     events: list[tuple[float, str, int]] = []
     for source, times in candidates.items():
         for sec in times:
@@ -152,6 +238,10 @@ def reconcile(rounds: Sequence[Round], candidates: Mapping[str, Sequence[float]]
             last.sources.add(source)
             continue
         if last is not None:
+            restart = next((t for t in restarts if last.sec < t < sec), None)
+            if restart is not None:
+                deaths.append(RecorderDeath(index, sec, {source}, after_round_restart=True))
+                continue
             alive_again = [t for t in live_samples
                            if last.sec + MERGE_WINDOW_SEC < t < sec
                            and (self_live_at is None or self_live_at(t))]
@@ -160,6 +250,10 @@ def reconcile(rounds: Sequence[Round], candidates: Mapping[str, Sequence[float]]
                     or alive_again[-1] - alive_again[0] < REVIVE_MIN_SPAN_SEC):
                 dropped["duplicate"] += 1
                 last.sources.add(source)
+                continue
+            if revives is not None and not any(last.sec < t < sec for t in revives):
+                dropped["superseded"] += 1
+                last.sec, last.sources = sec, {source}
                 continue
             deaths.append(RecorderDeath(index, sec, {source}, after_revive=True))
             continue

@@ -127,6 +127,14 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 
 `scripts/measure_formal_promotion.py` は、同じ元動画（SHA-256）の入力を1件だけ数える。HUD値つきのフル版をreplay版より優先し、除外した入力は `duplicates_skipped` に記録する。特徴量ファイルは中のSHA-256で入力と自動的に対応付ける。`--catalog` を渡すと、共通タイムラインのない録画を `recordings_without_timeline` に列挙する。
 
-### 独立資格との関係
+### 開発用の昇格と独立資格付けの区別
 
-ここで使う信頼度は、開発用録画で整合性の条件を通った読み取りに付ける運用値である。#155 の生成器資格（`config/producer_qualification_v1.json`）は、目視確認と未露出録画での独立評価を求める。この資格は満たしていないため、レポートには `independent_qualification: not_met_development_only` と記録する。
+結果は3段階で区別する（`docs/rule44_coverage.md` と同じ分類）。
+
+| 段階 | 印 | 採点・保存 |
+|---|---|---|
+| 開発候補 | `dev-` 接頭辞、`development_only` | 採点と保存から除外 |
+| 共通タイムラインからの昇格 | `tl-` 接頭辞、`qualification: promoted_from_shared_timeline` | 開発用の評価経路で使う。閾値は開発用36試合で較正した運用値 |
+| 独立資格付け | `independently_qualified` | 未露出の独立評価用録画での合格が必要。該当録画がないため現在0件 |
+
+ここで使う信頼度は、開発用録画で整合性の条件を通った読み取りに付ける運用値である。レポートには `independent_qualification: not_met_development_only` と記録し、独立資格付けの結果としては扱わない。

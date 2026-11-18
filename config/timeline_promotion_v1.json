@@ -42,7 +42,7 @@
     "weapon_names_source": "valorant_ai_coach.knowledge.load_game_knowledge (#96)"
   },
   "second_features": {
-    "purpose": "#153/#155の読み取り値（extract_second_features.py）を確定Roundへ載せる条件。信頼度は安定性・整合性の条件を通った読み取りに付ける運用値で、#155の独立資格（producer_qualification_v1）は未達。",
+    "purpose": "#153/#155の読み取り値（extract_second_features.py）を確定Roundへ載せる条件。信頼度は安定性・整合性の条件を通った読み取りに付ける運用値で、独立資格付け（independently_qualified）ではない。",
     "agent_min_score": 0.6,
     "agent_min_frames": 60,
     "agent_min_share": 0.6,

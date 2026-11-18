@@ -35,6 +35,7 @@ from valorant_ai_coach.knowledge.score_reader import (
 )
 from valorant_ai_coach.knowledge.template_lineage import train_sources
 from valorant_ai_coach.learning.archives import CropArchive
+from valorant_ai_coach.recordings.catalog import RecordingCatalog
 
 
 def tesseract_digits(window: np.ndarray, workdir: Path) -> str:
@@ -54,13 +55,16 @@ def main() -> int:
     parser.add_argument("--stride", type=int, default=6, help="use every Nth sample")
     parser.add_argument("--registry", type=Path, required=True,
                         help="continual-learning dataset_registry.json; only TRAIN is accepted")
+    parser.add_argument("--catalog", type=Path, required=True,
+                        help="recording catalog root (journal.jsonl); learning split must be TRAIN")
     parser.add_argument("--video-hashes", type=Path,
                         help="video_id -> file_name, size_bytes, sha256 of the original recording")
     parser.add_argument("archives", type=Path, nargs="+")
     args = parser.parse_args()
     hashes = (json.loads(args.video_hashes.read_text(encoding="utf-8"))
               if args.video_hashes else None)
-    _, lineage = train_sources(args.registry, args.archives, video_hashes=hashes)
+    _, lineage = train_sources(args.registry, args.archives,
+                               catalog=RecordingCatalog(args.catalog), video_hashes=hashes)
     if shutil.which("tesseract") is None:
         raise SystemExit("tesseract CLI not found (development-time dependency)")
     stacks: dict[int, list[np.ndarray]] = {d: [] for d in range(10)}

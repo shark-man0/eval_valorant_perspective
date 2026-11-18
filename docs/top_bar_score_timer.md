@@ -5,8 +5,11 @@
 ## 何をするか
 
 - `knowledge/score_reader.py`：上部バーの味方・敵の得点と、ラウンドタイマー（m:ss）を読む。
-- `knowledge/top_bar_timeline.py`：読み取り結果を、共通タイムライン（`temporal.game.DevelopmentGameTimeline`）の `observation` 形式の行にする。既存のラウンド読み取りと同じ欄（`context.score`、`context.timer_seconds`、タイマーが45秒を超えるときの `active` シグナル）だけを埋める。
-- Roundの正本は共通タイムラインのまま。この認識器はタイムラインへ証拠を渡すだけで、Roundを決めない。
+- `knowledge/top_bar_timeline.py`：読み取り結果を、共通タイムライン（`temporal.game.DevelopmentGameTimeline`）の `observation` 形式の行にする。既存のラウンド読み取りと同じ欄（`context.score`、`context.timer_seconds`、タイマーが45秒を超えるときの `active` シグナル）を埋める。
+- 同じ行の `raw["values"]` に、読み取り値と確信度を入れる（`ally_score`、`enemy_score`、`timer`（m:ss））。`temporal.application` がこれを `hud_observations` の候補に変える。#164 の昇格器（`facts.timeline_promotion`）が読むのはこの欄で、Fact供給の窓口はここに一本化した。
+- `knowledge/own_view_timeline.py`：表示中の視点の弾倉数（`ammo_current`）とスパイク所持（`spike_carried`）を、同じ形の行で渡す。どちらも表示中の視点の値なので、件名は `viewed_HUD; recorder_ownership_unresolved` のまま。録画者本人の値かどうかはタイムラインの視点判定が決める。
+- 確信度は、各数字のテンプレート照合（正規化相関）の最小値。確率として較正した値ではない。昇格の閾値は #164 の `config/timeline_promotion_v1.json` だけが持つ。
+- Roundの正本は共通タイムラインのまま。この認識器はタイムラインへ証拠を渡すだけで、Roundも状態も持たず、Factへの昇格もしない。
 
 ```python
 from valorant_ai_coach.knowledge.score_reader import ScoreReader
@@ -20,8 +23,13 @@ timeline.add(row)                             # 通常の供給元の観測と�
 ## テンプレートと系譜
 
 - 数字のテンプレートは、Riotが画像を配布していないため、開発用録画から作る（`scripts/knowledge/build_score_templates.py`）。
-- 使えるのはTRAIN分割の録画だけ。ビルダーは継続学習のデータセット登録簿と元動画のSHA-256で照合し、TRAIN以外が1本でも混ざると `TemplateSourceRefused` で止まる。
-- マニフェストに系譜（登録簿のSHA-256、各録画のsource_id・物理試合ID・元動画SHA-256・切り出しアーカイブのSHA-256）を記録する。読み取り側は、TRAIN限定の系譜がないテンプレートを読み込まない。
+- 使えるのはTRAIN分割の録画だけ。ビルダー（`--registry` と `--catalog` が必須）は、切り出しアーカイブごとに次の4つを照合し、1つでも合わなければ `TemplateSourceRefused` で止まる（`knowledge/template_lineage.py`）。
+  1. データセット登録簿：アーカイブの `video_id` が登録済みで、分割がTRAIN
+  2. アーカイブのハッシュ：ファイルのSHA-256とサイズが登録簿の `archive_sha256` / `archive_bytes` と一致する。同じ録画から作り直したアーカイブや、項目を足したアーカイブは通らない
+  3. 録画カタログ（`recordings.catalog`、ジャーナルを再生して整合性を確かめる）：登録簿の元動画SHA-256の録画があり、開発利用が許可され、独立評価用に保留されておらず、学習用の小分割（`learning.split`）がTRAINで、登録簿の同じsource_id・物理試合IDに結び付いている
+  4. 元動画：アーカイブの切り出し元のファイル名とサイズがカタログの原本の記録と一致する。`--video-hashes` を渡すと、別に計算した元動画のSHA-256とも照合する
+- マニフェストに系譜（登録簿のSHA-256、カタログのジャーナル先頭ハッシュ、各録画のsource_id・物理試合ID・元動画SHA-256・アーカイブSHA-256・カタログの録画ID・学習分割の由来・原本のファイル名とサイズ）を記録する。読み取り側は、TRAIN限定の系譜がないテンプレートを読み込まない。
+- この照合を入れたところ、以前のテンプレートは21本のTRAIN録画のうち5本（fm3_9、fm4_3、fm4_4、fm4_5、fm5_3）で、登録簿と異なるアーカイブ（キルフィードの切り出しを足した作り直し版）から作られていたことが分かった。登録済みのアーカイブから作り直した結果、得点と弾倉の数字テンプレートはバイト単位で同一、スパイクの見出しテンプレートは平均した枚数が341枚から200枚に減り、画素値が最大3階調変わった。
 - Tesseractは開発時のラベル付けにだけ使う。アプリ本体は使わない。
 
 ## 精度（TRAIN以外の15試合から無作為抽出し、目視でラベル付け）
