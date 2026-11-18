@@ -110,26 +110,54 @@ visually by the implementing agent (not human GT):
 The 1,138 withdrawn seconds are therefore not 1,138 confirmed errors: the
 reviewed sample found 4 wrong and 2 correct values among 6 decidable frames.
 
-### Fresh full-length analysis (DEV2, 2026-11-16)
+### Fresh full-length analysis: all ten matches (2026-11-18)
 
 The existing acquisition command (`generate`, 1 s sampling, ScreenCueObserver)
-was run again on the whole DEV2 recording in a Linux container (2,052 seconds,
-70 min) and the result was rebuilt with and without the pass.
+was run again on all ten DEVELOPMENT recordings from the original video files
+in a Linux container (21,999 seconds), and each result was rebuilt with and
+without the pass. Holdout recordings were not used.
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Round UNKNOWN seconds | 465 | 188 |
-| Life UNKNOWN seconds | 554 | 240 |
-| Camera UNKNOWN seconds | 320 | 306 |
+| Round UNKNOWN seconds | 7,071 | 3,957 |
+| Life UNKNOWN seconds | 4,059 | 2,716 |
+| Camera UNKNOWN seconds | 3,333 | 3,218 |
 | Seconds changed between two known values | – | 0 |
-| Life seconds withdrawn to UNKNOWN | – | 20 |
-| Round start candidates (21 Rounds) / max width (s) | 18 / 5 | 21 / 5 |
-| Human labels on this match (15): correct | 15 | 15 |
+| Life seconds withdrawn to UNKNOWN | – | 949 |
+| Round start candidates (229 Rounds) | 183 | 237 |
+| Starts of the replayed run (221) with a fresh candidate within 2 s | 166 | 220 |
+| Fresh candidates more than 2 s from every replayed start | 12 | 12 |
+| Max start width (s) | 5 | 5 |
+| Human labels sampled by the fresh run (72 of 78): correct / abstained / incorrect | 72 / 0 / 0 | 72 / 0 / 0 |
+
+Per match, Round UNKNOWN fell in all ten (DEV2 465 to 188, issue_oldfull001
+531 to 309, issue_oldfull002 951 to 671, issue_oldfull004 622 to 331,
+issue_newfull001 759 to 492, issue_newfull002 874 to 500, issue_freshfull003
+739 to 391, issue_newfull004 942 to 512, issue_freshfull005 477 to 205,
+first_new_cold 711 to 358). Life UNKNOWN fell in nine; in issue_oldfull002 it
+rose from 288 to 330 because DEAD values without a supporting death were
+withdrawn.
+
+The fresh run agrees with the replay of the stored observations: of 21,999
+seconds, Round differs between two known values in 41 seconds, Life in 30 and
+Camera in 44 (the base engine alone differs in 38, 82 and 44).
+
+The 12 candidates far from a replayed start are the same 12 in the base
+timeline; the pass adds none. Each lies 3.5 to 25 s before a replayed start,
+and in every Round but one the correct candidate is also present
+(issue_freshfull003 lacks its start at 1,588 s). Implementing-agent visual
+review of the five in issue_freshfull003 (not human GT): all five are inside
+the purchase phase, before its countdown ends.
+
+DEV2 alone (2,052 seconds, also reported on 2026-11-16): Round 465 to 188,
+Life 554 to 240, Camera 320 to 306, 21 of 21 starts.
 
 ## Limits
 
-- The ten-match comparison replays existing native observations; only DEV2 was
-  acquired again from its recording.
+- The fixed comparison replays existing native observations; the fresh run
+  repeats all ten from the recordings but on the same development matches.
+- Early start candidates from the base timeline are kept when they fall inside
+  the purchase phase (see the fresh run above).
 - Sub-second boundary error, unseen-match generalization and recorder
   ownership accuracy remain unmeasured.
 - The 1:40 countdown and the display lead are competitive-format values.
