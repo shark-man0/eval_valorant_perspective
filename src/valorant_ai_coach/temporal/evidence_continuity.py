@@ -72,6 +72,7 @@ _OWN_REASONS = {
     "death_hypothesis_outlived_its_round",
     "active_countdown_since_projected_start",
     "purchase_resumes_at_same_score",
+    "purchase_countdown_before_projected_start",
 }
 
 
@@ -300,6 +301,77 @@ def _purchase_pass(
         brackets.append((source_scope(low["sample"]), native_time(low["sample"]), until))
 
 
+def _purchase_countdown_pass(
+    states: list[dict[str, Any]], observations: dict[str, Any], segment: list[int],
+    revise: _Reviser,
+) -> None:
+    """Rows showing the purchase countdown to a projected combat start are BUY.
+
+    For a measured ACTIVE anchor whose countdown projects the combat start ``S``,
+    earlier rows of the same score whose timer reading ``r`` satisfies
+    ``t + r = S`` (integer display tolerance) display the purchase countdown of
+    that Round. Two such readings are required, any other reading before ``S``
+    or a result or intermission cue stops the rule, and only rows from the first
+    reading up to ``S`` are revised.
+    """
+    anchors = [
+        k for k, i in enumerate(segment)
+        if _anchor(states[i]["round"], {"BUY", "ACTIVE", "ENDED"})
+    ]
+    for a, b in zip(anchors, anchors[1:], strict=False):
+        low, high = states[segment[a]], states[segment[b]]
+        if b - a < 2 or high["round"]["value"] != "ACTIVE" or low["round"]["value"] == "ACTIVE":
+            continue
+        left, left_at = _nearest_score(states, segment, a, -1)
+        right, _ = _nearest_score(states, segment, b, 1)
+        if (
+            left is None or left_at is None or right != left
+            or _readings(states, segment, a, b) - {left}
+        ):
+            continue
+        projected = _countdown_start(states, observations, segment, b, left)
+        if projected is None:
+            continue
+        start, clock_ids, _ = projected
+        matches: list[int] = []
+        ids: list[str] = []
+        conflict = False
+        for k in range(a + 1, b):
+            frame = states[segment[k]]
+            t_k = native_time(frame["sample"])
+            if t_k > start - 1:
+                break
+            # A result screen precedes the purchase phase; after a matching
+            # reading it would contradict it.
+            if _signals(_rows(frame, observations)) & {"result", "intermission"}:
+                if matches:
+                    conflict = True
+                    break
+                continue
+            reading = _clock(frame, observations)
+            if reading is None:
+                continue
+            if abs(t_k + reading[0] - start) <= 1:
+                matches.append(k)
+                ids += reading[1]
+            elif matches:
+                conflict = True
+                break
+        if conflict or len(matches) < 2:
+            continue
+        evidence = ids + clock_ids + _score_ids(states[segment[left_at]])
+        for k in range(matches[0], b):
+            frame = states[segment[k]]
+            if native_time(frame["sample"]) > start - 1:
+                break
+            current = frame["round"]
+            if current["value"] == "UNKNOWN" or (
+                current["value"] == "ACTIVE" and not _anchor(current, {"ACTIVE"})
+            ):
+                revise(frame, "round", "BUY", ["BUY"], evidence,
+                       "purchase_countdown_before_projected_start")
+
+
 def _retire_starts_in_purchase(
     transitions: list[dict[str, Any]], brackets: list[tuple[tuple[str, ...], Fraction, Fraction]],
     superseded: list[dict[str, Any]],
@@ -377,6 +449,7 @@ def _round_pass(
                 states[i]["round"]["value"] == "UNKNOWN"
                 and states[i]["round"]["reason"] == "unobserved"
                 or states[i]["round"]["value"] == pa
+                or states[i]["round"]["reason"] == "purchase_countdown_before_projected_start"
             )
             or _signals(_rows(states[i], observations)) & _PHASE_CUES
             for i in inner
@@ -661,8 +734,16 @@ def _life_pass(
         ):
             revise(frame, "camera", "SPECTATOR", ["SPECTATOR"], frame["life"]["evidence_ids"],
                    "recorder_not_alive_views_another_actor")
+        # A latched death hypothesis (not a current death cue) inside a purchase
+        # phase is stale: every player is alive in the purchase phase.
+        stale_death = (
+            frame["life"]["value"] == "DEAD"
+            and frame["life"]["reason"] == "victim_display_and_owned_spectator_hypothesis"
+            and frame["round"]["reason"] == "purchase_countdown_before_projected_start"
+            and "recorder_elimination_display" not in weak
+        )
         if (
-            frame["life"]["value"] == "UNKNOWN"
+            (frame["life"]["value"] == "UNKNOWN" or stale_death)
             and frame["round"]["value"] == "BUY"
             and "UNKNOWN" not in frame["round"]["hypotheses"]
             and frame["camera"]["value"] != "SPECTATOR"
@@ -688,6 +769,7 @@ def apply_evidence_continuity(
     archive = superseded if superseded is not None else []
     for segment in _segments(states):
         brackets: list[tuple[tuple[str, ...], Fraction, Fraction]] = []
+        _purchase_countdown_pass(states, observations, segment, revise)
         _purchase_pass(states, observations, segment, revise, brackets)
         if transitions is not None and brackets:
             _retire_starts_in_purchase(transitions, brackets, archive)
