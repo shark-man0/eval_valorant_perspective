@@ -7,6 +7,13 @@ of rounds and phases, and this module only supplies evidence rows in its own
 (``context.score``, ``context.timer_seconds`` and the ``active`` signal when the
 clock shows more than the longest buy countdown).
 
+The readings are also carried as ``raw["values"]`` entries with a confidence, so
+``temporal.application`` turns them into ``hud_observations`` candidates
+(``ally_score``, ``enemy_score``, ``timer`` as ``m:ss``). That is the interface
+the shared-timeline promoter (``facts.timeline_promotion``, #164) reads; it alone
+decides promotion with its own thresholds. The confidence is the lowest digit
+template match (normalised correlation), not a calibrated probability.
+
 Rows are development-only, unqualified claims, like every timeline supplier.
 """
 
@@ -34,14 +41,28 @@ def reader_fingerprint(reader: ScoreReader) -> str:
     return digest.hexdigest()
 
 
-def top_bar_crop(frame: np.ndarray) -> np.ndarray:
-    """Half-scale top-bar crop from a full frame of any 16:9 size."""
+def hud_crop(frame: np.ndarray, roi: tuple[int, int, int, int],
+             scale: float = ARCHIVE_SCALE) -> np.ndarray:
+    """Crop ``roi`` (1920x1080 reference pixels) at ``scale`` from a 16:9 frame."""
     height, width = frame.shape[:2]
     sx, sy = width / 1920.0, height / 1080.0
-    x0, y0, x1, y1 = TOP_BAR_ROI
-    roi = frame[round(y0 * sy):round(y1 * sy), round(x0 * sx):round(x1 * sx)]
-    size = (round((x1 - x0) * ARCHIVE_SCALE), round((y1 - y0) * ARCHIVE_SCALE))
-    return cv2.resize(roi, size, interpolation=cv2.INTER_AREA)
+    x0, y0, x1, y1 = roi
+    part = frame[round(y0 * sy):round(y1 * sy), round(x0 * sx):round(x1 * sx)]
+    size = (round((x1 - x0) * scale), round((y1 - y0) * scale))
+    return cv2.resize(part, size, interpolation=cv2.INTER_AREA)
+
+
+def top_bar_crop(frame: np.ndarray) -> np.ndarray:
+    """Half-scale top-bar crop from a full frame of any 16:9 size."""
+    return hud_crop(frame, TOP_BAR_ROI)
+
+
+def clock_text(seconds: int) -> str:
+    return f"{seconds // 60}:{seconds % 60:02d}"
+
+
+def _value(value: Any, confidence: float | None) -> dict[str, Any]:
+    return {"value": value, "confidence": None if confidence is None else round(confidence, 4)}
 
 
 def top_bar_observation(frame: np.ndarray, sample: dict[str, Any], reader: ScoreReader,
@@ -49,14 +70,21 @@ def top_bar_observation(frame: np.ndarray, sample: dict[str, Any], reader: Score
     """One timeline observation row for a decoded frame and its native sample."""
     crop = top_bar_crop(frame)
     reading = reader.read(crop)
-    timer = reader.read_timer(crop)
+    timer, timer_match = reader.read_timer_scored(crop)
     score = ([reading.ally, reading.enemy]
              if reading.ally is not None and reading.enemy is not None else None)
     signals = ["active"] if timer is not None and timer > ACTIVE_CLOCK_MIN else []
+    values = {}
+    if reading.ally is not None:
+        values["ally_score"] = _value(reading.ally, reading.ally_match)
+    if reading.enemy is not None:
+        values["enemy_score"] = _value(reading.enemy, reading.enemy_match)
+    if timer is not None:
+        values["timer"] = _value(clock_text(timer), timer_match)
     return observation(
         sample=sample,
         producer=producer or reader_fingerprint(reader),
         signals=signals,
-        raw={"ally_score": reading.ally, "enemy_score": reading.enemy, "timer": timer},
+        raw={"values": values},
         context={"stream_kind": STREAM_KIND, "score": score, "timer_seconds": timer},
     )

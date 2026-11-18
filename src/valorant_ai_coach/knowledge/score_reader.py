@@ -86,6 +86,10 @@ MINUTE_ONE_MIN_SCORE = 0.6
 class ScoreReading:
     ally: int | None
     enemy: int | None
+    # Lowest template match (normalised correlation) among each value's digits:
+    # the source confidence the timeline carries, not a calibrated probability.
+    ally_match: float | None = None
+    enemy_match: float | None = None
 
 
 class ScoreReader:
@@ -111,24 +115,33 @@ class ScoreReader:
         with np.load(path) as data:
             return cls(data["digits"])
 
-    def digit(self, glyph: NDArray[np.float32]) -> int | None:
+    def digit_scored(self, glyph: NDArray[np.float32]) -> tuple[int | None, float]:
         scores = self.templates @ glyph.reshape(-1)
         order = np.argsort(scores)[::-1]
         best, second = float(scores[order[0]]), float(scores[order[1]])
         if best < DIGIT_MIN_SCORE or best - second < DIGIT_MIN_MARGIN:
-            return None
-        return int(order[0])
+            return None, best
+        return int(order[0]), best
 
-    def read_window(self, window: np.ndarray) -> int | None:
+    def digit(self, glyph: NDArray[np.float32]) -> int | None:
+        return self.digit_scored(glyph)[0]
+
+    def read_window_scored(self, window: np.ndarray) -> tuple[int | None, float | None]:
         gray, boxes = glyph_boxes(window)
         if not 1 <= len(boxes) <= 2:
-            return None
-        digits = [self.digit(normalise_glyph(gray, box)) for box in boxes]
-        if any(d is None for d in digits):
-            return None
-        return int("".join(str(d) for d in digits))
+            return None, None
+        scored = [self.digit_scored(normalise_glyph(gray, box)) for box in boxes]
+        if any(d is None for d, _ in scored):
+            return None, None
+        return int("".join(str(d) for d, _ in scored)), min(m for _, m in scored)
+
+    def read_window(self, window: np.ndarray) -> int | None:
+        return self.read_window_scored(window)[0]
 
     def read_timer(self, top_bar_crop: np.ndarray) -> int | None:
+        return self.read_timer_scored(top_bar_crop)[0]
+
+    def read_timer_scored(self, top_bar_crop: np.ndarray) -> tuple[int | None, float | None]:
         """Seconds shown by the round timer, or None (spike icon, other text).
 
         Expects ``m:ss``: one minute digit, a colon (two small dots), two second
@@ -148,16 +161,16 @@ class ScoreReader:
         digits = sorted(p for p in parts
                         if TIMER_MIN_HEIGHT <= p[3] <= TIMER_MAX_HEIGHT and p[2] <= 10)
         if len(digits) != 3:
-            return None
+            return None, None
         minute_box, tens_box, ones_box = digits
         dots = [p for p in parts if p[3] <= 6 and p[2] <= 4
                 and minute_box[0] + minute_box[2] <= p[0] < tens_box[0]]
         if len(dots) < 2:
-            return None
-        tens = self.digit(normalise_glyph(gray, tens_box))
-        ones = self.digit(normalise_glyph(gray, ones_box))
+            return None, None
+        tens, tens_match = self.digit_scored(normalise_glyph(gray, tens_box))
+        ones, ones_match = self.digit_scored(normalise_glyph(gray, ones_box))
         if tens is None or ones is None or tens > 5:
-            return None
+            return None, None
         # The leading digit is only ever 0 or 1: "0" is wide, "1" narrow; a
         # middling glyph must clearly look like the "1" template.
         width = minute_box[2]
@@ -168,16 +181,19 @@ class ScoreReader:
         else:
             one = float(self.templates[1] @ normalise_glyph(gray, minute_box).reshape(-1))
             if one < MINUTE_ONE_MIN_SCORE:
-                return None
+                return None, None
             minute = 1
         value = minute * 60 + tens * 10 + ones
-        return value if value <= MAX_TIMER_SEC else None
+        if value > MAX_TIMER_SEC:
+            return None, None
+        return value, min(tens_match, ones_match)
 
     def read(self, top_bar_crop: np.ndarray) -> ScoreReading:
-        values = {}
+        values: dict[str, tuple[int | None, float | None]] = {}
         for side, (x0, y0, x1, y1) in SCORE_WINDOWS.items():
-            values[side] = self.read_window(top_bar_crop[y0:y1, x0:x1])
-        return ScoreReading(values["ally"], values["enemy"])
+            values[side] = self.read_window_scored(top_bar_crop[y0:y1, x0:x1])
+        return ScoreReading(values["ally"][0], values["enemy"][0],
+                            values["ally"][1], values["enemy"][1])
 
 
 def score_track(reads: Sequence[tuple[float, int | None]], *, support: int = 2,

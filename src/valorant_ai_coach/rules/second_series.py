@@ -5,7 +5,12 @@ Shots: the magazine count only drops when the viewed player fires, so a drop
 between two consecutive one-second readings in the recorder's own live view is
 a shot event in that second (count = size of the drop). A rise is a reload or a
 weapon switch, never a shot. A drop larger than a magazine empties in one
-second for any weapon is treated as a misread.
+second for any weapon is treated as a misread. When the reserve count is read
+at both ends and differs, the weapon changed (a switch), so the drop is not a
+shot. Readings are paired only inside one round of the shared timeline
+(``segments``), only while the view stays the recorder's own and only across
+short unreadable gaps, so no event spans a round boundary, spectating or a
+missing interval.
 
 Movement: between a keyframe and the frame 2/60 s later, a pure camera rotation
 moves every playfield point by one homography; walking adds parallax that the
@@ -45,6 +50,7 @@ class SecondRecord:
     magazine: int | None
     residual_p90: float | None
     tracked: int
+    reserve: int | None = None
 
 
 def _motion(record: dict[str, Any]) -> tuple[float | None, int]:
@@ -56,10 +62,23 @@ def _motion(record: dict[str, Any]) -> tuple[float | None, int]:
             tracked)
 
 
-def load_second_records(path: Path) -> list[SecondRecord]:
-    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()
+def _rows(path: Path) -> list[dict[str, Any]]:
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()]
+
+
+def load_second_records(path: Path, ammo_path: Path | None = None) -> list[SecondRecord]:
+    """Rows of ``extract_second_features.py``; ``ammo_path`` (``--ammo-only`` rows)
+    adds the reserve count to rows written before it was read. Rows are matched
+    by native sample identity (PTS tick and encoded-packet SHA-256)."""
+    rows = _rows(path)
     rows.sort(key=lambda r: r["sec"])
+    reserve: dict[tuple[int, str], int | None] = {}
+    if ammo_path is not None and ammo_path.exists():
+        for extra in _rows(ammo_path):
+            sample = extra["sample"]
+            reserve[(int(sample["native_pts_tick"]), sample["acquired_frame_sha256"])] = \
+                extra.get("reserve")
     out = []
     for row in rows:
         hud = row.get("hud") or {}
@@ -77,7 +96,10 @@ def load_second_records(path: Path) -> list[SecondRecord]:
             spike_carried=row.get("spike_carried"), spike_score=row.get("spike_score"),
             score=(score[0], score[1]), timer=row.get("timer"))
         residual, tracked = _motion(row)
-        out.append(SecondRecord(observation, row.get("magazine"), residual, tracked))
+        sample = row.get("sample") or {}
+        key = (int(sample.get("native_pts_tick", -1)), str(sample.get("acquired_frame_sha256")))
+        out.append(SecondRecord(observation, row.get("magazine"), residual, tracked,
+                                row.get("reserve", reserve.get(key))))
     return out
 
 
@@ -115,49 +137,91 @@ class WeaponLimits:
         return cls(max(rates) if rates else 16.0, frozenset(sidearms))
 
 
+def _segments(records: Sequence[SecondRecord],
+              segments: Sequence[int | None] | None) -> Sequence[int | None]:
+    if segments is None:
+        return [0] * len(records)
+    if len(segments) != len(records):
+        raise ValueError("one segment (round index) per record required")
+    return segments
+
+
+def _clock_restarted(before: SecondRecord, after: SecondRecord) -> bool:
+    """The round clock went up: a new phase or round started in between."""
+    early, late = before.observation.timer, after.observation.timer
+    return early is not None and late is not None and late > early
+
+
+def is_switch(before: SecondRecord, after: SecondRecord, limits: WeaponLimits) -> bool:
+    """The weapon changed between two readings: the reserve count differs (when
+    read at both ends), or a drop of more than a few rounds lands exactly on a
+    full sidearm magazine (pulling out the pistol)."""
+    if before.reserve is not None and after.reserve is not None \
+            and before.reserve != after.reserve:
+        return True
+    assert before.magazine is not None and after.magazine is not None
+    drop = before.magazine - after.magazine
+    return drop > SWITCH_MIN_DROP and after.magazine in limits.switch_magazines
+
+
 def detect_shots(records: Sequence[SecondRecord], own_live: Sequence[bool],
-                 *, pause_sec: float = 3.0, limits: WeaponLimits | None = None) -> list[Shot]:
+                 *, pause_sec: float = 3.0, limits: WeaponLimits | None = None,
+                 segments: Sequence[int | None] | None = None) -> list[Shot]:
     """Shots from magazine drops between consecutive readings in own live view.
 
     Unreadable seconds in between are skipped (up to ``MAX_READ_GAP_SEC``), so a
     drop across a gap is one shot event at the later reading; the view must
-    stay the recorder's own the whole time. A drop faster than the fastest
-    weapon can fire is a misread or a weapon switch; so is a drop of more than
-    a few rounds that lands exactly on a full sidearm magazine (pulling out the
-    pistol), and both are skipped.
+    stay the recorder's own the whole time and both readings must lie in the
+    same round (``segments``: the shared timeline's round index per record, or
+    ``None`` where it has none) with no clock restart in between. A drop faster than the
+    fastest weapon can fire is a misread; a weapon switch (``is_switch``) is not
+    a shot. The first shot of a round, or after ``pause_sec`` without one, is an
+    engagement start candidate.
     """
     limits = limits or WeaponLimits()
     moving = moving_state(records)
+    rounds = _segments(records, segments)
     shots: list[Shot] = []
+    shot_round: int | None = None
     last: int | None = None  # index of the previous magazine reading in own view
     for index, record in enumerate(records):
         if not own_live[index]:
             last = None
             continue
+        if last is not None and (rounds[last] != rounds[index]
+                                 or _clock_restarted(records[last], record)):
+            last = None
         if record.magazine is None:
             continue
         if last is not None and record.observation.sec - records[last].observation.sec \
                 <= MAX_READ_GAP_SEC:
-            previous = records[last].magazine
-            assert previous is not None
-            drop = previous - record.magazine
-            elapsed = record.observation.sec - records[last].observation.sec
-            switch = drop > SWITCH_MIN_DROP and record.magazine in limits.switch_magazines
-            if 0 < drop <= limits.max_fire_rate * elapsed + 1 and not switch:
+            previous = records[last]
+            assert previous.magazine is not None
+            drop = previous.magazine - record.magazine
+            elapsed = record.observation.sec - previous.observation.sec
+            if 0 < drop <= limits.max_fire_rate * elapsed + 1 \
+                    and not is_switch(previous, record, limits):
                 sec = record.observation.sec
-                first = not shots or sec - shots[-1].sec > pause_sec
+                first = (not shots or shot_round != rounds[index]
+                         or sec - shots[-1].sec > pause_sec)
                 shots.append(Shot(sec, drop, first, moving[last]))
+                shot_round = rounds[index]
         last = index
     return shots
 
 
-def movement_changes(records: Sequence[SecondRecord], own_live: Sequence[bool]
-                     ) -> list[MovementChange]:
+def movement_changes(records: Sequence[SecondRecord], own_live: Sequence[bool],
+                     segments: Sequence[int | None] | None = None) -> list[MovementChange]:
     changes: list[MovementChange] = []
     previous: bool | None = None
-    for record, state, live in zip(records, moving_state(records), own_live, strict=True):
-        if not live or state is None:
+    previous_round: int | None = None
+    rounds = _segments(records, segments)
+    for record, state, live, round_index in zip(records, moving_state(records), own_live,
+                                                rounds, strict=True):
+        if not live or state is None or round_index != previous_round:
             previous = None
+        previous_round = round_index
+        if not live or state is None:
             continue
         if previous is not None and state != previous:
             changes.append(MovementChange(record.observation.sec, state))
@@ -186,6 +250,7 @@ def peeks(changes: Iterable[MovementChange], shots: Sequence[Shot]
 
 def second_additions(records: Sequence[SecondRecord], own_live: Sequence[bool],
                      limits: WeaponLimits | None = None, *, include_movement: bool = False,
+                     segments: Sequence[int | None] | None = None,
                      ) -> dict[float, tuple[set[str], dict[str, Any]]]:
     """Candidate events/facts per second for shots (and, when enabled, movement
     and peeks)."""
@@ -194,7 +259,7 @@ def second_additions(records: Sequence[SecondRecord], own_live: Sequence[bool],
     def at(sec: float) -> tuple[set[str], dict[str, Any]]:
         return out.setdefault(sec, (set(), {}))
 
-    shots = detect_shots(records, own_live, limits=limits)
+    shots = detect_shots(records, own_live, limits=limits, segments=segments)
     for shot in shots:
         events, facts = at(shot.sec)
         events.add("shot")
@@ -207,7 +272,7 @@ def second_additions(records: Sequence[SecondRecord], own_live: Sequence[bool],
                 facts["first_shot_stationary"] = not shot.moving
     if not include_movement:
         return out
-    changes = movement_changes(records, own_live)
+    changes = movement_changes(records, own_live, segments)
     for change in changes:
         at(change.sec)[0].add("movement_state")
     peek, info = peeks(changes, shots)

@@ -146,6 +146,8 @@ def main() -> int:
             "sources": derivation.sources, "rounds": recon.rounds,
             "deaths": len(recon.deaths),
             "revive_deaths": sum(d.after_revive for d in recon.deaths),
+            "unsplit_round_deaths": [round(d.sec, 1) for d in recon.deaths
+                                     if d.after_round_restart],
             "rounds_with_death": len(per_round),
             "max_deaths_in_round": max(per_round.values(), default=0),
             "dropped": recon.dropped,

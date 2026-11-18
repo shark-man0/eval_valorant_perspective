@@ -69,6 +69,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--features", type=Path, required=True)
     parser.add_argument("--timeline-map", type=Path)
+    parser.add_argument("--ammo", type=Path,
+                        help="directory of --ammo-only rows (adds the reserve count)")
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     knowledge = load_game_knowledge()
@@ -86,25 +88,30 @@ def main() -> int:
     per_match = []
     for path in sorted(args.features.glob("*.jsonl")):
         video_id = path.stem
-        records = load_second_records(path)
+        records = load_second_records(
+            path, args.ammo / path.name if args.ammo else None)
         timeline_path = timelines.get(video_id)
         timeline = TimelineView.load(Path(timeline_path)) if timeline_path else None
         agent_name, share = identify(records, timeline)
         agent = knowledge.agent(agent_name) if agent_name else None
         live = own_live(records, agent_name, timeline)
-        additions = second_additions(records, live, limits)
-        derivation = derive(
-            [r.observation for r in records], agent_name, agent.role if agent else "unknown",
-            timeline, rounds_per_half=phase_rules.regulation_rounds_per_half,
-            phase_rules=phase_rules, additions=additions,
-            spike_detonation_sec=float(knowledge.rule("spike_detonation_sec")))
+        series = [r.observation for r in records]
+        role = agent.role if agent else "unknown"
+        options = {"rounds_per_half": phase_rules.regulation_rounds_per_half,
+                   "phase_rules": phase_rules,
+                   "spike_detonation_sec": float(knowledge.rule("spike_detonation_sec"))}
+        # Rounds first (they do not depend on shots), so shots never span a boundary.
+        segments = [s.round_index for s in derive(series, agent_name, role, timeline,
+                                                  **options).samples]
+        additions = second_additions(records, live, limits, segments=segments)
+        derivation = derive(series, agent_name, role, timeline, additions=additions, **options)
         counts = rule_occurrences(rules, derivation.samples)
         for rule_id, count in counts.items():
             totals[rule_id] += count
             matches_with[rule_id] += count > 0
         recon = derivation.reconciliation
         per_round: Counter[int] = Counter(d.round_index for d in recon.deaths)
-        shots = detect_shots(records, live, limits=limits)
+        shots = detect_shots(records, live, limits=limits, segments=segments)
         events: Counter[str] = Counter(e for s in derivation.samples for e in s.events)
         sides = derivation.sides
         per_match.append({
@@ -114,6 +121,8 @@ def main() -> int:
             "life": {"sources": derivation.sources, "rounds": recon.rounds,
                      "deaths": len(recon.deaths),
                      "revive_deaths": sum(d.after_revive for d in recon.deaths),
+                     "unsplit_round_deaths": [round(d.sec, 1) for d in recon.deaths
+                                              if d.after_round_restart],
                      "max_deaths_in_round": max(per_round.values(), default=0),
                      "multi_death_rounds": sum(c > 1 for c in per_round.values()),
                      "dropped": recon.dropped},
@@ -129,7 +138,8 @@ def main() -> int:
             "shots": {"events": len(shots), "rounds_fired": sum(s.count for s in shots),
                       "first_shots": sum(s.first for s in shots),
                       "with_movement_state": sum(s.moving is not None for s in shots)},
-            "movement_changes": len(movement_changes(records, live)),
+            "reserve_read_seconds": sum(r.reserve is not None for r in records),
+            "movement_changes": len(movement_changes(records, live, segments)),
             "events": dict(events), "rule_occurrences": counts,
         })
         print(video_id, agent_name, sides.status, len(shots),

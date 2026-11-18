@@ -240,41 +240,88 @@ def test_rounds_from_scores_ignore_spurious_resets() -> None:
 
 
 def test_template_sources_must_be_train_recordings(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    import hashlib
     import json
     import zipfile
+    from types import SimpleNamespace
 
     import pytest
 
     from valorant_ai_coach.knowledge.template_lineage import (
+        IDENTITY,
+        IDENTITY_HASHED,
         TemplateSourceRefused,
         train_sources,
     )
 
-    def archive(video_id: str) -> object:
+    def archive(video_id: str, extra: bytes = b"") -> object:
         path = tmp_path / f"{video_id}.zip"
         with zipfile.ZipFile(path, "w") as handle:
             handle.writestr("index.json", json.dumps(
                 {"video_id": video_id, "file_name": f"{video_id}.mp4", "size_bytes": 10}))
+            if extra:
+                handle.writestr("extra.bin", extra)
         return path
 
     sha = {"a": "1" * 64, "b": "2" * 64}
+    sources = []
+    for video_id, split in (("a", "TRAIN"), ("b", "FROZEN_TEST")):
+        data = archive(video_id).read_bytes()
+        sources.append({"source_id": video_id, "physical_match_id": f"p{video_id}",
+                        "split": split, "source_video_sha256": sha[video_id],
+                        "archive_sha256": hashlib.sha256(data).hexdigest(),
+                        "archive_bytes": len(data)})
     registry = tmp_path / "dataset_registry.json"
-    registry.write_text(json.dumps({"version": "v2", "seed": "s", "sources": [
-        {"source_id": "a", "physical_match_id": "pa", "split": "TRAIN",
-         "source_video_sha256": sha["a"]},
-        {"source_id": "b", "physical_match_id": "pb", "split": "FROZEN_TEST",
-         "source_video_sha256": sha["b"]}]}), encoding="utf-8")
+    registry.write_text(json.dumps({"version": "v2", "seed": "s", "sources": sources}),
+                        encoding="utf-8")
+
+    def recording(video_id: str, **change: object) -> SimpleNamespace:
+        fields = {"recording_id": f"rec_{video_id}", "source_sha256": sha[video_id],
+                  "size_bytes": 10, "physical_match_id": f"p{video_id}",
+                  "development_authorised": True, "independent_until_opened": False,
+                  "locations": {"original": {"path": f"/videos/{video_id}.mp4",
+                                             "size_bytes": 10}},
+                  "learning": {"split": "TRAIN", "registry_source_id": video_id,
+                               "registry_physical_match_id": f"p{video_id}",
+                               "origin": "learning_registry:x"}}
+        return SimpleNamespace(**{**fields, **change})
+
+    def catalog(*records: SimpleNamespace) -> SimpleNamespace:
+        index = {r.source_sha256: r for r in records}
+        return SimpleNamespace(state=SimpleNamespace(head="h" * 64, by_sha=index.get))
+
+    good = catalog(recording("a"), recording("b"))
     hashes = {v: {"file_name": f"{v}.mp4", "size_bytes": 10, "sha256": sha[v]} for v in sha}
-    lineage, meta = train_sources(registry, [archive("a")], video_hashes=hashes)
+    lineage, meta = train_sources(registry, [archive("a")], catalog=good, video_hashes=hashes)
     assert meta["split"] == "TRAIN" and lineage[0].source_video_sha256 == sha["a"]
-    assert meta["sources"][0]["video_identity"] == "video_id+file_name+size+sha256"
+    assert lineage[0].catalog_recording_id == "rec_a" and meta["catalog_journal_head"] == "h" * 64
+    assert meta["sources"][0]["video_identity"] == IDENTITY_HASHED
+    assert train_sources(registry, [archive("a")], catalog=good)[0][0].video_identity == IDENTITY
     with pytest.raises(TemplateSourceRefused, match="DEV_COMPARISON"):
-        train_sources(registry, [archive("a"), archive("b")])
+        train_sources(registry, [archive("a"), archive("b")], catalog=good)
     with pytest.raises(TemplateSourceRefused, match="not registered"):
-        train_sources(registry, [archive("c")])
+        train_sources(registry, [archive("c")], catalog=good)
+    # A re-packed archive of the same recording is refused: its bytes are not registered.
+    with pytest.raises(TemplateSourceRefused, match="archive bytes"):
+        train_sources(registry, [archive("a", extra=b"more crops")], catalog=good)
+    base = recording("a").learning
+    refusals = {
+        "not in the catalog": catalog(),
+        "learning split is VALIDATION": catalog(recording("a", learning={**base,
+                                                                         "split": "VALIDATION"})),
+        "another registry source": catalog(recording("a", learning={**base,
+                                                                    "registry_source_id": "z"})),
+        "independent evaluation": catalog(recording("a", independent_until_opened=True)),
+        "not authorised": catalog(recording("a", development_authorised=False)),
+        "original recording": catalog(recording("a", locations={
+            "original": {"path": "/videos/other.mp4", "size_bytes": 10}})),
+    }
+    for reason, refused in refusals.items():
+        with pytest.raises(TemplateSourceRefused, match=reason):
+            train_sources(registry, [archive("a")], catalog=refused)
     wrong = {**hashes, "a": {**hashes["a"], "sha256": "3" * 64}}
     with pytest.raises(TemplateSourceRefused, match="does not match"):
-        train_sources(registry, [archive("a")], video_hashes=wrong)
+        train_sources(registry, [archive("a")], catalog=good, video_hashes=wrong)
 
 
 def test_round_phases_keep_score_buy_combat_and_end_apart() -> None:
@@ -339,6 +386,14 @@ def test_top_bar_rows_feed_the_shared_timeline() -> None:
     assert row["qualification"] == "development_only" and row["signals"] == []
     timeline = DevelopmentGameTimeline()
     timeline.add(row)  # the timeline accepts the row as an ordinary supplier observation
+    # The same row reaches hud_observations, the fields the #164 promoter reads.
+    from valorant_ai_coach.temporal.application import _hud
+
+    hud = _hud([row])
+    ally = hud["ally_score"]["candidates"]
+    assert [c["value"] for c in ally] == [7] and 0.75 <= ally[0]["confidence"] <= 1.0
+    assert [c["value"] for c in hud["enemy_score"]["candidates"]] == [12]
+    assert ally[0]["subject"] == "viewed_HUD; recorder_ownership_unresolved"
 
 
 def test_kill_feed_death_needs_recorder_as_victim() -> None:
@@ -381,6 +436,42 @@ def test_shots_from_magazine_drops() -> None:
     assert additions[1][1] == {"first_shot_detected": True}  # no movement facts (gated off)
 
 
+def test_shots_stay_inside_one_round_and_one_weapon() -> None:
+    from valorant_ai_coach.rules.second_series import (
+        SecondRecord,
+        WeaponLimits,
+        detect_shots,
+        movement_changes,
+    )
+
+    def rec(sec: float, magazine: int | None, reserve: int | None = None,
+            residual: float | None = None) -> SecondRecord:
+        return SecondRecord(Observation(sec, True, "Omen", 0.9, (1, 1, 1, 0), 5, 5),
+                            magazine, residual, 40, reserve)
+
+    limits = WeaponLimits(max_fire_rate=10.0, switch_magazines=frozenset({12}))
+    records = [rec(0, 25, 50), rec(1, 22, 50),
+               rec(2, 18, 36),  # reserve 50 -> 36: switched to another gun, not 4 shots
+               rec(3, 15, 36),  # a real shot with the new gun
+               rec(4, 14), rec(5, 12),  # round ends between 4 and 5: not compared
+               rec(6, 10), rec(7, 8)]
+    live = [True] * len(records)
+    rounds: list[int | None] = [0, 0, 0, 0, 0, None, 1, 1]
+    shots = detect_shots(records, live, limits=limits, segments=rounds)
+    assert [(s.sec, s.count, s.first) for s in shots] == [
+        (1, 3, True), (3, 3, False), (4, 1, False), (7, 2, True)]  # new round: first again
+    # Where the timeline has no round (None), readings still pair, but not across
+    # a round clock restart.
+    clock = [SecondRecord(Observation(t, True, "Omen", 0.9, (1, 1, 1, 0), 5, 5, timer=c),
+                          m, None, 40) for t, c, m in ((0, 3, 20), (1, 99, 18), (2, 98, 15))]
+    assert [s.sec for s in detect_shots(clock, [True] * 3, limits=limits,
+                                        segments=[None] * 3)] == [2]
+    # Without round segments the pair across the boundary would have counted.
+    assert (5, 2) in [(s.sec, s.count) for s in detect_shots(records, live, limits=limits)]
+    moves = [rec(t, None, residual=r) for t, r in enumerate([1, 5, 5, 1, 5])]
+    assert [c.sec for c in movement_changes(moves, [True] * 5, [0, 0, 0, 1, 1])] == [1, 4]
+
+
 def test_detonation_wins_give_sides() -> None:
     from valorant_ai_coach.rules.side import outcome_sides
 
@@ -392,22 +483,79 @@ def test_detonation_wins_give_sides() -> None:
         (4, "attack", "detonation_win"), (5, "defense", "detonation_win")]
 
 
-def test_promotion_needs_reviewed_independent_and_approved_evidence() -> None:
+def test_producer_evaluations_are_records_not_a_promotion_path() -> None:
+    import json
     from pathlib import Path
 
-    from valorant_ai_coach.rules.qualification import (
-        load_qualification,
-        qualification,
-        wilson_lower,
+    data = json.loads(Path("config/producer_evaluation_v1.json").read_text(encoding="utf-8"))
+    assert set(data["evaluation_classes"]) == {
+        "development", "promoted_from_shared_timeline", "independently_qualified"}
+    for entry in data["producers"].values():
+        # Development numbers come from exposed recordings; nothing is qualified here.
+        assert entry["independent_evaluation"] == {"matches": 0, "status": "not_run"}
+        assert not {"qualified", "approval", "promote"} & set(entry)
+
+
+def test_own_view_rows_feed_hud_observations() -> None:
+    from valorant_ai_coach.knowledge.ammo_reader import GLYPH_SIZE as AMMO_GLYPH
+    from valorant_ai_coach.knowledge.ammo_reader import AmmoReader
+    from valorant_ai_coach.knowledge.own_view_timeline import (
+        magazine_observation,
+        spike_carrier_observation,
+    )
+    from valorant_ai_coach.knowledge.spike_carrier import INVENTORY_ROI, SpikeCarrierReader
+    from valorant_ai_coach.temporal.application import _hud
+    from valorant_ai_coach.temporal.game import DevelopmentGameTimeline
+
+    rng = np.random.default_rng(7)
+    patch = cv2.GaussianBlur(rng.integers(0, 255, (26, 40)).astype(np.uint8), (3, 3), 0)
+    frame = np.full((1080, 1920, 3), 40, np.uint8)
+    x, y = INVENTORY_ROI[0] + 2 * 50, INVENTORY_ROI[1] + 2 * 10
+    big = cv2.resize(patch, (80, 52), interpolation=cv2.INTER_NEAREST)
+    frame[y:y + 52, x:x + 80] = big[:, :, None]
+    sample = {"source_id": "s", "source_sha256": "a" * 64, "acquisition_id": "e",
+              "native_epoch": "e", "native_pts_tick": 600, "native_time_base": "1/60",
+              "acquired_frame_sha256": "b" * 64, "native_pixel_sha256": "c" * 64,
+              "frame_size_px": [1920, 1080]}
+    spike = spike_carrier_observation(frame, sample, SpikeCarrierReader(patch))
+    ammo = magazine_observation(frame, sample, AmmoReader(
+        np.ones((10, AMMO_GLYPH[1], AMMO_GLYPH[0]), np.float32)))
+    timeline = DevelopmentGameTimeline()
+    for row in (spike, ammo):
+        assert row["signals"] == [] and row["qualification"] == "development_only"
+        timeline.add(row)
+    hud = _hud([spike, ammo])
+    carried = hud["spike_carried"]["candidates"]
+    assert [c["value"] for c in carried] == [True] and carried[0]["confidence"] > 0.9
+    assert hud["ammo"]["status"] == "UNKNOWN" and "ammo_current" not in hud  # nothing read
+
+
+def test_second_death_needs_a_revive_and_no_new_round() -> None:
+    from valorant_ai_coach.rules.recorder_life import (
+        Round,
+        ally_revives,
+        buy_phase_restarts,
+        combat_starts,
+        reconcile,
+        score_rises,
     )
 
-    assert wilson_lower(160, 160) > 0.97 and wilson_lower(28, 30) < 0.8
-    strong = {"reviewed": 400, "correct": 399, "coverage": 0.8}
-    assert qualification({"development": strong, "independent": {**strong, "matches": 6},
-                          "approval": "lead"})["qualified"]
-    missing = qualification({"development": strong, "independent": {}, "approval": ""})
-    assert not missing["qualified"]
-    assert "independent: no INDEPENDENT_TEST evidence" in missing["missing"]
-    assert "no approval recorded" in missing["missing"]
-    report = load_qualification(Path("config/producer_qualification_v1.json"))
-    assert report and not any(item["qualified"] for item in report.values())
+    rounds = [Round(0.0, 300.0)]  # the round source merged two rounds
+    live = [float(t) for t in range(20, 60)]
+    # Seen alive long after a "death" with no ally coming back: the first was false.
+    plain = reconcile(rounds, {"kill_feed": [10.0, 60.0]}, live_samples=live, revives=[])
+    assert [(d.sec, d.after_revive) for d in plain.deaths] == [(60.0, False)]
+    assert plain.dropped["superseded"] == 1
+    # The allied count went up in between: a revive.
+    revived = reconcile(rounds, {"kill_feed": [10.0, 60.0]}, live_samples=live,
+                        revives=ally_revives([(14.0, 3), (15.0, 4), (16.0, 3)]))
+    assert [d.after_revive for d in revived.deaths] == [False, True]
+    # A new round's combat clock in between: two rounds, two deaths, no revive.
+    clock = [(30.0, 3), (31.0, 99), (32.0, 98)]
+    assert combat_starts(clock) == [31.0]
+    split = reconcile(rounds, {"kill_feed": [10.0, 60.0]}, restarts=combat_starts(clock))
+    assert [(d.sec, d.after_round_restart) for d in split.deaths] == [(10.0, False),
+                                                                     (60.0, True)]
+    assert buy_phase_restarts([(20.0, 4), (25.0, 28), (27.0, 26)]) == [53.0]
+    assert score_rises([(0, 1, 1), (1, 1, 1), (2, 2, 1), (3, 2, 1)]) == [22.0]
+    assert ally_revives([(0.0, 2), (1.0, 5)]) == []  # a full team is a new round

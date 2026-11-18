@@ -10,10 +10,14 @@ the shared one-second timeline, and the readings of our development readers:
 - ability HUD: best agent and slot charges (who is viewed)
 - kill feed entries
 - weapon inventory (taller ROI than the 5 s crops): spike header score
-- ammo: magazine count
+- ammo: magazine count and reserve count (the reserve changes on a weapon switch)
 - motion between the keyframe and the frames 1/60 s and 2/60 s later: sparse
   optical flow on the playfield (HUD masked), homography fit, and the parallax
   that a pure camera rotation cannot explain
+
+``--ammo-only`` decodes keyframes only and writes just the magazine and reserve
+counts with the same native sample identity, to add the reserve to rows written
+before it was read (``rules.second_series.load_second_records`` merges them).
 
 The run is resumable: it appends to ``<out>/<video_id>.jsonl`` and starts after
 the last written keyframe, stopping before ``--budget`` seconds so it fits a
@@ -105,7 +109,23 @@ def motion_features(a: np.ndarray, b: np.ndarray, mask: np.ndarray) -> dict[str,
     }
 
 
+class AmmoReaders:
+    """``--ammo-only``: magazine and reserve counts, no followers needed."""
+
+    followers = 0
+
+    def __init__(self, cache: Path) -> None:
+        self.ammo = AmmoReader.load(cache)
+
+    def read(self, frame: np.ndarray, after: list[np.ndarray]) -> dict[str, Any]:
+        ammo = crop(frame, AMMO_ROI)
+        return {"magazine": self.ammo.read(ammo).value,
+                "reserve": self.ammo.read_reserve(ammo).value}
+
+
 class Readers:
+    followers = 2
+
     def __init__(self, cache: Path) -> None:
         knowledge = load_game_knowledge()
         assets = ReferenceAssets.load(cache)
@@ -142,13 +162,14 @@ class Readers:
             "spike_score": round(spike.score, 3),
             "spike_carried": spike.carried,
             "magazine": self.ammo.read(crop(frame, AMMO_ROI)).value,
+            "reserve": self.ammo.read_reserve(crop(frame, AMMO_ROI)).value,
         }
         record["motion"] = [motion_features(frame, later, self.mask) for later in after]
         return record
 
 
-def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Readers,
-        budget: float) -> dict[str, Any]:
+def run(video: Path, video_id: str, source_sha256: str, out: Path,
+        readers: Readers | AmmoReaders, budget: float) -> dict[str, Any]:
     import av  # development-time dependency
 
     started = time.monotonic()
@@ -176,10 +197,11 @@ def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Read
               followers: dict[int, np.ndarray]) -> int:
         if pending is None or key is None:
             return 0
-        after = [followers[t] for t in sorted(followers)][:2]
+        after = [followers[t] for t in sorted(followers)][:readers.followers]
         pending.update(readers.read(key, after))
-        pending["motion_dt_ticks"] = [t - pending["sample"]["native_pts_tick"]
-                                      for t in sorted(followers)][:2]
+        if readers.followers:
+            pending["motion_dt_ticks"] = [t - pending["sample"]["native_pts_tick"]
+                                          for t in sorted(followers)][:2]
         handle.write(json.dumps(pending, ensure_ascii=False) + "\n")
         return 1
 
@@ -203,7 +225,8 @@ def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Read
                     continue
                 key_tick = int(packet.pts)
                 encoded = bytes(packet)
-            elif key_tick < 0 or (key_frame is not None and len(followers) >= 2):
+            elif key_tick < 0 or (key_frame is not None
+                                  and len(followers) >= readers.followers):
                 continue  # rest of the GOP is not needed
             # Frames come out in display order, possibly delayed (B-frames): match by PTS.
             decode_video_packet = packet.decode  # binary video frames, not text
@@ -225,7 +248,7 @@ def run(video: Path, video_id: str, source_sha256: str, out: Path, readers: Read
                         "sec": round(float(key_tick * time_base), 4),
                     }
                 elif (frame.pts is not None and key_tick < frame.pts <= key_tick + 2 * frame_ticks
-                      and len(followers) < 2):
+                      and len(followers) < readers.followers):
                     followers[int(frame.pts)] = frame.to_ndarray(format="bgr24")
         else:
             written += flush(handle, pending, key_frame, followers)
@@ -242,13 +265,16 @@ def main() -> int:
     parser.add_argument("--hashes", type=Path, required=True, help="video_id -> sha256 JSON")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--budget", type=float, default=150.0)
+    parser.add_argument("--ammo-only", action="store_true",
+                        help="keyframes only: magazine and reserve counts")
     parser.add_argument("ids", nargs="*")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     videos = dict(line.split("=", 1) for line in
                   args.videos.read_text(encoding="utf-8").splitlines() if "=" in line)
     hashes = json.loads(args.hashes.read_text(encoding="utf-8"))
-    readers = Readers(args.cache)
+    readers: Readers | AmmoReaders = (AmmoReaders(args.cache) if args.ammo_only
+                                      else Readers(args.cache))
     started = time.monotonic()
     for video_id in args.ids or sorted(videos):
         marker = args.out / f"{video_id}.done"

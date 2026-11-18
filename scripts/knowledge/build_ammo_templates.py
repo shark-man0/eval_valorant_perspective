@@ -6,7 +6,8 @@ per segmented glyph), per-digit medians, TRAIN-only sources enforced against
 the dataset registry, lineage in the manifest. The app never calls Tesseract.
 
     PYTHONPATH=src python3 scripts/knowledge/build_ammo_templates.py \
-        --cache CACHE --registry dataset_registry.json --video-hashes HASHES CROPS/*.zip
+        --cache CACHE --registry dataset_registry.json --catalog CATALOG \
+        --video-hashes HASHES CROPS/*.zip
 """
 
 from __future__ import annotations
@@ -29,13 +30,16 @@ from valorant_ai_coach.knowledge.ammo_reader import (
     TEMPLATE_NAME,
     magazine_glyphs,
     normalise,
+    reserve_glyphs,
 )
 from valorant_ai_coach.knowledge.template_lineage import train_sources
 from valorant_ai_coach.learning.archives import CropArchive
+from valorant_ai_coach.recordings.catalog import RecordingCatalog
 
 
-def tesseract_digits(gray_window: np.ndarray, workdir: Path) -> str:
-    big = 255 - cv2.resize(gray_window, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+def tesseract_digits(gray_window: np.ndarray, workdir: Path, factor: int = 3) -> str:
+    big = 255 - cv2.resize(gray_window, None, fx=factor, fy=factor,
+                           interpolation=cv2.INTER_CUBIC)
     path = workdir / "w.png"
     cv2.imwrite(str(path), big)
     result = subprocess.run(
@@ -50,6 +54,8 @@ def main() -> int:
     parser.add_argument("--stride", type=int, default=3, help="use every Nth sample")
     parser.add_argument("--registry", type=Path, required=True,
                         help="continual-learning dataset_registry.json; only TRAIN is accepted")
+    parser.add_argument("--catalog", type=Path, required=True,
+                        help="recording catalog root (journal.jsonl); learning split must be TRAIN")
     parser.add_argument("--video-hashes", type=Path)
     parser.add_argument("archives", type=Path, nargs="+")
     args = parser.parse_args()
@@ -57,9 +63,11 @@ def main() -> int:
         raise SystemExit("tesseract CLI not found (development-time dependency)")
     hashes = (json.loads(args.video_hashes.read_text(encoding="utf-8"))
               if args.video_hashes else None)
-    _, lineage = train_sources(args.registry, args.archives, video_hashes=hashes)
+    _, lineage = train_sources(args.registry, args.archives,
+                               catalog=RecordingCatalog(args.catalog), video_hashes=hashes)
     stacks: dict[int, list[np.ndarray]] = {d: [] for d in range(10)}
-    crops_seen = labelled = 0
+    reserve_stacks: dict[int, list[np.ndarray]] = {d: [] for d in range(10)}
+    crops_seen = labelled = reserve_labelled = 0
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp)
         for path in sorted(args.archives):
@@ -67,6 +75,13 @@ def main() -> int:
             for index, sample in enumerate(archive.iter_samples(("ammo",))):
                 if index % args.stride or "ammo" not in sample.crops:
                     continue
+                small, small_boxes = reserve_glyphs(sample.crops["ammo"])
+                if 1 <= len(small_boxes) <= 3:
+                    text = tesseract_digits(small, work, factor=4)
+                    if len(text) == len(small_boxes) and text.isdigit():
+                        reserve_labelled += 1
+                        for char, box in zip(text, small_boxes, strict=True):
+                            reserve_stacks[int(char)].append(normalise(small, box))
                 gray, boxes = magazine_glyphs(sample.crops["ammo"])
                 if not 1 <= len(boxes) <= 2:
                     continue
@@ -78,16 +93,19 @@ def main() -> int:
                 for char, box in zip(text, boxes, strict=True):
                     stacks[int(char)].append(normalise(gray, box))
             archive.close()
-    missing = [d for d, stack in stacks.items() if len(stack) < 5]
-    if missing:
-        raise SystemExit(f"too few labelled glyphs for digits {missing}")
+    for name, table in (("magazine", stacks), ("reserve", reserve_stacks)):
+        missing = [d for d, stack in table.items() if len(stack) < 5]
+        if missing:
+            raise SystemExit(f"too few labelled {name} glyphs for digits {missing}")
     digits = np.stack([np.median(np.stack(stacks[d]), axis=0)
                        for d in range(10)]).astype(np.float32)
-    assert digits.shape == (10, GLYPH_SIZE[1], GLYPH_SIZE[0])
+    reserve = np.stack([np.median(np.stack(reserve_stacks[d]), axis=0)
+                        for d in range(10)]).astype(np.float32)
+    assert digits.shape == reserve.shape == (10, GLYPH_SIZE[1], GLYPH_SIZE[0])
     out = args.cache / "hud_templates"
     out.mkdir(parents=True, exist_ok=True)
     buffer = io.BytesIO()
-    np.savez(buffer, digits=digits)
+    np.savez(buffer, digits=digits, reserve=reserve)
     data = buffer.getvalue()
     (out / TEMPLATE_NAME).write_bytes(data)
     manifest = {
@@ -96,6 +114,8 @@ def main() -> int:
         "labelled_crops": labelled,
         "segmented_crops": crops_seen,
         "glyphs_per_digit": {str(d): len(stacks[d]) for d in range(10)},
+        "reserve_labelled_crops": reserve_labelled,
+        "reserve_glyphs_per_digit": {str(d): len(reserve_stacks[d]) for d in range(10)},
         "archives": len(args.archives),
         "stride": args.stride,
         "lineage": lineage,
@@ -103,7 +123,8 @@ def main() -> int:
                    "(private; derived from game footage)"),
     }
     (out / MANIFEST_NAME).write_text(json.dumps(manifest, indent=1), encoding="utf-8")
-    print(json.dumps(manifest["glyphs_per_digit"]), labelled, crops_seen)
+    print(json.dumps(manifest["glyphs_per_digit"]), labelled, crops_seen,
+          json.dumps(manifest["reserve_glyphs_per_digit"]), reserve_labelled)
     return 0
 
 
