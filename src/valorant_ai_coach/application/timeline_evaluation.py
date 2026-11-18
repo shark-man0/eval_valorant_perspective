@@ -50,8 +50,13 @@ from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.storage import SQLiteRepository
 
 from .match_aggregation import MatchAggregator
-from .match_aggregation_service import aggregate_saved_match
-from .round_analyzer import MockCoachAdapter, RoundAnalysis, RoundAnalyzer
+from .match_aggregation_service import PROVISIONAL_PARTIAL_MARKER, aggregate_saved_match
+from .round_analyzer import (
+    ADMISSION_PROVISIONAL_PARTIAL,
+    MockCoachAdapter,
+    RoundAnalysis,
+    RoundAnalyzer,
+)
 
 VERSION = "timeline_evaluation_bridge.v1"
 DEVELOPMENT_MATCH_PREFIX = "DEV-"
@@ -562,20 +567,36 @@ def persist_evaluation(
         repository.save_round_package(analysis.round_package)
         repository.save_analysis_result(analysis.output)
     numbers = sorted(item.round_no for item in evaluation.rounds)
-    repository.save_job_checkpoint(
-        evaluation.match_id,
-        "completed",
-        {
-            "completed_rounds": numbers,
-            "failed_rounds": [],
-            "round_diagnostics": {},
-            "qualification": "development_only",
-            "origin": VERSION,
-            "canonical_evaluation_set": "full_post_dedup_v1",
-        },
-    )
+    checkpoint: dict[str, Any] = {
+        "completed_rounds": numbers,
+        "failed_rounds": [],
+        "round_diagnostics": {},
+        "qualification": "development_only",
+        "origin": VERSION,
+        "canonical_evaluation_set": "full_post_dedup_v1",
+    }
+    if any(item.admission == ADMISSION_PROVISIONAL_PARTIAL for item in evaluation.analyses):
+        # Same marker the pipeline writes: rows from an opt-in (#25) analyzer are only
+        # restored by the stored-match view when the run declares it.
+        checkpoint["provisional_evaluation"] = PROVISIONAL_PARTIAL_MARKER
+    repository.save_job_checkpoint(evaluation.match_id, "completed", checkpoint)
     repository.update_match_status(evaluation.match_id, "completed")
     return aggregate_saved_match(repository, evaluation.match_id)
+
+
+def _without_time_scope(rules: Any) -> Any:
+    if not isinstance(rules, list):
+        return rules
+    return [
+        {
+            **rule,
+            "context_by_round": [
+                {key: value for key, value in row.items() if key != "time_scope"}
+                for row in rule.get("context_by_round", [])
+            ],
+        }
+        for rule in rules
+    ]
 
 
 def check_consistency(
@@ -622,8 +643,18 @@ def check_consistency(
         if (window["start_sec"], window["end_sec"]) != (item.start_sec, item.end_sec):
             problems.append({"code": "round_window_differs", "round_no": item.round_no})
     if stored_aggregation is not None:
+        unscoped = not (stored_aggregation.get("storage_provenance") or {}).get(
+            "candidate_scopes_restored", True
+        )
         for key in ("rounds", "rules", "evaluations", "occurrence_summaries"):
-            if stored_aggregation.get(key) != in_memory.get(key):
+            stored_value, live_value = stored_aggregation.get(key), in_memory.get(key)
+            if key == "rules" and unscoped:
+                # The stored view declares that it does not restore candidate time
+                # scopes (it never infers them); compare everything else.
+                stored_value, live_value = _without_time_scope(stored_value), (
+                    _without_time_scope(live_value)
+                )
+            if stored_value != live_value:
                 problems.append({"code": "stored_view_differs", "field": key})
         if stored_aggregation.get("completeness", {}).get("status") != in_memory["completeness"][
             "status"

@@ -11,10 +11,17 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shutil
 from datetime import UTC, datetime
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
+
+from valorant_ai_coach.recordings.admission import (
+    admit_for_development,
+    precheck_allocation,
+    require_catalog,
+)
 
 from .evidence import is_sha
 from .replay import SourcePolicy, file_sha, read_json, write_private
@@ -167,8 +174,18 @@ def register_six(
     registry: Path,
     batch_id: str,
     prior_registries: list[Path],
+    catalog: Path | None = None,
+    legacy_compat: bool = False,
 ) -> dict[str, Any]:
-    """Reserve six reported Sources without reading a single media byte."""
+    """Reserve six reported Sources without reading a single media byte.
+
+    With a recording catalog (explicit or ``VALORANT_RECORDING_CATALOG``) the
+    reservation must not contradict it, and the frozen allocation is adopted into it
+    at once, so that the catalog stays the single source of truth. Without a catalog
+    only the explicit compatibility mode (``legacy_compat``) is accepted. When the
+    catalog refuses the adoption nothing of the reservation is left behind.
+    """
+    bound = require_catalog(catalog, legacy_compat=legacy_compat)
     registry = _private(registry)
     if not _safe_name(batch_id):
         raise ValueError("Safe batch identifier required")
@@ -221,6 +238,10 @@ def register_six(
             for i, sha in enumerate(ranked)
         }
         first = next(sha for sha in ranked if split[sha] == "DEVELOPMENT")
+        if bound is not None:
+            precheck_allocation(
+                bound, [{**row, "split": split[row["source_sha256"]]} for row in records]
+            )
         reserved = [
             {
                 **row,
@@ -256,8 +277,20 @@ def register_six(
             "qualification": "NOT_EVALUATED",
             "created_at_utc": _now(),
         }
+        if bound is None:
+            allocation["legacy_compat"] = True
         batch.mkdir(mode=0o700)
         write_private(batch / "allocation.json", allocation)
+        if bound is not None:
+            try:
+                adopted = bound.import_legacy(batch / "allocation.json", atomic=True)
+            except BaseException:
+                shutil.rmtree(batch, ignore_errors=True)
+                raise
+            if adopted["conflicts"]:
+                # Atomic import wrote nothing; remove the reservation as well.
+                shutil.rmtree(batch, ignore_errors=True)
+                raise ValueError("Reservation conflicts with the recording catalog")
         return allocation
 
 
@@ -289,9 +322,17 @@ def _verify_active_runtime(protocol: dict[str, Any]) -> None:
         raise ValueError("Active temporal runtime differs from frozen old recognizer")
 
 
-def activate_first_development(batch: Path) -> Path:
-    """Create a single-source policy; five future Sources remain protected."""
+def activate_first_development(
+    batch: Path, *, catalog: Path | None = None, legacy_compat: bool = False
+) -> Path:
+    """Create a single-source policy; five future Sources remain protected.
+
+    With a recording catalog the admission is decided by the catalog: the source must
+    be registered there in the same split and allowed for development, its use is
+    journaled, and the written policy reads the catalog instead of the manifest.
+    """
     batch = _private(batch)
+    bound = require_catalog(catalog, legacy_compat=legacy_compat)
     with _exclusive(batch / ".activation.lock"):
         allocation = _load_batch(batch)
         activation = batch / "first_development"
@@ -311,6 +352,16 @@ def activate_first_development(batch: Path) -> Path:
             )
         allowed = [r["source_sha256"] for r in records if r["video_id"] == first_id]
         protected = [r["source_sha256"] for r in records if r["video_id"] != first_id]
+        catalog_policy = None
+        if bound is not None:
+            # Decided (and journaled) before anything is written for the activation.
+            catalog_policy = admit_for_development(
+                bound,
+                source_sha256=allowed[0],
+                split="DEVELOPMENT",
+                protected_source_sha256s=protected,
+                note=f"staged first development activation ({batch.name})",
+            )
         activation.mkdir(mode=0o700)
         manifest = {
             "version": VERSION,
@@ -321,17 +372,19 @@ def activate_first_development(batch: Path) -> Path:
         }
         write_private(activation / "manifest.json", manifest)
         policy_path = activation / "policy_PRIVATE.json"
-        write_private(
-            policy_path,
-            {
+        if catalog_policy is not None:
+            policy = catalog_policy
+        else:
+            policy = {
+                "legacy_compat": True,
                 "manifest": str(activation / "manifest.json"),
                 "allocation": str(batch / "allocation.json"),
                 "manifest_sha256": file_sha(activation / "manifest.json"),
                 "allocation_sha256": file_sha(batch / "allocation.json"),
                 "allowed_source_sha256s": allowed,
                 "protected_source_sha256s": protected,
-            },
-        )
+            }
+        write_private(policy_path, policy)
         SourcePolicy(read_json(policy_path))
         _append(
             batch / "attempts_PRIVATE.jsonl",
