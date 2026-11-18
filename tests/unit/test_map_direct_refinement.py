@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+import hashlib
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
+from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample
 from valorant_ai_coach.temporal.map_direct_recorder import corroborate_direct_selection
 from valorant_ai_coach.temporal.map_portrait_rendering import (
     fit_portrait_rendering,
     render_portrait,
 )
+from valorant_ai_coach.temporal.map_recorder_path import project_recorder_witness
 from valorant_ai_coach.temporal.map_recording_alignment import RecordingMapAlignment
 
 
@@ -114,15 +117,23 @@ def test_native_flow_needs_current_landmarks_and_cannot_chain():
     matrix = np.eye(3)
     matrix[:2, 2] = (2, 1)
     moved = cv2.warpAffine(image, matrix[:2], (160, 160))
-    previous = {"source_id": "m", "source_sha256": "src", "acquisition_id": "a",
-                "native_epoch": "e", "native_time_base": "1/10", "native_pts_tick": 40,
-                "native_pixel_sha256": "original", "frame_size_px": [160, 160]}
-    sample = {**previous, "native_pts_tick": 42, "native_pixel_sha256": "new"}
+    previous = {"source_id": "m", "source_sha256": "a"*64, "acquisition_id": "a",
+                "native_epoch": "a", "native_time_base": "1/10", "native_pts_tick": 40,
+                "acquired_frame_sha256": "b"*64, "frame_size_px": [160, 160],
+                "native_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest()}
+    sample = freeze_native_sample({
+        **previous, "native_pts_tick": 42,
+        "native_pixel_sha256": hashlib.sha256(moved.tobytes()).hexdigest(),
+    })
     hit = {"map_id": "map", "reference_to_roi_homography_candidate": np.eye(3).tolist(),
-           "fit_residual_p95_reference_px": 1.}
+           "fit_residual_p95_reference_px": 1., "qualified": False,
+           "position_authority": False}
     anchor = {"map_name_candidates": [hit], "roi_pixel_bounds": [0, 0, 160, 160]}
     ranked = {**hit, "inliers": 17, "reference_to_roi_homography_candidate": matrix.tolist()}
-    current = {**anchor, "map_name_candidates": [], "reference_ranking": [ranked]}
+    current = {
+        **anchor, "map_name_candidates": [], "reference_ranking": [ranked],
+        "marker_transform_qualified": False, "roi_pixel_sha256": sample["native_pixel_sha256"],
+    }
 
     def recover(s, row):
         return flow.recover(moved, s, "track", row, (80, 80), "map", carry=True)
@@ -131,6 +142,25 @@ def test_native_flow_needs_current_landmarks_and_cannot_chain():
     result = recover(sample, current)
     assert result["alignment_recovery"] == "native_flow"
     assert recover(sample, current) == current
+    pool = [{"center_frame_px": [80, 80]}]
+    selection = {
+        "contract": "development_map_recorder_selection_v1",
+        "sample_sha256": sample["sample_sha256"], "ordered_candidate_pool_digest": digest(pool),
+        "support_count": 2, "support_candidate_index": 0, "research_candidate_index": 0,
+        "support_center_frame_px": [80, 80], "selection_status": "RESEARCH_SELECTED",
+        "qualified": False, "position_authority": False,
+    }
+    assets = {"map": "c"*64}
+    projected = project_recorder_witness(moved, sample, pool, selection, result,
+                                         reference_sha256s=assets)
+    assert projected is not None and projected["alignment_recovery"] == "native_flow"
+    np.testing.assert_allclose(projected["map_reference_px"], [78, 79], atol=.1)
+    for tampered in (
+        {**result, "alignment_recovery": None},
+        {**result, "roi_pixel_sha256": "d"*64},
+    ):
+        assert project_recorder_witness(moved, sample, pool, selection, tampered,
+                                        reference_sha256s=assets) is None
     for s, row in [
         ({**sample, "native_pts_tick": 44}, current),
         ({**sample, "native_epoch": "disconnected"}, current),
