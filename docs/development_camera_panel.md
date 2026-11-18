@@ -93,24 +93,39 @@ camera SPECTATOR to SELF 107, SELF to REMOTE 87, SELF to SPECTATOR 6. Life
 values withdrawn to UNKNOWN: 862 seconds (abstentions; in the review below the
 old DEAD was wrong in 5 of 5 decidable frames).
 
-### Fresh full-length analysis: DEV2 from the original recording
+### Fresh full-length analysis: all ten matches from the original recordings (2026-11-18)
 
 The existing acquisition command (`generate`, 1 s sampling, ScreenCueObserver)
-was run on the whole recording in a Linux container (2,052 seconds, 70 min);
-`camera_panel` then measured every sample from the same recording at full
-resolution (2,052 of 2,052 pixel identical; 414 spectator, 38 remote and 1,200
-own-HUD rows; 400 undecided).
+was run on all ten DEVELOPMENT recordings in a Linux container (21,999
+seconds); `camera_panel` then measured every sample from the same recording at
+full resolution. All 21,999 samples were pixel identical to the acquisition;
+4,818 gave spectator rows, 87 remote rows and 13,204 own-HUD rows, and 3,890
+were undecided. Holdout recordings were not used.
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Camera UNKNOWN seconds | 320 | 101 |
-| Life UNKNOWN seconds | 554 | 391 |
-| Round UNKNOWN seconds | 465 | 465 |
-| Human labels on this match (15): correct | 15 | 15 |
+| Camera UNKNOWN seconds | 3,333 | 997 |
+| Life UNKNOWN seconds | 4,059 | 3,324 |
+| Round UNKNOWN seconds | 7,071 | 7,071 |
+| Human labels sampled by the fresh run (72 of 78): correct / abstained / incorrect | 72 / 0 / 0 | 72 / 0 / 0 |
 
-Changes between known values: camera SELF to REMOTE 38, SPECTATOR to SELF 6;
-no life value changed between known values; 3 seconds of correct DEAD at the
-end of a Round became UNKNOWN.
+Camera UNKNOWN fell in every match (DEV2 320 to 101, issue_oldfull001 438 to
+116, issue_oldfull002 457 to 101, issue_oldfull004 231 to 83, issue_newfull001
+323 to 89, issue_newfull002 333 to 82, issue_freshfull003 299 to 126,
+issue_newfull004 459 to 134, issue_freshfull005 175 to 46, first_new_cold 298
+to 119). Life UNKNOWN fell in nine; in issue_oldfull002 it rose from 288 to 430
+because DEAD values were withdrawn.
+
+Changes between known values: life DEAD to ALIVE 657 seconds, camera
+SPECTATOR to SELF 89, SELF to REMOTE 87, SELF to SPECTATOR 4. Life withdrawn
+to UNKNOWN: 336 seconds (332 DEAD, 4 ALIVE).
+
+The fresh run reproduces the replay of the stored observations: Camera agrees
+in 21,925 of 21,999 seconds, differs between two known values in 8 and is
+UNKNOWN on one side only in 66.
+
+DEV2 alone (2,052 seconds, also reported on 2026-11-16): Camera 320 to 101,
+Life 554 to 391; SELF to REMOTE 38, SPECTATOR to SELF 6.
 
 ### Visual review by the implementing agent (not human GT)
 
@@ -123,6 +138,7 @@ Frames decoded at the exact native PTS from the original recordings.
 | of which camera SPECTATOR to SELF (12) | 11 | 0 | 1 |
 | of which life DEAD to UNKNOWN (8) | old DEAD wrong in 5 | | 3 |
 | Fresh DEV2 changes (24) | 21 | 0 | 0 (3 abstentions were correct DEAD) |
+| Fresh life DEAD to ALIVE in issue_oldfull002 and issue_newfull001 (16) | 16 | 0 | 0 |
 | REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
 | Owl Drone views in a 252-frame sweep of one match | 11 of 11 read REMOTE | | |
 
@@ -142,7 +158,9 @@ result screens.
   read as SELF when the own ability bar stays visible.
 - A measured spectator label before a purchase phase can keep a death latch
   for the first seconds of the buy menu (one event of two seconds seen).
-- Fresh full-length analysis covers DEV2 only; the transfer rate from the
-  recording machine (about 1 MB/s at the time) did not allow the other nine.
+- The fresh run repeats the same ten development matches; generalization to
+  unseen matches is unmeasured.
+- In the fresh run, 641 of the 657 DEAD to ALIVE seconds and all SPECTATOR to
+  SELF seconds outside the samples above have not been viewed.
 - Pixel identity depends on the decoder: the recording machine's acquisitions
   and the container's acquisition each match their own decoder only.
