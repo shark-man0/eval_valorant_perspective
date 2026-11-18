@@ -160,6 +160,21 @@ Frames decoded at the exact native PTS from the original recordings.
 | REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
 | Owl Drone views in a 252-frame sweep of one match | 11 of 11 read REMOTE | | |
 
+Run-level review of the fresh run: one frame per changed run, every run.
+
+| Changed runs | Consistent | Contradicted | Undecidable |
+| --- | ---: | ---: | ---: |
+| Life DEAD to ALIVE, all 201 runs (939 seconds) | 199 | 1 | 1 |
+| Life DEAD withdrawn to UNKNOWN, all 16 runs | old DEAD wrong in 13 | old DEAD right in 1 | 2 |
+
+The contradicted run is issue_newfull002 2485 to 2486: the own HUD with health
+was measured up to 2484, the two carried seconds after it already show the
+recorder's combat report after its death (a 2 s death boundary error). The
+withdrawn correct DEAD is the following run, 2487 to 2502: the spectator label
+is measured from 2488, but without the earlier death hypothesis the base rule
+keeps a spectator view alone as a competing hypothesis. The undecidable frames
+are an overlay over the whole screen and a map loading screen.
+
 The four SELF to SPECTATOR seconds are match result overlays; in three of them
 the spectated teammate's name panel is still visible under the overlay at the
 lower left, so the recorder was spectating (the fourth is a full-screen
@@ -181,8 +196,10 @@ result screens.
   for the first seconds of the buy menu (one event of two seconds seen).
 - The fresh run repeats the same ten development matches; generalization to
   unseen matches is unmeasured.
-- In the fresh run, 853 of the 939 DEAD to ALIVE seconds and 73 of the 89
-  SPECTATOR to SELF seconds have not been viewed; the viewed samples were drawn
-  at random across matches.
+- Every DEAD to ALIVE and withdrawn Life run of the fresh run was viewed in at
+  least one frame, not every second; 73 of the 89 SPECTATOR to SELF seconds have
+  not been viewed.
+- A carried own-HUD value can outlast a death by up to the existing 2 s carry
+  (one run seen).
 - Pixel identity depends on the decoder: the recording machine's acquisitions
   and the container's acquisition each match their own decoder only.
