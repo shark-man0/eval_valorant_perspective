@@ -60,6 +60,7 @@ CLOCK_SEARCH = Fraction(60)
 DECISION_DISPLAY_LEAD = Fraction(5)
 _PHASE_CUES = {"buy", "result", "intermission"}
 _SELF_CUES = {"owner_hud", "remote", "revival"}
+_NOT_ALIVE_CUES = {"spectator", "death", "downed", "recorder_elimination_display"}
 _OWN_REASONS = {
     "same_score_phase_bracket",
     "active_score_unchanged",
@@ -73,6 +74,7 @@ _OWN_REASONS = {
     "active_countdown_since_projected_start",
     "purchase_resumes_at_same_score",
     "purchase_countdown_before_projected_start",
+    "spectator_latch_outlived_its_round",
 }
 
 
@@ -368,6 +370,8 @@ def _purchase_countdown_pass(
             frame = states[segment[k]]
             if native_time(frame["sample"]) > start - 1:
                 break
+            if _signals(_rows(frame, observations), strong_only=False) & _NOT_ALIVE_CUES:
+                continue  # A current non-living cue contradicts the purchase phase.
             current = frame["round"]
             if current["value"] == "UNKNOWN" or (
                 current["value"] == "ACTIVE" and not _anchor(current, {"ACTIVE"})
@@ -744,8 +748,16 @@ def _life_pass(
             frame["life"]["value"] == "DEAD"
             and frame["life"]["reason"] == "victim_display_and_owned_spectator_hypothesis"
             and frame["round"]["reason"] == "purchase_countdown_before_projected_start"
-            and "recorder_elimination_display" not in weak
+            and not weak & _NOT_ALIVE_CUES
         )
+        carried_view = frame["camera"]["reason"] in {
+            "bounded_missing_observation", "recorder_not_alive_views_another_actor"
+        }
+        if stale_death and frame["camera"]["value"] == "SPECTATOR" and carried_view:
+            # The carried spectator view belongs to the stale death, not to a display;
+            # a living recorder in the purchase phase holds its own view.
+            revise(frame, "camera", "SELF", ["SELF"],
+                   frame["round"]["evidence_ids"], "spectator_latch_outlived_its_round")
         if (
             (frame["life"]["value"] == "UNKNOWN" or stale_death)
             and frame["round"]["value"] == "BUY"
@@ -755,6 +767,24 @@ def _life_pass(
         ):
             revise(frame, "life", "ALIVE", ["ALIVE"], frame["round"]["evidence_ids"],
                    "purchase_phase_all_players_alive")
+    # The same latched hypothesis carried just past such a purchase phase, while
+    # the first-person view is still held, has no current support: withdrawn.
+    for previous, i in zip(segment, segment[1:], strict=False):
+        frame, before = states[i], states[previous]
+        if (
+            frame["life"]["value"] == "DEAD"
+            and frame["life"]["reason"] == "victim_display_and_owned_spectator_hypothesis"
+            and frame["camera"]["value"] in {"SELF", "REMOTE"}
+            and before["life"]["value"] == "ALIVE"
+            and before["life"]["reason"] in {
+                "purchase_phase_all_players_alive", "new_round_since_death_and_current_owner_hud"
+            }
+            and before["round"]["reason"] == "purchase_countdown_before_projected_start"
+            and not _scores(frame) - _scores(before)
+            and not _signals(_rows(frame, observations), strong_only=False) & _NOT_ALIVE_CUES
+        ):
+            revise(frame, "life", "UNKNOWN", ["UNKNOWN", "ALIVE", "DEAD"],
+                   before["life"]["evidence_ids"], "death_hypothesis_outlived_its_round")
 
 
 def apply_evidence_continuity(
