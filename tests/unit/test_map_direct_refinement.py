@@ -169,3 +169,49 @@ def test_native_flow_needs_current_landmarks_and_cannot_chain():
     ]:
         flow.remember(image, previous, "track", anchor)
         assert recover(s, row) == row
+
+
+def test_adjacent_portrait_recovery_requires_independent_anchor_and_does_not_chain():
+    from valorant_ai_coach.temporal.map_direct_recorder import (
+        ADJACENT_PORTRAIT_REASON,
+        DirectPeak,
+        DirectRecorderTracker,
+        RecorderUUID,
+    )
+
+    image = np.random.default_rng(218).integers(0, 255, (100, 1920, 3), dtype=np.uint8)
+    portrait = DirectPeak((50, 50), .92, 10, 4, 0)
+    scores = [.93, .50]
+    reader = SimpleNamespace(_uuids=("a", "b"), _portrait_scores=lambda *args: np.array(scores))
+    tracker = DirectRecorderTracker(
+        SimpleNamespace(peaks=lambda *a, **kw: [portrait]),
+        RecorderUUID("a"*64, "a", ("p",)),
+        reader,
+        recover_adjacent_portrait=True,
+    )
+    frame = {"round_token": "round-1", "continuity": {"carry_allowed": True}}
+
+    def observe(tick, camera="self"):
+        image[0, 0, 0] = tick
+        sample = freeze_native_sample({
+            "source_id": "match", "source_sha256": "a"*64, "acquisition_id": "e",
+            "native_epoch": "e", "native_pts_tick": tick, "native_time_base": "1/10",
+            "acquired_frame_sha256": "b"*64, "frame_size_px": [1920, 100],
+            "native_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest(),
+        })
+        _, result = tracker._observe_measured(image, (0, 0, 100, 100), sample, frame, camera)
+        return result
+
+    assert observe(0)["selection_status"] == "RESEARCH_SELECTED"
+    tracker.remember_projection(image)
+    scores[:] = [.81, .75]
+    recovered = observe(2)
+    assert recovered["selection_reason"] == ADJACENT_PORTRAIT_REASON
+    assert recovered["support_center_frame_px"] == [50, 50]
+    assert observe(4)["selection_status"] == "ABSTAIN"
+
+    scores[:] = [.93, .50]
+    assert observe(6)["selection_status"] == "RESEARCH_SELECTED"
+    tracker.remember_projection(image)
+    scores[:] = [.81, .75]
+    assert observe(8, camera="spectator")["selection_status"] == "ABSTAIN"

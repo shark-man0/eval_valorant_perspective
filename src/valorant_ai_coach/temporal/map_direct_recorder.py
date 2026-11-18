@@ -16,10 +16,12 @@ from numpy.typing import NDArray
 
 from .evidence import digest, freeze_native_sample, native_time, source_scope
 from .map_recorder_camera import measure_recorder_view
+from .map_recorder_knowledge import _vector
 from .visual_state import selected_agent
 
 ColorImage = NDArray[np.uint8]
 VERSION = "map_direct_portrait_v1"
+ADJACENT_PORTRAIT_REASON = "adjacent_projected_portrait_agrees"
 
 
 @dataclass(frozen=True)
@@ -195,6 +197,23 @@ class _Witness:
     count: int
 
 
+@dataclass(frozen=True)
+class _ProjectedPortrait:
+    witness: _Witness
+    feature: NDArray[np.float32]
+
+
+def _portrait_feature(image: ColorImage, center: tuple[int, int]) -> NDArray[np.float32] | None:
+    x, y = center
+    radius = max(2, round(5 * image.shape[1] / 1920))
+    if x < radius or y < radius:
+        return None
+    crop = image[y-radius:y+radius+1, x-radius:x+radius+1]
+    if crop.shape[:2] != (2*radius+1, 2*radius+1):
+        return None
+    return _vector(cast(ColorImage, cv2.resize(crop, (11, 11), interpolation=cv2.INTER_AREA)))
+
+
 class DirectRecorderTracker:
     """Validate observed direct peaks against the binding and exact view gate."""
 
@@ -202,6 +221,7 @@ class DirectRecorderTracker:
         self, search: DensePortraitSearch, identity: RecorderUUID, portrait_reader: Any, *,
         fallback_search: DensePortraitSearch | None = None,
         compare_centers: bool = False,
+        recover_adjacent_portrait: bool = False,
     ):
         self._rejection_stage = 0
         self.compare_centers = compare_centers
@@ -210,6 +230,17 @@ class DirectRecorderTracker:
         self.identity = identity
         self.portrait_reader = portrait_reader
         self.previous: _Witness | None = None
+        self.recover_adjacent_portrait = recover_adjacent_portrait
+        self.projected_portrait: _ProjectedPortrait | None = None
+
+    def remember_projection(self, image: ColorImage) -> None:
+        """Retain one immediately preceding, independently projected portrait."""
+        if not self.recover_adjacent_portrait or self.previous is None:
+            return
+        witness = self.previous
+        feature = _portrait_feature(image, witness.center)
+        if feature is not None:
+            self.projected_portrait = _ProjectedPortrait(witness, feature)
 
     def observe(
         self, image: ColorImage, roi_xyxy: tuple[int, int, int, int],
@@ -229,6 +260,7 @@ class DirectRecorderTracker:
         frame: dict[str, Any], camera: str | None,
     ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         previous, self.previous = self.previous, None
+        anchor, self.projected_portrait = self.projected_portrait, None
         result: dict[str, Any] = {
             "contract": "development_map_recorder_selection_v1",
             "sample_sha256": sample["sample_sha256"],
@@ -286,6 +318,25 @@ class DirectRecorderTracker:
             if unique:
                 result["selection_reason"] = "ambiguous_direct_portraits"
             else:
+                recovered = self._adjacent_portrait(
+                    image, sample, frame, camera, left, top, scale, peaks, anchor,
+                )
+                if recovered is not None:
+                    index, witness = recovered
+                    center = pool[index]["center_frame_px"]
+                    result.update(
+                        selection_status="RESEARCH_SELECTED",
+                        selection_reason=ADJACENT_PORTRAIT_REASON,
+                        selection_method="knowledge_agent_uuid",
+                        track_anchor=digest([
+                            VERSION, camera, witness.round_token, self.identity.uuid,
+                        ]),
+                        recorder_agent_uuid_candidate=self.identity.uuid,
+                        research_candidate_index=index, support_candidate_index=index,
+                        research_marker_center_frame_px=center, support_center_frame_px=center,
+                        support_count=witness.count+1,
+                    )
+                    return pool, result
                 result["portrait_rejection"] = (
                     "weak_texture_or_no_peak", "rim_sectors", "portrait_score",
                     "agent_margin", "rival_rim",
@@ -321,6 +372,45 @@ class DirectRecorderTracker:
             research_candidate_index=index, research_marker_center_frame_px=list(center),
         )
         return pool, result
+
+    def _adjacent_portrait(
+        self, image: ColorImage, sample: dict[str, Any], frame: dict[str, Any], camera: str,
+        left: int, top: int, scale: float, peaks: Sequence[DirectPeak],
+        anchor: _ProjectedPortrait | None,
+    ) -> tuple[int, _Witness] | None:
+        if anchor is None or frame.get("continuity", {}).get("carry_allowed") is not True:
+            return None
+        witness = anchor.witness
+        gap = native_time(sample) - native_time(witness.sample)
+        if (not 0 < gap <= Fraction(1, 4) or source_scope(sample) != source_scope(witness.sample)
+                or sample["native_pixel_sha256"] == witness.sample["native_pixel_sha256"]
+                or camera != witness.camera or frame.get("round_token") != witness.round_token):
+            return None
+        target = self.portrait_reader._uuids.index(self.identity.uuid)
+        matches: list[tuple[float, int]] = []
+        reach = scale * min(8, 3 + 35 * float(gap))
+        for i, peak in enumerate(peaks):
+            center = (peak.center[0]+left, peak.center[1]+top)
+            if (peak.response < .68 or peak.warm_sectors < 6 or peak.opposite_pairs < 2
+                    or peak.chromatic_rivals > 4 or math.dist(center, witness.center) > reach):
+                continue
+            scores = self.portrait_reader._portrait_scores(image, center)
+            if scores is None:
+                continue
+            winner = float(scores[target])
+            if winner < .77 or winner - float(np.delete(scores, target).max()) < .045:
+                continue
+            feature = _portrait_feature(image, center)
+            if feature is not None:
+                similarity = float(feature @ anchor.feature)
+                if similarity >= .89:
+                    matches.append((similarity, i))
+        if not matches:
+            return None
+        _, best = max(matches, key=lambda candidate: candidate[0])
+        if any(math.dist(peaks[best].center, peaks[i].center) > 5*scale for _, i in matches):
+            return None
+        return best, witness
 
     def _confirmed_peaks(
         self, image: ColorImage, peaks: Sequence[DirectPeak], left: int, top: int,

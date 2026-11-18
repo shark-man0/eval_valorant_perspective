@@ -243,3 +243,12 @@ agreement with the current reference transform at four locations. The anchor
 must have a projected, selected marker on the same native acquisition and
 track within 250 ms. Each recovery consumes the anchor. A recovered transform
 cannot start another recovery.
+
+`--recover-adjacent-portrait` adds an opt-in comparison after guided search
+abstains. The preceding frame must have a selected and projected recorder
+portrait. Within 250 ms, the current portrait must still favor the recorder's
+Agent, retain warm rim support, closely match the preceding pixels, and land
+near the preceding marker. Distinct eligible centers cause an abstention.
+The current frame must independently align to the bound recording Map.
+A recovered portrait supplies only its observed point. It does not seed a
+following recovery, vote for the Map binding, or anchor optical flow.

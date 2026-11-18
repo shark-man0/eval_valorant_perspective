@@ -15,6 +15,7 @@ from numpy.typing import NDArray
 from .application import VERSION as APPLICATION_VERSION
 from .evidence import digest, freeze_native_sample, native_time
 from .map_direct_recorder import (
+    ADJACENT_PORTRAIT_REASON,
     DensePortraitSearch,
     DirectRecorderTracker,
     RecorderUUID,
@@ -103,7 +104,7 @@ def export_recorder_paths(
     recover_supported_portraits: bool = False, knowledge_asset_cache: Path | None = None,
     recover_knowledge_track: bool = False, recover_map_alignment: bool = False,
     direct_detector: str | None = None, corroborate_direct_with_legacy: bool = False,
-    recover_native_flow: bool = False,
+    recover_native_flow: bool = False, recover_adjacent_portrait: bool = False,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -137,8 +138,9 @@ def export_recorder_paths(
     native = bundle["native_frames"]
     if not inputs.keys() <= native.keys():
         raise ValueError("Image manifest contains a sample absent from the common timeline")
-    if (corroborate_direct_with_legacy or recover_native_flow) and direct_detector != "guided":
-        raise ValueError("Optional fitted-marker and native-flow checks require guided search")
+    if (corroborate_direct_with_legacy or recover_native_flow or recover_adjacent_portrait
+            ) and direct_detector != "guided":
+        raise ValueError("Optional direct Map recovery checks require guided search")
     direct = None
     binding = None
     if direct_detector and knowledge is not None:
@@ -154,7 +156,8 @@ def export_recorder_paths(
                 fast_search=direct_detector == "cascade", rim_guided=direct_detector == "guided",
             ) if direct_detector in ("cascade", "guided") else None
             direct = DirectRecorderTracker(search, binding, knowledge, fallback_search=fallback,
-                                           compare_centers=direct_detector == "guided")
+                                           compare_centers=direct_detector == "guided",
+                                           recover_adjacent_portrait=recover_adjacent_portrait)
     alignment = RecordingMapAlignment(projector) if direct_detector == "guided" else None
     flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
@@ -175,6 +178,7 @@ def export_recorder_paths(
                 knowledge.reset()
             if direct is not None:
                 direct.previous = None
+                direct.projected_portrait = None
             rows.append(None)
             continue
         image = _load_native_image(sample, packet[1])
@@ -239,8 +243,19 @@ def export_recorder_paths(
                 flow.anchor = None
             rows.append(None)
             continue
+        if direct_detector:
+            direct_stages["projection_attempted"] += 1
         raw = projector.inspect(image, recover_alignment=recover_map_alignment)["raw"]
-        if alignment is not None:
+        adjacent = result["selection_reason"] == ADJACENT_PORTRAIT_REASON
+        if adjacent:
+            if flow is not None:
+                flow.anchor = None
+            candidates = raw["map_name_candidates"]
+            if (alignment is None or alignment.map_uuid is None or len(candidates) != 1
+                    or candidates[0]["map_id"] != alignment.map_uuid):
+                rows.append(None)
+                continue
+        elif alignment is not None:
             raw = alignment.inspect(image, sample, raw)
             if flow is not None:
                 raw = flow.recover(
@@ -253,11 +268,14 @@ def export_recorder_paths(
             raw,
             reference_sha256s=projector.bindings["asset_sha256s"],
         )
-        if direct_detector:
-            direct_stages["projection_attempted"] += 1
-            if projected is not None:
-                direct_stages["projection_available"] += 1
-        if (flow is not None and projected is not None
+        if direct_detector and projected is not None:
+            direct_stages["projection_available"] += 1
+        if adjacent and projected is not None:
+            projected["selection_reason"] = ADJACENT_PORTRAIT_REASON
+        if (direct is not None and projected is not None and not adjacent
+                and result["selection_status"] == "RESEARCH_SELECTED"):
+            direct.remember_projection(image)
+        if (flow is not None and projected is not None and not adjacent
                 and raw.get("alignment_recovery") != "native_flow"
                 and result["selection_status"] == "RESEARCH_SELECTED"):
             flow.remember(image, sample, result["track_anchor"], raw)
@@ -304,6 +322,7 @@ def main() -> None:
     parser.add_argument("--recover-knowledge-track", action="store_true")
     parser.add_argument("--recover-map-alignment", action="store_true")
     parser.add_argument("--recover-native-flow", action="store_true")
+    parser.add_argument("--recover-adjacent-portrait", action="store_true")
     parser.add_argument("--corroborate-direct-with-legacy", action="store_true")
     parser.add_argument("--direct-detector",
                         choices=("external", "augmented", "fast", "cascade", "guided"))
