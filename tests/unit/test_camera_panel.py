@@ -141,15 +141,34 @@ def test_result_inside_the_own_hud_run_blocks_the_next_round_buy():
             obs(20, ["death"]), obs(30, ["owner_hud"]), obs(40, ["owner_hud", "result"]),
             obs(50, ["owner_hud", "buy"])]
     result = replay(rows, measured_view_precedence=True)
-    assert result["frames"][3]["life"]["value"] == "UNKNOWN"
+    # The next Round's BUY does not reach back across the result; the own HUD
+    # with health inside the still running Round is alive on its own.
+    assert result["frames"][3]["life"]["value"] == "ALIVE"
+    assert result["frames"][3]["life"]["reason"] == "measured_own_hud_with_health_during_round"
 
 
-def test_own_hud_without_round_change_stays_unresolved():
+def test_own_hud_during_a_running_round_is_alive_without_a_round_change():
     rows = [obs(0, ["owner_hud", "buy"]), obs(10, ["owner_hud", "active"]),
             obs(20, ["death"]), obs(30, ["owner_hud"]), obs(40, ["owner_hud"])]
     result = replay(rows, measured_view_precedence=True)
-    assert result["frames"][-1]["life"]["value"] == "UNKNOWN"
-    assert result["measured_view_return_history"] == []
+    frames = result["frames"]
+    assert frames[3]["round"]["value"] == "ACTIVE"
+    assert frames[3]["life"]["value"] == "ALIVE"
+    history = result["measured_view_return_history"]
+    assert [h["basis"] for h in history] == ["measured_own_hud_with_health_during_round"]
+    assert history[0]["confirmation_sample"] is None
+    # Outside a Round shown to be running (no later measured ACTIVE/BUY row of the
+    # same Round), the own HUD stays unresolved.
+    assert frames[4]["round"]["value"] == "UNKNOWN"
+    assert frames[4]["life"]["value"] == "UNKNOWN"
+
+
+def test_own_hud_before_a_result_without_a_running_round_stays_unresolved():
+    rows = [obs(0, ["owner_hud", "buy"]), obs(10, ["owner_hud", "active"]), obs(20, ["death"])]
+    rows += [obs(s) for s in range(30, 100, 10)] + [obs(100, ["owner_hud"]), obs(110, ["result"])]
+    result = replay(rows, measured_view_precedence=True)
+    assert result["frames"][-2]["round"]["value"] == "UNKNOWN"
+    assert result["frames"][-2]["life"]["value"] == "UNKNOWN"
 
 
 def test_own_hud_until_next_round_buy_resolves_the_return():

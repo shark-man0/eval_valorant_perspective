@@ -1509,6 +1509,58 @@ class DevelopmentGameTimeline:
                         ]
                         break
             if confirmation is None:
+                # Without a later purchase phase the own-HUD rows themselves still
+                # show the recorder's first-person view with its health inside a
+                # running Round (ACTIVE/BUY, or followed by a measured ACTIVE/BUY row
+                # of the same Round before any result): a recorder that is not
+                # alive cannot hold it (the spike camera shows no health). Rows
+                # between them stay unrevised.
+                def in_running_round(k: int) -> bool:
+                    if states[k]["round"]["value"] in {"ACTIVE", "BUY"}:
+                        return True
+                    if states[k]["round"]["value"] != "UNKNOWN":
+                        return False
+                    # A later measured ACTIVE/BUY row of the same Round, before any
+                    # result, shows the Round was still running.
+                    for m in range(k + 1, len(states)):
+                        later = states[m]
+                        if (
+                            not linked(states[m - 1], later)
+                            or later["round_token"] != states[k]["round_token"]
+                            or signals_of(later) & {"result", "intermission"}
+                        ):
+                            return False
+                        if (
+                            later["round"]["value"] in {"ACTIVE", "BUY"}
+                            and later["round"]["reason"] == "current_observation"
+                        ):
+                            return True
+                    return False
+
+                direct = [
+                    k for k in run
+                    if in_running_round(k)
+                    and not signals_of(states[k]) & (blocking | {"recorder_elimination_display"})
+                ]
+                for k in direct:
+                    frame = states[k]
+                    before = {d: deepcopy(frame[d]) for d in ("life", "camera")}
+                    evidence = sorted(set(self._measured_own_view(frame)))
+                    frame["life"] = _estimate(
+                        "ALIVE", alternatives=["ALIVE", "UNKNOWN"],
+                        reason="measured_own_hud_with_health_during_round",
+                        evidence=evidence, origin="temporal_inference",
+                    )
+                    frame["life"].update(forward_estimate=before["life"],
+                                         uncertainty="return_time_unverified")
+                    history.append({
+                        "sample": frame["sample"], "before": before,
+                        "after_life": deepcopy(frame["life"]),
+                        "after_camera": deepcopy(frame["camera"]),
+                        "basis": "measured_own_hud_with_health_during_round",
+                        "confirmation_sample": None, "evidence_ids": evidence,
+                        "qualified": False, "internal_game_event_time": None,
+                    })
                 continue
             for k in sorted(run + bracketed):
                 frame = states[k]
