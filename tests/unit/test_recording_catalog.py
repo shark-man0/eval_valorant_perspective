@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -384,21 +386,25 @@ def test_bounded_batches_resume_and_location_prefix_selects(catalog, tmp_path):
 
 
 class _FakeContinualRegistry:
-    """The intake contract of #154 ``DatasetRegistry`` (same signature)."""
+    """The intake contract of #154 ``DatasetRegistry`` (same signature and records)."""
 
     def __init__(self) -> None:
-        self.rows: dict[str, tuple[str, str]] = {}
+        self.records: dict[str, SimpleNamespace] = {}
 
     def intake(self, source_id, physical_match_id, archive, *, source_video_sha256,
                split=None, unexposed=False, note=""):
         assert len(source_video_sha256) == 64 and not unexposed
-        if source_id in self.rows:
-            return self.rows[source_id], False
-        for other_physical, other_split in self.rows.values():
-            if other_physical == physical_match_id and other_split != split:
+        if source_id in self.records:
+            return self.records[source_id], False
+        for other in self.records.values():
+            if other.physical_match_id == physical_match_id and other.split != split:
                 raise ValueError("leakage")
-        self.rows[source_id] = (physical_match_id, split)
-        return self.rows[source_id], True
+        self.records[source_id] = SimpleNamespace(
+            source_id=source_id, physical_match_id=physical_match_id, split=split,
+            source_video_sha256=source_video_sha256,
+            archive_sha256=hashlib.sha256(Path(archive).read_bytes()).hexdigest(),
+        )
+        return self.records[source_id], True
 
 
 def test_continual_learning_receives_only_development_archives(catalog, tmp_path):
@@ -413,8 +419,10 @@ def test_continual_learning_receives_only_development_archives(catalog, tmp_path
     assert [row["source_id"] for row in rows] == [archives["DEVELOPMENT"]]
     assert rows[0]["physical_match_id"] == "m_DEVELOPMENT"
     registry = _FakeContinualRegistry()
-    assert catalog.sync_learning_registry(registry, rows) == {"added": 1, "already_present": 0}
-    assert catalog.sync_learning_registry(registry, rows) == {"added": 0, "already_present": 1}
+    first = catalog.sync_learning_registry(registry, rows)
+    assert (first["added"], first["already_present"]) == (1, 0)
+    again = catalog.sync_learning_registry(registry, rows)
+    assert (again["added"], again["already_present"]) == (0, 1)
     catalog.record_exposure(ids["QUALIFICATION"], "user_authorized_development_use", "ok")
     exposed = catalog.learning_archives(include_authorised_exposed=True)
     assert {row["source_id"] for row in exposed} == {archives["DEVELOPMENT"],

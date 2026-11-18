@@ -50,7 +50,11 @@ from valorant_ai_coach.rules.temporal_contract import (
 from valorant_ai_coach.rules.temporal_scope import AnalysisScope, TemporalScopeResolver
 from valorant_ai_coach.schema_validation import ContractValidationError, SchemaValidator
 
-from .round_analyzer import ADMISSION_PROVISIONAL_WITHHELD, RoundAnalysis
+from .round_analyzer import (
+    ADMISSION_PROVISIONAL_PARTIAL,
+    ADMISSION_PROVISIONAL_WITHHELD,
+    RoundAnalysis,
+)
 
 SCHEMA_VERSION = "match_aggregation.v1"
 PROVISIONAL_WITHHELD_REASON = "Practical/unknownまたは不正な境界のため採点保留"
@@ -135,10 +139,15 @@ class RoundInput:
 
     @classmethod
     def from_round_analysis(cls, analysis: RoundAnalysis) -> RoundInput:
-        if analysis.admission == ADMISSION_PROVISIONAL_WITHHELD:
+        if analysis.admission == ADMISSION_PROVISIONAL_WITHHELD or (
+            analysis.admission == ADMISSION_PROVISIONAL_PARTIAL
+            and not analysis.output.get("evaluations")
+        ):
             # Same reading as the stored view (aggregate_saved_match): a Round whose
             # scoring was withheld is *not evaluated*, not an evaluated Round with zero
-            # findings. Before this, the live and the stored view disagreed.
+            # findings. Before this, the live and the stored view disagreed. An opt-in
+            # (#25) Round that admitted nothing is stored exactly like a withheld one,
+            # so it is read the same way here.
             return cls(
                 round_package=analysis.round_package,
                 output=None,

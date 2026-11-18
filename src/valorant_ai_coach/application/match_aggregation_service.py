@@ -82,6 +82,9 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
     failed = _round_numbers(checkpoint.get("failed_rounds"))
     inputs: list[RoundInput] = []
     seen: set[int] = set()
+    # Whether every Round with stored evaluations had its rule candidates re-selected,
+    # so each rule's time scope is the live one (otherwise the view says so).
+    scopes_restored = True
     for package in packages:
         if not isinstance(package, dict) or package.get("match_id") != match_id:
             raise MatchAggregationError("保存済みRound Packageのmatch_idが不正です")
@@ -115,6 +118,7 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
                     "evaluations": stored,
                 }
                 inputs.append(RoundInput(round_package=package, output=output))
+                scopes_restored = False
                 continue
             if stored:
                 # A valid Practical Round with scores is a storage-contract violation.
@@ -208,7 +212,7 @@ def aggregate_saved_match(repository: SQLiteRepository, match_id: str) -> dict[s
             if checkpoint.get("canonical_evaluation_set") == _FULL_SET_MARKER
             else "legacy_or_unverified"
         ),
-        "candidate_scopes_restored": False,
+        "candidate_scopes_restored": scopes_restored,
         "missing_failed_round_packages": missing_failed,
         "missing_completed_round_packages": missing_completed,
     }
