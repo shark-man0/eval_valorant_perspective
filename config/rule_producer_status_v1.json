@@ -1,0 +1,354 @@
+{
+ "version": "rule_producer_status_v1",
+ "baseline_commit": "9c76fd3",
+ "levels": {
+  "none": "No producer.",
+  "contract": "Producer exists with schema/synthetic tests only; no real-recording observation.",
+  "development": "Observed on DEVELOPMENT recordings in a development-only path (formal_outputs = 0).",
+  "qualified": "Independent real-video qualification passed (none yet)."
+ },
+ "events": {
+  "ability_state": {
+   "before": "contract",
+   "after": "development",
+   "producer": "ability HUD reader with official icons (this change)"
+  },
+  "ally_enter_site": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "ally_entry_start": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "audio_cue": {
+   "before": "none",
+   "after": "none",
+   "producer": "disabled for MVP"
+  },
+  "buy_phase": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline buy-phase template"
+  },
+  "enemy_lost": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "enemy_reengage": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "enemy_spotted": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "engagement_end": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "engagement_start": {
+   "before": "contract",
+   "after": "development",
+   "producer": "first shot after a 3 s pause (this change)"
+  },
+  "hold_angle": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "info_peek": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
+  },
+  "kill": {
+   "before": "contract",
+   "after": "development",
+   "producer": "kill feed entries read with official kill-feed portraits and team colours (this change); top-bar alive-count drop only where the kill feed was not captured"
+  },
+  "movement_state": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
+  },
+  "objective_state": {
+   "before": "contract",
+   "after": "development",
+   "producer": "spike plant transition on the centre indicator (this change)"
+  },
+  "peek": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
+  },
+  "player_death": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline death hypotheses reconciled per round with the kill feed's local-player highlight (this change); ability-HUD owner change only without a timeline"
+  },
+  "position_change": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "position_hold": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "preaim_started": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "purchase": {
+   "before": "none",
+   "after": "none",
+   "producer": "deferred"
+  },
+  "rotation_started": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "round_start": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline (DevelopmentGameTimeline)"
+  },
+  "save_decision": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "derived_event_builder"
+  },
+  "shot": {
+   "before": "contract",
+   "after": "development",
+   "producer": "magazine count drop between per-second keyframes in the recorder's own view (knowledge fire-rate cap, sidearm-switch guard); reviewed 28/30 correct (this change)"
+  },
+  "site_state": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification)"
+  },
+  "spike_defuse_started": {
+   "before": "none",
+   "after": "none",
+   "producer": "deferred"
+  },
+  "spike_planted": {
+   "before": "contract",
+   "after": "development",
+   "producer": "top-bar centre indicator turns into the red spike icon (this change)"
+  },
+  "state_snapshot": {
+   "before": "contract",
+   "after": "development",
+   "producer": "derived snapshot; top-bar alive counts and ability HUD give real-video snapshots (this change)"
+  },
+  "utility_used": {
+   "before": "contract",
+   "after": "development",
+   "producer": "charge-bar decrease on the recorder's own HUD (this change, 5 s sampling)"
+  },
+  "weapon_pickup": {
+   "before": "none",
+   "after": "none",
+   "producer": "deferred"
+  }
+ },
+ "facts": {
+  "ally_entry_active": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "audio_cue_observed": {
+   "before": "none",
+   "after": "none",
+   "producer": "audio disabled"
+  },
+  "buy_phase_observed": {
+   "before": "development",
+   "after": "development",
+   "producer": "shared timeline"
+  },
+  "clutch_state": {
+   "before": "none",
+   "after": "development",
+   "producer": "top bar: only the recorder alive vs >=2 enemies while the HUD shows the recorder (this change)"
+  },
+  "cover_available": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "disadvantageous_effect_active": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud status_effect"
+  },
+  "enemy_eco_likely": {
+   "before": "none",
+   "after": "none",
+   "producer": "no producer"
+  },
+  "enemy_spotted_count": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "escape_route_available": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "exposed_directions_count": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "first_death_by_player": {
+   "before": "none",
+   "after": "development",
+   "producer": "first kill-feed entry of the round carries the local-player highlight on the victim end (this change)"
+  },
+  "first_kill_by_player": {
+   "before": "none",
+   "after": "development",
+   "producer": "first kill-feed entry of the round carries the local-player highlight on the killer end (this change)"
+  },
+  "first_shot_detected": {
+   "before": "contract",
+   "after": "development",
+   "producer": "first shot after a 3 s pause (this change)"
+  },
+  "first_shot_stationary": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer; gated off with the movement detector (precision 4/9) (this change)"
+  },
+  "line_of_sight_state": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "lurk_context_observed": {
+   "before": "none",
+   "after": "none",
+   "producer": "no producer"
+  },
+  "numbers_state": {
+   "before": "none",
+   "after": "development",
+   "producer": "top-bar alive portraits (this change)"
+  },
+  "objective_state_observed": {
+   "before": "contract",
+   "after": "development",
+   "producer": "top-bar centre indicator read (timer or spike) (this change)"
+  },
+  "player_buy_class": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "player_died": {
+   "before": "development",
+   "after": "development",
+   "producer": "round-reconciled recorder deaths (timeline + kill feed; HUD only without a timeline) (this change)"
+  },
+  "player_role": {
+   "before": "none",
+   "after": "development",
+   "producer": "recorder agent from ability HUD + knowledge agent->role (this change)"
+  },
+  "preaim_lead_sec": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer"
+  },
+  "round_time_remaining_sec": {
+   "before": "contract",
+   "after": "development",
+   "producer": "top-bar round timer (TRAIN-built digit templates; 23/23 correct on a fresh held-out review) (this change)"
+  },
+  "save_context_observed": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "derived"
+  },
+  "shot_while_moving": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "visual_analyzer; gated off with the movement detector (precision 4/9) (this change)"
+  },
+  "side": {
+   "before": "none",
+   "after": "development",
+   "producer": "spike header in the recorder's own weapon inventory (two sightings or one clear) and spike detonation wins mark rounds; the round ordinal comes from the shared timeline or the top-bar score, and the regulation half structure (game knowledge) gives the other regulation rounds (this change)"
+  },
+  "site_incoming_damage_risk_observed": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "spatial_context_available": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "map pipeline (Map work in progress elsewhere)"
+  },
+  "spike_carried_by_player": {
+   "before": "none",
+   "after": "development",
+   "producer": "spike header in the recorder's own weapon inventory, matched with a private template built from DEVELOPMENT recordings; false on defense rounds (this change)"
+  },
+  "spike_planted": {
+   "before": "contract",
+   "after": "development",
+   "producer": "top-bar centre indicator (this change)"
+  },
+  "team_buy_class": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "tradeable_ally_nearby": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "ultimate_available": {
+   "before": "none",
+   "after": "development",
+   "producer": "ultimate charge bar (this change)"
+  },
+  "uncleared_zone_ahead": {
+   "before": "none",
+   "after": "none",
+   "producer": ""
+  },
+  "utility_available_count": {
+   "before": "none",
+   "after": "development",
+   "producer": "charge bars on the recorder's own HUD (this change)"
+  },
+  "weapon": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "hud weapon registry contract; templates not yet sourced"
+  },
+  "zone_id": {
+   "before": "contract",
+   "after": "contract",
+   "producer": "map zone resolver (Summit only)"
+  }
+ }
+}
