@@ -168,3 +168,43 @@ points across the ROI, and the existing Map acceptance gates.
 Both recovery options are development modes. Callouts remain point
 proximity hints. Named Zones require a registered polygon for the exact
 reference texture.
+
+## Direct minimap portrait search
+
+Add `--direct-detector cascade` to run full-minimap portrait search with the
+verified knowledge asset cache. The default exporter and the existing Map
+candidate ranking keep their prior behavior. This option consumes the common
+timeline's native Camera and Life observations and runs without a Map candidate
+list. It establishes the recording Agent UUID from at least three distinct,
+spaced readings of the player's ability HUD with exact SELF/ALIVE evidence.
+The recording UUID persists when the camera changes. Each position requires
+current view evidence, an independently confirmed portrait and rim, and a
+registration to a verified reference image.
+
+The cascade uses compact color templates first. If no candidate passes UUID
+and rim validation, it tries an augmented grayscale search and applies the
+same color validation again. Separated competing markers cause abstention.
+For comparison, `external`, `augmented`, and `fast` use individual search
+variants. A lower-confidence observation needs fresh adjacent support inside
+the same Camera, Round, Source, and acquisition. A lost observation breaks
+the path. The one-second export exposes `direct_stage_counts` and
+`direct_selection_reasons` for these stages. A position candidate supplies
+no ownership or position authority.
+
+Five registered DEVELOPMENT recordings contributed 900 same-input dense
+observations. The cascade increased Map positions from 149 to 234 and native
+edges from 110 to 183. Seconds with positions went from 38 to 51 of 86 observed
+operable seconds. Seconds with a native edge went from 31 to 45. A separate
+Corrode recording contributed 360 comparison frames and produced 36 to 60
+positions and 23 to 48 edges. Among six previously reviewed recorder
+markers, five selections matched the reviewed center vicinity (within five
+original-frame pixels) and one abstained. No selections occurred on the 25
+fixed spectator controls. The remaining selections need independent role
+verification. These are development coverage counts.
+
+An experimental learned augmentation used the separate continual-learning
+feature and model registries, with TRAIN, VALIDATION, and DEVELOPMENT
+comparison assigned by physical match. The learned kernel tied the
+augmentation baseline on the validation recording (8 of 21 eligible
+seconds with a position, 7 of 21 with a native edge). The model gate
+rejected the new kernel. The exporter does not load trained weights.
