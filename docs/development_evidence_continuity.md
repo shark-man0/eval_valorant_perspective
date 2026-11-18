@@ -27,6 +27,8 @@ match specific conditions and no threshold changes in any recognizer.
 | Existing score-update end edges | An existing end edge whose lower frame is only the last old-score frame | Display lead as above | Lower bound moved back to the last known-undecided frame (`lower_sample_basis: score_display_lead`, `rule_lower_sample` kept) |
 | Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side (the earlier anchor itself when it is closer), and rows after the projected start become ACTIVE. A projection before the earlier anchor is rejected |
 | Purchase before combat | A measured BUY anchor, then the next measured BUY anchor or the combat start projected from two countdown readings after the next ACTIVE anchor; equal score readings; no result or intermission cue | The purchase phase precedes the combat phase of its Round and never follows it | Unmeasured ACTIVE values in between (single visual cues, never measured anchors) become BUY; Round start candidates lying wholly inside are archived in `superseded_transition_candidates` |
+| Purchase countdown | A measured ACTIVE anchor whose countdown projects the combat start `S`; earlier rows of the same score with timer readings `r` where `t + r = S` (±1 s), at least two; no other reading before `S` and no result cue after the first match | The purchase countdown of a Round ends when its combat countdown starts | Rows from the first matching reading up to `S - 1` become BUY (rows with a current spectator, death or elimination cue are skipped); start candidates inside the interval are retired |
+| Stale death latch in the purchase phase | A victim-display death hypothesis on a purchase-countdown row without a current non-living cue | All players are alive in the purchase phase | Life ALIVE; a carried spectator view on that row becomes SELF; the same latch carried one row past the interval with a first-person view is withdrawn |
 | Overlapping start candidates | Two existing `round_start` candidates within 1 s of each other | Two Round starts are separated by a decided Round and a purchase phase | The narrower bracket is kept; the other is archived |
 | Spectating during a Round | Measured spectator panel, or the combat report, learned spectator view and the recorder's alias in the elimination display together; no owner HUD, remote, revival or purchase cue; Round ACTIVE/ENDED | Living players do not spectate | Life `DEAD` (alternative `DOWNED`) |
 | Dead bracket | Two such DEAD anchors, unchanged score, no owner HUD, revival or purchase cue between, no SELF/REMOTE camera between | No respawn inside a Round without revival | Rows between are DEAD |
@@ -75,11 +77,12 @@ first reproduced the baseline exactly: 21,999 rows, UNKNOWN Round 7,230 / Life
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Round UNKNOWN seconds | 7,230 | 3,975 |
-| Life UNKNOWN seconds | 5,322 | 3,401 |
-| Camera UNKNOWN seconds | 4,118 | 4,016 |
-| Seconds changed between two known values | – | 0 |
-| Life seconds withdrawn from DEAD to UNKNOWN (abstentions) | – | 1,138 |
+| Round UNKNOWN seconds | 7,230 | 3,202 |
+| Life UNKNOWN seconds | 5,322 | 2,771 |
+| Camera UNKNOWN seconds | 4,118 | 4,019 |
+| Matches where any UNKNOWN count rose | – | 0 of 10 |
+| Seconds changed between two known values | – | Life DEAD to ALIVE 445, Camera SPECTATOR to SELF 3 (all inside a purchase countdown) |
+| Life seconds withdrawn from DEAD to UNKNOWN (abstentions) | – | 772 |
 | Fixed 69 attributes: correct / incorrect / abstained | 69 / 0 / 0 | 69 / 0 / 0 |
 | Supplemental 9 and 6 attributes | 9/9, 6/6 | 9/9, 6/6 |
 | Rounds with a start candidate (229 Rounds) | 167 | 221 (220 indexable by a later score reading) |
@@ -87,9 +90,14 @@ first reproduced the baseline exactly: 21,999 rows, UNKNOWN Round 7,230 / Life
 | Duplicate start/end candidates for one Round | 0 / 0 | 0 / 0 |
 | Start bracket width median / p90 / max (s) | 1 / 3 / 5 | 1 / 3 / 5 |
 | End bracket width median / p90 / max (s) | 1 / 2 / 3 | 3 / 5 / 14 |
-| Frames: DEAD recorder with a first-person camera | 223 | 201 |
+| Frames: DEAD recorder with a first-person camera | 223 | 200 |
+| Frames: DEAD recorder in a purchase phase | – | 0 |
 | Named or state edges disagreeing with their frames | 57 | 0 |
 | Formal Facts/Events | 0 | 0 |
+
+Before the purchase countdown rule (9b76cae) the same replay gave Round 3,975,
+Life 3,401, Camera 4,016 and 1,138 withdrawn seconds; the Round start and end
+candidates are identical with and without that rule.
 
 End brackets are wider on purpose: in 3 of 6 reviewed score-update edges the
 post-round countdown was already visible at the old lower frame, so the previous
@@ -109,8 +117,9 @@ visually by the implementing agent (not human GT):
 | Result-to-ACTIVE and countdown-narrowed starts, 12 | 12/12 contain the start |
 | Start brackets against the countdown switch (0:00 to 1:39) read every 0.5 s, 16 (10 added, 6 existing) | 16/16 contain the switch; bracket midpoint error median 0.25 s, max 2.25 s (an existing 5 s bracket) |
 
-The 1,138 withdrawn seconds are therefore not 1,138 confirmed errors: the
-reviewed sample found 4 wrong and 2 correct values among 6 decidable frames.
+Withdrawn seconds (772 now, 1,138 before the purchase countdown rule) are
+therefore not confirmed errors: the reviewed sample of the first version found
+4 wrong and 2 correct values among 6 decidable frames.
 
 ### Fresh full-length analysis: all ten matches (2026-11-18)
 
@@ -121,11 +130,12 @@ without the pass. Holdout recordings were not used.
 
 | Measure | Before | After |
 | --- | ---: | ---: |
-| Round UNKNOWN seconds | 7,071 | 3,955 |
-| Life UNKNOWN seconds | 4,059 | 2,716 |
+| Round UNKNOWN seconds | 7,071 | 3,154 |
+| Life UNKNOWN seconds | 4,059 | 2,208 |
 | Camera UNKNOWN seconds | 3,333 | 3,218 |
-| Seconds changed between two known values | – | 13 (Round ACTIVE to BUY) |
-| Life seconds withdrawn to UNKNOWN | – | 949 |
+| Matches where any UNKNOWN count rose | – | 0 of 10 |
+| Seconds changed between two known values | – | Round ACTIVE to BUY 13, Life DEAD to ALIVE 444, Camera SPECTATOR to SELF 2 |
+| Life seconds withdrawn to UNKNOWN | – | 598 |
 | Round start candidates (229 Rounds) | 183 | 221 |
 | Starts of the replayed run (221) with a fresh candidate within 2 s | 166 | 221 |
 | Fresh candidates more than 2 s from every replayed start | 12 | 0 |
@@ -133,14 +143,13 @@ without the pass. Holdout recordings were not used.
 | Max start width (s) | 5 | 5 |
 | Human labels sampled by the fresh run (72 of 78): correct / abstained / incorrect | 72 / 0 / 0 | 72 / 0 / 0 |
 
-Round UNKNOWN fell in all ten matches (DEV2 465 to 188, issue_oldfull001 531
-to 309, issue_oldfull002 951 to 671, issue_oldfull004 622 to 331,
-issue_newfull001 759 to 492, issue_newfull002 874 to 500, issue_freshfull003
-739 to 389, issue_newfull004 942 to 512, issue_freshfull005 477 to 205,
-first_new_cold 711 to 358). Life UNKNOWN fell in nine. In issue_oldfull002 it
-rose from 288 to 330 because 212 seconds of a stale death hypothesis
-(`victim_display_and_owned_spectator_hypothesis`) were withdrawn after the
-Round had ended.
+Per match (Round, Life UNKNOWN seconds before to after): DEV2 465 to 132, 554
+to 206; issue_oldfull001 531 to 276, 535 to 268; issue_oldfull002 951 to 474,
+288 to 204; issue_oldfull004 622 to 257, 309 to 139; issue_newfull001 759 to
+346, 428 to 229; issue_newfull002 874 to 392, 367 to 212; issue_freshfull003
+739 to 369, 367 to 210; issue_newfull004 942 to 425, 519 to 317;
+issue_freshfull005 477 to 154, 266 to 158; first_new_cold 711 to 329, 426 to
+265.
 
 The fresh run agrees with the replay of the stored observations: of 21,999
 seconds, Round differs between two known values in 41 seconds, Life in 30 and
@@ -151,21 +160,14 @@ Implementing-agent visual review (not human GT):
 | Sample | Result |
 | --- | --- |
 | All 13 seconds revised from ACTIVE to BUY | 13 show the purchase phase (buy menu, purchase banner or purchase countdown) |
-| Five withdrawn DEAD seconds in issue_oldfull002 (1,592, 1,599, 1,682, 1,777, 2,096 s) | 5 show the recorder alive with its own HUD at full health; the withdrawn DEAD was wrong |
-| Five early start candidates in issue_freshfull003 before this rule | 5 inside the purchase phase, before its countdown ends |
+| Life DEAD to ALIVE, 24 seconds drawn at random from 442 | 24 show the recorder alive in the purchase phase |
+| Camera SPECTATOR to SELF, both seconds | 2 show the recorder's own view in the purchase phase |
+| Withdrawn DEAD in issue_oldfull002, 5 seconds | 5 show the recorder alive with its own HUD (the DEAD was wrong) |
+| Early start candidates retired, 5 in issue_freshfull003 | 5 inside the purchase phase, before its countdown ends |
 
 The early candidates came from single unmeasured ACTIVE frames
-(`observed_purchase_barrier_loss`) inside the purchase phase. The base timeline
-had 12 of them and 6 overlapping pairs; the purchase rule and the overlap
-rule retire all of them, and the start at 1,588 s in issue_freshfull003 that
-was missing is now placed from its countdown.
-
-The fixed comparison of stored observations is unchanged by these two rules
-(identical values and events in all 21,999 seconds; fixed 69 attributes still
-69/69).
-
-DEV2 alone (2,052 seconds): Round 465 to 188, Life 554 to 240, Camera 320 to
-306, 21 of 21 starts.
+(`observed_purchase_barrier_loss`) inside the purchase phase; the base timeline
+had 12 of them and 6 overlapping pairs.
 
 ## Limits
 
