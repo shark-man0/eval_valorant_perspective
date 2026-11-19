@@ -118,3 +118,9 @@ from the same source, acquisition and minimap geometry. Both independent
 matches must agree on landmark probes and the measured marker center. The
 report retains the two native anchor IDs. This feature does not interpolate
 trajectory gaps.
+
+`--registration recording-anchors-contrast` additionally retries unresolved
+alignments of measured positions with two deterministic contrast transforms of
+the current minimap. Both atlas fits must agree on the recording Map and on
+the marker and four reference probes. Recovered fits cannot become tracking
+anchors.
