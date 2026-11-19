@@ -1765,6 +1765,17 @@ class DevelopmentGameTimeline:
                 and self._current_menu_support(row, frame["sample"])
             ]
             positive = current_hp or bool(menu_rows)
+            if (
+                not positive
+                and self.measured_view_precedence
+                and signals & {"result", "intermission"}
+            ):
+                # Without a current health or menu cue of the recorder's own view,
+                # a weak SELF claim in a frame that shows the Round result or the
+                # intermission does not reopen the death: a recorder that died
+                # returns only at the next purchase phase. Rows after the result
+                # display may already lie in that phase and keep the bracket.
+                continue
             if menu_rows:
                 evidence = sorted(set(evidence) | {r["observation_id"] for r in menu_rows})
             positive_reason = (
