@@ -195,14 +195,14 @@ incorrect / abstained:
 | --- | --- | --- | --- | --- |
 | Uniform 40 | Camera | 28 / 1 / 10 | 34 / 0 / 5 | 34 / 0 / 5 |
 | Uniform 40 | Life | 25 / 1 / 13 | 35 / 0 / 4 | 36 / 0 / 3 |
-| All 80 | Camera | 52 / 3 / 24 | 70 / 2 / 7 | 70 / 2 / 7 |
+| All 80 | Camera | 53 / 2 / 24 | 71 / 1 / 7 | 71 / 1 / 7 |
 | All 80 | Life | 38 / 6 / 35 | 73 / 0 / 6 | 76 / 0 / 3 |
 
-This PR adds no incorrect value. The two remaining Camera errors were already
-wrong in the base: an Astra astral form read as SELF (first_new_cold 1083, a
-remote view this PR does not measure) and DEV2 2005, labelled SELF by the user
-and SPECTATOR by both timelines, where the frame shows the spectator label and
-a teammate's name at the lower left (the label may be worth a second look).
+This PR adds no incorrect value. The user corrected one label after review
+(DEV2 2005, SELF to SPECTATOR: the spectator label and a teammate's name are
+shown). The one remaining Camera error was already wrong in the base: an Astra
+astral form read as SELF (first_new_cold 1083, a remote view this PR does not
+measure).
 
 ### Human GT: 36 DEV2 frames labelled by the user (2026-11-19)
 
