@@ -1,5 +1,8 @@
 """Local experiment adapters for the two independent CNNs."""
 
+import math
+from dataclasses import replace
+
 import cv2
 import numpy as np
 import torch
@@ -80,12 +83,49 @@ class DenseMarkerCNN:
 
 
 class LearnedRecorderTracker(DirectRecorderTracker):
-    def __init__(self, *args, portrait_model, **kwargs):
+    def __init__(self, *args, portrait_model, refine_center=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.portrait_model = portrait_model
+        self.refine_center = refine_center
+        self.refined_current = False
 
     @torch.inference_mode()
     def _confirmed_peaks(self, image, peaks, left, top):
+        chosen = self._score_peaks(image, peaks, left, top)
+        self.refined_current = False
+        if chosen or not self.refine_center or not peaks:
+            return chosen
+        scale = image.shape[1] / 1920
+        offset = max(1, round(scale))
+        reach = math.ceil(11 * scale) + offset
+        high_x = left + max(p.center[0] for p in peaks) + reach + 1
+        high_y = top + max(p.center[1] for p in peaks) + reach + 1
+        hsv = cv2.cvtColor(image[top:high_y, left:high_x], cv2.COLOR_BGR2HSV)
+        recovered = []
+        for peak in peaks:
+            alternatives = []
+            for dx, dy in ((-offset, 0), (offset, 0), (0, -offset), (0, offset)):
+                x, y = peak.center[0] + dx, peak.center[1] + dy
+                if not 11*scale <= x < hsv.shape[1]-11*scale or not (
+                    11*scale <= y < hsv.shape[0]-11*scale
+                ):
+                    continue
+                warm, pairs, rivals = _rim_evidence(hsv, x, y, scale)
+                alternatives.append(replace(
+                    peak, center=(x, y), warm_sectors=warm, opposite_pairs=pairs,
+                    chromatic_rivals=rivals,
+                ))
+            evidence = self._score_peaks(image, alternatives, left, top)
+            if len(evidence) >= 2:
+                index, score, margin = max(evidence, key=lambda m: (m[1], m[2], -m[0]))
+                recovered.append((alternatives[index], score, margin))
+        for peak, score, margin in recovered:
+            chosen.append((len(peaks), score, margin))
+            peaks.append(peak)
+        self.refined_current = bool(recovered)
+        return chosen
+
+    def _score_peaks(self, image, peaks, left, top):
         result = []
         target = self.portrait_reader._uuids.index(self.identity.uuid)
         scale = image.shape[1] / 1920

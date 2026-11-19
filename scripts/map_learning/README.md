@@ -59,6 +59,10 @@ detector with the reference-based Agent classifier. Use `--learned-stage both`
 to evaluate the two CNNs together. Both stages export the standard
 development-only one-second Map report. Weight files, crop archives,
 reference images, and private receipts stay outside the repository.
+In the two-head mode, `--refine-center` retries a failed center measurement
+using nearby native pixels. It requires two neighboring crops to support the
+same marker at the original rim, portrait and reference thresholds. A
+previously accepted center is retained.
 
 To measure a conservative complement, export the same native manifest twice
 with `--learned-stage reference` and `--learned-stage both`. Give both outputs
