@@ -21,19 +21,24 @@ def main() -> None:
         "catalog",
         "layout",
         "knowledge-asset-cache",
-        "models-directory",
         "output",
     ):
         parser.add_argument(f"--{field}", required=True, type=Path)
     parser.add_argument("--zones-path", type=Path)
-    parser.add_argument("--threshold", type=float, required=True)
-    parser.add_argument("--learned-stage", choices=("marker", "both"), required=True)
+    parser.add_argument("--models-directory", type=Path)
+    parser.add_argument("--threshold", type=float)
+    parser.add_argument("--learned-stage", choices=("reference", "marker", "both"), required=True)
     arguments = vars(parser.parse_args())
     threshold = arguments.pop("threshold")
     stage = arguments.pop("learned_stage")
     directory = arguments.pop("models_directory")
-    if not math.isfinite(threshold) or not 0 < threshold <= 1:
-        raise ValueError("Validation-calibrated probability threshold required")
+    if stage != "reference" and (
+        directory is None
+        or threshold is None
+        or not math.isfinite(threshold)
+        or not 0 < threshold <= 1
+    ):
+        parser.error("A model directory and validation-calibrated threshold are required")
 
     def create_tracker(binding, knowledge):
         models = load_models(directory, knowledge)
@@ -47,9 +52,11 @@ def main() -> None:
     export_recorder_paths(
         **arguments,
         direct_detector="guided",
-        direct_tracker_factory=create_tracker,
+        direct_tracker_factory=create_tracker if stage != "reference" else None,
         recover_map_alignment=True,
         recover_native_flow=True,
+        recover_adjacent_portrait=stage == "reference",
+        comparison_evidence=True,
     )
 
 

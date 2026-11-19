@@ -44,3 +44,11 @@ detector with the reference-based Agent classifier. Use `--learned-stage both`
 to evaluate the two CNNs together. Both stages export the standard
 development-only one-second Map report. Weight files, crop archives,
 reference images, and private receipts stay outside the repository.
+
+To measure a conservative complement, export the same native manifest twice
+with `--learned-stage reference` and `--learned-stage both`. Give both outputs
+and their common bundle to `compose_paths.py --help`. The composer retains the
+reference path and uses selected CNN points only where the reference reported
+unresolved portrait evidence on that exact frame. It also checks the recorder,
+view evidence, and Map texture. CNN segments retain their own measured links
+and do not link across reference segments.

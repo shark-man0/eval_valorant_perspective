@@ -109,6 +109,7 @@ def export_recorder_paths(
     direct_tracker_factory: Callable[
         [RecorderUUID, KnowledgeRecorderMap], DirectRecorderTracker
     ] | None = None,
+    comparison_evidence: bool = False,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -175,6 +176,7 @@ def export_recorder_paths(
     direct_stages: Counter[str] = Counter()
     direct_reasons: Counter[str] = Counter()
     portrait_rejections: Counter[str] = Counter()
+    unresolved_portrait_samples: list[str] = []
     for frame in native.values():
         sample = freeze_native_sample(frame["sample"])
         policy.admit(sample)
@@ -225,6 +227,10 @@ def export_recorder_paths(
                     tracker.reset()
                     knowledge.reset()
             direct_reasons[result["selection_reason"]] += 1
+            if comparison_evidence and (
+                result["selection_reason"] == "direct_portrait_or_rim_unresolved"
+            ):
+                unresolved_portrait_samples.append(key)
             if "portrait_rejection" in result:
                 portrait_rejections[result["portrait_rejection"]] += 1
             if pool:
@@ -313,6 +319,11 @@ def export_recorder_paths(
         report["direct_detector"] = direct_detector
         if direct_tracker_factory is not None:
             report["experimental_direct_tracker"] = True
+        if comparison_evidence:
+            report["comparison_evidence"] = {
+                "operable_sample_refs": sorted(operable),
+                "unresolved_portrait_sample_refs": unresolved_portrait_samples,
+            }
         report["direct_stage_counts"] = dict(direct_stages)
         report["portrait_rejection_counts"] = dict(portrait_rejections)
         report["direct_selection_reasons"] = dict(direct_reasons)
