@@ -559,3 +559,63 @@ def test_second_death_needs_a_revive_and_no_new_round() -> None:
     assert buy_phase_restarts([(20.0, 4), (25.0, 28), (27.0, 26)]) == [53.0]
     assert score_rises([(0, 1, 1), (1, 1, 1), (2, 2, 1), (3, 2, 1)]) == [22.0]
     assert ally_revives([(0.0, 2), (1.0, 5)]) == []  # a full team is a new round
+
+
+def test_ammo_changes_tell_shots_reloads_and_switches_apart() -> None:
+    from valorant_ai_coach.rules.second_series import (
+        SecondRecord,
+        WeaponLimits,
+        ammo_events,
+        classify_ammo_change,
+    )
+
+    def rec(sec: float, magazine: int | None, reserve: int | None) -> SecondRecord:
+        return SecondRecord(Observation(sec, True, "Omen", 0.9, (1, 1, 1, 0), 5, 5),
+                            magazine, None, 40, reserve)
+
+    limits = WeaponLimits(max_fire_rate=10.0, switch_magazines=frozenset({12}))
+    assert classify_ammo_change(rec(0, 25, 50), rec(1, 22, 50), limits) == "shot"
+    assert classify_ammo_change(rec(0, 11, 50), rec(1, 25, 36), limits) == "reload"
+    # Rounds fired just before reloading come out of the old magazine only.
+    assert classify_ammo_change(rec(0, 20, 50), rec(1, 25, 42), limits) == "reload"
+    assert classify_ammo_change(rec(0, 11, 50), rec(1, 12, 36), limits) == "weapon_switch"
+    assert classify_ammo_change(rec(0, 8, 24), rec(1, 5, 20), limits) == "weapon_switch"
+    assert classify_ammo_change(rec(0, 25, None), rec(1, 12, None), limits) == "weapon_switch"
+    assert classify_ammo_change(rec(0, 12, None), rec(1, 8, None), limits) == "shot"
+    assert classify_ammo_change(rec(0, 5, None), rec(1, 25, None), limits) == "rise_unexplained"
+    assert classify_ammo_change(rec(0, 25, 50), rec(1, 2, 50), limits) == "misread"
+    # A lone reserve misread ("60" cut to "0") with the magazine unchanged is no switch.
+    records = [rec(0, 23, 60), rec(1, 23, 0), rec(2, 23, 60), rec(3, 23, 60)]
+    assert ammo_events(records, [True] * 4, limits) == []
+    switched = [rec(0, 25, 50), rec(1, 25, 50), rec(2, 25, 36), rec(3, 25, 36)]
+    assert [e.kind for e in ammo_events(switched, [True] * 4, limits)] == ["weapon_switch"]
+
+
+def test_engagement_motion_places_the_first_shot_frame() -> None:
+    from valorant_ai_coach.rules.engagement_motion import (
+        MotionFrame,
+        engagement_motion,
+        first_shot_frame,
+        moving_over,
+    )
+
+    def frame(k: int, magazine: int | None, h_err: float = 0.1,
+              lag: int = 150) -> MotionFrame:
+        return MotionFrame(10 + k / 60, 150, lag, h_err, 0.05, 0.0, 0.0, magazine)
+
+    frames = [frame(k, 25) for k in range(40)] + [frame(40, 24), frame(41, 24),
+                                                   frame(42, 24), frame(43, 24)]
+    assert abs(first_shot_frame(frames, 10.2, 11.0) - (10 + 40 / 60)) < 1e-9
+    # A one-frame flicker is not a shot.
+    flicker = [frame(k, 25) for k in range(20)] + [frame(20, 22)] + \
+        [frame(k, 25) for k in range(21, 30)]
+    assert first_shot_frame(flicker, 10.0, 10.5) is None
+    assert engagement_motion(flicker, 10.0, 10.5) is None
+    # The rule only ever says "moving"; still frames give None, never False.
+    still = [frame(k, 25) for k in range(40)]
+    assert moving_over(still, still[-1].sec) is None
+    busy = [frame(k, 25, h_err=1.5, lag=20) for k in range(40)]
+    assert moving_over(busy, busy[-1].sec) is True
+    shot = engagement_motion(busy + [frame(40, 24, 1.5, 20), frame(41, 24, 1.5, 20),
+                                     frame(42, 24, 1.5, 20)], 10.3, 11.0)
+    assert shot is not None and shot.moving_before_shot is True

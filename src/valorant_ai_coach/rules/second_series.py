@@ -7,7 +7,8 @@ a shot event in that second (count = size of the drop). A rise is a reload or a
 weapon switch, never a shot. A drop larger than a magazine empties in one
 second for any weapon is treated as a misread. When the reserve count is read
 at both ends and differs, the weapon changed (a switch), so the drop is not a
-shot. Readings are paired only inside one round of the shared timeline
+shot. ``ammo_events`` classifies every change as a shot, a reload or a weapon
+switch (``classify_ammo_change``). Readings are paired only inside one round of the shared timeline
 (``segments``), only while the view stays the recorder's own and only across
 short unreadable gaps, so no event spans a round boundary, spectating or a
 missing interval.
@@ -18,7 +19,8 @@ homography cannot explain. ``MOVING_RESIDUAL_PX`` on that residual (480x270
 scale) is the best split on reviewed TRAIN seconds, but it is right only 4 of 9
 times it says "moving" (recall 4/5), so movement, peeks and the facts that
 need movement are gated off (``include_movement=False``) and do not reach the
-rules until a better detector passes review.
+rules until a better detector passes review. The 60 fps engagement-window
+detector (``rules.engagement_motion``) did not pass either.
 
 Peek: a stationary -> moving onset followed by the recorder's shot within
 ``PEEK_TO_SHOT_SEC``; a moving -> stationary stop shortly after an onset with
@@ -29,7 +31,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -153,37 +155,100 @@ def _clock_restarted(before: SecondRecord, after: SecondRecord) -> bool:
 
 
 def is_switch(before: SecondRecord, after: SecondRecord, limits: WeaponLimits) -> bool:
-    """The weapon changed between two readings: the reserve count differs (when
-    read at both ends), or a drop of more than a few rounds lands exactly on a
-    full sidearm magazine (pulling out the pistol)."""
-    if before.reserve is not None and after.reserve is not None \
-            and before.reserve != after.reserve:
-        return True
+    """The weapon changed between two readings (see ``classify_ammo_change``)."""
+    return classify_ammo_change(before, after, limits) == "weapon_switch"
+
+
+AMMO_KINDS = ("shot", "reload", "weapon_switch", "rise_unexplained", "misread", "unchanged")
+
+
+def classify_ammo_change(before: SecondRecord, after: SecondRecord,
+                         limits: WeaponLimits) -> str:
+    """What happened between two magazine readings of the viewed weapon.
+
+    - ``reload``: the magazine went up and the reserve went down by at least as
+      much (rounds fired just before the reload make the reserve drop larger);
+    - ``weapon_switch``: the reserve changed in any other way, or (reserve not
+      read at both ends) a drop of more than a few rounds from a non-sidearm
+      count lands exactly on a full sidearm magazine;
+    - ``shot``: the magazine went down with the reserve unchanged (or unread),
+      no faster than the fastest weapon fires;
+    - ``misread``: a drop faster than any weapon fires;
+    - ``rise_unexplained``: the magazine went up without a reserve reading to
+      tell a reload from a switch.
+    """
     assert before.magazine is not None and after.magazine is not None
-    drop = before.magazine - after.magazine
-    return drop > SWITCH_MIN_DROP and after.magazine in limits.switch_magazines
+    change = after.magazine - before.magazine
+    elapsed = max(after.observation.sec - before.observation.sec, 0.0)
+    fired_max = limits.max_fire_rate * elapsed + 1
+    reserves = before.reserve is not None and after.reserve is not None
+    if reserves:
+        assert before.reserve is not None and after.reserve is not None
+        spent = before.reserve - after.reserve
+        # Rounds fired just before the reload can only come out of the old magazine.
+        if change > 0 and change <= spent <= change + min(before.magazine, fired_max):
+            return "reload"
+        if spent != 0:
+            return "weapon_switch"
+    if change == 0:
+        return "unchanged"
+    if change > 0:
+        return "weapon_switch" if reserves else "rise_unexplained"
+    if (not reserves and -change > SWITCH_MIN_DROP and after.magazine in limits.switch_magazines
+            and before.magazine not in limits.switch_magazines):
+        return "weapon_switch"
+    return "shot" if -change <= fired_max else "misread"
 
 
-def detect_shots(records: Sequence[SecondRecord], own_live: Sequence[bool],
-                 *, pause_sec: float = 3.0, limits: WeaponLimits | None = None,
-                 segments: Sequence[int | None] | None = None) -> list[Shot]:
-    """Shots from magazine drops between consecutive readings in own live view.
+@dataclass(frozen=True)
+class AmmoEvent:
+    sec: float
+    kind: str
+    before: int
+    after: int
+    reserve_before: int | None
+    reserve_after: int | None
+    previous_index: int
+    index: int
 
-    Unreadable seconds in between are skipped (up to ``MAX_READ_GAP_SEC``), so a
-    drop across a gap is one shot event at the later reading; the view must
-    stay the recorder's own the whole time and both readings must lie in the
-    same round (``segments``: the shared timeline's round index per record, or
-    ``None`` where it has none) with no clock restart in between. A drop faster than the
-    fastest weapon can fire is a misread; a weapon switch (``is_switch``) is not
-    a shot. The first shot of a round, or after ``pause_sec`` without one, is an
-    engagement start candidate.
+
+RESERVE_CONFIRM_SEC = 10.0
+
+
+def confirmed_reserves(records: Sequence[SecondRecord]) -> list[SecondRecord]:
+    """Keep a reserve reading only when the nearest other reserve reading before
+    or after it (within ``RESERVE_CONFIRM_SEC``) shows the same value. The reserve
+    changes only on a reload or a switch and then stays, so a lone value is
+    likely a misread (a cut "60" read as "0"). Used where the magazine did not
+    change, the one case a reserve misread alone would turn into an event."""
+    timed = [(i, r.observation.sec, r.reserve) for i, r in enumerate(records)
+             if r.reserve is not None]
+    keep: set[int] = set()
+    for k, (i, sec, value) in enumerate(timed):
+        neighbours = [timed[j] for j in (k - 1, k + 1) if 0 <= j < len(timed)]
+        if any(abs(other_sec - sec) <= RESERVE_CONFIRM_SEC and other == value
+               for _, other_sec, other in neighbours):
+            keep.add(i)
+    return [r if r.reserve is None or i in keep else replace(r, reserve=None)
+            for i, r in enumerate(records)]
+
+
+def ammo_events(records: Sequence[SecondRecord], own_live: Sequence[bool],
+                limits: WeaponLimits | None = None,
+                segments: Sequence[int | None] | None = None) -> list[AmmoEvent]:
+    """Classified changes between consecutive magazine readings.
+
+    Readings pair only in the recorder's own live view, within one round
+    (``segments``: the shared timeline's round index per record, or ``None``
+    where it has none), with no round-clock restart in between and at most
+    ``MAX_READ_GAP_SEC`` apart, so no event spans a round boundary, spectating
+    or a missing interval.
     """
     limits = limits or WeaponLimits()
-    moving = moving_state(records)
     rounds = _segments(records, segments)
-    shots: list[Shot] = []
-    shot_round: int | None = None
-    last: int | None = None  # index of the previous magazine reading in own view
+    confirmed = confirmed_reserves(records)
+    events: list[AmmoEvent] = []
+    last: int | None = None
     for index, record in enumerate(records):
         if not own_live[index]:
             last = None
@@ -196,17 +261,40 @@ def detect_shots(records: Sequence[SecondRecord], own_live: Sequence[bool],
         if last is not None and record.observation.sec - records[last].observation.sec \
                 <= MAX_READ_GAP_SEC:
             previous = records[last]
-            assert previous.magazine is not None
-            drop = previous.magazine - record.magazine
-            elapsed = record.observation.sec - previous.observation.sec
-            if 0 < drop <= limits.max_fire_rate * elapsed + 1 \
-                    and not is_switch(previous, record, limits):
-                sec = record.observation.sec
-                first = (not shots or shot_round != rounds[index]
-                         or sec - shots[-1].sec > pause_sec)
-                shots.append(Shot(sec, drop, first, moving[last]))
-                shot_round = rounds[index]
+            kind = classify_ammo_change(previous, record, limits)
+            if kind == "weapon_switch" and previous.magazine == record.magazine:
+                # Same magazine count: only a reserve change seen at both ends
+                # by confirmed readings is a switch (a lone misread is not).
+                kind = classify_ammo_change(confirmed[last], confirmed[index], limits)
+            if kind != "unchanged":
+                assert previous.magazine is not None
+                events.append(AmmoEvent(record.observation.sec, kind, previous.magazine,
+                                        record.magazine, previous.reserve, record.reserve,
+                                        last, index))
         last = index
+    return events
+
+
+def detect_shots(records: Sequence[SecondRecord], own_live: Sequence[bool],
+                 *, pause_sec: float = 3.0, limits: WeaponLimits | None = None,
+                 segments: Sequence[int | None] | None = None) -> list[Shot]:
+    """Shots: ``ammo_events`` of kind ``shot`` (count = size of the drop).
+
+    The first shot of a round, or after ``pause_sec`` without one, is an
+    engagement start candidate.
+    """
+    moving = moving_state(records)
+    rounds = _segments(records, segments)
+    shots: list[Shot] = []
+    shot_round: int | None = None
+    for event in ammo_events(records, own_live, limits, segments):
+        if event.kind != "shot":
+            continue
+        first = (not shots or shot_round != rounds[event.index]
+                 or event.sec - shots[-1].sec > pause_sec)
+        shots.append(Shot(event.sec, event.before - event.after, first,
+                          moving[event.previous_index]))
+        shot_round = rounds[event.index]
     return shots
 
 
