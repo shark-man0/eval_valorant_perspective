@@ -157,6 +157,28 @@ UNKNOWN on one side only in 66.
 DEV2 alone (2,052 seconds, also reported on 2026-11-16): Camera 320 to 101,
 Life 554 to 391; SELF to REMOTE 38, SPECTATOR to SELF 6.
 
+### Human GT: 36 DEV2 frames labelled by the user (2026-11-19)
+
+The user labelled 36 sample frames of DEV2 without seeing any prediction
+(camera SELF/SPECTATOR/REMOTE/unknown, life ALIVE/DEAD/unknown). Frames the user
+marked unknown are excluded (Camera 29 and Life 34 frames remain). The frames
+were picked for review, not drawn at random, so the counts are not an accuracy
+estimate for the whole match. Fresh run, correct / incorrect / abstained:
+
+| Timeline | Camera | Life |
+| --- | --- | --- |
+| Base engine | 19 / 6 / 4 | 17 / 0 / 17 |
+| This PR (9e50d20) | 26 / 0 / 3 | 26 / 0 / 8 |
+| This PR at 6e786ae | 26 / 0 / 3 | 16 / 0 / 18 |
+| Combined with #150 | 26 / 0 / 3 | 28 / 0 / 6 |
+
+All six base Camera errors are Owl Drone views read as SELF; this PR reads all
+six as REMOTE. One correct DEAD (frame 34, DEV2 207 s, between a Round result
+and the next purchase phase) becomes UNKNOWN: the measured own HUD of the next
+purchase phase lets the existing return-tail option bracket the earlier victim
+display. The earlier run-level review found 13 wrong and 1 correct DEAD among
+such withdrawals, so the rule is kept.
+
 ### Visual review by the implementing agent (not human GT)
 
 Frames decoded at the exact native PTS from the original recordings.
