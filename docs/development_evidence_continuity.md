@@ -173,6 +173,24 @@ In the current replay 663 of them keep the base DEAD, 331 are ALIVE (purchase
 phase or the own HUD with health, see the run-level review) and 16 remain
 UNKNOWN; 33 seconds are withdrawn in total.
 
+Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
+without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40
+drawn uniformly from the seconds that either PR changed. Frames the user marked
+unknown are excluded. Correct / incorrect / abstained:
+
+| Sample | Domain | Base | This option | Combined with #151 |
+| --- | --- | --- | --- | --- |
+| Uniform 40 | Round | 27 / 0 / 12 | 31 / 0 / 8 | 31 / 0 / 8 |
+| Uniform 40 | Life | 25 / 1 / 13 | 32 / 1 / 6 | 36 / 0 / 3 |
+| Uniform 40 | Camera | 28 / 1 / 10 | 28 / 1 / 10 | 34 / 0 / 5 |
+| All 80 | Round | 39 / 0 / 40 | 65 / 0 / 14 | 65 / 0 / 14 |
+| All 80 | Life | 38 / 6 / 35 | 62 / 5 / 12 | 76 / 0 / 3 |
+| All 80 | Camera | 52 / 3 / 24 | 52 / 3 / 24 | 70 / 2 / 7 |
+
+This option adds no incorrect value; it removes one Life error (a stale death
+hypothesis in a purchase phase). The remaining Life errors under this option
+alone are DEAD values on the recorder's own HUD that #151 resolves.
+
 Human GT (2026-11-19): the user labelled 36 DEV2 sample frames without seeing
 any prediction; frames marked unknown are excluded (Camera 29, Life 34). The
 frames were picked for review, not drawn at random. Fresh run, correct /
