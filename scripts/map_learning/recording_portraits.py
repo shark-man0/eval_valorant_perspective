@@ -6,7 +6,7 @@ from typing import Any
 import cv2
 import numpy as np
 
-from valorant_ai_coach.temporal.evidence import native_time, source_scope
+from valorant_ai_coach.temporal.evidence import digest, native_time, source_scope
 from valorant_ai_coach.temporal.map_direct_recorder import (
     DirectPeak,
     DirectRecorderTracker,
@@ -25,6 +25,7 @@ class RecordingPortraitBank:
     def __init__(self):
         self.scope = None
         self.tick = None
+        self.sample_ref: str | None = None
         self.entries: list[tuple[Any, str, np.ndarray]] = []
 
     def visit(self, sample, bounds):
@@ -33,9 +34,11 @@ class RecordingPortraitBank:
         if scope != self.scope or (self.tick is not None and tick < self.tick):
             self.entries.clear()
         self.scope, self.tick = scope, tick
+        self.sample_ref = sample["sample_sha256"]
 
     def remember(self, image, sample, center):
-        if self.tick != native_time(sample):
+        if (self.tick != native_time(sample) or self.sample_ref != sample["sample_sha256"]
+                or self.scope is None or self.scope[:-1] != source_scope(sample)):
             raise ValueError("Current exact observation required")
         if self.entries and self.tick - self.entries[-1][0] < 3:
             return
@@ -115,6 +118,7 @@ class RecordingPortraitTracker(DirectRecorderTracker):
         pool, result = super()._observe_measured(image, roi, sample, frame, camera)
         if result["support_count"] > 0:
             result["portrait_identity_evidence"] = "recording_portrait_reference_agreement"
+            result["track_anchor"] = digest(["recording_portrait", result["track_anchor"]])
             result["portrait_anchor_sample_refs"] = list(
                 self._anchor_refs[result["support_candidate_index"]]
             )

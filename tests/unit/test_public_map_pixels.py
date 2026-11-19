@@ -9,6 +9,33 @@ import pytest
 from valorant_ai_coach.temporal import public_map_pixels as module
 
 
+@pytest.mark.parametrize(("shift", "recovered"), [(2, True), (6, False)])
+def test_contrast_fits_preserve_original_roi_binding_and_require_agreement(shift, recovered):
+    projector = object.__new__(module.PublicMapPixels)
+    matrices = iter([
+        [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+        [[1, 0, shift], [0, 1, 0], [0, 0, 1]],
+    ])
+    def inspect(_):
+        return {"raw": {"map_name_candidates": [{
+            "map_id": "map", "fit_residual_p95_reference_px": 1.0,
+            "reference_to_roi_homography_candidate": next(matrices),
+        }]}}
+
+    projector.inspect_exact = inspect
+    image = np.full((80, 80, 3), 100, np.uint8)
+    raw = {"map_name_candidates": [], "reference_ranking": [],
+           "roi_pixel_bounds": [10, 10, 70, 70], "roi_pixel_sha256": "0" * 64}
+    assert projector.recover_contrast(image, raw, "wrong", (4, 4)) == raw
+    result = projector.recover_contrast(image, raw, "map", (40, 40))
+    assert bool(result["map_name_candidates"]) == recovered
+    assert image.min() == image.max() == 100
+    if recovered:
+        assert result["roi_pixel_sha256"] == raw["roi_pixel_sha256"]
+        assert result["alignment_recovery"] == module.CONTRAST_ALIGNMENT
+        assert result["map_name_candidates"][0]["fit_residual_p95_reference_px"] == shift
+
+
 def test_public_reference_alignment_is_advisory_and_blank_view_is_unknown(tmp_path, monkeypatch):
     random = np.random.default_rng(42)
     mask = np.zeros((320, 320), np.uint8)

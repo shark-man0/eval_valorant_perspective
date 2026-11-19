@@ -151,6 +151,11 @@ class MainWindow(QMainWindow):
         timeline_action = QAction("開発用: 共通タイムライン", self)
         timeline_action.triggered.connect(self._open_development_timeline)
         self.menuBar().addAction(timeline_action)
+        map_timeline_action = QAction("開発用: Map軌跡", self)
+        map_timeline_action.triggered.connect(
+            lambda: self._open_development_timeline(with_map=True)
+        )
+        self.menuBar().addAction(map_timeline_action)
         comparison_action = QAction("開発用: 試合横断比較", self)
         comparison_action.triggered.connect(self._open_development_comparison)
         self.menuBar().addAction(comparison_action)
@@ -1205,7 +1210,7 @@ class MainWindow(QMainWindow):
         hud_mode = "Mock HUD" if settings.hud_mode == "mock" else "実HUD"
         self.mode_label.setText(f"{ai_mode} / {hud_mode}")
 
-    def _open_development_timeline(self) -> None:
+    def _open_development_timeline(self, *, with_map: bool = False) -> None:
         bundle, _ = QFileDialog.getOpenFileName(
             self, "開発用タイムライン JSON を選択", "", "JSON (*.json)"
         )
@@ -1216,10 +1221,21 @@ class MainWindow(QMainWindow):
         )
         if not policy:
             return
+        map_report = None
+        if with_map:
+            selected, _ = QFileDialog.getOpenFileName(
+                self, "開発用Map観測レポート JSON を選択", "", "JSON (*.json)"
+            )
+            if not selected:
+                return
+            map_report = Path(selected)
         try:
             from valorant_ai_coach.temporal.viewer import make_server
 
-            server = make_server(Path(bundle), Path(policy))
+            server = (
+                make_server(Path(bundle), Path(policy), map_report_path=map_report)
+                if map_report is not None else make_server(Path(bundle), Path(policy))
+            )
         except (OSError, ValueError, KeyError, TypeError) as exc:
             QMessageBox.warning(self, "開発用タイムラインを開けません", sanitize_text(str(exc)))
             return

@@ -18,6 +18,12 @@ from valorant_ai_coach.hud.layout import HudLayout
 from .evidence import digest
 from .replay import file_sha, read_json
 
+CONTRAST_ALIGNMENT = "current_map_fit_agrees_under_two_contrast_views"
+_CONTRAST_TABLES = tuple(
+    np.rint((np.arange(256, dtype=float) / 255) ** gamma * 255).astype(np.uint8)
+    for gamma in (.72, 1.35)
+)
+
 
 class PublicMapPixels:
     """Match static map edges against an explicitly versioned external catalog.
@@ -120,6 +126,47 @@ class PublicMapPixels:
     def inspect_exact(self, image: NDArray[np.uint8]) -> dict[str, Any]:
         """Register a frame without the randomized FLANN search."""
         return self._inspect(image, self.exact_matcher)
+
+    def recover_contrast(
+        self, image: NDArray[np.uint8], raw: dict[str, Any], map_id: str | None,
+        center: tuple[float, float],
+    ) -> dict[str, Any]:
+        """Require two current-frame atlas fits after independent contrast changes."""
+        ranking = raw["reference_ranking"]
+        if (map_id is None or raw["map_name_candidates"]
+                or (ranking and ranking[0]["map_id"] != map_id)):
+            return raw
+        left, top, right, bottom = raw["roi_pixel_bounds"]
+        width, height = right - left, bottom - top
+        marker = center[0] - left, center[1] - top
+        if not (0 <= marker[0] < width and 0 <= marker[1] < height):
+            return raw
+        probes = np.asarray(
+            [[x*width, y*height, 1.] for x in (.3, .7) for y in (.3, .7)] + [[*marker, 1.]],
+        ).T
+        fits = []
+        view = image.copy()
+        for table in _CONTRAST_TABLES:
+            view[top:bottom, left:right] = cv2.LUT(image[top:bottom, left:right], table)
+            candidates = self.inspect_exact(view)["raw"]["map_name_candidates"]
+            if len(candidates) != 1 or candidates[0]["map_id"] != map_id:
+                return raw
+            fit = candidates[0]
+            if fit["fit_residual_p95_reference_px"] > 8:
+                return raw
+            try:
+                projected = np.linalg.solve(fit["reference_to_roi_homography_candidate"], probes)
+            except np.linalg.LinAlgError:
+                return raw
+            fits.append((fit, projected[:2]))
+        (first, a), (second, b) = fits
+        disagreement = float(np.linalg.norm(a - b, axis=0).max())
+        if not disagreement <= 4:
+            return raw
+        residual = "fit_residual_p95_reference_px"
+        best = min((first, second), key=lambda candidate: candidate[residual])
+        selected = {**best, residual: max(disagreement, first[residual], second[residual])}
+        return {**raw, "map_name_candidates": [selected], "alignment_recovery": CONTRAST_ALIGNMENT}
 
     def _inspect(self, image: NDArray[np.uint8], matcher: Any) -> dict[str, Any]:
         if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:

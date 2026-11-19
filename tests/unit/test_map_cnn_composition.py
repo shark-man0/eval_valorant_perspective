@@ -80,3 +80,19 @@ def test_cnn_complement_keeps_reference_and_requires_unresolved_exact_portrait()
     differently_observed["comparison_evidence"]["operable_sample_refs"] = ids[1:]
     with pytest.raises(ValueError, match="view evidence"):
         compose_paths(reference, differently_observed, timeline, "timeline")
+
+    primary = {**reference, "experimental_direct_tracker": True,
+               "experimental_model_receipts": {"marker": "a" * 64, "portrait": "b" * 64}}
+    backup = {**displaced, "experimental_model_receipts": {
+        "marker": "c" * 64, "portrait": "b" * 64,
+    }}
+    companion = compose_paths(primary, backup, timeline, "timeline", marker_companion=True)
+    assert companion["segments"][0] == [points[0]]
+    assert companion["new_cnn_native_positions"] == 1
+    weak = deepcopy(backup)
+    weak["segments"][0][1]["support_count"] = 1
+    assert compose_paths(primary, weak, timeline, "timeline", marker_companion=True)[
+        "new_cnn_native_positions"
+    ] == 0
+    with pytest.raises(ValueError, match="change only"):
+        compose_paths(primary, learned, timeline, "timeline", marker_companion=True)

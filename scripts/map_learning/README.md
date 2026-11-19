@@ -97,6 +97,28 @@ CNN measured that edge and both methods measured the same endpoint on the
 same native sample with agreement within three reference pixels. The
 original segments and coordinates are retained.
 
+Use `recover_gaps.py` with the composed report and its original reference
+replay to recheck vacant seconds against the exact native frame manifest. It
+builds recording references from prior marker measurements agreed by the
+public atlas and a base recognizer. It keeps measured primary coordinates and
+edges. Pass the marker-companion composition and its base CNN replay with
+`--companion-report` and `--companion-baseline` to include verified companion
+positions. Conflicting new positions are left unresolved.
+
+For continual learning, `compose_paths.py --marker-companion` takes two
+two-head exports with the same portrait receipt and distinct marker
+receipts. It keeps the incumbent coordinates and admits only new selected
+positions with at least two native observations from the companion where the
+incumbent left the portrait unresolved. Evaluate each model and the composed
+result on the same admitted footage before using it.
+
+`valorant_ai_coach.temporal.viewer --development-map-report` and the
+desktop menu 「開発用: Map軌跡」 display the path alongside its exact timeline.
+The timeline evaluation CLI accepts the same option to report coverage and
+observed Named Zone seconds in the development report. Both verify the
+timeline digest and native observations. Map candidates stay out of Fact
+creation, promotion and scoring.
+
 `export_paths.py --registration exact` uses deterministic exact descriptor
 matching. `--registration recording-anchors` additionally attempts to register
 an otherwise unresolved current frame against two successful earlier frames
@@ -104,3 +126,9 @@ from the same source, acquisition and minimap geometry. Both independent
 matches must agree on landmark probes and the measured marker center. The
 report retains the two native anchor IDs. This feature does not interpolate
 trajectory gaps.
+
+`--registration recording-anchors-contrast` additionally retries unresolved
+alignments of measured positions with two deterministic contrast transforms of
+the current minimap. Both atlas fits must agree on the recording Map and on
+the marker and four reference probes. Recovered fits cannot become tracking
+anchors.
