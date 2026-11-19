@@ -3,7 +3,7 @@
 Same interface as ``top_bar_timeline``: one ``temporal.game.observation`` row per
 decoded frame, carrying the readings as ``raw["values"]`` entries with a
 confidence. ``temporal.application`` turns them into ``hud_observations``
-candidates (``ammo_current``, ``spike_carried``) with the HUD subject
+candidates (``ammo_current``, ``ammo_reserve``, ``spike_carried``) with the HUD subject
 ``viewed_HUD; recorder_ownership_unresolved``: these panels show whoever is
 being viewed, so whether a reading belongs to the recorder is the timeline's
 view-ownership decision, never this module's.
@@ -36,7 +36,9 @@ def _fingerprint(kind: str, *arrays: np.ndarray) -> str:
 
 
 def ammo_fingerprint(reader: AmmoReader) -> str:
-    return _fingerprint(AMMO_STREAM_KIND, reader.templates)
+    arrays = [reader.templates] + ([reader.reserve_templates]
+                                   if reader.reserve_templates is not None else [])
+    return _fingerprint(AMMO_STREAM_KIND, *arrays)
 
 
 def spike_fingerprint(reader: SpikeCarrierReader) -> str:
@@ -46,11 +48,17 @@ def spike_fingerprint(reader: SpikeCarrierReader) -> str:
 
 def magazine_observation(frame: np.ndarray, sample: dict[str, Any], reader: AmmoReader,
                          *, producer: str | None = None) -> dict[str, Any]:
-    """Magazine count of the viewed player's current weapon (full-scale crop)."""
-    reading = reader.read(hud_crop(frame, AMMO_ROI, 1.0))
-    values = ({} if reading.value is None else
-              {"ammo_current": {"value": reading.value,
-                                "confidence": round(float(reading.match or 0.0), 4)}})
+    """Magazine and reserve counts of the viewed player's current weapon
+    (full-scale crop). The reserve changes only on a reload or a weapon switch,
+    which is how ``rules.second_series.classify_ammo_change`` tells a switch or
+    a reload from firing."""
+    crop = hud_crop(frame, AMMO_ROI, 1.0)
+    values: dict[str, Any] = {}
+    for name, reading in (("ammo_current", reader.read(crop)),
+                          ("ammo_reserve", reader.read_reserve(crop))):
+        if reading.value is not None:
+            values[name] = {"value": reading.value,
+                            "confidence": round(float(reading.match or 0.0), 4)}
     return observation(sample=sample, producer=producer or ammo_fingerprint(reader),
                        signals=[], raw={"values": values},
                        context={"stream_kind": AMMO_STREAM_KIND})

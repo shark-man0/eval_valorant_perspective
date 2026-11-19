@@ -66,7 +66,7 @@
   "info_peek": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: 1 Hz detector precision 4/9; 60 fps parallax detector found 1 of 5 held-out moving intervals and most of its positive calls were screen effects"
   },
   "kill": {
    "before": "contract",
@@ -76,7 +76,7 @@
   "movement_state": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: 1 Hz detector precision 4/9; 60 fps parallax detector found 1 of 5 held-out moving intervals and most of its positive calls were screen effects"
   },
   "objective_state": {
    "before": "contract",
@@ -86,7 +86,7 @@
   "peek": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: movement precision 4/9 on reviewed TRAIN seconds (this change)"
+   "producer": "visual_analyzer (implemented with synthetic contracts; no real-video qualification); development detector exists but is gated off: 1 Hz detector precision 4/9; 60 fps parallax detector found 1 of 5 held-out moving intervals and most of its positive calls were screen effects"
   },
   "player_death": {
    "before": "development",
@@ -233,7 +233,7 @@
   "first_shot_stationary": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer; gated off with the movement detector (precision 4/9) (this change)"
+   "producer": "visual_analyzer; gated off with the movement detector (60 fps review: recall 1/5, positive calls mostly screen effects)"
   },
   "line_of_sight_state": {
    "before": "none",
@@ -288,7 +288,7 @@
   "shot_while_moving": {
    "before": "contract",
    "after": "contract",
-   "producer": "visual_analyzer; gated off with the movement detector (precision 4/9) (this change)"
+   "producer": "visual_analyzer; gated off with the movement detector (60 fps review: recall 1/5, positive calls mostly screen effects)"
   },
   "side": {
    "before": "none",

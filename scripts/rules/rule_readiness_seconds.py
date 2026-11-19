@@ -20,9 +20,11 @@ from valorant_ai_coach.knowledge import load_game_knowledge
 from valorant_ai_coach.knowledge.timeline_view import TimelineView
 from valorant_ai_coach.rules.coverage import coverage, load_rules, summarize
 from valorant_ai_coach.rules.development_readiness import derive, rule_occurrences
+from valorant_ai_coach.rules.engagement_motion import engagement_motion, load_motion_frames
 from valorant_ai_coach.rules.round_phases import PhaseRules
 from valorant_ai_coach.rules.second_series import (
     WeaponLimits,
+    ammo_events,
     detect_shots,
     load_second_records,
     movement_changes,
@@ -71,6 +73,8 @@ def main() -> int:
     parser.add_argument("--timeline-map", type=Path)
     parser.add_argument("--ammo", type=Path,
                         help="directory of --ammo-only rows (adds the reserve count)")
+    parser.add_argument("--motion", type=Path,
+                        help="directory of extract_engagement_motion.py rows (60 fps)")
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     knowledge = load_game_knowledge()
@@ -112,6 +116,19 @@ def main() -> int:
         recon = derivation.reconciliation
         per_round: Counter[int] = Counter(d.round_index for d in recon.deaths)
         shots = detect_shots(records, live, limits=limits, segments=segments)
+        ammo = ammo_events(records, live, limits, segments)
+        motion: dict[str, int] = {}
+        motion_path = args.motion / path.name if args.motion else None
+        if motion_path is not None and motion_path.exists():
+            frames = load_motion_frames(motion_path)
+            previous = {e.sec: records[e.previous_index].observation.sec
+                        for e in ammo if e.kind == "shot"}
+            found = [engagement_motion(frames, previous[s.sec], s.sec)
+                     for s in shots if s.first and s.sec in previous]
+            motion = {"first_shots": len(found),
+                      "first_shot_frames": sum(m is not None for m in found),
+                      "moving_before_first_shot": sum(
+                          bool(m and m.moving_before_shot) for m in found)}
         events: Counter[str] = Counter(e for s in derivation.samples for e in s.events)
         sides = derivation.sides
         per_match.append({
@@ -138,6 +155,8 @@ def main() -> int:
             "shots": {"events": len(shots), "rounds_fired": sum(s.count for s in shots),
                       "first_shots": sum(s.first for s in shots),
                       "with_movement_state": sum(s.moving is not None for s in shots)},
+            "ammo_events": dict(Counter(e.kind for e in ammo)),
+            "engagement_motion": motion,
             "reserve_read_seconds": sum(r.reserve is not None for r in records),
             "movement_changes": len(movement_changes(records, live, segments)),
             "events": dict(events), "rule_occurrences": counts,
