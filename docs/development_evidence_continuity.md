@@ -167,6 +167,12 @@ Implementing-agent visual review (not human GT):
 | Withdrawn DEAD in issue_oldfull002, 5 seconds | 5 show the recorder alive with its own HUD (the DEAD was wrong) |
 | Early start candidates retired, 5 in issue_freshfull003 | 5 inside the purchase phase, before its countdown ends |
 
+The 1,010 DEAD seconds withdrawn at 1da4bd7 (reproduced by replaying that
+commit on the same stored observations) were abstentions, not confirmed errors.
+In the current replay 663 of them keep the base DEAD, 331 are ALIVE (purchase
+phase or the own HUD with health, see the run-level review) and 16 remain
+UNKNOWN; 33 seconds are withdrawn in total.
+
 Human GT (2026-11-19): the user labelled 36 DEV2 sample frames without seeing
 any prediction; frames marked unknown are excluded (Camera 29, Life 34). The
 frames were picked for review, not drawn at random. Fresh run, correct /
