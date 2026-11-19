@@ -2,7 +2,6 @@
 
 import argparse
 import hashlib
-import json
 import os
 import time
 from pathlib import Path
@@ -16,7 +15,7 @@ from torch.nn import functional as F
 from valorant_ai_coach.knowledge.assets import ReferenceAssets
 from valorant_ai_coach.recordings.catalog import RecordingCatalog
 from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
-from valorant_ai_coach.temporal.replay import file_sha, read_json
+from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--recording-catalog", type=Path, required=True)
@@ -30,7 +29,9 @@ torch.set_num_threads(3)
 torch.manual_seed(119)
 os.umask(0o077)
 rng = np.random.default_rng(119)
-out = args.output_directory
+out = args.output_directory.resolve()
+if any((parent / ".git").exists() for parent in out.parents):
+    raise ValueError("Private Map CNN artifacts must remain outside Git checkouts")
 out.mkdir(parents=True, exist_ok=False, mode=0o700)
 cat = args.map_catalog
 cache = args.asset_cache
@@ -267,7 +268,7 @@ stats["training_receipt_sha256"] = file_sha(args.training_receipt)
 stats["weight_sha256s"] = {
     name: file_sha(out / f"{name}_cnn_weights_PRIVATE.npz") for name in ("portrait", "marker")
 }
-(out / "training_summary_PRIVATE.json").write_text(json.dumps(stats, indent=2))
+write_private(out / "training_summary_PRIVATE.json", stats)
 print(
     {k: v for k, v in stats.items() if k in ("portrait", "marker", "train_recordings")}, flush=True
 )
