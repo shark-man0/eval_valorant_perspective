@@ -157,6 +157,26 @@ UNKNOWN on one side only in 66.
 DEV2 alone (2,052 seconds, also reported on 2026-11-16): Camera 320 to 101,
 Life 554 to 391; SELF to REMOTE 38, SPECTATOR to SELF 6.
 
+### Random human GT: 80 frames of all ten matches (2026-11-19)
+
+The user labelled 80 frames of the fresh run without seeing any prediction: 40
+drawn uniformly from all 21,999 seconds and 40 drawn uniformly from the seconds
+that #150 or this PR changed. Frames marked unknown are excluded. Correct /
+incorrect / abstained:
+
+| Sample | Domain | Base | This PR | Combined with #150 |
+| --- | --- | --- | --- | --- |
+| Uniform 40 | Camera | 28 / 1 / 10 | 34 / 0 / 5 | 34 / 0 / 5 |
+| Uniform 40 | Life | 25 / 1 / 13 | 35 / 0 / 4 | 36 / 0 / 3 |
+| All 80 | Camera | 52 / 3 / 24 | 70 / 2 / 7 | 70 / 2 / 7 |
+| All 80 | Life | 38 / 6 / 35 | 73 / 0 / 6 | 76 / 0 / 3 |
+
+This PR adds no incorrect value. The two remaining Camera errors were already
+wrong in the base: an Astra astral form read as SELF (first_new_cold 1083, a
+remote view this PR does not measure) and DEV2 2005, labelled SELF by the user
+and SPECTATOR by both timelines, where the frame shows the spectator label and
+a teammate's name at the lower left (the label may be worth a second look).
+
 ### Human GT: 36 DEV2 frames labelled by the user (2026-11-19)
 
 The user labelled 36 sample frames of DEV2 without seeing any prediction
