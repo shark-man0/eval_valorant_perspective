@@ -28,10 +28,18 @@ def main() -> None:
     parser.add_argument("--models-directory", type=Path)
     parser.add_argument("--threshold", type=float)
     parser.add_argument("--learned-stage", choices=("reference", "marker", "both"), required=True)
+    parser.add_argument("--refine-center", action="store_true")
+    parser.add_argument("--training-evidence", action="store_true")
+    parser.add_argument(
+        "--registration", choices=("reference", "exact", "recording-anchors"), default="reference",
+    )
     arguments = vars(parser.parse_args())
     threshold = arguments.pop("threshold")
     stage = arguments.pop("learned_stage")
     directory = arguments.pop("models_directory")
+    refine = arguments.pop("refine_center")
+    if refine and stage != "both":
+        parser.error("Local center refinement requires both CNN evidence heads")
     if stage != "reference" and (
         directory is None
         or threshold is None
@@ -46,7 +54,7 @@ def main() -> None:
         if stage == "marker":
             return DirectRecorderTracker(detector, binding, knowledge)
         return LearnedRecorderTracker(
-            detector, binding, knowledge, portrait_model=models["portrait"]
+            detector, binding, knowledge, portrait_model=models["portrait"], refine_center=refine,
         )
 
     export_recorder_paths(

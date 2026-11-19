@@ -14,8 +14,9 @@ from .public_map_pixels import PublicMapPixels
 
 
 class RecordingMapAlignment:
-    def __init__(self, reader: PublicMapPixels) -> None:
+    def __init__(self, reader: PublicMapPixels, *, exact: bool = False) -> None:
         self.reader = reader
+        self.exact = exact
         self.source = ""
         self.map_uuid: str | None = None
         self._votes: list[tuple[str, Fraction, str]] = []
@@ -64,7 +65,9 @@ class RecordingMapAlignment:
         enhanced[top:bottom, left:right] = cv2.cvtColor(
             cv2.createCLAHE(2., (6, 6)).apply(gray), cv2.COLOR_GRAY2BGR,
         )
-        second = self.reader.inspect(enhanced)["raw"]["map_name_candidates"]
+        reader = self.reader.inspect_exact if self.exact else self.reader.inspect
+        measured = reader(enhanced)
+        second = measured["raw"]["map_name_candidates"]
         if len(second) != 1 or second[0]["map_id"] != self.map_uuid:
             return raw
         candidate = second[0]

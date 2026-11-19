@@ -50,6 +50,10 @@ def test_public_reference_alignment_is_advisory_and_blank_view_is_unknown(tmp_pa
     assert result["map_candidates"] == []
     assert result["signals"] == []
     assert reader.inspect(np.zeros_like(pixels))["raw"]["map_name_candidates"] == []
+    cv2.setRNGSeed(11)
+    exact = reader.inspect_exact(pixels)
+    cv2.setRNGSeed(501)
+    assert reader.inspect_exact(pixels) == exact
 
 
     extra = tmp_path / "reference.png"

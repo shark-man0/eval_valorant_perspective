@@ -117,6 +117,10 @@ class PublicMapPixels:
         recovered["raw"]["alignment_recovery"] = "agreeing_exact_descriptor_search"
         return recovered
 
+    def inspect_exact(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        """Register a frame without the randomized FLANN search."""
+        return self._inspect(image, self.exact_matcher)
+
     def _inspect(self, image: NDArray[np.uint8], matcher: Any) -> dict[str, Any]:
         if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:
             raise ValueError("Native BGR pixels required")

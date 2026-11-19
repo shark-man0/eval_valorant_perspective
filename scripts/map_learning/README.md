@@ -29,6 +29,24 @@ recorder marker. Negatives use a different candidate in the same frame or a
 region separated from the measured marker. These labels are weak; keep
 human-reviewed samples and independent matches separate from training.
 
+For observation-bound training, export the reference replay with
+`export_paths.py --learned-stage reference --training-evidence`. Pass that
+report and the same `--native-manifest` to `prepare_crops.py`. Archived
+comparison replays can supply a matching `--view-context` and `--method`.
+The resulting record
+adds `lineage` and `lineage_sha256`. Pass these records in a receipt with
+schema `map_cnn_training_receipt_v2`. Each native crop is checked against its
+frame's sample ID, source, bounds, category and crop hash. When the timeline
+provides observation IDs, the extraction retains those as well. Competing
+peaks are weak non-recorder examples. Empty regions supply a background class
+for the portrait model and model-scored hard negatives feed the marker head.
+Unlabelled examples still require high confidence and agreement under
+augmentation before being used as Agent pseudo-labels.
+
+Supply a private `--model-registry` path to register the two weight files as
+development candidates. The registry records their source receipt and model
+hashes. Model files and source-bound manifests live outside Git checkouts.
+
 The loader verifies DEVELOPMENT and TRAIN membership in the recording catalog,
 checks the source and crop bytes, and rejects duplicate physical matches.
 Training combines real crops, synthetic variants of the knowledge portraits,
@@ -44,11 +62,26 @@ detector with the reference-based Agent classifier. Use `--learned-stage both`
 to evaluate the two CNNs together. Both stages export the standard
 development-only one-second Map report. Weight files, crop archives,
 reference images, and private receipts stay outside the repository.
+In the two-head mode, `--refine-center` retries a failed center measurement
+using nearby native pixels. It requires two neighboring crops to support the
+same marker at the original rim, portrait and reference thresholds. A
+previously accepted center is retained.
 
 To measure a conservative complement, export the same native manifest twice
 with `--learned-stage reference` and `--learned-stage both`. Give both outputs
 and their common bundle to `compose_paths.py --help`. The composer retains the
 reference path and uses selected CNN points only where the reference reported
 unresolved portrait evidence on that exact frame. It also checks the recorder,
-view evidence, and Map texture. CNN segments retain their own measured links
-and do not link across reference segments.
+view evidence, and Map texture. CNN segments retain their own measured links.
+The optional `--link-corroborated` records a cross-detector edge only when the
+CNN measured that edge and both methods measured the same endpoint on the
+same native sample with agreement within three reference pixels. The
+original segments and coordinates are retained.
+
+`export_paths.py --registration exact` uses deterministic exact descriptor
+matching. `--registration recording-anchors` additionally attempts to register
+an otherwise unresolved current frame against two successful earlier frames
+from the same source, acquisition and minimap geometry. Both independent
+matches must agree on landmark probes and the measured marker center. The
+report retains the two native anchor IDs. This feature does not interpolate
+trajectory gaps.

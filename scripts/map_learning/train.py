@@ -9,10 +9,12 @@ from pathlib import Path
 import cv2
 import numpy as np
 import torch
+from crop_lineage import load_crop_lineage
 from models import MarkerCNN, PortraitCNN
 from torch.nn import functional as F
 
 from valorant_ai_coach.knowledge.assets import ReferenceAssets
+from valorant_ai_coach.learning.model_registry import ModelRegistry
 from valorant_ai_coach.recordings.catalog import RecordingCatalog
 from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
 from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
@@ -23,6 +25,7 @@ parser.add_argument("--map-catalog", type=Path, required=True)
 parser.add_argument("--asset-cache", type=Path, required=True)
 parser.add_argument("--training-receipt", type=Path, required=True)
 parser.add_argument("--output-directory", type=Path, required=True)
+parser.add_argument("--model-registry", type=Path)
 args = parser.parse_args()
 cv2.setNumThreads(1)
 torch.set_num_threads(3)
@@ -30,7 +33,10 @@ torch.manual_seed(119)
 os.umask(0o077)
 rng = np.random.default_rng(119)
 out = args.output_directory.resolve()
-if any((parent / ".git").exists() for parent in out.parents):
+private_dirs = [out]
+if args.model_registry is not None:
+    private_dirs.append(args.model_registry.resolve())
+if any((parent / ".git").exists() for part in private_dirs for parent in (part, *part.parents)):
     raise ValueError("Private Map CNN artifacts must remain outside Git checkouts")
 out.mkdir(parents=True, exist_ok=False, mode=0o700)
 cat = args.map_catalog
@@ -60,7 +66,11 @@ def variants(im):
 bank = [variants(sources[u]) for u in knowledge._uuids]
 catalog = RecordingCatalog(args.recording_catalog)
 receipt = read_json(args.training_receipt)
-if receipt.get("schema") != "map_cnn_training_receipt_v1" or not receipt.get("recordings"):
+schema = receipt.get("schema")
+background_classifier = schema == "map_cnn_training_receipt_v2"
+if schema not in ("map_cnn_training_receipt_v1", "map_cnn_training_receipt_v2") or not receipt.get(
+    "recordings"
+):
     raise ValueError("A pinned Map CNN training receipt is required")
 train = []
 physical = set()
@@ -81,33 +91,42 @@ for row in receipt["recordings"]:
         raise ValueError("Training crop archive hash mismatch")
     with np.load(patch_path, allow_pickle=False) as src:
         pos_data, neg_data = src["positive"], src["negative"]
-        for data in (pos_data, neg_data):
+        bg_data = src["background"] if background_classifier else np.empty(
+            (0, 25, 25, 3), np.uint8
+        )
+        groups = (pos_data, neg_data, bg_data) if background_classifier else (pos_data, neg_data)
+        for data in groups:
             if not len(data) or data.dtype != np.uint8 or data.shape[1:] != (25, 25, 3):
                 raise ValueError("Expected 25 by 25 uint8 BGR center crops")
+        if background_classifier:
+            load_crop_lineage(Path(row["lineage"]), row["lineage_sha256"], rec.source_sha256, src)
         train.append(
             {
                 "positive": pos_data,
                 "negative": neg_data,
+                "background": bg_data,
                 "agent": knowledge._uuids.index(row["recorder_agent_uuid"]),
             }
         )
 pos = np.concatenate([r["positive"] for r in train])
 neg = np.concatenate([r["negative"] for r in train])
+background = np.concatenate([r["background"] for r in train])
 real_agent = np.concatenate([np.full(len(r["positive"]), int(r["agent"])) for r in train])
 
 
 def paint(kind, agent):
-    background = (
-        neg[rng.integers(len(neg))].copy()
+    textures = background if kind == "none" and background_classifier else neg
+    canvas = (
+        textures[rng.integers(len(textures))].copy()
         if rng.random() < 0.85
         else np.full((25, 25, 3), rng.uniform(25, 145)).astype(np.uint8)
     )
     if rng.random() < 0.7:
-        background = cv2.GaussianBlur(background, (7, 7), 2)
+        canvas = cv2.GaussianBlur(canvas, (7, 7), 2)
     if kind == "none":
         if rng.random() < 0.4:
-            cv2.line(background, (2, 10), (23, 14), (120, 194, 237), int(rng.integers(1, 3)))
-        return background
+            cv2.line(canvas, (2, 10), (23, 14), (120, 194, 237), int(rng.integers(1, 3)))
+        return canvas
     x, y = 12 + rng.integers(-1, 2, 2)
     r = int(rng.integers(7, 10))
     size = 2 * r - 1
@@ -116,7 +135,7 @@ def paint(kind, agent):
     a = avatar[:, :, 3:4] / 255.0
     yy, xx = np.indices((size, size))
     a *= ((xx - size // 2) ** 2 + (yy - size // 2) ** 2 <= r * r)[:, :, None]
-    z = background[y - size // 2 : y + size // 2 + 1, x - size // 2 : x + size // 2 + 1]
+    z = canvas[y - size // 2 : y + size // 2 + 1, x - size // 2 : x + size // 2 + 1]
     z[:] = np.uint8(np.clip(z * (1 - a) + avatar[:, :, :3] * a, 0, 255))
     if kind in ("self", "other"):
         shade = int(rng.integers(-22, 23))
@@ -129,11 +148,11 @@ def paint(kind, agent):
             ],
             np.int32,
         )
-        cv2.fillConvexPoly(background, tip, ring)
-        cv2.circle(background, (x, y), r, ring, int(rng.integers(1, 3)), cv2.LINE_AA)
+        cv2.fillConvexPoly(canvas, tip, ring)
+        cv2.circle(canvas, (x, y), r, ring, int(rng.integers(1, 3)), cv2.LINE_AA)
     if rng.random() < 0.2:
-        background = cv2.GaussianBlur(background, (3, 3), rng.uniform(0.2, 1))
-    return background
+        canvas = cv2.GaussianBlur(canvas, (3, 3), rng.uniform(0.2, 1))
+    return canvas
 
 
 def input_tensor(x, size):
@@ -163,7 +182,16 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
     axis = torch.arange(size) - size // 2
     center_mask = axis[:, None].square() + axis[None, :].square() <= 5**2
     opt = torch.optim.AdamW(model.parameters(), lr=0.002, weight_decay=0.001)
+    hard_count = 0
     for epoch in range(14):
+        hard = None
+        if background_classifier and name == "marker" and epoch >= 2:
+            model.eval()
+            negative_ids = torch.where(yr == 0)[0]
+            with torch.inference_mode():
+                scores = torch.cat([model(xr[i]).flatten() for i in negative_ids.split(256)])
+            ranking = torch.argsort(scores, descending=True, stable=True)
+            hard = negative_ids[ranking[:len(scores)//5]]
         model.train()
         tot = 0.0
         confident = 0
@@ -174,6 +202,9 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
             ri = choice[(torch.arange(96) + k * 96) % len(choice)]
             if name == "portrait":
                 ri[48:] = torch.multinomial(example_weights, 48, replacement=True)
+            elif hard is not None and len(hard):
+                ri[:16] = hard[torch.randint(len(hard), (16,))]
+                hard_count += 16
             x = torch.cat([xs[batch], xr[ri]])
             y = torch.cat([ys[batch], yr[ri]])
             if name == "marker":
@@ -216,6 +247,8 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
                         top, label = first.max(dim=1)
                         alternative, label2 = second.max(dim=1)
                         stable = (top >= 0.97) & (alternative >= 0.97) & label.eq(label2)
+                        if background_classifier:
+                            stable &= label != len(bank)
                     if stable.any():
                         predicted = model(augment(samples[stable], True))
                         loss += 0.10 * F.cross_entropy(predicted, label[stable])
@@ -243,6 +276,7 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
         "real": len(real_x),
         "synthetic": len(syn_x),
         "agent_pseudo_labels_last_epoch": pseudo_count,
+        **({"hard_negative_draws": hard_count} if background_classifier else {}),
     }
 
 
@@ -250,13 +284,25 @@ N = len(bank)
 labels = np.repeat(np.arange(N), 300)
 rng.shuffle(labels)
 synth = np.stack([paint(("self", "other", "plain")[int(rng.integers(3))], i) for i in labels])
-stats = {"portrait": fit(PortraitCNN(N), 17, pos, real_agent, synth, labels, "portrait")}
+portrait_real = pos
+if background_classifier:
+    extra = np.stack([paint("none", 0) for _ in range(1000)])
+    synth = np.concatenate([synth, extra])
+    labels = np.r_[labels, np.full(len(extra), N)]
+    portrait_real = np.concatenate([pos, background])
+    real_agent = np.r_[real_agent, np.full(len(background), N)]
+stats = {"portrait": fit(
+    PortraitCNN(N + int(background_classifier)), 17, portrait_real, real_agent,
+    synth, labels, "portrait",
+)}
 kind = ["self"] * 4500 + ["other"] * 2700 + ["none"] * 1800
 rng.shuffle(kind)
 synthetic = np.stack([paint(b, int(rng.integers(N))) for b in kind])
 y = np.array([b == "self" for b in kind])
-target = np.r_[np.ones(len(pos)), np.zeros(len(neg))]
-stats["marker"] = fit(MarkerCNN(), 19, np.concatenate([pos, neg]), target, synthetic, y, "marker")
+target = np.r_[np.ones(len(pos)), np.zeros(len(neg) + len(background))]
+stats["marker"] = fit(
+    MarkerCNN(), 19, np.concatenate([pos, neg, background]), target, synthetic, y, "marker",
+)
 stats["train_recordings"] = len(train)
 stats["agent_uuids"] = list(knowledge._uuids)
 stats["asset_sha256s"] = {
@@ -264,10 +310,26 @@ stats["asset_sha256s"] = {
 }
 stats["formal_outputs"] = 0
 stats["schema"] = "map_cnn_weights_v1"
+if background_classifier:
+    stats["background_class"] = True
+    stats["lineage_bound_native_crops"] = len(pos) + len(neg) + len(background)
 stats["training_receipt_sha256"] = file_sha(args.training_receipt)
 stats["weight_sha256s"] = {
     name: file_sha(out / f"{name}_cnn_weights_PRIVATE.npz") for name in ("portrait", "marker")
 }
+if args.model_registry is not None:
+    registry = ModelRegistry(args.model_registry.resolve())
+    stats["development_registry"] = {}
+    for name in ("portrait", "marker"):
+        with np.load(out / f"{name}_cnn_weights_PRIVATE.npz", allow_pickle=False) as raw:
+            version = registry.register(
+                f"map_{name}", "small_cnn", {key: raw[key] for key in raw.files},
+                {"background_class": background_classifier and name == "portrait",
+                 "weight_sha256": stats["weight_sha256s"][name],
+                 "agent_uuids": stats["agent_uuids"],
+                 "formal_outputs": 0}, {}, stats["training_receipt_sha256"],
+            )
+        stats["development_registry"][name] = version.version_id
 write_private(out / "training_summary_PRIVATE.json", stats)
 print(
     {k: v for k, v in stats.items() if k in ("portrait", "marker", "train_recordings")}, flush=True
