@@ -82,6 +82,9 @@ hard pseudo-labels and per-recording balance. The retention variant takes
 a pinned incumbent to preserve established predictions while learning.
 Use `--separate-head-seeds` for matched ablations so a portrait-side change
 cannot also change the marker head's initialization or synthetic examples.
+For an independent detector comparison, `--marker-models-directory` keeps
+the portrait checkpoint while loading the detector from a second receipt.
+The replay records the digest of each model receipt.
 
 To measure a conservative complement, export the same native manifest twice
 with `--learned-stage reference` and `--learned-stage both`. Give both outputs

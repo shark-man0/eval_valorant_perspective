@@ -23,9 +23,12 @@ def restore(model, path):
     return model.eval()
 
 
-def load_models(directory, knowledge):
+def load_models(directory, knowledge, *, receipt_sha256=None):
     """Open the independent models from a private, content-bound training result."""
-    receipt = read_json(directory / "training_summary_PRIVATE.json")
+    receipt_path = directory / "training_summary_PRIVATE.json"
+    if receipt_sha256 is not None and file_sha(receipt_path) != receipt_sha256:
+        raise ValueError("Map CNN receipt hash mismatch")
+    receipt = read_json(receipt_path)
     if (
         receipt.get("schema") != "map_cnn_weights_v1"
         or receipt.get("formal_outputs") != 0
@@ -39,6 +42,8 @@ def load_models(directory, knowledge):
         if file_sha(path) != receipt["weight_sha256s"].get(name):
             raise ValueError("Map CNN weight hash mismatch")
         models[name] = restore(model, path)
+    if receipt_sha256 is not None and file_sha(receipt_path) != receipt_sha256:
+        raise ValueError("Map CNN receipt changed during loading")
     return models
 
 

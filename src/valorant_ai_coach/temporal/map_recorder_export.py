@@ -14,7 +14,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .application import VERSION as APPLICATION_VERSION
-from .evidence import digest, freeze_native_sample, native_time
+from .evidence import digest, freeze_native_sample, is_sha, native_time
 from .map_direct_recorder import (
     ADJACENT_PORTRAIT_REASON,
     DensePortraitSearch,
@@ -116,6 +116,7 @@ def export_recorder_paths(
     registration: str = "reference",
     training_evidence: bool = False,
     path_quality: bool = False,
+    experimental_model_receipts: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -162,6 +163,12 @@ def export_recorder_paths(
         raise ValueError("Experimental tracker requires guided alignment without portrait recovery")
     if training_evidence and (direct_detector != "guided" or direct_tracker_factory is not None):
         raise ValueError("Weak training crops require a guided reference replay")
+    if experimental_model_receipts is not None and (
+        direct_tracker_factory is None
+        or frozenset(experimental_model_receipts) not in ({"marker"}, {"marker", "portrait"})
+        or not all(is_sha(sha) for sha in experimental_model_receipts.values())
+    ):
+        raise ValueError("Valid development model receipt hashes required")
     direct = None
     binding = None
     if direct_detector and knowledge is not None:
@@ -354,6 +361,8 @@ def export_recorder_paths(
         report["game_knowledge"] = knowledge.provenance
     if exact:
         report["registration"] = registration
+    if experimental_model_receipts is not None:
+        report["experimental_model_receipts"] = experimental_model_receipts
     if path_quality:
         report["path_quality"] = measure_path_quality(
             paths, bundle["seconds"], second_rows, operable,
