@@ -34,6 +34,8 @@ from .map_recorder_path import (
 )
 from .map_recorder_selection import MapRecorderSelector
 from .map_recording_alignment import NativeMapFlowAlignment, RecordingMapAlignment
+from .map_recording_anchors import EVIDENCE as ANCHOR_ALIGNMENT
+from .map_recording_anchors import RecordingMapAnchors
 from .public_map_pixels import PublicMapPixels
 from .replay import SourcePolicy, file_sha, read_json, write_private
 
@@ -110,6 +112,7 @@ def export_recorder_paths(
         [RecorderUUID, KnowledgeRecorderMap], DirectRecorderTracker
     ] | None = None,
     comparison_evidence: bool = False,
+    registration: str = "reference",
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -119,6 +122,10 @@ def export_recorder_paths(
     refs, asset_hashes = _agent_references(catalog)
     if direct_detector not in (None, "external", "augmented", "fast", "cascade", "guided"):
         raise ValueError("Known direct Map detector required")
+    if registration not in ("reference", "exact", "recording-anchors") or (
+        registration != "reference" and direct_detector != "guided"
+    ):
+        raise ValueError("Exact Map registration requires guided development replay")
     if (recover_knowledge_track or direct_detector) and not knowledge_asset_cache:
         raise ValueError("Knowledge asset cache required for native UUID tracking")
     knowledge = (KnowledgeRecorderMap.load(
@@ -169,7 +176,11 @@ def export_recorder_paths(
             direct = DirectRecorderTracker(search, binding, knowledge, fallback_search=fallback,
                                            compare_centers=direct_detector == "guided",
                                            recover_adjacent_portrait=recover_adjacent_portrait)
-    alignment = RecordingMapAlignment(projector) if direct_detector == "guided" else None
+    exact = registration != "reference"
+    alignment = (
+        RecordingMapAlignment(projector, exact=exact) if direct_detector == "guided" else None
+    )
+    anchors = RecordingMapAnchors() if registration == "recording-anchors" else None
     flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
     operable: set[str] = set()
@@ -261,7 +272,9 @@ def export_recorder_paths(
             continue
         if direct_detector:
             direct_stages["projection_attempted"] += 1
-        raw = projector.inspect(image, recover_alignment=recover_map_alignment)["raw"]
+        measured = (projector.inspect_exact(image) if exact else
+                    projector.inspect(image, recover_alignment=recover_map_alignment))
+        raw = measured["raw"]
         adjacent = result["selection_reason"] == ADJACENT_PORTRAIT_REASON
         if adjacent:
             if flow is not None:
@@ -272,6 +285,7 @@ def export_recorder_paths(
                 rows.append(None)
                 continue
         elif alignment is not None:
+            direct_raw = raw
             raw = alignment.inspect(image, sample, raw)
             if flow is not None:
                 raw = flow.recover(
@@ -279,6 +293,14 @@ def export_recorder_paths(
                     alignment.map_uuid,
                     carry=frame.get("continuity", {}).get("carry_allowed") is True,
                 )
+            if anchors is not None and result["selection_status"] == "RESEARCH_SELECTED":
+                anchored = anchors.observe(
+                    image, sample, direct_raw, alignment.map_uuid,
+                    result["support_center_frame_px"],
+                    recover=not raw["map_name_candidates"],
+                )
+                if anchored.get("alignment_recovery") == ANCHOR_ALIGNMENT:
+                    raw = anchored
         projected = project_recorder_witness(
             image, sample, pool, result,
             raw,
@@ -292,7 +314,7 @@ def export_recorder_paths(
                 and result["selection_status"] == "RESEARCH_SELECTED"):
             direct.remember_projection(image)
         if (flow is not None and projected is not None and not adjacent
-                and raw.get("alignment_recovery") != "native_flow"
+                and raw.get("alignment_recovery") not in ("native_flow", ANCHOR_ALIGNMENT)
                 and result["selection_status"] == "RESEARCH_SELECTED"):
             flow.remember(image, sample, result["track_anchor"], raw)
         rows.append(projected)
@@ -314,6 +336,8 @@ def export_recorder_paths(
     }
     if knowledge is not None:
         report["game_knowledge"] = knowledge.provenance
+    if exact:
+        report["registration"] = registration
     if direct_detector:
         report["recording_map_uuid"] = alignment.map_uuid if alignment else None
         report["direct_detector"] = direct_detector

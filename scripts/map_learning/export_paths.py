@@ -28,6 +28,9 @@ def main() -> None:
     parser.add_argument("--models-directory", type=Path)
     parser.add_argument("--threshold", type=float)
     parser.add_argument("--learned-stage", choices=("reference", "marker", "both"), required=True)
+    parser.add_argument(
+        "--registration", choices=("reference", "exact", "recording-anchors"), default="reference",
+    )
     arguments = vars(parser.parse_args())
     threshold = arguments.pop("threshold")
     stage = arguments.pop("learned_stage")

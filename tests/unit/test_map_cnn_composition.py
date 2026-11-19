@@ -26,6 +26,7 @@ def test_cnn_complement_keeps_reference_and_requires_unresolved_exact_portrait()
             "map_id": "map",
             "reference_sha256": texture,
             "map_reference_px": [i, i],
+            "fit_residual_p95_reference_px": 2,
             "track_anchor": "witness",
             "support_count": i + 1,
             "kind": "selected",
@@ -67,6 +68,14 @@ def test_cnn_complement_keeps_reference_and_requires_unresolved_exact_portrait()
     assert composed["formal_outputs"] == composed["interpolated_samples"] == 0
     assert composed["new_cnn_native_positions"] == 1
     assert composed["operable_coverage"]["operable_seconds_with_native_edge"] == 0
+    linked = compose_paths(reference, learned, timeline, "timeline", link_corroborated=True)
+    assert linked["segments"] == composed["segments"]
+    assert linked["operable_coverage"]["operable_seconds_with_native_edge"] == 1
+    assert linked["corroborated_native_edges"][0]["overlap_sample_ref"] == ids[0]
+    displaced = deepcopy(learned)
+    displaced["segments"][0][0]["map_reference_px"] = [4, 4]
+    rejected = compose_paths(reference, displaced, timeline, "timeline", link_corroborated=True)
+    assert rejected["corroborated_native_edges"] == []
     differently_observed = deepcopy(learned)
     differently_observed["comparison_evidence"]["operable_sample_refs"] = ids[1:]
     with pytest.raises(ValueError, match="view evidence"):

@@ -29,7 +29,8 @@ def load_models(directory, knowledge):
     ):
         raise ValueError("Matching development Map CNN model receipt required")
     models = {}
-    for name, model in (("portrait", PortraitCNN(len(knowledge._uuids))), ("marker", MarkerCNN())):
+    classes = len(knowledge._uuids) + int(receipt.get("background_class") is True)
+    for name, model in (("portrait", PortraitCNN(classes)), ("marker", MarkerCNN())):
         path = directory / f"{name}_cnn_weights_PRIVATE.npz"
         if file_sha(path) != receipt["weight_sha256s"].get(name):
             raise ValueError("Map CNN weight hash mismatch")

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import math
 from itertools import groupby
 from pathlib import Path
 from typing import Any
@@ -10,6 +11,7 @@ from typing import Any
 from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample, native_time
 from valorant_ai_coach.temporal.map_recorder_path import (
     VERSION,
+    _same_run,
     join_recorder_seconds,
     measure_operable_coverage,
 )
@@ -49,7 +51,38 @@ def _positions(report, timeline_samples, source_sha):
     return points
 
 
-def compose_paths(reference, learned, timeline, timeline_sha):
+def _corroborated_links(segments, known, admitted, operable):
+    result = []
+    for segment in segments:
+        for a, b in zip(segment, segment[1:], strict=False):
+            ids = tuple(p["sample"]["sample_sha256"] for p in (a, b))
+            if not set(ids) <= operable or not _same_run(a, b):
+                continue
+            a_new, b_new = (key in admitted for key in ids)
+            if a_new == b_new:
+                continue
+            overlap_id = ids[1] if a_new else ids[0]
+            overlap = b if a_new else a
+            observed = known.get(overlap_id)
+            if (observed is None or observed["kind"] != "selected"
+                    or overlap["kind"] != "selected"
+                    or observed["map_id"] != overlap["map_id"]
+                    or observed["reference_sha256"] != overlap["reference_sha256"]):
+                continue
+            errors = [
+                p.get("fit_residual_p95_reference_px") for p in (a, b, observed)
+            ]
+            if not all(isinstance(error, (int, float)) and 0 <= error <= 8 for error in errors):
+                continue
+            disagreement = math.dist(observed["map_reference_px"], overlap["map_reference_px"])
+            if not disagreement <= 3:
+                continue
+            result.append({"sample_refs": list(ids), "overlap_sample_ref": overlap_id,
+                           "overlap_disagreement_reference_px": disagreement})
+    return result
+
+
+def compose_paths(reference, learned, timeline, timeline_sha, *, link_corroborated=False):
     source, agent = _check_source(reference, timeline_sha)
     if _check_source(learned, timeline_sha) != (source, agent):
         raise ValueError("Recorder identity differs between replays")
@@ -100,6 +133,10 @@ def compose_paths(reference, learned, timeline, timeline_sha):
         "qualified": False,
         "formal_outputs": 0,
     }
+    if link_corroborated:
+        paths["corroborated_native_edges"] = _corroborated_links(
+            learned["segments"], known, admitted, operable,
+        )
     rows = join_recorder_seconds(paths, timeline)
     return {
         **paths,
@@ -114,12 +151,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for field in ("reference-path", "learned-path", "bundle-path", "output"):
         parser.add_argument(f"--{field}", type=Path, required=True)
+    parser.add_argument("--link-corroborated", action="store_true")
     args = parser.parse_args()
     report = compose_paths(
         read_json(args.reference_path),
         read_json(args.learned_path),
         read_json(args.bundle_path),
         file_sha(args.bundle_path),
+        link_corroborated=args.link_corroborated,
     )
     write_private(
         args.output,

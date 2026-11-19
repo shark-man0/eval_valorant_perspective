@@ -13,6 +13,7 @@ from numpy.typing import NDArray
 from shapely.geometry import Point, Polygon
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
+from .map_recording_anchors import EVIDENCE as ANCHOR_ALIGNMENT
 
 VERSION = "development_recorder_map_path_v1"
 
@@ -52,8 +53,18 @@ def project_recorder_witness(
     sha = reference_sha256s.get(map_id, "")
     evidence = reference.get("evidence")
     flow_recovery = alignment.get("alignment_recovery") == "native_flow"
+    anchor_recovery = alignment.get("alignment_recovery") == ANCHOR_ALIGNMENT
+    anchors = alignment.get("registration_anchor_sample_refs")
+    if anchor_recovery and (
+        not isinstance(anchors, list) or len(anchors) != 2
+        or not all(is_sha(key) and key != sample["sample_sha256"] for key in anchors)
+        or anchors[0] == anchors[1]
+    ):
+        return None
     expected_evidence = ("adjacent_optical_flow_and_current_reference" if flow_recovery
                          else "public_reference_feature_alignment")
+    if anchor_recovery:
+        expected_evidence = ANCHOR_ALIGNMENT
     if (
         not is_sha(sha) or evidence != expected_evidence
         or reference.get("position_authority") is not False
@@ -96,6 +107,8 @@ def project_recorder_witness(
         "fit_residual_p95_reference_px": residual,
         "qualified": False, "position_authority": False,
         **({"alignment_recovery": "native_flow"} if flow_recovery else {}),
+        **({"alignment_recovery": ANCHOR_ALIGNMENT, "registration_anchor_sample_refs": anchors}
+           if anchor_recovery else {}),
         **({"selection_method": selection["selection_method"],
             "track_anchor": selection["track_anchor"],
             "recorder_agent_uuid_candidate": selection["recorder_agent_uuid_candidate"]}
@@ -237,6 +250,24 @@ def _linked_sample_ids(
                 ids = {a["sample"]["sample_sha256"], b["sample"]["sample_sha256"]}
                 if admissible is None or ids <= admissible:
                     linked.update(ids)
+    corroborated = paths.get("corroborated_native_edges", ())
+    if corroborated:
+        points = {p["sample"]["sample_sha256"]: p for s in paths["segments"] for p in s}
+        for edge in corroborated:
+            first, second = edge["sample_refs"]
+            a, b = points.get(first), points.get(second)
+            if (
+                a is not None and b is not None
+                and edge["overlap_sample_ref"] in (first, second)
+                and 0 <= edge["overlap_disagreement_reference_px"] <= 3
+                and a["kind"] == b["kind"] == "selected"
+                and a["map_id"] == b["map_id"]
+                and a["reference_sha256"] == b["reference_sha256"]
+                and source_scope(a["sample"]) == source_scope(b["sample"])
+                and 0 < native_time(b["sample"]) - native_time(a["sample"]) <= Fraction(1, 4)
+                and (admissible is None or {first, second} <= admissible)
+            ):
+                linked.update((first, second))
     return linked
 
 
