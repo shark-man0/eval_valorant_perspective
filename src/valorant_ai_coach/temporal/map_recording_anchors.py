@@ -25,7 +25,6 @@ class _Anchor:
     points: list[Any]
     descriptors: NDArray[np.float32]
     reference: dict[str, Any]
-    atlas_cell: tuple[int, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -39,13 +38,12 @@ class _Fit:
 class RecordingMapAnchors:
     """A bounded causal reference bank for one source, acquisition and layout."""
 
-    def __init__(self, *, atlas_diverse: bool = False) -> None:
+    def __init__(self) -> None:
         self._sift = cast(Any, cv2).SIFT_create(nfeatures=800, contrastThreshold=.012)
         self._matcher = cv2.BFMatcher(cv2.NORM_L2)
         self._scope: tuple[Any, ...] | None = None
         self._latest: Fraction | None = None
         self._anchors: list[_Anchor] = []
-        self._atlas_diverse = atlas_diverse
 
     def _features(self, image: NDArray[np.uint8], bounds: list[int]) -> tuple[Any, Any]:
         left, top, right, bottom = bounds
@@ -140,29 +138,9 @@ class RecordingMapAnchors:
         points, descriptors = self._features(image, raw["roi_pixel_bounds"])
         if descriptors is None:
             return
-        cell = None
-        if self._atlas_diverse:
-            left, top, right, bottom = raw["roi_pixel_bounds"]
-            matrix = np.asarray(ref["reference_to_roi_homography_candidate"])
-            try:
-                center = [(right-left)/2, (bottom-top)/2, 1.]
-                x, y, _ = np.linalg.solve(matrix, center)
-            except np.linalg.LinAlgError:
-                return
-            if not (np.isfinite([x, y]).all()):
-                return
-            cell = (int(x//192), int(y//192))
-            same = [i for i, a in enumerate(self._anchors) if a.atlas_cell == cell]
-            if len(same) >= 2:
-                del self._anchors[same[-1]]
         self._anchors.append(_Anchor(
-            sample["sample_sha256"], tick, sample["native_pixel_sha256"], points,
-            descriptors, ref, cell,
+            sample["sample_sha256"], tick, sample["native_pixel_sha256"], points, descriptors, ref,
         ))
-        if self._atlas_diverse:
-            if len(self._anchors) > 24:
-                self._anchors.pop(0)
-            return
         if len(self._anchors) > 16:
             # Keep the first four separately from the rolling recent anchors.
             del self._anchors[4]

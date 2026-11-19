@@ -125,7 +125,7 @@ def export_recorder_paths(
     refs, asset_hashes = _agent_references(catalog)
     if direct_detector not in (None, "external", "augmented", "fast", "cascade", "guided"):
         raise ValueError("Known direct Map detector required")
-    if registration not in ("reference", "exact", "recording-anchors", "spatial-anchors") or (
+    if registration not in ("reference", "exact", "recording-anchors") or (
         registration != "reference" and direct_detector != "guided"
     ):
         raise ValueError("Exact Map registration requires guided development replay")
@@ -185,10 +185,7 @@ def export_recorder_paths(
     alignment = (
         RecordingMapAlignment(projector, exact=exact) if direct_detector == "guided" else None
     )
-    anchors = (
-        RecordingMapAnchors(atlas_diverse=registration == "spatial-anchors")
-        if registration in ("recording-anchors", "spatial-anchors") else None
-    )
+    anchors = RecordingMapAnchors() if registration == "recording-anchors" else None
     flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
     operable: set[str] = set()

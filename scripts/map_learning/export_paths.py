@@ -33,8 +33,7 @@ def main() -> None:
     parser.add_argument("--training-evidence", action="store_true")
     parser.add_argument("--path-quality", action="store_true")
     parser.add_argument(
-        "--registration", choices=("reference", "exact", "recording-anchors", "spatial-anchors"),
-        default="reference",
+        "--registration", choices=("reference", "exact", "recording-anchors"), default="reference",
     )
     arguments = vars(parser.parse_args())
     threshold = arguments.pop("threshold")

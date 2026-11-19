@@ -32,6 +32,7 @@ parser.add_argument("--experiment", choices=(
     "retain-incumbent",
 ), default="standard")
 parser.add_argument("--incumbent-model", type=Path)
+parser.add_argument("--separate-head-seeds", action="store_true")
 args = parser.parse_args()
 if (args.experiment == "retain-incumbent") != (args.incumbent_model is not None):
     parser.error("--experiment retain-incumbent requires --incumbent-model")
@@ -51,6 +52,8 @@ cat = args.map_catalog
 cache = args.asset_cache
 knowledge = KnowledgeRecorderMap.load(cache, cat)
 teacher = load_models(args.incumbent_model, knowledge) if args.incumbent_model else None
+if args.separate_head_seeds:
+    torch.manual_seed(119)
 assets = ReferenceAssets.load(cache)
 sources = dict(knowledge.minimap_portraits)
 for uid in knowledge._uuids:
@@ -339,6 +342,10 @@ stats = {"portrait": fit(
     synth, labels, "portrait",
     recording_weights(("positive", "background") if background_classifier else ("positive",)),
 )}
+if args.separate_head_seeds:
+    # Portrait-class sampling must not change marker initialization or its synthetic inputs.
+    torch.manual_seed(120)
+    rng = np.random.default_rng(120)
 kind = ["self"] * 4500 + ["other"] * 2700 + ["none"] * 1800
 rng.shuffle(kind)
 synthetic = np.stack([paint(b, int(rng.integers(N))) for b in kind])
@@ -361,6 +368,8 @@ if traced:
     stats["lineage_bound_native_crops"] = len(pos) + len(neg) + len(background)
 if args.experiment != "standard":
     stats["experiment"] = args.experiment
+if args.separate_head_seeds:
+    stats["separate_head_seeds"] = {"portrait": 119, "marker": 120}
 if args.incumbent_model is not None:
     stats["incumbent_receipt_sha256"] = file_sha(
         args.incumbent_model / "training_summary_PRIVATE.json"
@@ -380,6 +389,7 @@ if args.model_registry is not None:
                  "weight_sha256": stats["weight_sha256s"][name],
                  "agent_uuids": stats["agent_uuids"],
                  "experiment": args.experiment,
+                 "separate_head_seeds": stats.get("separate_head_seeds"),
                  "incumbent_receipt_sha256": stats.get("incumbent_receipt_sha256"),
                  "formal_outputs": 0}, {}, stats["training_receipt_sha256"],
             )

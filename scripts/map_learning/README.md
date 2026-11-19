@@ -80,6 +80,8 @@ Zones take precedence.
 The trainer's `--experiment` option isolates the background class,
 hard pseudo-labels and per-recording balance. The retention variant takes
 a pinned incumbent to preserve established predictions while learning.
+Use `--separate-head-seeds` for matched ablations so a portrait-side change
+cannot also change the marker head's initialization or synthetic examples.
 
 To measure a conservative complement, export the same native manifest twice
 with `--learned-stage reference` and `--learned-stage both`. Give both outputs
