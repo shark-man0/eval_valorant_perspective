@@ -173,6 +173,17 @@ In the current replay 663 of them keep the base DEAD, 331 are ALIVE (purchase
 phase or the own HUD with health, see the run-level review) and 16 remain
 UNKNOWN; 33 seconds are withdrawn in total.
 
+Protected recordings (2026-11-19, with the user's permission, one final run):
+three of the four full_match_5 recordings (5,400 seconds; the fourth could not
+be transferred), acquired from the originals with the same command. Nothing was
+tuned on them. UNKNOWN seconds before / with this option / combined with #151:
+Round 1,544 / 446 / 446, Life 919 / 360 / 176, Camera 828 / 823 / 273. No match
+rose in any domain. Round start candidates 51 to 58, end candidates 55 to 59.
+Every second of two matches that changed between two known values was viewed
+(183 seconds, combined run): 183 consistent, 0 contradicted. Of 30 sampled
+withdrawals in the third match, the old value was wrong in 25, right in 3 and
+undecidable in 2.
+
 Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
 without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40
 drawn uniformly from the seconds that either PR changed. Frames the user marked
