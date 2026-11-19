@@ -97,6 +97,14 @@ CNN measured that edge and both methods measured the same endpoint on the
 same native sample with agreement within three reference pixels. The
 original segments and coordinates are retained.
 
+Use `recover_gaps.py` with the composed report and its original reference
+replay to recheck vacant seconds against the exact native frame manifest. It
+builds recording references from prior marker measurements agreed by the
+public atlas and a base recognizer. It keeps measured primary coordinates and
+edges. Pass the marker-companion composition and its base CNN replay with
+`--companion-report` and `--companion-baseline` to include verified companion
+positions. Conflicting new positions are left unresolved.
+
 For continual learning, `compose_paths.py --marker-companion` takes two
 two-head exports with the same portrait receipt and distinct marker
 receipts. It keeps the incumbent coordinates and admits only new selected
