@@ -61,6 +61,14 @@ native samples, keeps only frames whose decoded pixels hash to the sample's
   cannot hold its own first-person view with its health shown. Rows with an
   elimination display, death, spectator, remote or result cue, and rows between
   the own-HUD rows, are not revised.
+- A measured spectator row (the player switch prompt and the spectated player's
+  name), without an own HUD, remote or BUY cue in the same frame, gives life
+  DEAD (`measured_spectator_view`): only a recorder who is not alive is shown
+  that label. Learned spectator claims stay a competing hypothesis.
+- A carried ALIVE value (`bounded_missing_observation`) directly before such a
+  row, with only UNKNOWN rows between, returns to UNKNOWN
+  (`carried_alive_before_measured_spectator_view`): the death lies somewhere in
+  the carried interval.
 
 The default path is unchanged.
 
@@ -86,7 +94,7 @@ identical there, recorded as such).
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Camera UNKNOWN seconds | 4,118 | 1,039 |
-| Life UNKNOWN seconds | 5,322 | 2,904 |
+| Life UNKNOWN seconds | 5,322 | 1,200 |
 | Round UNKNOWN seconds | 7,230 | 7,230 |
 | Matches where any UNKNOWN count rose | – | 0 of 10 |
 | Camera REMOTE seconds | 0 | 87 |
@@ -99,9 +107,15 @@ identical there, recorded as such).
 
 Seconds changed between known values: life DEAD to ALIVE 991, ALIVE to DEAD 2;
 camera SPECTATOR to SELF 107, SELF to REMOTE 87, SELF to SPECTATOR 6. Life
-values withdrawn to UNKNOWN: 59 seconds. Before the own-HUD-during-Round rule
-(8c398d1) the same replay gave Life 4,336 with 188 DEAD to ALIVE and 862
-withdrawn seconds; Camera is unchanged by that rule.
+values withdrawn to UNKNOWN: 340 seconds. Before the measured spectator rule
+(6e786ae) the same replay gave Life 2,904 with 59 withdrawn seconds; the rule
+changes no known value, Camera, the 69 attributes or the fixed labels. Before
+the own-HUD-during-Round rule (8c398d1) it gave Life 4,336 with 188 DEAD to
+ALIVE and 862 withdrawn seconds; Camera is unchanged by that rule.
+Per match, Life UNKNOWN seconds now: DEV2 106, issue_oldfull001 124,
+issue_oldfull002 139, issue_oldfull004 113, issue_newfull001 119,
+issue_newfull002 146, issue_freshfull003 119, issue_newfull004 146,
+issue_freshfull005 67, first_new_cold 121.
 
 ### Fresh full-length analysis: all ten matches from the original recordings (2026-11-18)
 
@@ -115,21 +129,23 @@ were undecided. Holdout recordings were not used.
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Camera UNKNOWN seconds | 3,333 | 997 |
-| Life UNKNOWN seconds | 4,059 | 3,025 |
+| Life UNKNOWN seconds | 4,059 | 1,081 |
 | Round UNKNOWN seconds | 7,071 | 7,071 |
 | Matches where any UNKNOWN count rose | – | 0 of 10 |
 | Human labels sampled by the fresh run (72 of 78): correct / abstained / incorrect | 72 / 0 / 0 | 72 / 0 / 0 |
 
 Per match (Camera, Life UNKNOWN seconds before to after): DEV2 320 to 101, 554
-to 391; issue_oldfull001 438 to 116, 535 to 371; issue_oldfull002 457 to 101,
-288 to 256; issue_oldfull004 231 to 83, 309 to 224; issue_newfull001 323 to 89,
-428 to 345; issue_newfull002 333 to 82, 367 to 261; issue_freshfull003 299 to
-126, 367 to 280; issue_newfull004 459 to 134, 519 to 422; issue_freshfull005
-175 to 46, 266 to 202; first_new_cold 298 to 119, 426 to 273.
+to 108; issue_oldfull001 438 to 116, 535 to 118; issue_oldfull002 457 to 101,
+288 to 104; issue_oldfull004 231 to 83, 309 to 86; issue_newfull001 323 to 89,
+428 to 79; issue_newfull002 333 to 82, 367 to 140; issue_freshfull003 299 to
+126, 367 to 130; issue_newfull004 459 to 134, 519 to 122; issue_freshfull005
+175 to 46, 266 to 66; first_new_cold 298 to 119, 426 to 128.
 
-Changes between known values: life DEAD to ALIVE 939 seconds, camera
+Changes between known values: life DEAD to ALIVE 937 seconds, camera
 SPECTATOR to SELF 89, SELF to REMOTE 87, SELF to SPECTATOR 4. Life withdrawn
-to UNKNOWN: 52 seconds (50 DEAD, 2 ALIVE). In the sampled frames below every
+to UNKNOWN: 280 seconds (30 DEAD, 250 ALIVE). Life UNKNOWN to DEAD from the
+measured spectator rule: 2,211 seconds. Before that rule (6e786ae) Life UNKNOWN
+was 3,025 with 52 withdrawn seconds. In the sampled frames below every
 DEAD that became ALIVE showed the recorder's own HUD with health; the old DEAD
 was a death hypothesis carried past its Round or a victim display that did not
 belong to the recorder.
@@ -160,19 +176,32 @@ Frames decoded at the exact native PTS from the original recordings.
 | REMOTE frames (11 full frames, 7 crops) | 18 | 0 | 0 |
 | Owl Drone views in a 252-frame sweep of one match | 11 of 11 read REMOTE | | |
 
-Run-level review of the fresh run: one frame per changed run, every run.
+Run-level review of the fresh run. Frames were decoded 0.2 s after the
+sample time, except where noted; at a run boundary that offset can show the
+next state, so boundary disagreements were decoded again at the exact sample
+time.
+
+| Every changed second or run of 6e786ae+1 | Consistent | Contradicted | Undecidable |
+| --- | ---: | ---: | ---: |
+| Camera SPECTATOR to SELF, all 89 seconds | 88 | 0 | 1 (third-party overlay) |
+| Camera SELF to REMOTE, all 87 seconds | 87 (2 after decoding at the exact time) | 0 | 0 |
+| Life UNKNOWN to DEAD from a measured spectator view, all 153 runs (2,231 s) | 146 | 0 | 7 (result screens, settings menu) |
+| Life carried ALIVE withdrawn before a spectator view, all 144 runs (287 s) | old ALIVE wrong in 143 (death camera or spectator map already shown) | old ALIVE right in 1 | 0 |
+
+Earlier run-level review (6e786ae), one frame per changed run:
 
 | Changed runs | Consistent | Contradicted | Undecidable |
 | --- | ---: | ---: | ---: |
 | Life DEAD to ALIVE, all 201 runs (939 seconds) | 199 | 1 | 1 |
 | Life DEAD withdrawn to UNKNOWN, all 16 runs | old DEAD wrong in 13 | old DEAD right in 1 | 2 |
 
-The contradicted run is issue_newfull002 2485 to 2486: the own HUD with health
+The contradicted run was issue_newfull002 2485 to 2486: the own HUD with health
 was measured up to 2484, the two carried seconds after it already show the
-recorder's combat report after its death (a 2 s death boundary error). The
-withdrawn correct DEAD is the following run, 2487 to 2502: the spectator label
-is measured from 2488, but without the earlier death hypothesis the base rule
-keeps a spectator view alone as a competing hypothesis. The undecidable frames
+recorder's combat report after its death. The withdrawn correct DEAD was the
+following run, 2487 to 2502: the spectator label is measured from 2488, but the
+base rule kept a spectator view alone as a competing hypothesis. Both are fixed
+by the measured spectator rule: 2485 to 2486 are now UNKNOWN and 2488 to 2502
+DEAD. The undecidable frames
 are an overlay over the whole screen and a map loading screen.
 
 The four SELF to SPECTATOR seconds are match result overlays; in three of them
@@ -196,10 +225,9 @@ result screens.
   for the first seconds of the buy menu (one event of two seconds seen).
 - The fresh run repeats the same ten development matches; generalization to
   unseen matches is unmeasured.
-- Every DEAD to ALIVE and withdrawn Life run of the fresh run was viewed in at
-  least one frame, not every second; 73 of the 89 SPECTATOR to SELF seconds have
-  not been viewed.
-- A carried own-HUD value can outlast a death by up to the existing 2 s carry
-  (one run seen).
+- Every changed Camera second of the fresh run was viewed; Life runs were viewed
+  in at least one frame each, not every second.
+- One withdrawn carried ALIVE (first_new_cold 1992) was correct: the recorder
+  still had its own HUD one second before the spectator view.
 - Pixel identity depends on the decoder: the recording machine's acquisitions
   and the container's acquisition each match their own decoder only.

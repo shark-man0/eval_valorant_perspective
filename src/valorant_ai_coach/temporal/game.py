@@ -588,6 +588,21 @@ class DevelopmentGameTimeline:
             if measured_view and "remote" in signals and "ALIVE" not in choices["life"]:
                 # Steering a measured remote ability requires a living recorder.
                 choices["life"].append("ALIVE")
+            measured_spectator = (
+                measured_view
+                and "owner_hud" not in signals
+                and "remote" not in signals
+                and "buy" not in signals
+                and any(
+                    "spectator" in r["signals"]
+                    and r["context"].get("unqualified_view_model") is not True
+                    for r in frame["observations"]
+                )
+            )
+            if measured_spectator and "DEAD" not in choices["life"]:
+                # The spectator label (player switch prompt and the spectated
+                # player's name) is shown only to a recorder who is not alive.
+                choices["life"].append("DEAD")
             # A small active clock remains contextually ACTIVE below the buy-clock
             # ambiguity range only when its observed countdown and score agree.
             clocks = {
@@ -762,7 +777,14 @@ class DevelopmentGameTimeline:
                 death_latch = current["life"]["value"]
                 death_round_token = round_token
                 last_dead = frame["sample"]
-            if "spectator" in signals and not death_latch:
+            if (
+                measured_spectator
+                and current["life"]["value"] == "DEAD"
+                and current["life"]["reason"] == "current_observation"
+            ):
+                current["life"]["reason"] = "measured_spectator_view"
+                last_direct["life"] = now, deepcopy(current["life"])
+            if "spectator" in signals and not death_latch and not measured_spectator:
                 # Preserve competing life explanations. Spectator UI is a camera observation.
                 current["life"] = _estimate(
                     alternatives=["DEAD", "UNKNOWN"]
@@ -1165,6 +1187,8 @@ class DevelopmentGameTimeline:
         measured_returns = (
             self._confirm_measured_view_returns(states) if self.measured_view_precedence else []
         )
+        if self.measured_view_precedence:
+            measured_returns += self._withdraw_carry_before_measured_spectator(states)
         round_projections = []
         for state in states:
             rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1414,6 +1438,54 @@ class DevelopmentGameTimeline:
             and r["context"].get("unqualified_view_model") is not True
             and not set(r["signals"]) & {"spectator", "remote", "death", "downed"}
         ]
+
+    def _withdraw_carry_before_measured_spectator(
+        self, states: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        """Withdraw a carried ALIVE value that a later spectator view contradicts.
+
+        A carried life value only continues the last observation. When the next
+        life observation is a measured spectator view, the recorder died after
+        its last observed own HUD; the carried seconds before the spectator view
+        can lie on either side of that death, so they return to UNKNOWN.
+        """
+        history: list[dict[str, Any]] = []
+        for index, frame in enumerate(states):
+            if frame["life"]["reason"] != "measured_spectator_view":
+                continue
+            k = index - 1
+            while k >= 0:
+                state = states[k]
+                link = states[k + 1]["continuity"]
+                if (
+                    source_scope(state["sample"]) != source_scope(frame["sample"])
+                    or not link["carry_allowed"]
+                ):
+                    break
+                life = state["life"]
+                if life["value"] == "UNKNOWN":
+                    k -= 1
+                    continue
+                if life["value"] != "ALIVE" or life["reason"] != "bounded_missing_observation":
+                    break
+                before = {d: deepcopy(state[d]) for d in ("life", "camera")}
+                state["life"] = _estimate(
+                    reason="carried_alive_before_measured_spectator_view",
+                    evidence=sorted(set(life["evidence_ids"]) | set(frame["life"]["evidence_ids"])),
+                    origin="temporal_inference",
+                )
+                state["life"]["uncertainty"] = "death_time_inside_carried_interval"
+                history.append({
+                    "sample": state["sample"], "before": before,
+                    "after_life": deepcopy(state["life"]),
+                    "after_camera": deepcopy(state["camera"]),
+                    "basis": "carried_alive_before_measured_spectator_view",
+                    "confirmation_sample": frame["sample"],
+                    "evidence_ids": state["life"]["evidence_ids"],
+                    "qualified": False, "internal_game_event_time": None,
+                })
+                k -= 1
+        return history
 
     def _confirm_measured_view_returns(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Resolve unobserved return edges around a measured own HUD.

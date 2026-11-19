@@ -180,3 +180,30 @@ def test_own_hud_until_next_round_buy_resolves_the_return():
     assert result["frames"][4]["life"]["reason"] == (
         "bracketed_by_measured_own_hud_after_round_change"
     )
+
+
+def test_measured_spectator_view_means_the_recorder_is_not_alive():
+    rows = [obs(0, ["owner_hud", "active"]), obs(10, ["spectator"]),
+            obs(20, ["spectator", "result"])]
+    frames = replay(rows, measured_view_precedence=True)["frames"]
+    assert [f["life"]["value"] for f in frames] == ["ALIVE", "DEAD", "DEAD"]
+    assert {f["life"]["reason"] for f in frames[1:]} == {"measured_spectator_view"}
+    # Without the option, or from a learned view, it stays a competing hypothesis.
+    assert replay(rows)["frames"][1]["life"]["value"] == "UNKNOWN"
+    learned = [obs(0, ["owner_hud", "active"]), obs(10, ["spectator"], context=WEAK)]
+    assert replay(learned, measured_view_precedence=True)["frames"][1]["life"]["value"] == "UNKNOWN"
+    # A spectator view shown with the purchase phase is not used.
+    buy = [obs(0, ["owner_hud", "active"]), obs(10, ["spectator", "buy"])]
+    assert replay(buy, measured_view_precedence=True)["frames"][1]["life"]["value"] != "DEAD"
+
+
+def test_carried_alive_before_a_measured_spectator_view_is_withdrawn():
+    rows = [obs(0, ["owner_hud", "active"]), obs(10, ["owner_hud"]), obs(20, ["report"]),
+            obs(30, ["spectator"])]
+    result = replay(rows, measured_view_precedence=True)
+    frames = result["frames"]
+    assert [f["life"]["value"] for f in frames] == ["ALIVE", "ALIVE", "UNKNOWN", "DEAD"]
+    assert frames[2]["life"]["reason"] == "carried_alive_before_measured_spectator_view"
+    assert frames[2]["camera"]["value"] == "SELF"
+    assert [h["basis"] for h in result["measured_view_return_history"]] == [
+        "carried_alive_before_measured_spectator_view"]
