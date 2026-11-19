@@ -97,6 +97,20 @@ CNN measured that edge and both methods measured the same endpoint on the
 same native sample with agreement within three reference pixels. The
 original segments and coordinates are retained.
 
+For continual learning, `compose_paths.py --marker-companion` takes two
+two-head exports with the same portrait receipt and distinct marker
+receipts. It keeps the incumbent coordinates and admits only new selected
+positions with at least two native observations from the companion where the
+incumbent left the portrait unresolved. Evaluate each model and the composed
+result on the same admitted footage before using it.
+
+`valorant_ai_coach.temporal.viewer --development-map-report` and the
+desktop menu 「開発用: Map軌跡」 display the path alongside its exact timeline.
+The timeline evaluation CLI accepts the same option to report coverage and
+observed Named Zone seconds in the development report. Both verify the
+timeline digest and native observations. Map candidates stay out of Fact
+creation, promotion and scoring.
+
 `export_paths.py --registration exact` uses deterministic exact descriptor
 matching. `--registration recording-anchors` additionally attempts to register
 an otherwise unresolved current frame against two successful earlier frames

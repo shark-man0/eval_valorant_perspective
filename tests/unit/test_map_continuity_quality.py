@@ -2,8 +2,9 @@ import hashlib
 
 import cv2
 import numpy as np
+import pytest
 
-from scripts.map_learning.export_sites import plant_footprints
+from scripts.map_learning.export_sites import nearby_plant_footprints, plant_footprints
 from scripts.map_learning.recording_portraits import RecordingPortraitBank
 from valorant_ai_coach.temporal.evidence import freeze_native_sample
 from valorant_ai_coach.temporal.map_path_quality import measure_path_quality
@@ -53,6 +54,8 @@ def test_recording_bank_requires_two_earlier_distinct_crops_and_same_source():
     bank.visit(first, roi)
     bank.remember(rgba, first, (45, 45))
     bank.visit(second, roi)
+    with pytest.raises(ValueError, match="exact observation"):
+        bank.remember(rgba, _sample(20, source="f"), (45, 45))
     bank.remember(rgba, second, (45, 45))
     assert len(bank.entries) == 1
     rgba[44, 44] = (89, 89, 89)
@@ -74,3 +77,8 @@ def test_plant_footprints_requires_one_to_one_public_site_anchors():
         "A plant footprint", "B plant footprint",
     }
     assert plant_footprints(image, {"A": (.17, .17), "B": (.20, .21)}) == {}
+    assert set(nearby_plant_footprints(image, {"A": (.27, .17), "B": (.67, .67)})) == {
+        "A plant footprint", "B plant footprint",
+    }
+    assert nearby_plant_footprints(image, {"A": (.17, .17), "B": (.2, .19)}) == {}
+    assert nearby_plant_footprints(image, {"A": (.42, .42)}) == {}

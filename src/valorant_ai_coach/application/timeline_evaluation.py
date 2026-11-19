@@ -1162,6 +1162,14 @@ def render_markdown(report: Mapping[str, Any]) -> str:
                 f"| {rule} | {counts.get('good', 0)} | {counts.get('improve', 0)} | "
                 f"{counts.get('unscored', 0)} |"
             )
+    if map_review := report.get("development_map"):
+        summary = map_review["summary"]
+        lines.extend([
+            "", "## 開発用Map観測", "",
+            f"位置候補 {summary['seconds_with_position']}秒、観測エッジ "
+            f"{summary['seconds_with_native_edge']}秒、位置不明 {summary['unknown_seconds']}秒。",
+            "秒数は観測の存在を表します。Zone滞在時間と評価スコアは算出対象外です。",
+        ])
     return "\n".join(lines) + "\n"
 
 
@@ -1225,11 +1233,19 @@ def run(
     promotion_policy: Path | None = None,
     coach: RoundCoach | None = None,
     second_features_path: Path | None = None,
+    development_map_path: Path | None = None,
 ) -> dict[str, Any]:
     bundle = load_bundle(timeline_path, replay_path)
     _require_development_bundle(bundle)
     if output.exists():
         raise TimelineEvaluationError("新しい出力ディレクトリを指定してください")
+    development_map = None
+    if development_map_path is not None:
+        if timeline_path is None:
+            raise TimelineEvaluationError("開発用Mapレポートには対応する --timeline が必要です")
+        from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
+
+        development_map = load_map_timeline(development_map_path, timeline_path, bundle)
     source = dict(bundle.get("source") or {})
     recording = bundle.get("recording") or {}
     source_video = {
@@ -1285,6 +1301,23 @@ def run(
     report = build_report(
         evaluation, source=source, consistency=consistency, stored=database is not None
     )
+    if development_map is not None:
+        from valorant_ai_coach.temporal.map_timeline_report import summarize_map_seconds
+
+        map_rows = development_map["rows"]
+        report["development_map"] = {
+            "qualification": "development_only",
+            "formal_outputs": 0,
+            "summary": development_map["summary"],
+            "round_windows": [
+                {"round_no": round_.round_no, "boundary_confirmed": round_.confirmed,
+                 **summarize_map_seconds([
+                     map_rows[timestamp] for timestamp in range(round_.start_sec, round_.end_sec)
+                     if bundle["seconds"][timestamp]["round_number"]["value"] == round_.round_no
+                 ])}
+                for round_ in evaluation.rounds
+            ],
+        }
     if evaluation.promotion is not None:
         report["independent_signal_checks"] = verify_promotion(bundle, evaluation.promotion)
     report["fact_provider"] = None if provider is None else {
@@ -1330,6 +1363,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                           help="config/timeline_promotion_v1.json の代替")
     evaluate.add_argument("--second-features", type=Path,
                           help="#155 extract_second_features.py の出力（.jsonl / .jsonl.gz）")
+    evaluate.add_argument("--development-map-report", type=Path,
+                          help="同じタイムラインから出力した開発用Map観測レポート")
     evaluate.add_argument("--coach", choices=("mock", "openai"), default="mock")
     evaluate.add_argument("--model", default="gpt-4o-mini", help="--coach openai のモデルID")
     sub.add_parser("admission-table", help="#25 境界非依存ルールの分類表を出力")
@@ -1350,6 +1385,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         promotion_policy=args.promotion_policy,
         coach=openai_coach(args.model) if args.coach == "openai" else None,
         second_features_path=args.second_features,
+        development_map_path=args.development_map_report,
     )
     print(
         json.dumps(
