@@ -1,0 +1,315 @@
+import hashlib
+from copy import deepcopy
+
+import cv2
+import numpy as np
+
+from valorant_ai_coach.temporal.evidence import freeze_native_sample
+from valorant_ai_coach.temporal.game import observation
+from valorant_ai_coach.temporal.map_marker_geometry import measure_marker_geometry, same_marker
+from valorant_ai_coach.temporal.map_recorder_selection import MapRecorderSelector
+
+
+def _image(x, y=60):
+    image = np.full((120, 1920, 3), 95, dtype=np.uint8)
+    image[y-6:y+7, x-6:x] = (45, 60, 95)
+    image[y-6:y+7, x:x+7] = (135, 150, 168)
+    rim = (165, 246, 248)
+    cv2.circle(image, (x, y), 8, rim, 2)
+    cv2.fillConvexPoly(image, np.array([[x+7, y-4], [x+14, y], [x+7, y+4]]), rim)
+    return image
+
+
+def _context(image, tick, pool, anchor=None):
+    sample = freeze_native_sample({
+        "source_id": "synthetic", "source_sha256": "a"*64,
+        "acquisition_id": "test", "native_epoch": "test",
+        "native_pts_tick": tick, "native_time_base": "1/60",
+        "acquired_frame_sha256": "b"*64,
+        "native_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest(),
+        "frame_size_px": list(image.shape[:2][::-1]),
+    })
+    agents = [{"agent": "Recorder", "score": .98}, {"agent": "Other", "score": .40}]
+    return {
+        "sample": sample, "camera": {"value": "SELF"}, "life": {"value": "ALIVE"},
+        "map": {"candidates": pool, "current_recorder_view_evidence_ids": ["current"]},
+        "viewed_identity": {
+            "recording_player_anchor": {"sample": anchor, "agent_candidates": agents,
+                                        "evidence_ids": ["earlier"]} if anchor else None,
+            "agent_signature_relation": "COMPATIBLE",
+            "viewed_agent_candidates": agents,
+        },
+        "round_token": "round", "continuity": {"carry_allowed": True},
+    }
+
+
+def test_tip_uses_one_silhouette_and_separates_nearby_portraits():
+    image = _image(80)
+    second = _image(105)
+    image[:, 95:130] = second[:, 95:130]
+    cv2.circle(image, (59, 60), 3, (165, 246, 248), -1)
+    pool = [{"center_frame_px": point} for point in ([80, 60], [81, 60], [105, 60], [59, 60])]
+    original, duplicate, other, icon = measure_marker_geometry(image, pool)
+    assert original and original.tip and np.linalg.norm(np.subtract(original.tip, (94, 60))) <= 2
+    assert duplicate and same_marker(original, duplicate)
+    assert other and not same_marker(other, original)
+    assert icon is None
+
+
+def test_selection_requires_current_pixels_and_consecutive_anchored_witnesses():
+    initial = _image(78)
+    first_fit, = measure_marker_geometry(initial, [{"center_frame_px": [78, 60]}])
+    assert first_fit
+    x, y = first_fit.center
+    half = round(first_fit.radius * .7)
+    gray = cv2.cvtColor(initial, cv2.COLOR_BGR2GRAY)
+    reference = gray[y-half:y+half+1, x-half:x+half+1].copy()
+    selector = MapRecorderSelector([("Recorder", reference), ("Other", np.fliplr(reference))])
+    anchor = _context(initial, 0, [])["sample"]
+
+    def observe(cx, tick, blocked=None):
+        image = _image(cx)
+        pool = [{"center_frame_px": [cx, 60]}]
+        frame = _context(image, tick, pool, anchor)
+        if blocked:
+            domain, value = blocked
+            if domain == "pool":
+                frame["map"]["candidates"] = []
+            elif domain == "sample":
+                wrong = deepcopy(frame["sample"])
+                del wrong["sample_sha256"]
+                wrong["native_pts_tick"] += 1
+                frame["sample"] = freeze_native_sample(wrong)
+            else:
+                frame[domain] = value
+        return selector.observe(image, pool, _context(image, tick, pool)["sample"], frame)
+
+    assert [observe(80+i, tick)["support_count"] for i, tick in enumerate((6, 12))] == [1, 2]
+    accepted = observe(82, 18)
+    assert accepted["selection_status"] == "RESEARCH_SELECTED"
+    assert accepted["research_candidate_index"] == 0
+    assert accepted["recorder_agent_candidate"] == "Recorder"
+    assert accepted["ownership"] == "UNKNOWN" and not accepted["position_authority"]
+    assert observe(83, 24, ("camera", {"value": "SPECTATOR"}))["support_count"] == 0
+    assert observe(84, 30)["support_count"] == 1
+    assert observe(85, 36, ("pool", None))["selection_reason"] == "different_candidate_pool"
+    assert observe(86, 42, ("sample", None))["selection_reason"] == "unmatched_native_context"
+    assert observe(87, 48)["support_count"] == 1
+    assert observe(88, 72)["support_count"] == 1
+
+
+def test_measured_camera_requires_bound_evidence_and_vetoes_remote_or_report():
+    selector = MapRecorderSelector([])
+
+    def observe(cx, tick, *, veto_signal=None, unrelated=False):
+        image = _image(cx)
+        pool = [{"center_frame_px": [cx, 60]}]
+        frame = _context(image, tick, pool)
+        frame["map"]["current_recorder_view_evidence_ids"] = []
+        evidence_sample = (
+            _context(image, tick + 1, pool)["sample"] if unrelated else frame["sample"]
+        )
+        panel = observation(
+            sample=evidence_sample, producer="c"*64, signals=["owner_hud"],
+            context={"stream_kind": "camera_panel"},
+            raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                  "own_ability_bar_score": .9},
+                 "qualified": False, "formal_outputs": 0},
+        )
+        observations = [panel]
+        if veto_signal:
+            observations.append(observation(sample=frame["sample"], producer="d"*64,
+                                            raw={}, signals=[veto_signal]))
+        frame["camera"]["evidence_ids"] = [panel["observation_id"]]
+        frame["observation_ids"] = [r["observation_id"] for r in observations]
+        return selector.observe(image, pool, frame["sample"], frame, observations=observations)
+
+    assert observe(80, 6)["support_count"] == 1
+    assert observe(81, 12)["support_count"] == 2
+    proposed = observe(82, 18)
+    assert proposed["research_candidate_index"] == 0
+    assert proposed["selection_reason"] == "measured_recorder_hud_and_consecutive_map_portrait"
+    assert proposed["ownership"] == "UNKNOWN" and not proposed["position_authority"]
+    remote = observe(83, 24, veto_signal="remote")
+    assert remote["selection_reason"] == "current_view_evidence_conflicts"
+    assert observe(84, 30)["support_count"] == 1
+    assert observe(85, 36, unrelated=True)["selection_reason"] == "current_view_evidence_conflicts"
+    report = observe(87, 42, veto_signal="report")
+    assert report["selection_reason"] == "current_view_evidence_conflicts"
+
+
+def test_measured_track_can_recover_a_lower_ranked_visible_portrait(monkeypatch):
+    from valorant_ai_coach.temporal import map_recorder_selection as selection_module
+
+    ranking = selection_module.rank_rim_candidates
+
+    def rank(legacy, rim, **kwargs):
+        rows = ranking(legacy, rim, **kwargs)
+        # An unrelated candidate briefly overtakes the portrait in the order.
+        return sorted(rows, key=lambda row: -row["candidate_index"])
+
+    tracker = MapRecorderSelector([], recover_supported_portraits=True)
+    for step, x in enumerate((80, 81, 82), start=1):
+        image = _image(x)
+        pool = [{"center_frame_px": [x, 60]}]
+        if step == 3:
+            monkeypatch.setattr(selection_module, "rank_rim_candidates", rank)
+            pool.append({"center_frame_px": [136, 60]})
+        frame = _context(image, step * 6, pool)
+        panel = observation(
+            sample=frame["sample"], raw={
+                "camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                 "own_ability_bar_score": .9},
+                "qualified": False, "formal_outputs": 0,
+            },
+            producer="c"*64, signals=["owner_hud"], context={"stream_kind": "camera_panel"},
+        )
+        frame["observation_ids"] = frame["camera"]["evidence_ids"] = [panel["observation_id"]]
+        result = tracker.observe(image, pool, frame["sample"], frame, observations=[panel])
+        assert result["support_count"] == step
+    assert result["research_candidate_index"] == 0
+    assert result["portrait_recovered_from_continuity"]
+
+
+def test_knowledge_match_keeps_camera_veto_and_splits_after_a_gap(monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
+
+    image = _image(80)
+    asset = image[55:66, 75:86].copy()
+    catalog = SimpleNamespace(agent=lambda name: SimpleNamespace(uuid="recorder", name=name))
+    knowledge = KnowledgeRecorderMap(
+        hud=SimpleNamespace(agent_uuids=("recorder", "rival")), catalog=catalog,
+        portraits=[("recorder", asset), ("rival", np.fliplr(asset))], provenance={},
+    )
+    monkeypatch.setattr(knowledge, "_hud_uuid", lambda image: "recorder")
+    monkeypatch.setattr(knowledge, "_portrait_scores", lambda image, center: np.array([.92, .49]))
+
+    baseline = MapRecorderSelector([])
+    def observe(x, tick, *, signal=None, other_x=None):
+        image = _image(x)
+        pool = [{"center_frame_px": [x, 60]}]
+        if other_x is not None:
+            second = _image(other_x)
+            image[:, other_x-20:other_x+20] = second[:, other_x-20:other_x+20]
+            pool.append({"center_frame_px": [other_x, 60]})
+        frame = _context(image, tick, pool)
+        sample = frame["sample"]
+        panel = observation(
+            sample=sample, producer="c"*64, signals=["owner_hud"],
+            context={"stream_kind": "camera_panel"},
+            raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                  "own_ability_bar_score": .90},
+                 "qualified": False, "formal_outputs": 0},
+        )
+        observations = [panel]
+        if signal:
+            observations.append(observation(
+                sample=sample, producer="d"*64, signals=[signal], raw={},
+            ))
+        frame["observation_ids"] = [row["observation_id"] for row in observations]
+        frame["camera"]["evidence_ids"] = [panel["observation_id"]]
+        old = baseline.observe(image, pool, sample, frame, observations=observations)
+        return knowledge.observe(image, pool, sample, frame, observations, old)
+
+    first = observe(80, 6)
+    assert first["selection_method"] == "knowledge_agent_uuid"
+    assert first["ownership"] == "UNKNOWN" and not first["position_authority"]
+    assert observe(81, 12)["support_count"] == 2
+    assert observe(82, 18, signal="report")["selection_status"] == "ABSTAIN"
+    assert observe(83, 24)["support_count"] == 1
+    assert observe(84, 50)["support_count"] == 1
+    ambiguous = observe(85, 56, other_x=145)
+    assert ambiguous["knowledge_reason"] == "distinct_matching_markers"
+    assert ambiguous["selection_status"] == "ABSTAIN"
+
+
+def test_knowledge_and_legacy_competing_physical_markers_remove_path_witness(monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
+
+    selected_image = _image(122)
+    selected_image[:, 60:99] = _image(80)[:, 60:99]
+    patch = selected_image[55:66, 75:86].copy()
+    track = KnowledgeRecorderMap(
+        hud=SimpleNamespace(agent_uuids=("recorder", "rival")),
+        catalog=SimpleNamespace(agent=lambda name: SimpleNamespace(uuid="recorder", name=name)),
+        portraits=[("recorder", patch), ("rival", np.fliplr(patch))], provenance={},
+    )
+    monkeypatch.setattr(track, "_hud_uuid", lambda image: "recorder")
+    pool = [{"center_frame_px": [80, 60]}, {"center_frame_px": [122, 60]}]
+    marker, _ = measure_marker_geometry(selected_image, pool)
+    assert marker is not None and marker.tip is not None and marker.support >= .84
+    monkeypatch.setattr(track, "_matches", lambda *args: ((0, marker), "matched_agent_uuid"))
+    frame = _context(selected_image, 6, pool)
+    sample = frame["sample"]
+    panel = observation(
+        sample=sample, producer="c"*64, signals=["owner_hud"],
+        context={"stream_kind": "camera_panel"},
+        raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                              "own_ability_bar_score": .9},
+             "qualified": False, "formal_outputs": 0},
+    )
+    frame["camera"]["evidence_ids"] = frame["observation_ids"] = [panel["observation_id"]]
+    baseline = MapRecorderSelector([]).observe(
+        selected_image, pool, sample, frame, observations=[panel],
+    )
+    baseline.update(selection_status="RESEARCH_SELECTED", research_candidate_index=1,
+                    support_candidate_index=1, research_marker_center_frame_px=[122, 60],
+                    support_center_frame_px=[122, 60], support_count=4)
+    result = track.observe(selected_image, pool, sample, frame, [panel], baseline)
+    assert result["selection_reason"] == "recorder_selection_conflict"
+    assert result["research_candidate_index"] is None
+    assert result["support_candidate_index"] is None
+    assert result["support_count"] == 0
+    assert result["ownership"] == "UNKNOWN"
+
+
+def test_short_uuid_recovery_requires_same_scope_and_current_marker(monkeypatch):
+    from types import SimpleNamespace
+
+    from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
+
+    portrait = _image(80)[55:66, 75:86].copy()
+    knowledge = KnowledgeRecorderMap(
+        hud=SimpleNamespace(agent_uuids=("recorder", "rival")),
+        catalog=SimpleNamespace(agent=lambda name: SimpleNamespace(uuid="recorder", name=name)),
+        portraits=[("recorder", portrait), ("rival", np.fliplr(portrait))], provenance={},
+        recover_track=True,
+    )
+
+    def observe(x, tick, *, current_uuid, has_marker=True):
+        image = _image(x)
+        pool = [{"center_frame_px": [x, 60]}]
+        frame = _context(image, tick, pool)
+        sample = frame["sample"]
+        panel = observation(
+            sample=sample, producer="c"*64, signals=["owner_hud"],
+            context={"stream_kind": "camera_panel"},
+            raw={"camera_panel": {"label": {"checked": True, "state": "ABSENT"},
+                                  "own_ability_bar_score": .90},
+                 "qualified": False, "formal_outputs": 0},
+        )
+        frame["camera"]["evidence_ids"] = frame["observation_ids"] = [panel["observation_id"]]
+        marker, = measure_marker_geometry(image, pool)
+        assert marker
+        monkeypatch.setattr(knowledge, "_hud_uuid", lambda image: current_uuid)
+        monkeypatch.setattr(knowledge, "_matches", lambda *args, **kwargs: (
+            ((0, marker), "matched_agent_uuid") if has_marker else (None, "ambiguous")
+        ))
+        baseline = MapRecorderSelector([]).observe(
+            image, pool, sample, frame, observations=[panel],
+        )
+        return knowledge.observe(image, pool, sample, frame, [panel], baseline)
+
+    assert observe(80, 6, current_uuid="recorder")["selection_status"] == "RESEARCH_SELECTED"
+    recovered = observe(81, 18, current_uuid=None)
+    assert recovered["selection_status"] == "RESEARCH_SELECTED"
+    assert recovered["support_count"] == 2
+    assert recovered["ownership"] == "UNKNOWN"
+    assert observe(82, 30, current_uuid=None)["knowledge_reason"] == "ability_hud_unresolved"
+    assert observe(83, 42, current_uuid="recorder")["selection_status"] == "RESEARCH_SELECTED"
+    assert observe(84, 54, current_uuid=None, has_marker=False)["selection_status"] == "ABSTAIN"
+    assert observe(85, 66, current_uuid=None)["selection_status"] == "ABSTAIN"
