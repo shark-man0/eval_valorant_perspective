@@ -174,15 +174,30 @@ phase or the own HUD with health, see the run-level review) and 16 remain
 UNKNOWN; 33 seconds are withdrawn in total.
 
 Protected recordings (2026-11-19, with the user's permission, one final run):
-three of the four full_match_5 recordings (5,400 seconds; the fourth could not
-be transferred), acquired from the originals with the same command. Nothing was
-tuned on them. UNKNOWN seconds before / with this option / combined with #151:
-Round 1,544 / 446 / 446, Life 919 / 360 / 176, Camera 828 / 823 / 273. No match
-rose in any domain. Round start candidates 51 to 58, end candidates 55 to 59.
-Every second of two matches that changed between two known values was viewed
-(183 seconds, combined run): 183 consistent, 0 contradicted. Of 30 sampled
-withdrawals in the third match, the old value was wrong in 25, right in 3 and
-undecidable in 2.
+all four full_match_5 recordings (7,414 seconds), acquired from the originals
+with the same command. Nothing was tuned on them. UNKNOWN seconds before / with
+this option / combined with #151: Round 2,206 / 762 / 762, Life 1,318 / 556 /
+255, Camera 1,112 / 1,089 / 355. No match rose in any domain. Round start
+candidates 77 to 81, end candidates 76 to 84. Every second of the combined run
+that changed between two known values was viewed (248 seconds, AI review): 247
+consistent, 1 contradicted (a measured spectator value carried 1 s into the
+next purchase phase by the existing 2 s carry, #151). Of 84 sampled
+withdrawals the old value was wrong in 67, right in 3 and undecidable in 14.
+
+Round boundaries against human GT (2026-11-19): the user marked, on frames one
+second apart, the first frame of 12 Round starts (purchase countdown replaced by
+the combat clock) and 12 Round ends (result banner), drawn at random from the
+combined fresh run without seeing any prediction. Candidate containing the
+human second / error in seconds when not / no candidate:
+
+| Kind | Base | Combined |
+| --- | --- | --- |
+| Start | 10 contain, 0 missed, 2 no candidate | 12 contain, 0 missed, 0 no candidate |
+| End | 8 contain, 3 one second off, 1 no candidate | 9 contain, 3 one second off, 0 no candidate |
+
+The three one-second end errors are zero-width candidates (the score change
+second) identical in the base engine; the human marks the result banner one
+second earlier.
 
 Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
 without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40
