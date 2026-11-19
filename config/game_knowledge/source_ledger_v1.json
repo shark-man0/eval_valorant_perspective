@@ -75,6 +75,17 @@
       "trust": "medium; values consistent across sources. Treated as priors and checked against recordings (timer readings) before any use beyond candidate ranking."
     },
     {
+      "id": "community_economy_references",
+      "url": "https://dignitas.gg/articles/an-easy-valorant-economy-guide",
+      "urls": ["https://dignitas.gg/articles/an-easy-valorant-economy-guide", "https://esports.gg/news/valorant/entry-frag-part-two-understanding-the-weapons-and-economy-of-valorant", "https://mobalytics.gg/blog/valorant/ultimate-economy-guide/", "https://www.thespike.gg/valorant/news/guns-abilities-and-team-economy-in-valorant/2"],
+      "kind": "secondary",
+      "publisher": "Game press and team guides (dignitas.gg, esports.gg, mobalytics.gg, thespike.gg)",
+      "provides": ["credits at half start 800", "round win 3000, loss 1900/2400/2900, survivor of a lost round 1000", "kill 200, spike plant 300 to every attacker", "credit cap 9000", "light shield 400, heavy shield 1000"],
+      "rights": "usable",
+      "terms": "Numbers only, restated in our own words. No text copied.",
+      "trust": "medium; values consistent across sources (checked 2026-11-18). Used only as bounds on what a team can afford, never as evidence of a purchase."
+    },
+    {
       "id": "valorant_wiki",
       "url": "https://wiki.playvalorant.com/en-us/",
       "kind": "secondary",

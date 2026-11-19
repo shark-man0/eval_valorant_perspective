@@ -40,5 +40,28 @@
       99
     ],
     "weapon_names_source": "valorant_ai_coach.knowledge.load_game_knowledge (#96)"
+  },
+  "second_features": {
+    "purpose": "#153/#155の読み取り値（extract_second_features.py）を確定Roundへ載せる条件。信頼度は安定性・整合性の条件を通った読み取りに付ける運用値で、独立資格付け（independently_qualified）ではない。",
+    "agent_min_score": 0.6,
+    "agent_min_frames": 60,
+    "agent_min_share": 0.6,
+    "alive_confidence": 0.9,
+    "alive_increase_hold_sec": 3,
+    "utility_confidence": 0.85,
+    "kill_confidence": 0.85,
+    "feed_match_window_sec": 3.0,
+    "feed_repeat_sec": 2.0,
+    "spike_clear_score": 0.9,
+    "revive_min_live_sec": 5,
+    "snapshot_min_interval_sec": 5,
+    "top_bar_min_coverage": 0.9,
+    "death_drop_before_sec": 4,
+    "death_drop_after_sec": 2,
+    "death_feed_lookback_sec": 10,
+    "recovered_death_confidence": 0.7,
+    "score_min_reads": 3,
+    "score_min_share": 0.6,
+    "enemy_eco_confidence": 0.8
   }
 }
