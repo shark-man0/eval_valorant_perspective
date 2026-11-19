@@ -37,7 +37,10 @@ whose Agent is unknown. The marker model also trains with randomly exchanged
 portrait centers so the rim can contribute independently from Agent identity.
 
 Use `runtime.load_models` to verify the output weight digests and Agent order.
-Calibration and comparisons require a separate validation set. Weight files,
-crop archives, reference images, and private receipts stay outside the
-repository. This experiment supplies no weights to the standard Map exporter
-or to formal Fact promotion.
+Calibration and comparisons require a separate validation set. Run
+`export_paths.py --help` for the native-frame replay arguments. Select the
+validation threshold and choose `--learned-stage marker` to evaluate the CNN
+detector with the reference-based Agent classifier. Use `--learned-stage both`
+to evaluate the two CNNs together. Both stages export the standard
+development-only one-second Map report. Weight files, crop archives,
+reference images, and private receipts stay outside the repository.
