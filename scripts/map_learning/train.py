@@ -11,6 +11,7 @@ import numpy as np
 import torch
 from crop_lineage import load_crop_lineage
 from models import MarkerCNN, PortraitCNN
+from runtime import load_models
 from torch.nn import functional as F
 
 from valorant_ai_coach.knowledge.assets import ReferenceAssets
@@ -26,7 +27,15 @@ parser.add_argument("--asset-cache", type=Path, required=True)
 parser.add_argument("--training-receipt", type=Path, required=True)
 parser.add_argument("--output-directory", type=Path, required=True)
 parser.add_argument("--model-registry", type=Path)
+parser.add_argument("--experiment", choices=(
+    "standard", "without-pseudo-labels", "without-background", "balanced-recordings",
+    "retain-incumbent",
+), default="standard")
+parser.add_argument("--incumbent-model", type=Path)
+parser.add_argument("--separate-head-seeds", action="store_true")
 args = parser.parse_args()
+if (args.experiment == "retain-incumbent") != (args.incumbent_model is not None):
+    parser.error("--experiment retain-incumbent requires --incumbent-model")
 cv2.setNumThreads(1)
 torch.set_num_threads(3)
 torch.manual_seed(119)
@@ -42,6 +51,9 @@ out.mkdir(parents=True, exist_ok=False, mode=0o700)
 cat = args.map_catalog
 cache = args.asset_cache
 knowledge = KnowledgeRecorderMap.load(cache, cat)
+teacher = load_models(args.incumbent_model, knowledge) if args.incumbent_model else None
+if args.separate_head_seeds:
+    torch.manual_seed(119)
 assets = ReferenceAssets.load(cache)
 sources = dict(knowledge.minimap_portraits)
 for uid in knowledge._uuids:
@@ -67,7 +79,8 @@ bank = [variants(sources[u]) for u in knowledge._uuids]
 catalog = RecordingCatalog(args.recording_catalog)
 receipt = read_json(args.training_receipt)
 schema = receipt.get("schema")
-background_classifier = schema == "map_cnn_training_receipt_v2"
+traced = schema == "map_cnn_training_receipt_v2"
+background_classifier = traced and args.experiment != "without-background"
 if schema not in ("map_cnn_training_receipt_v1", "map_cnn_training_receipt_v2") or not receipt.get(
     "recordings"
 ):
@@ -91,14 +104,14 @@ for row in receipt["recordings"]:
         raise ValueError("Training crop archive hash mismatch")
     with np.load(patch_path, allow_pickle=False) as src:
         pos_data, neg_data = src["positive"], src["negative"]
-        bg_data = src["background"] if background_classifier else np.empty(
+        bg_data = src["background"] if traced else np.empty(
             (0, 25, 25, 3), np.uint8
         )
-        groups = (pos_data, neg_data, bg_data) if background_classifier else (pos_data, neg_data)
+        groups = (pos_data, neg_data, bg_data) if traced else (pos_data, neg_data)
         for data in groups:
             if not len(data) or data.dtype != np.uint8 or data.shape[1:] != (25, 25, 3):
                 raise ValueError("Expected 25 by 25 uint8 BGR center crops")
-        if background_classifier:
+        if traced:
             load_crop_lineage(Path(row["lineage"]), row["lineage_sha256"], rec.source_sha256, src)
         train.append(
             {
@@ -115,7 +128,7 @@ real_agent = np.concatenate([np.full(len(r["positive"]), int(r["agent"])) for r 
 
 
 def paint(kind, agent):
-    textures = background if kind == "none" and background_classifier else neg
+    textures = background if kind == "none" and traced else neg
     canvas = (
         textures[rng.integers(len(textures))].copy()
         if rng.random() < 0.85
@@ -169,8 +182,16 @@ def augment(x, stronger=False):
     return (x * gain + bias + torch.randn_like(x) * (0.034 if stronger else 0.019)).clamp(0, 1)
 
 
-def fit(model, size, real_x, real_y, syn_x, syn_y, name):
+def fit(model, size, real_x, real_y, syn_x, syn_y, name, native_weights=None):
     start = time.monotonic()
+    if teacher is not None:
+        for key, old in teacher[name].state_dict().items():
+            current = model.state_dict()[key]
+            if current.shape == old.shape:
+                current.copy_(old)
+            elif name == "portrait" and key.startswith("output."):
+                shared = min(len(current), len(old))
+                current[:shared].copy_(old[:shared])
     xr = input_tensor(real_x, size)
     xs = input_tensor(syn_x, size)
     yr = torch.from_numpy(real_y.astype(np.int64))
@@ -185,7 +206,7 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
     hard_count = 0
     for epoch in range(14):
         hard = None
-        if background_classifier and name == "marker" and epoch >= 2:
+        if traced and name == "marker" and epoch >= 2:
             model.eval()
             negative_ids = torch.where(yr == 0)[0]
             with torch.inference_mode():
@@ -200,6 +221,8 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
         choice = torch.randperm(len(xr))
         for k, batch in enumerate(perm.split(128)):
             ri = choice[(torch.arange(96) + k * 96) % len(choice)]
+            if native_weights is not None:
+                ri = torch.multinomial(native_weights, 96, replacement=True)
             if name == "portrait":
                 ri[48:] = torch.multinomial(example_weights, 48, replacement=True)
             elif hard is not None and len(hard):
@@ -218,6 +241,20 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
                 loss = F.binary_cross_entropy_with_logits(logits[:, 0], y.float())
             else:
                 loss = F.cross_entropy(logits, y, label_smoothing=0.03)
+            if teacher is not None:
+                with torch.no_grad():
+                    prior = teacher[name](x).flatten(1)
+                current = model(x).flatten(1)
+                if name == "marker":
+                    loss += .35 * F.binary_cross_entropy_with_logits(
+                        current[:, 0], prior[:, 0].sigmoid(),
+                    )
+                else:
+                    old_classes = min(prior.shape[1], current.shape[1])
+                    target = prior[:, :old_classes].softmax(1)
+                    loss += .35 * F.kl_div(
+                        current.log_softmax(1)[:, :old_classes], target, reduction="batchmean",
+                    )
             # Consistency under an independent color/noise view of real patches.
             # Only retain pseudo-labels if the weak view is confident.
             if epoch >= 5:
@@ -249,7 +286,7 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
                         stable = (top >= 0.97) & (alternative >= 0.97) & label.eq(label2)
                         if background_classifier:
                             stable &= label != len(bank)
-                    if stable.any():
+                    if stable.any() and args.experiment != "without-pseudo-labels":
                         predicted = model(augment(samples[stable], True))
                         loss += 0.10 * F.cross_entropy(predicted, label[stable])
                         pseudo_count += int(stable.sum())
@@ -276,11 +313,20 @@ def fit(model, size, real_x, real_y, syn_x, syn_y, name):
         "real": len(real_x),
         "synthetic": len(syn_x),
         "agent_pseudo_labels_last_epoch": pseudo_count,
-        **({"hard_negative_draws": hard_count} if background_classifier else {}),
+        **({"hard_negative_draws": hard_count} if traced else {}),
     }
 
 
 N = len(bank)
+def recording_weights(groups):
+    if args.experiment != "balanced-recordings":
+        return None
+    return torch.tensor(np.concatenate([
+        np.concatenate([np.full(len(r[k]), 1/len(r[k])) for r in train])
+        for k in groups
+    ]), dtype=torch.float32)
+
+
 labels = np.repeat(np.arange(N), 300)
 rng.shuffle(labels)
 synth = np.stack([paint(("self", "other", "plain")[int(rng.integers(3))], i) for i in labels])
@@ -294,7 +340,12 @@ if background_classifier:
 stats = {"portrait": fit(
     PortraitCNN(N + int(background_classifier)), 17, portrait_real, real_agent,
     synth, labels, "portrait",
+    recording_weights(("positive", "background") if background_classifier else ("positive",)),
 )}
+if args.separate_head_seeds:
+    # Portrait-class sampling must not change marker initialization or its synthetic inputs.
+    torch.manual_seed(120)
+    rng = np.random.default_rng(120)
 kind = ["self"] * 4500 + ["other"] * 2700 + ["none"] * 1800
 rng.shuffle(kind)
 synthetic = np.stack([paint(b, int(rng.integers(N))) for b in kind])
@@ -302,6 +353,8 @@ y = np.array([b == "self" for b in kind])
 target = np.r_[np.ones(len(pos)), np.zeros(len(neg) + len(background))]
 stats["marker"] = fit(
     MarkerCNN(), 19, np.concatenate([pos, neg, background]), target, synthetic, y, "marker",
+    recording_weights(("positive", "negative", "background") if traced else
+                      ("positive", "negative")),
 )
 stats["train_recordings"] = len(train)
 stats["agent_uuids"] = list(knowledge._uuids)
@@ -310,9 +363,17 @@ stats["asset_sha256s"] = {
 }
 stats["formal_outputs"] = 0
 stats["schema"] = "map_cnn_weights_v1"
-if background_classifier:
-    stats["background_class"] = True
+if traced:
+    stats["background_class"] = background_classifier
     stats["lineage_bound_native_crops"] = len(pos) + len(neg) + len(background)
+if args.experiment != "standard":
+    stats["experiment"] = args.experiment
+if args.separate_head_seeds:
+    stats["separate_head_seeds"] = {"portrait": 119, "marker": 120}
+if args.incumbent_model is not None:
+    stats["incumbent_receipt_sha256"] = file_sha(
+        args.incumbent_model / "training_summary_PRIVATE.json"
+    )
 stats["training_receipt_sha256"] = file_sha(args.training_receipt)
 stats["weight_sha256s"] = {
     name: file_sha(out / f"{name}_cnn_weights_PRIVATE.npz") for name in ("portrait", "marker")
@@ -327,6 +388,9 @@ if args.model_registry is not None:
                 {"background_class": background_classifier and name == "portrait",
                  "weight_sha256": stats["weight_sha256s"][name],
                  "agent_uuids": stats["agent_uuids"],
+                 "experiment": args.experiment,
+                 "separate_head_seeds": stats.get("separate_head_seeds"),
+                 "incumbent_receipt_sha256": stats.get("incumbent_receipt_sha256"),
                  "formal_outputs": 0}, {}, stats["training_receipt_sha256"],
             )
         stats["development_registry"][name] = version.version_id

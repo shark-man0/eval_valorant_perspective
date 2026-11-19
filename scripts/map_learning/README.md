@@ -66,6 +66,25 @@ In the two-head mode, `--refine-center` retries a failed center measurement
 using nearby native pixels. It requires two neighboring crops to support the
 same marker at the original rim, portrait and reference thresholds. A
 previously accepted center is retained.
+Use `--recording-portraits` to search for previously unresolved portraits
+against two earlier, independently accepted crops from the same recording.
+The current rim, reference Agent and native continuity must also agree.
+The new decisions retain the original anchor observation IDs.
+
+Use `--path-quality` to report observed chain lengths, gaps in covered play,
+and the number of seconds with Named Zones or nearby callouts. For maps
+without an authored Zone file, `export_sites.py` can add only a shaded
+planted area whose pinned atlas and published site anchor agree. Authored
+Zones take precedence.
+
+The trainer's `--experiment` option isolates the background class,
+hard pseudo-labels and per-recording balance. The retention variant takes
+a pinned incumbent to preserve established predictions while learning.
+Use `--separate-head-seeds` for matched ablations so a portrait-side change
+cannot also change the marker head's initialization or synthetic examples.
+For an independent detector comparison, `--marker-models-directory` keeps
+the portrait checkpoint while loading the detector from a second receipt.
+The replay records the digest of each model receipt.
 
 To measure a conservative complement, export the same native manifest twice
 with `--learned-stage reference` and `--learned-stage both`. Give both outputs

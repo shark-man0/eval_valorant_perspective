@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import torch
 from models import MarkerCNN, PortraitCNN
+from recording_portraits import RecordingPortraitBank, RecordingPortraitTracker
 
 from valorant_ai_coach.temporal.map_direct_recorder import (
     DirectPeak,
@@ -22,9 +23,12 @@ def restore(model, path):
     return model.eval()
 
 
-def load_models(directory, knowledge):
+def load_models(directory, knowledge, *, receipt_sha256=None):
     """Open the independent models from a private, content-bound training result."""
-    receipt = read_json(directory / "training_summary_PRIVATE.json")
+    receipt_path = directory / "training_summary_PRIVATE.json"
+    if receipt_sha256 is not None and file_sha(receipt_path) != receipt_sha256:
+        raise ValueError("Map CNN receipt hash mismatch")
+    receipt = read_json(receipt_path)
     if (
         receipt.get("schema") != "map_cnn_weights_v1"
         or receipt.get("formal_outputs") != 0
@@ -38,6 +42,8 @@ def load_models(directory, knowledge):
         if file_sha(path) != receipt["weight_sha256s"].get(name):
             raise ValueError("Map CNN weight hash mismatch")
         models[name] = restore(model, path)
+    if receipt_sha256 is not None and file_sha(receipt_path) != receipt_sha256:
+        raise ValueError("Map CNN receipt changed during loading")
     return models
 
 
@@ -157,3 +163,35 @@ class LearnedRecorderTracker(DirectRecorderTracker):
                 continue
             result.append((i, score, margin))
         return result
+
+
+class AdaptiveRecordingTracker(LearnedRecorderTracker):
+    """Keep incumbent decisions and try same-recording evidence on an unresolved sample."""
+
+    def __init__(self, search, identity, reader, **kwargs):
+        super().__init__(search, identity, reader, **kwargs)
+        self.bank = RecordingPortraitBank()
+        self.continuity = RecordingPortraitTracker(self.bank, identity, reader)
+        self.can_seed = False
+
+    def _observe_measured(self, image, roi, sample, frame, camera):
+        self.bank.visit(sample, roi)
+        pool, result = super()._observe_measured(image, roi, sample, frame, camera)
+        self.can_seed = result["selection_status"] == "RESEARCH_SELECTED"
+        if result["selection_reason"] != "direct_portrait_or_rim_unresolved":
+            self.continuity.previous = self.previous if self.can_seed else None
+            return pool, result
+        recovered, agreement = self.continuity._observe_measured(image, roi, sample, frame, camera)
+        return (recovered, agreement) if agreement["support_count"] else (pool, result)
+
+    def remember_projection(self, image):
+        super().remember_projection(image)
+        if not self.can_seed or self.previous is None or self.refined_current:
+            return
+        center = self.previous.center
+        scores = self.portrait_reader._portrait_scores(image, center)
+        target = self.portrait_reader._uuids.index(self.identity.uuid)
+        if scores is not None and scores[target] >= .76 and (
+            scores[target] - np.delete(scores, target).max() >= .045
+        ):
+            self.bank.remember(image, self.previous.sample, center)

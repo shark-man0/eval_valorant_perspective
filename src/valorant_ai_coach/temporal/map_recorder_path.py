@@ -55,10 +55,17 @@ def project_recorder_witness(
     flow_recovery = alignment.get("alignment_recovery") == "native_flow"
     anchor_recovery = alignment.get("alignment_recovery") == ANCHOR_ALIGNMENT
     anchors = alignment.get("registration_anchor_sample_refs")
+    portrait_anchors = selection.get("portrait_anchor_sample_refs")
     if anchor_recovery and (
         not isinstance(anchors, list) or len(anchors) != 2
         or not all(is_sha(key) and key != sample["sample_sha256"] for key in anchors)
         or anchors[0] == anchors[1]
+    ):
+        return None
+    if portrait_anchors is not None and (
+        not isinstance(portrait_anchors, list) or len(portrait_anchors) != 2
+        or not all(is_sha(key) and key != sample["sample_sha256"] for key in portrait_anchors)
+        or portrait_anchors[0] == portrait_anchors[1]
     ):
         return None
     expected_evidence = ("adjacent_optical_flow_and_current_reference" if flow_recovery
@@ -109,6 +116,8 @@ def project_recorder_witness(
         **({"alignment_recovery": "native_flow"} if flow_recovery else {}),
         **({"alignment_recovery": ANCHOR_ALIGNMENT, "registration_anchor_sample_refs": anchors}
            if anchor_recovery else {}),
+        **({"portrait_anchor_sample_refs": portrait_anchors}
+           if portrait_anchors is not None else {}),
         **({"selection_method": selection["selection_method"],
             "track_anchor": selection["track_anchor"],
             "recorder_agent_uuid_candidate": selection["recorder_agent_uuid_candidate"]}
@@ -240,16 +249,16 @@ def _same_run(a: dict[str, Any], b: dict[str, Any]) -> bool:
     )
 
 
-def _linked_sample_ids(
+def measured_native_edges(
     paths: dict[str, Any], admissible: set[str] | None = None,
-) -> set[str]:
-    linked: set[str] = set()
+) -> set[tuple[str, str]]:
+    linked: set[tuple[str, str]] = set()
     for segment in paths["segments"]:
         for a, b in zip(segment, segment[1:], strict=False):
             if _same_run(a, b):
-                ids = {a["sample"]["sample_sha256"], b["sample"]["sample_sha256"]}
-                if admissible is None or ids <= admissible:
-                    linked.update(ids)
+                first, second = a["sample"]["sample_sha256"], b["sample"]["sample_sha256"]
+                if admissible is None or {first, second} <= admissible:
+                    linked.add((first, second))
     corroborated = paths.get("corroborated_native_edges", ())
     if corroborated:
         points = {p["sample"]["sample_sha256"]: p for s in paths["segments"] for p in s}
@@ -267,8 +276,14 @@ def _linked_sample_ids(
                 and 0 < native_time(b["sample"]) - native_time(a["sample"]) <= Fraction(1, 4)
                 and (admissible is None or {first, second} <= admissible)
             ):
-                linked.update((first, second))
+                linked.add((first, second))
     return linked
+
+
+def _linked_sample_ids(
+    paths: dict[str, Any], admissible: set[str] | None = None,
+) -> set[str]:
+    return {key for pair in measured_native_edges(paths, admissible) for key in pair}
 
 
 def join_recorder_seconds(
