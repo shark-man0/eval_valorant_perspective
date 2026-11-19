@@ -157,6 +157,16 @@ UNKNOWN on one side only in 66.
 DEV2 alone (2,052 seconds, also reported on 2026-11-16): Camera 320 to 101,
 Life 554 to 391; SELF to REMOTE 38, SPECTATOR to SELF 6.
 
+### Protected recordings: final check (2026-11-19)
+
+With the user's permission, three of the four full_match_5 recordings (5,400
+seconds; the fourth could not be transferred) were acquired from the originals
+and measured once, with no tuning. UNKNOWN seconds before / this PR / combined
+with #150: Camera 828 / 273 / 273, Life 919 / 273 / 176, Round 1,544 / 1,544 /
+446. No match rose in any domain. Every second of two matches that changed
+between two known values was viewed (183 seconds, combined run): 183
+consistent, 0 contradicted. No REMOTE was measured in these matches.
+
 ### Random human GT: 80 frames of all ten matches (2026-11-19)
 
 The user labelled 80 frames of the fresh run without seeing any prediction: 40
