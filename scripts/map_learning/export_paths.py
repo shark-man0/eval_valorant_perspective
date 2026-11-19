@@ -6,7 +6,7 @@ import argparse
 import math
 from pathlib import Path
 
-from runtime import DenseMarkerCNN, LearnedRecorderTracker, load_models
+from runtime import AdaptiveRecordingTracker, DenseMarkerCNN, LearnedRecorderTracker, load_models
 
 from valorant_ai_coach.temporal.map_direct_recorder import DirectRecorderTracker
 from valorant_ai_coach.temporal.map_recorder_export import export_recorder_paths
@@ -29,17 +29,21 @@ def main() -> None:
     parser.add_argument("--threshold", type=float)
     parser.add_argument("--learned-stage", choices=("reference", "marker", "both"), required=True)
     parser.add_argument("--refine-center", action="store_true")
+    parser.add_argument("--recording-portraits", action="store_true")
     parser.add_argument("--training-evidence", action="store_true")
+    parser.add_argument("--path-quality", action="store_true")
     parser.add_argument(
-        "--registration", choices=("reference", "exact", "recording-anchors"), default="reference",
+        "--registration", choices=("reference", "exact", "recording-anchors", "spatial-anchors"),
+        default="reference",
     )
     arguments = vars(parser.parse_args())
     threshold = arguments.pop("threshold")
     stage = arguments.pop("learned_stage")
     directory = arguments.pop("models_directory")
     refine = arguments.pop("refine_center")
-    if refine and stage != "both":
-        parser.error("Local center refinement requires both CNN evidence heads")
+    adaptive = arguments.pop("recording_portraits")
+    if (refine or adaptive) and stage != "both":
+        parser.error("Center refinement and recording portraits require both CNN heads")
     if stage != "reference" and (
         directory is None
         or threshold is None
@@ -53,7 +57,8 @@ def main() -> None:
         detector = DenseMarkerCNN(models["marker"], threshold)
         if stage == "marker":
             return DirectRecorderTracker(detector, binding, knowledge)
-        return LearnedRecorderTracker(
+        tracker = AdaptiveRecordingTracker if adaptive else LearnedRecorderTracker
+        return tracker(
             detector, binding, knowledge, portrait_model=models["portrait"], refine_center=refine,
         )
 

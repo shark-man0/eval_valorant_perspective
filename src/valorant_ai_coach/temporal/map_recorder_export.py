@@ -23,6 +23,7 @@ from .map_direct_recorder import (
     corroborate_direct_selection,
     measured_direct_view,
 )
+from .map_path_quality import measure_path_quality
 from .map_portrait_rim import Reference
 from .map_recorder_knowledge import KnowledgeRecorderMap
 from .map_recorder_path import (
@@ -114,6 +115,7 @@ def export_recorder_paths(
     comparison_evidence: bool = False,
     registration: str = "reference",
     training_evidence: bool = False,
+    path_quality: bool = False,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -123,7 +125,7 @@ def export_recorder_paths(
     refs, asset_hashes = _agent_references(catalog)
     if direct_detector not in (None, "external", "augmented", "fast", "cascade", "guided"):
         raise ValueError("Known direct Map detector required")
-    if registration not in ("reference", "exact", "recording-anchors") or (
+    if registration not in ("reference", "exact", "recording-anchors", "spatial-anchors") or (
         registration != "reference" and direct_detector != "guided"
     ):
         raise ValueError("Exact Map registration requires guided development replay")
@@ -183,7 +185,10 @@ def export_recorder_paths(
     alignment = (
         RecordingMapAlignment(projector, exact=exact) if direct_detector == "guided" else None
     )
-    anchors = RecordingMapAnchors() if registration == "recording-anchors" else None
+    anchors = (
+        RecordingMapAnchors(atlas_diverse=registration == "spatial-anchors")
+        if registration in ("recording-anchors", "spatial-anchors") else None
+    )
     flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
     operable: set[str] = set()
@@ -352,6 +357,10 @@ def export_recorder_paths(
         report["game_knowledge"] = knowledge.provenance
     if exact:
         report["registration"] = registration
+    if path_quality:
+        report["path_quality"] = measure_path_quality(
+            paths, bundle["seconds"], second_rows, operable,
+        )
     if training_evidence:
         report["training_evidence"] = {
             "schema": "map_cnn_reference_training_evidence_v1", "rows": training_rows,
