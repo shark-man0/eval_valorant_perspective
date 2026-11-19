@@ -113,6 +113,7 @@ def export_recorder_paths(
     ] | None = None,
     comparison_evidence: bool = False,
     registration: str = "reference",
+    training_evidence: bool = False,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -157,6 +158,8 @@ def export_recorder_paths(
         direct_detector != "guided" or recover_adjacent_portrait or corroborate_direct_with_legacy
     ):
         raise ValueError("Experimental tracker requires guided alignment without portrait recovery")
+    if training_evidence and (direct_detector != "guided" or direct_tracker_factory is not None):
+        raise ValueError("Weak training crops require a guided reference replay")
     direct = None
     binding = None
     if direct_detector and knowledge is not None:
@@ -188,6 +191,7 @@ def export_recorder_paths(
     direct_reasons: Counter[str] = Counter()
     portrait_rejections: Counter[str] = Counter()
     unresolved_portrait_samples: list[str] = []
+    training_rows: list[dict[str, Any]] = []
     for frame in native.values():
         sample = freeze_native_sample(frame["sample"])
         policy.admit(sample)
@@ -308,6 +312,16 @@ def export_recorder_paths(
         )
         if direct_detector and projected is not None:
             direct_stages["projection_available"] += 1
+        if (
+            training_evidence and projected is not None and projected["kind"] == "selected"
+            and not adjacent and result["support_count"] >= 2
+        ):
+            training_rows.append({
+                "sample": sample,
+                "selection": {"support_center_frame_px": result["support_center_frame_px"]},
+                "pool": pool,
+                "observation_ids": frame["observation_ids"],
+            })
         if adjacent and projected is not None:
             projected["selection_reason"] = ADJACENT_PORTRAIT_REASON
         if (direct is not None and projected is not None and not adjacent
@@ -338,6 +352,10 @@ def export_recorder_paths(
         report["game_knowledge"] = knowledge.provenance
     if exact:
         report["registration"] = registration
+    if training_evidence:
+        report["training_evidence"] = {
+            "schema": "map_cnn_reference_training_evidence_v1", "rows": training_rows,
+        }
     if direct_detector:
         report["recording_map_uuid"] = alignment.map_uuid if alignment else None
         report["direct_detector"] = direct_detector

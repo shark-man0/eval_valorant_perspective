@@ -29,6 +29,7 @@ def main() -> None:
     parser.add_argument("--threshold", type=float)
     parser.add_argument("--learned-stage", choices=("reference", "marker", "both"), required=True)
     parser.add_argument("--refine-center", action="store_true")
+    parser.add_argument("--training-evidence", action="store_true")
     parser.add_argument(
         "--registration", choices=("reference", "exact", "recording-anchors"), default="reference",
     )

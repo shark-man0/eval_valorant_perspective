@@ -12,7 +12,7 @@ from crop_lineage import CATEGORIES, SCHEMA, load_crop_lineage
 
 from valorant_ai_coach.hud.layout import HudLayout
 from valorant_ai_coach.recordings.catalog import RecordingCatalog
-from valorant_ai_coach.temporal.evidence import native_time
+from valorant_ai_coach.temporal.evidence import freeze_native_sample, native_time
 from valorant_ai_coach.temporal.replay import SourcePolicy, file_sha, read_json, write_private
 
 
@@ -51,41 +51,34 @@ def collect_crops(image, bounds, row, rng):
     return result
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    for name in (
-        "recording-catalog",
-        "view-context",
-        "replay-report",
-        "source-policy",
-        "layout",
-        "output-directory",
+def native_evidence(report, manifest):
+    evidence = report.get("training_evidence") or {}
+    binding = report.get("recording_agent_uuid_binding")
+    if (
+        evidence.get("schema") != "map_cnn_reference_training_evidence_v1"
+        or not binding
+        or binding.get("qualified") is not False
+        or file_sha(manifest) != report["frame_manifest_sha256"]
     ):
-        parser.add_argument("--" + name, type=Path, required=True)
-    parser.add_argument("--method", required=True)
-    parser.add_argument("--max-positive", type=int, default=2000)
-    args = parser.parse_args()
-    if args.max_positive < 1:
-        parser.error("Positive crop budget must be positive")
-    cv2.setNumThreads(1)
-    os.umask(0o077)
-    out = args.output_directory.resolve()
-    if any((parent / ".git").exists() for parent in (out, *out.parents)):
-        parser.error("Private crops must remain outside Git checkouts")
-    catalog = RecordingCatalog(args.recording_catalog)
-    report = read_json(args.replay_report)
-    context = read_json(args.view_context)
-    if context["formal_outputs"] != 0 or report["formal_outputs"] != 0:
-        parser.error("Unqualified Map replay and view context required")
-    (rec,) = (
-        r for r in catalog.state.recordings.values() if r.source_sha256 == context["source_sha256"]
-    )
-    if rec.split != "DEVELOPMENT" or rec.learning["split"] != "TRAIN":
-        raise ValueError("Map training requires a registered DEVELOPMENT / TRAIN source")
-    catalog.guard([rec.recording_id], "training")
-    if report["physical_source"] != rec.source_sha256:
-        raise ValueError("Map training replay and view context must use the same source")
-    auth = SourcePolicy(read_json(args.source_policy))
+        raise ValueError("A matching native manifest and reference training export are required")
+    files = {
+        freeze_native_sample(row["sample"])["sample_sha256"]: Path(row["path"])
+        for row in read_json(manifest)["frames"]
+    }
+    selected = []
+    for row in evidence["rows"]:
+        sample = freeze_native_sample(row["sample"])
+        if sample["source_sha256"] != binding["source_sha256"]:
+            raise ValueError("Foreign sample in Map training evidence")
+        selected.append((row, files[sample["sample_sha256"]], row["observation_ids"]))
+    return binding["source_sha256"], binding["uuid"], report["frame_manifest_sha256"], selected
+
+
+def archived_evidence(report, context_path, method):
+    context = read_json(context_path)
+    source = context["source_sha256"]
+    if context["formal_outputs"] != 0 or report["physical_source"] != source:
+        raise ValueError("Unqualified Map replay and context must use the same source")
     receipt = Path(context["receipt_path"])
     if file_sha(receipt) != context["receipt_sha256"]:
         raise ValueError("Map crop acquisition receipt hash mismatch")
@@ -94,34 +87,81 @@ def main():
         raise ValueError("Map crops require verified original recording and native PTS")
     files = dict(meta["frames"])
     by_id = {row["sample"]["sample_sha256"]: row for row in context["rows"]}
+    selected = []
+    for row in report["modes"][method]["traces"]:
+        s = row["sample"]
+        view = by_id[s["sample_sha256"]]
+        if (
+            view["camera"] == "SELF"
+            and view["life"] == "ALIVE"
+            and view["view_fp"]
+            and not view["veto"]
+            and row["projected"] is not None
+            and row["selection"]["selection_status"] == "RESEARCH_SELECTED"
+            and row["selection"]["support_count"] >= 2
+        ):
+            selected.append(
+                (row, Path(files[s["native_pts_tick"]]), view.get("observation_ids", []))
+            )
+    return source, report["recording_agent_uuid"], context["receipt_sha256"], selected
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in (
+        "recording-catalog",
+        "replay-report",
+        "source-policy",
+        "layout",
+        "output-directory",
+    ):
+        parser.add_argument("--" + name, type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--view-context", type=Path)
+    inputs.add_argument("--native-manifest", type=Path)
+    parser.add_argument("--method", help="Recognizer entry in an archived replay report")
+    parser.add_argument("--max-positive", type=int, default=2000)
+    args = parser.parse_args()
+    if args.max_positive < 1:
+        parser.error("Positive crop budget must be positive")
+    if (args.view_context is None) != (args.method is None):
+        parser.error("--view-context and --method are required together")
+    cv2.setNumThreads(1)
+    os.umask(0o077)
+    out = args.output_directory.resolve()
+    if any((parent / ".git").exists() for parent in (out, *out.parents)):
+        parser.error("Private crops must remain outside Git checkouts")
+    catalog = RecordingCatalog(args.recording_catalog)
+    report = read_json(args.replay_report)
+    if report["formal_outputs"] != 0:
+        parser.error("Unqualified Map replay required")
+    if args.native_manifest is not None:
+        source, recorder, receipt_sha, selected = native_evidence(report, args.native_manifest)
+    else:
+        source, recorder, receipt_sha, selected = archived_evidence(
+            report,
+            args.view_context,
+            args.method,
+        )
+    (rec,) = (r for r in catalog.state.recordings.values() if r.source_sha256 == source)
+    if rec.split != "DEVELOPMENT" or rec.learning["split"] != "TRAIN":
+        raise ValueError("Map training requires a registered DEVELOPMENT / TRAIN source")
+    catalog.guard([rec.recording_id], "training")
+    auth = SourcePolicy(read_json(args.source_policy))
     layout = HudLayout.load(args.layout)
     frames = {}
     lineage = {kind: [] for kind in CATEGORIES}
     patches = {kind: [] for kind in CATEGORIES}
     rng = np.random.default_rng(663)
-    traces = [
-        r
-        for r in report["modes"][args.method]["traces"]
-        if r["projected"] is not None
-        and r["selection"]["selection_status"] == "RESEARCH_SELECTED"
-        and r["selection"]["support_count"] >= 2
-    ]
     last = None
-    for row in traces:
-        s = row["sample"]
+    for row, source_path, observation_ids in selected:
+        s = freeze_native_sample(row["sample"])
         key = s["sample_sha256"]
-        view = by_id[key]
         at = native_time(s)
-        if (
-            view["camera"] != "SELF"
-            or view["life"] != "ALIVE"
-            or not view["view_fp"]
-            or view["veto"]
-            or (last is not None and at - last < Fraction(2, 5))
-        ):
+        if last is not None and at - last < Fraction(2, 5):
             continue
         auth.admit(s)
-        data_bytes = Path(files[s["native_pts_tick"]]).read_bytes()
+        data_bytes = source_path.read_bytes()
         if hashlib.sha256(data_bytes).hexdigest() != s["acquired_frame_sha256"]:
             raise ValueError("Map crop frame bytes differ from the native observation")
         im = cv2.imdecode(np.frombuffer(data_bytes, np.uint8), cv2.IMREAD_COLOR)
@@ -138,7 +178,7 @@ def main():
                     "sample_sha256": key,
                     "label": label,
                     "center": center,
-                    "timeline_observation_ids": view.get("observation_ids", []),
+                    "timeline_observation_ids": observation_ids,
                     "patch_sha256": hashlib.sha256(patch.tobytes()).hexdigest(),
                 }
             )
@@ -158,7 +198,7 @@ def main():
             "schema": SCHEMA,
             "samples": frames,
             "source_sha256": rec.source_sha256,
-            "native_receipt_sha256": context["receipt_sha256"],
+            "native_receipt_sha256": receipt_sha,
             "rows": lineage,
         },
     )
@@ -169,7 +209,7 @@ def main():
         {
             "recording_id": rec.recording_id,
             "source_sha256": rec.source_sha256,
-            "recorder_agent_uuid": report["recording_agent_uuid"],
+            "recorder_agent_uuid": recorder,
             "patches": str(archive),
             "sha256": file_sha(archive),
             "lineage": str(trace),

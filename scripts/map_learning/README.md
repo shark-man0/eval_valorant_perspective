@@ -29,8 +29,11 @@ recorder marker. Negatives use a different candidate in the same frame or a
 region separated from the measured marker. These labels are weak; keep
 human-reviewed samples and independent matches separate from training.
 
-For observation-bound training, run `prepare_crops.py --help` with an
-admitted replay and the matching native view context. The resulting record
+For observation-bound training, export the reference replay with
+`export_paths.py --learned-stage reference --training-evidence`. Pass that
+report and the same `--native-manifest` to `prepare_crops.py`. Archived
+comparison replays can supply a matching `--view-context` and `--method`.
+The resulting record
 adds `lineage` and `lineage_sha256`. Pass these records in a receipt with
 schema `map_cnn_training_receipt_v2`. Each native crop is checked against its
 frame's sample ID, source, bounds, category and crop hash. When the timeline
