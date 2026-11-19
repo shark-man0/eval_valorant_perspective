@@ -167,6 +167,13 @@ Implementing-agent visual review (not human GT):
 | Withdrawn DEAD in issue_oldfull002, 5 seconds | 5 show the recorder alive with its own HUD (the DEAD was wrong) |
 | Early start candidates retired, 5 in issue_freshfull003 | 5 inside the purchase phase, before its countdown ends |
 
+Human GT (2026-11-19): the user labelled 36 DEV2 sample frames without seeing
+any prediction; frames marked unknown are excluded (Camera 29, Life 34). The
+frames were picked for review, not drawn at random. Fresh run, correct /
+incorrect / abstained: Life 17 / 0 / 17 before and 25 / 0 / 9 after; Camera is
+unchanged by this option (19 / 6 / 4; the six errors are drone views, handled
+in #151).
+
 Run-level review of every changed run (one or more frames per run decoded at
 the native PTS, implementing agent, not human GT):
 
