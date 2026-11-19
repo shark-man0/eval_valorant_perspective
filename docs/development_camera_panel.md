@@ -69,6 +69,10 @@ native samples, keeps only frames whose decoded pixels hash to the sample's
   row, with only UNKNOWN rows between, returns to UNKNOWN
   (`carried_alive_before_measured_spectator_view`): the death lies somewhere in
   the carried interval.
+- With the option, the return-tail bracket no longer reopens a victim-display
+  DEAD in a frame that shows the Round result or the intermission unless the
+  recorder's own health or menu is current: a recorder that died returns only at
+  the next purchase phase. Rows after the result display keep the bracket.
 
 The default path is unchanged.
 
@@ -94,7 +98,7 @@ identical there, recorded as such).
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Camera UNKNOWN seconds | 4,118 | 1,039 |
-| Life UNKNOWN seconds | 5,322 | 1,200 |
+| Life UNKNOWN seconds | 5,322 | 1,195 |
 | Round UNKNOWN seconds | 7,230 | 7,230 |
 | Matches where any UNKNOWN count rose | – | 0 of 10 |
 | Camera REMOTE seconds | 0 | 87 |
@@ -129,7 +133,7 @@ were undecided. Holdout recordings were not used.
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Camera UNKNOWN seconds | 3,333 | 997 |
-| Life UNKNOWN seconds | 4,059 | 1,081 |
+| Life UNKNOWN seconds | 4,059 | 1,076 |
 | Round UNKNOWN seconds | 7,071 | 7,071 |
 | Matches where any UNKNOWN count rose | – | 0 of 10 |
 | Human labels sampled by the fresh run (72 of 78): correct / abstained / incorrect | 72 / 0 / 0 | 72 / 0 / 0 |
@@ -159,13 +163,26 @@ Life 554 to 391; SELF to REMOTE 38, SPECTATOR to SELF 6.
 
 ### Protected recordings: final check (2026-11-19)
 
-With the user's permission, three of the four full_match_5 recordings (5,400
-seconds; the fourth could not be transferred) were acquired from the originals
-and measured once, with no tuning. UNKNOWN seconds before / this PR / combined
-with #150: Camera 828 / 273 / 273, Life 919 / 273 / 176, Round 1,544 / 1,544 /
-446. No match rose in any domain. Every second of two matches that changed
-between two known values was viewed (183 seconds, combined run): 183
-consistent, 0 contradicted. No REMOTE was measured in these matches.
+With the user's permission, all four full_match_5 recordings (7,414 seconds)
+were acquired from the originals and measured once, with no tuning. UNKNOWN
+seconds before / this PR / combined with #150: Camera 1,112 / 355 / 355, Life
+1,318 / 368 / 255, Round 2,206 / 2,206 / 762. No match rose in any domain. Every
+second of the combined run that changed between two known values was viewed
+(248 seconds, AI review): 247 consistent, 1 contradicted. The contradicted
+second (match 4, 1752) is a measured spectator value carried 1 s into the
+purchase phase by the existing 2 s carry. Not carrying a measured spectator
+value into a frame with a learned SELF claim fixed it but withdrew 134 Camera
+and 64 Life seconds in the fixed comparison (the learned SELF claim is often
+wrong while spectating), so it was not kept. No REMOTE was measured in these
+matches.
+
+Result-display rule (3d9ec86): it adds DEAD to 5 fresh-run seconds and 2
+protected seconds and changes no known value; all 7 were viewed and show a
+Round result while the recorder spectates the spike or a teammate. A wider
+version keyed on the Round state instead of the result display also kept the
+human-labelled DEAD at DEV2 207 s, but made one protected second already in the
+next purchase phase DEAD, so the narrower version was kept and DEV2 207 s
+remains an abstention.
 
 ### Random human GT: 80 frames of all ten matches (2026-11-19)
 
