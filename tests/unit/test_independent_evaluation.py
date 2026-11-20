@@ -24,10 +24,11 @@ def setup(tmp_path: Path):
     catalog = RecordingCatalog.create(tmp_path / "private" / "catalog", seed="fixed-seed")
     ids = {}
     for index, split in enumerate(("DEVELOPMENT", "QUALIFICATION", "FINAL_HOLDOUT")):
-        path = _video(tmp_path / "videos", f"{split}.mp4", split.encode() * 20 + b"x" * index)
+        payload = split.encode("ascii") * 20 + b"x" * index
+        path = _video(tmp_path / "videos", f"{split}.mp4", payload)
         result = catalog.register(path, physical_match_id=f"m_{split}", split=split)
         ids[split] = result.recording_id
-    refs = {name: _video(tmp_path / "refs", f"{name}.png", name.encode())
+    refs = {name: _video(tmp_path / "refs", f"{name}.png", name.encode("ascii"))
             for name in ie.REFERENCE_NAMES}
     reader = _video(tmp_path / "refs", "screen.json", b"{}")
     return catalog, ids, refs, reader, tmp_path
@@ -114,7 +115,7 @@ def test_execute_runs_the_frozen_pipeline_with_the_evaluation_purpose(setup, mon
 
     def fake_run_match(**kwargs):
         calls["run_match"] = kwargs
-        SourcePolicy(json.loads(Path(kwargs["policy_path"]).read_text()),
+        SourcePolicy(json.loads(Path(kwargs["policy_path"]).read_text(encoding="utf-8")),
                      purpose=kwargs["admission_purpose"])
         kwargs["output"].mkdir()
         return {}
