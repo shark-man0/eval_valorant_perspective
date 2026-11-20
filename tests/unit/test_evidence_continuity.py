@@ -419,3 +419,47 @@ def test_unread_clock_between_two_countdown_readings_is_in_the_same_phase():
     rows[3] = at(3, score=(2, 0), timer=42)
     revised = run(rows, practical_visual_state=True)["frames"][6]["round"]
     assert revised["reason"] != "post_round_countdown_after_measured_end"
+
+
+def test_zero_width_end_without_a_result_cue_opens_to_the_last_undecided_frame():
+    rows = [at(0, ["active"], (2, 0))]
+    rows += [at(s, ["report"], (2, 0) if s % 3 else None) for s in range(1, 9)]
+    rows += [at(9, ["report"], (2, 1)), at(10, ["report"], (2, 1)), at(11, ["buy"], (2, 1))]
+    before = [t for t in run(rows, False, practical_visual_state=True)["transitions"]
+              if t["kind"] == "round_end"]
+    assert [(t["lower_sample"]["native_pts_tick"], t["upper_sample"]["native_pts_tick"])
+            for t in before] == [(90, 90)]
+    result = run(rows, practical_visual_state=True)
+    ends = [t for t in result["transitions"] if t["kind"] == "round_end"]
+    # No ACTIVE value within the display lead: the lead bounds the bracket.
+    assert ends[0]["lower_sample"]["native_pts_tick"] == 40
+    assert ends[0]["upper_sample"]["native_pts_tick"] == 90
+    assert ends[0]["rule_lower_sample"]["native_pts_tick"] == 90
+    assert ends[0]["lower_sample_basis"] == "last_frame_not_known_decided"
+    assert values(result, "round") == values(run(rows, False, practical_visual_state=True),
+                                              "round")
+    # An ACTIVE value closer to the edge is the lower bound (the measured cue at
+    # 7 s carries ACTIVE to 8 s).
+    rows[7] = at(7, ["active"], (2, 0))
+    closer = run(rows, practical_visual_state=True)
+    assert values(closer, "round")[8] == "ACTIVE"
+    ends = [t for t in closer["transitions"] if t["kind"] == "round_end"]
+    assert ends[0]["lower_sample"]["native_pts_tick"] == 80
+
+
+def test_a_carried_death_does_not_outlast_the_post_round_countdown():
+    rows = [at(0, ["active"], (2, 0), 45), at(1, ["active"], (2, 0), 44),
+            at(2, ["result"], (2, 1), 3), at(3, ["result"], (2, 1), 2),
+            at(4, ["death"], (2, 1), 1), at(5, ["report"], (2, 1)), at(6, ["report"], (2, 1)),
+            at(7, ["report"], (2, 1)), at(11, ["buy"], (2, 1), 29)]
+    before = run(rows, False, practical_visual_state=True)["frames"]
+    assert before[6]["life"]["value"] == "DEAD"
+    assert before[6]["life"]["reason"] == "bounded_missing_observation"
+    frames = run(rows, practical_visual_state=True)["frames"]
+    # The countdown read at 2 s expires at 5 s: the carry at 6 s is withdrawn.
+    assert frames[5]["life"]["value"] == "DEAD"  # still inside the countdown
+    assert frames[6]["life"]["value"] == "UNKNOWN"
+    assert frames[6]["life"]["reason"] == "carry_outlasted_the_post_round_countdown"
+    assert frames[6]["camera"]["value"] == "UNKNOWN"
+    # A latched death is not a carry and stays for the stale-death rules.
+    assert frames[7]["life"]["value"] == "DEAD"

@@ -26,6 +26,8 @@ match specific conditions and no threshold changes in any recognizer.
 | Round end candidate | Same inputs | One increment is one decided Round | `round_end` between the last known-undecided frame and the first result cue or new-score frame |
 | Existing score-update end edges | An existing end edge whose lower frame is only the last old-score frame | Display lead as above | Lower bound moved back to the last known-undecided frame (`lower_sample_basis: score_display_lead`, `rule_lower_sample` kept) |
 | Countdown after a decided Round | An existing end edge whose upper frame is ENDED (measured, or a one-point score increment) with one clock reading `r` at `t`; earlier or later rows of the same segment reading `t + r - t_k` | The single Round clock counts down one second per second within a phase; at least two matching readings | Matching rows, and rows without a reading between two matching ones, without a measured ACTIVE or purchase cue become ENDED (`post_round_countdown_after_measured_end`). If the chain starts before the edge (at most the display lead), the edge moves to its first row; the lower bound is the frame before it when that frame shows another clock reading, otherwise the display-lead walk (`lower_sample_basis: post_round_countdown`, rule samples kept) |
+| Carry past the countdown after a decided Round | The countdown reading on an end edge's ENDED frame (as above, one reading suffices) | When the countdown expires the next phase begins (a purchase phase, where everyone is alive, or an intermission); the clock shows whole seconds | DEAD and SPECTATOR values carried over missing frames (`bounded_missing_observation`, or a spectator view derived from such a DEAD) at or after expiry + 1 s are withdrawn to UNKNOWN (`carry_outlasted_the_post_round_countdown`); the walk stops at the first later frame without such a carry |
+| Remaining zero-width end edges | An end edge whose lower and upper sample are one frame | An empty bracket states nothing | Lower bound moved back through same-segment frames without a result, BUY or intermission cue to the latest ACTIVE value or the display lead (`lower_sample_basis: last_frame_not_known_decided`); frame values unchanged |
 | Zero-width end at the first result display | An existing end edge whose lower and upper frame are the same frame with a measured result cue | The result is displayed after the Round is decided, so the decision lies before that frame | Lower bound moved back through same-scope frames with no result, BUY or intermission cue and one old score at most, to the latest measured ACTIVE cue or the display lead (`lower_sample_basis: result_display_lead`, `rule_lower_sample` kept). Frame values are unchanged |
 | Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side (the earlier anchor itself when it is closer), and rows after the projected start become ACTIVE. A projection before the earlier anchor is rejected |
 | Purchase before combat | A measured BUY anchor, then the next measured BUY anchor or the combat start projected from two countdown readings after the next ACTIVE anchor; equal score readings; no result or intermission cue | The purchase phase precedes the combat phase of its Round and never follows it | Unmeasured ACTIVE values in between (single visual cues, never measured anchors) become BUY; Round start candidates lying wholly inside are archived in `superseded_transition_candidates` |
@@ -307,6 +309,18 @@ wrong values as they were in the base timeline.
 The early candidates came from single unmeasured ACTIVE frames
 (`observed_purchase_barrier_loss`) inside the purchase phase; the base timeline
 had 12 of them and 6 overlapping pairs.
+
+### Carries past the countdown and zero-width ends (2026-11-20)
+
+Both rules address items left open above: the 1 s spectator carry into a
+purchase phase (fm5_4 1752) and the 32 zero-width end candidates.
+
+| Check | Result |
+| --- | --- |
+| Fresh runs, fourteen matches, combined with #151 | Life DEAD to UNKNOWN 29 s (ten matches) and 9 s (protected four), the same seconds' Camera SPECTATOR to UNKNOWN; fm5_4 1752 and 1753 withdrawn. Zero-width end candidates 32 to 0; median end width 5 s, maximum 17 s, unchanged. Round values unchanged |
+| AI review of all 38 withdrawn seconds (not human GT) | 35 the old value was wrong (purchase phase, buy menu or the next Round already under way with the recorder's own HUD); 2 at the very end of the countdown (clock 0:00), where the recorder may still have been dead; 1 the match-end screen |
+| Fixed comparison | Camera SPECTATOR to UNKNOWN 49 s (Camera UNKNOWN 4,016 to 4,065), Life unchanged; 69/69 kept; no consistency violation added. Of the earlier version's 53 withdrawals, the 4 inside the last displayed second (spectator label still shown) are now kept; one withdrawal with the spectator label at a blank clock between Rounds remains |
+| Human GT (120 + 80 frames, 53 boundaries) | Unchanged |
 
 ## Limits
 

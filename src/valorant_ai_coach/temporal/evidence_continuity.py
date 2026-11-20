@@ -58,6 +58,7 @@ CLOCK_SEARCH = Fraction(60)
 # the result banner preceded the first updated score by at most 3 s. Old-score
 # frames this close to the update are not assumed undecided.
 DECISION_DISPLAY_LEAD = Fraction(5)
+_CARRY = "bounded_missing_observation"
 _PHASE_CUES = {"buy", "result", "intermission"}
 _SELF_CUES = {"owner_hud", "remote", "revival"}
 _NOT_ALIVE_CUES = {"spectator", "death", "downed", "recorder_elimination_display"}
@@ -822,6 +823,7 @@ def apply_evidence_continuity(
     _demote_current_view_maps(states, revise.history)
     _post_round_countdown(states, observations, transitions or [], revise)
     _widen_score_display_ends(states, observations, transitions or [])
+    _open_zero_width_ends(states, observations, transitions or [])
     _relocate_revised_edges(states, transitions or [])
     return revise.history, events
 
@@ -963,6 +965,7 @@ def _post_round_countdown(
             continue
         t_u = native_time(states[u]["sample"])
         expiry = t_u + reading[0]
+        _withdraw_carries_past(states, u, expiry, list(reading[1]), revise)
 
         before = walk(u, -1, expiry, t_u - DECISION_DISPLAY_LEAD, t_u)
         after = walk(u, 1, expiry, t_u, expiry)
@@ -997,6 +1000,93 @@ def _post_round_countdown(
             lower = _result_display_lead(states, observations, m)
         event["lower_sample"] = deepcopy(states[lower if lower is not None else m]["sample"])
         event["lower_sample_basis"] = "post_round_countdown"
+
+
+def _withdraw_carries_past(
+    states: list[dict[str, Any]], u: int, expiry: Fraction, evidence: list[str],
+    revise: _Reviser,
+) -> None:
+    """Carried non-living values do not outlast the countdown after a decided Round.
+
+    When the post-round countdown read on the end frame expires, the next phase
+    begins (a purchase phase, where every player is alive, or an intermission).
+    A DEAD or SPECTATOR value carried over the missing frames past that time (one
+    second after the reading's expiry, as the clock shows whole seconds) is no
+    observation of the new phase: it is withdrawn to UNKNOWN. Measured values
+    are kept, and the walk stops at the first frame after the expiry that holds no
+    such carry.
+    """
+    k = u
+    scope = source_scope(states[u]["sample"])
+    while (
+        k + 1 < len(states)
+        and states[k + 1]["continuity"].get("carry_allowed", False)
+        and source_scope(states[k + 1]["sample"]) == scope
+    ):
+        k += 1
+        frame = states[k]
+        t_k = native_time(frame["sample"])
+        if t_k <= expiry:
+            continue
+        dead = frame["life"]["value"] == "DEAD" and frame["life"]["reason"] == _CARRY
+        spectating = frame["camera"]["value"] == "SPECTATOR" and (
+            frame["camera"]["reason"] == _CARRY
+            # derived here from the carried DEAD value
+            or dead and frame["camera"]["reason"] == "recorder_not_alive_views_another_actor"
+        )
+        if not (dead or spectating):
+            break
+        if t_k < expiry + 1:
+            continue  # The clock shows whole seconds: it may run until expiry + 1.
+        if dead:
+            revise(frame, "life", "UNKNOWN", ["UNKNOWN", "ALIVE", "DEAD"], evidence,
+                   "carry_outlasted_the_post_round_countdown")
+        if spectating:
+            revise(frame, "camera", "UNKNOWN", ["UNKNOWN", "SELF", "SPECTATOR"], evidence,
+                   "carry_outlasted_the_post_round_countdown")
+
+
+def _open_zero_width_ends(
+    states: list[dict[str, Any]], observations: dict[str, Any],
+    transitions: list[dict[str, Any]],
+) -> None:
+    """Give a remaining zero-width end edge the last frame not yet known decided.
+
+    An edge whose lower and upper sample are the same frame brackets nothing.
+    Its lower bound moves back through frames of the same segment without a
+    result, purchase or intermission cue to the latest frame whose Round value
+    is ACTIVE, or to the display lead before the edge. Frame values and the
+    upper sample are unchanged; the rule's lower sample is kept.
+    """
+    index = {f["sample"]["sample_sha256"]: i for i, f in enumerate(states)}
+    for event in transitions:
+        if event["kind"] != "round_end":
+            continue
+        hi = index.get(event["upper_sample"]["sample_sha256"])
+        lo = index.get(event["lower_sample"]["sample_sha256"])
+        if hi is None or lo != hi:
+            continue
+        t_hi = native_time(states[hi]["sample"])
+        scope = source_scope(states[hi]["sample"])
+        k = hi
+        while (
+            k > 0
+            and states[k]["continuity"].get("carry_allowed", False)
+            and source_scope(states[k - 1]["sample"]) == scope
+            and not _signals(_rows(states[k - 1], observations))
+            & {"result", "buy", "intermission"}
+        ):
+            k -= 1
+            if (
+                states[k]["round"]["value"] == "ACTIVE"
+                or native_time(states[k]["sample"]) <= t_hi - DECISION_DISPLAY_LEAD
+            ):
+                break
+        if k == hi:
+            continue
+        event["rule_lower_sample"] = deepcopy(event["lower_sample"])
+        event["lower_sample"] = deepcopy(states[k]["sample"])
+        event["lower_sample_basis"] = "last_frame_not_known_decided"
 
 
 def _widen_score_display_ends(
