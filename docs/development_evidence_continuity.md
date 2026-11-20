@@ -228,7 +228,8 @@ not viewed.
 The countdown rule above (2026-11-20) addresses those late edges. Fixed
 comparison: Round UNKNOWN 3,202 to 3,131 seconds, 14 seconds ACTIVE to ENDED,
 Life and Camera unchanged, 69/69 kept, no consistency violation added. Fresh
-runs (fourteen matches): Round UNKNOWN 3,154 to 3,077 in the ten and 762 to 752
+runs: five of the six late edges now contain the end; the sixth shows a frozen
+spike clock, not a countdown, and stays. Fourteen matches: Round UNKNOWN 3,154 to 3,077 in the ten and 762 to 752
 in the protected four; ACTIVE to ENDED 28 and 18 seconds; zero-width ends 38 to
 32. One end candidate the second human sheet marked as later than the actual
 end (the Round had ended before the frames shown) was a duplicate of an earlier
