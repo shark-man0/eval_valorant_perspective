@@ -217,7 +217,12 @@ fourteen fresh runs the rule widens 57 of 95 zero-width ends (median end width
 3 to 5 s, maximum unchanged at 17 s) and changes no frame value. The fixed
 comparison is unchanged in every domain and keeps 69/69. The 38 zero-width ends
 left have no measured result cue on their frame and were not sampled by either
-sheet; they are unverified.
+sheet. The 33 of them in the ten development matches were viewed on the
+originals, two seconds before to one second after (AI review, not human GT):
+in 27 the edge frame is the first frame after the Round end (post-round clock
+or result banner); in 6 the post-round clock was already shown one second
+earlier, so the edge is one second late. The 5 in the protected recordings were
+not viewed.
 
 Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
 without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40
