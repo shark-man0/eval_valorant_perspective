@@ -20,6 +20,10 @@ from .map_roles import provisional_map_roles, rule_sha256
 from .zone_contract import ZONE_CONTEXT_CONTRACT, viewed_zone_candidate
 
 VERSION = "development_game_timeline_v2"
+# Measured view displays (fixed HUD panels) outrank learned view classifiers.
+_MEASURED_VIEW_SIGNALS = frozenset({"owner_hud", "spectator", "remote"})
+# Longest purchase phase plus the transition into it (competitive format).
+PURCHASE_PHASE_LIMIT = Fraction(45)
 
 
 class RoundState(StrEnum):
@@ -315,6 +319,7 @@ class DevelopmentGameTimeline:
         buy_clock_tail: bool = False,
         practical_visual_state: bool = False,
         evidence_continuity: bool = False,
+        measured_view_precedence: bool = False,
     ) -> None:
         if max_carry_seconds <= 0 or future_seconds <= 0:
             raise ValueError("Positive finite windows required")
@@ -365,6 +370,9 @@ class DevelopmentGameTimeline:
         if type(evidence_continuity) is not bool or (forward_only and evidence_continuity):
             raise ValueError("Evidence continuity requires explicit offline mode")
         self.evidence_continuity = evidence_continuity
+        if type(measured_view_precedence) is not bool:
+            raise ValueError("Explicit measured view precedence mode required")
+        self.measured_view_precedence = measured_view_precedence
         self._observations: dict[str, dict[str, Any]] = {}
         self._revision = 0
         self._history: list[dict[str, Any]] = []
@@ -505,6 +513,21 @@ class DevelopmentGameTimeline:
             ]
             ids = [r["observation_id"] for r in rule_rows]
             signals = {s for r in rule_rows for s in r["signals"]}
+            measured_view = self.measured_view_precedence and any(
+                r["context"].get("unqualified_view_model") is not True
+                and set(r["signals"]) & _MEASURED_VIEW_SIGNALS
+                for r in frame["observations"]
+            )
+            if measured_view:
+                # A measured view display supersedes learned view claims in the
+                # same frame. Learned rows keep their other signals.
+                signals = {
+                    s
+                    for r in rule_rows
+                    for s in r["signals"]
+                    if s not in _MEASURED_VIEW_SIGNALS
+                    or r["context"].get("unqualified_view_model") is not True
+                }
             display_ids = {
                 r["context"]["elimination_display_signature"]
                 for r in frame["observations"]
@@ -525,7 +548,7 @@ class DevelopmentGameTimeline:
                 and r["context"].get("unqualified_view_model") is not True
             ]
             weak_owner_only = "owner_hud" in signals and not strong_owner_rows
-            weak_camera_only = any(
+            weak_camera_only = not measured_view and any(
                 r["context"].get("unqualified_view_model") is True
                 and set(r["signals"]) & {"owner_hud", "spectator", "remote"}
                 for r in frame["observations"]
@@ -566,6 +589,24 @@ class DevelopmentGameTimeline:
                     if signal in signals
                 ],
             }
+            if measured_view and "remote" in signals and "ALIVE" not in choices["life"]:
+                # Steering a measured remote ability requires a living recorder.
+                choices["life"].append("ALIVE")
+            measured_spectator = (
+                measured_view
+                and "owner_hud" not in signals
+                and "remote" not in signals
+                and "buy" not in signals
+                and any(
+                    "spectator" in r["signals"]
+                    and r["context"].get("unqualified_view_model") is not True
+                    for r in frame["observations"]
+                )
+            )
+            if measured_spectator and "DEAD" not in choices["life"]:
+                # The spectator label (player switch prompt and the spectated
+                # player's name) is shown only to a recorder who is not alive.
+                choices["life"].append("DEAD")
             # A small active clock remains contextually ACTIVE below the buy-clock
             # ambiguity range only when its observed countdown and score agree.
             clocks = {
@@ -740,7 +781,14 @@ class DevelopmentGameTimeline:
                 death_latch = current["life"]["value"]
                 death_round_token = round_token
                 last_dead = frame["sample"]
-            if "spectator" in signals and not death_latch:
+            if (
+                measured_spectator
+                and current["life"]["value"] == "DEAD"
+                and current["life"]["reason"] == "current_observation"
+            ):
+                current["life"]["reason"] = "measured_spectator_view"
+                last_direct["life"] = now, deepcopy(current["life"])
+            if "spectator" in signals and not death_latch and not measured_spectator:
                 # Preserve competing life explanations. Spectator UI is a camera observation.
                 current["life"] = _estimate(
                     alternatives=["DEAD", "UNKNOWN"]
@@ -1140,6 +1188,11 @@ class DevelopmentGameTimeline:
         return_tails = (
             self._reconcile_return_display_tails(states) if self.return_display_tail else []
         )
+        measured_returns = (
+            self._confirm_measured_view_returns(states) if self.measured_view_precedence else []
+        )
+        if self.measured_view_precedence:
+            measured_returns += self._withdraw_carry_before_measured_spectator(states)
         round_projections = []
         for state in states:
             rows = [self._observations[i] for i in state["observation_ids"]]
@@ -1246,6 +1299,11 @@ class DevelopmentGameTimeline:
                 forward_only=self.forward_only,
                 mark_round_transition_gaps=self.mark_round_transition_gaps,
             )
+        if self.measured_view_precedence:
+            result["configuration"]["measured_view_precedence"] = (
+                "development_measured_view_precedence_v1"
+            )
+            result["measured_view_return_history"] = measured_returns
         if self.practical_visual_state:
             from .replay import file_sha
 
@@ -1409,6 +1467,251 @@ class DevelopmentGameTimeline:
         )
         return next(iter(scores)) if len(scores) == 1 else None
 
+    def _measured_own_view(self, state: dict[str, Any]) -> list[str]:
+        return [
+            r["observation_id"]
+            for r in (self._observations[i] for i in state["observation_ids"])
+            if "owner_hud" in r["signals"]
+            and r["context"].get("unqualified_view_model") is not True
+            and not set(r["signals"]) & {"spectator", "remote", "death", "downed"}
+        ]
+
+    def _withdraw_carry_before_measured_spectator(
+        self, states: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        """Withdraw a carried ALIVE value that a later spectator view contradicts.
+
+        A carried life value only continues the last observation. When the next
+        life observation is a measured spectator view, the recorder died after
+        its last observed own HUD; the carried seconds before the spectator view
+        can lie on either side of that death, so they return to UNKNOWN.
+        """
+        history: list[dict[str, Any]] = []
+        for index, frame in enumerate(states):
+            if frame["life"]["reason"] != "measured_spectator_view":
+                continue
+            k = index - 1
+            while k >= 0:
+                state = states[k]
+                link = states[k + 1]["continuity"]
+                if (
+                    source_scope(state["sample"]) != source_scope(frame["sample"])
+                    or not link["carry_allowed"]
+                ):
+                    break
+                life = state["life"]
+                if life["value"] == "UNKNOWN":
+                    k -= 1
+                    continue
+                if life["value"] != "ALIVE" or life["reason"] != "bounded_missing_observation":
+                    break
+                before = {d: deepcopy(state[d]) for d in ("life", "camera")}
+                state["life"] = _estimate(
+                    reason="carried_alive_before_measured_spectator_view",
+                    evidence=sorted(set(life["evidence_ids"]) | set(frame["life"]["evidence_ids"])),
+                    origin="temporal_inference",
+                )
+                state["life"]["uncertainty"] = "death_time_inside_carried_interval"
+                history.append({
+                    "sample": state["sample"], "before": before,
+                    "after_life": deepcopy(state["life"]),
+                    "after_camera": deepcopy(state["camera"]),
+                    "basis": "carried_alive_before_measured_spectator_view",
+                    "confirmation_sample": frame["sample"],
+                    "evidence_ids": state["life"]["evidence_ids"],
+                    "qualified": False, "internal_game_event_time": None,
+                })
+                k -= 1
+        return history
+
+    def _confirm_measured_view_returns(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Resolve unobserved return edges around a measured own HUD.
+
+        A measured own HUD after an elimination hypothesis leaves life UNKNOWN
+        (or keeps a victim-display DEAD) while the Round token is unchanged.
+        Measured own-HUD rows require the own health value, which the camera that
+        follows the planted spike does not show. The run of such rows is a
+        respawn only when it continues, without a death, spectator, result or
+        score change, until a measured BUY with a new Round token; a Round result
+        inside the run ends it. The return time stays unknown.
+        """
+        history: list[dict[str, Any]] = []
+        unresolved = {"candidate_return_edge_unobserved", "return_edge_unobserved"}
+        blocking = {"spectator", "remote", "death", "downed", "revival", "result", "intermission"}
+
+        def eligible(state: dict[str, Any]) -> bool:
+            return (
+                state["life"]["reason"] in unresolved
+                or state["life"]["value"] == "DEAD"
+                and state["life"]["reason"] == "victim_display_and_owned_spectator_hypothesis"
+            ) and bool(self._measured_own_view(state))
+
+        def signals_of(state: dict[str, Any]) -> set[str]:
+            return {
+                s for i in state["observation_ids"] for s in self._observations[i]["signals"]
+            }
+
+        def linked(a: dict[str, Any], b: dict[str, Any]) -> bool:
+            return bool(
+                source_scope(a["sample"]) == source_scope(b["sample"])
+                and b["continuity"]["carry_allowed"]
+            )
+
+        index = 0
+        while index < len(states):
+            first = states[index]
+            if not eligible(first):
+                index += 1
+                continue
+            run = [index]
+            gap: list[int] = []
+            bracketed: list[int] = []
+            for j in range(index + 1, len(states)):
+                if not linked(states[j - 1], states[j]):
+                    break
+                if signals_of(states[j]) & {"result", "intermission"}:
+                    # A Round result inside the run separates two Rounds.
+                    break
+                if eligible(states[j]):
+                    bracketed += gap
+                    gap = []
+                    run.append(j)
+                elif self._measured_own_view(states[j]) or signals_of(states[j]) & blocking:
+                    break
+                else:
+                    gap.append(j)
+            index = run[-1] + 1
+            # Rows without view evidence between own-HUD rows are bracketed by them.
+            basis = None
+            confirmation = None
+            if confirmation is None:
+                last = states[run[-1]]
+                score = self._score({"observations": [
+                    self._observations[i] for i in last["observation_ids"]
+                ]})
+                for j in range(run[-1] + 1, len(states)):
+                    later = states[j]
+                    rows = [self._observations[i] for i in later["observation_ids"]]
+                    signals = {s for row in rows for s in row["signals"]}
+                    later_score = self._score({"observations": rows})
+                    if (
+                        not linked(states[j - 1], later)
+                        or native_time(later["sample"]) - native_time(last["sample"])
+                        > PURCHASE_PHASE_LIMIT
+                        or signals & blocking
+                        or score is not None and later_score is not None and later_score != score
+                    ):
+                        break
+                    if (
+                        later["round_token"] != first["round_token"]
+                        and later["round"]["value"] == "BUY"
+                        and later["round"]["reason"] == "current_observation"
+                        and later["life"]["value"] == "ALIVE"
+                        and later["camera"]["value"] == "SELF"
+                        and "buy" in signals
+                        and "owner_hud" in signals
+                    ):
+                        basis, confirmation = "measured_buy_after_own_hud", later
+                        bracketed += [
+                            k for k in range(run[-1] + 1, j)
+                            if not signals_of(states[k]) & blocking
+                        ]
+                        break
+            if confirmation is None:
+                # Without a later purchase phase the own-HUD rows themselves still
+                # show the recorder's first-person view with its health inside a
+                # running Round (ACTIVE/BUY, or followed by a measured ACTIVE/BUY row
+                # of the same Round before any result): a recorder that is not
+                # alive cannot hold it (the spike camera shows no health). Rows
+                # between them stay unrevised.
+                def in_running_round(k: int) -> bool:
+                    if states[k]["round"]["value"] in {"ACTIVE", "BUY"}:
+                        return True
+                    if states[k]["round"]["value"] != "UNKNOWN":
+                        return False
+                    # A later measured ACTIVE/BUY row of the same Round, before any
+                    # result, shows the Round was still running.
+                    for m in range(k + 1, len(states)):
+                        later = states[m]
+                        if (
+                            not linked(states[m - 1], later)
+                            or later["round_token"] != states[k]["round_token"]
+                            or signals_of(later) & {"result", "intermission"}
+                        ):
+                            return False
+                        if (
+                            later["round"]["value"] in {"ACTIVE", "BUY"}
+                            and later["round"]["reason"] == "current_observation"
+                        ):
+                            return True
+                    return False
+
+                direct = [
+                    k for k in run
+                    if in_running_round(k)
+                    and not signals_of(states[k]) & (blocking | {"recorder_elimination_display"})
+                ]
+                for k in direct:
+                    frame = states[k]
+                    before = {d: deepcopy(frame[d]) for d in ("life", "camera")}
+                    evidence = sorted(set(self._measured_own_view(frame)))
+                    frame["life"] = _estimate(
+                        "ALIVE", alternatives=["ALIVE", "UNKNOWN"],
+                        reason="measured_own_hud_with_health_during_round",
+                        evidence=evidence, origin="temporal_inference",
+                    )
+                    frame["life"].update(forward_estimate=before["life"],
+                                         uncertainty="return_time_unverified")
+                    history.append({
+                        "sample": frame["sample"], "before": before,
+                        "after_life": deepcopy(frame["life"]),
+                        "after_camera": deepcopy(frame["camera"]),
+                        "basis": "measured_own_hud_with_health_during_round",
+                        "confirmation_sample": None, "evidence_ids": evidence,
+                        "qualified": False, "internal_game_event_time": None,
+                    })
+                continue
+            for k in sorted(run + bracketed):
+                frame = states[k]
+                before = {d: deepcopy(frame[d]) for d in ("life", "camera")}
+                neighbours = [max((r for r in run if r <= k), default=run[0]),
+                              min((r for r in run if r >= k), default=run[-1])]
+                evidence = sorted(
+                    {i for n in neighbours for i in self._measured_own_view(states[n])}
+                    | set(confirmation["observation_ids"])
+                )
+                frame["life"] = _estimate(
+                    "ALIVE",
+                    alternatives=["ALIVE", "UNKNOWN"],
+                    reason="measured_own_hud_after_round_change"
+                    if k in run else "bracketed_by_measured_own_hud_after_round_change",
+                    evidence=evidence,
+                    origin="temporal_inference",
+                )
+                frame["life"].update(forward_estimate=before["life"],
+                                     uncertainty="return_time_unverified")
+                if frame["camera"]["value"] == "UNKNOWN":
+                    frame["camera"] = _estimate(
+                        "SELF",
+                        alternatives=["SELF", "UNKNOWN"],
+                        reason="measured_own_hud_after_round_change",
+                        evidence=evidence,
+                        origin="temporal_inference",
+                    )
+                    frame["camera"].update(forward_estimate=before["camera"])
+                history.append({
+                    "sample": frame["sample"],
+                    "before": before,
+                    "after_life": deepcopy(frame["life"]),
+                    "after_camera": deepcopy(frame["camera"]),
+                    "basis": basis,
+                    "confirmation_sample": confirmation["sample"],
+                    "evidence_ids": evidence,
+                    "qualified": False,
+                    "internal_game_event_time": None,
+                })
+        return history
+
     def _reconcile_return_display_tails(self, states: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Bracket a stale victim display with a later direct next-Round return.
 
@@ -1499,6 +1802,17 @@ class DevelopmentGameTimeline:
                 and self._current_menu_support(row, frame["sample"])
             ]
             positive = current_hp or bool(menu_rows)
+            if (
+                not positive
+                and self.measured_view_precedence
+                and signals & {"result", "intermission"}
+            ):
+                # Without a current health or menu cue of the recorder's own view,
+                # a weak SELF claim in a frame that shows the Round result or the
+                # intermission does not reopen the death: a recorder that died
+                # returns only at the next purchase phase. Rows after the result
+                # display may already lie in that phase and keep the bracket.
+                continue
             if menu_rows:
                 evidence = sorted(set(evidence) | {r["observation_id"] for r in menu_rows})
             positive_reason = (

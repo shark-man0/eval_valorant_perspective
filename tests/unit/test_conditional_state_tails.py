@@ -199,3 +199,26 @@ def test_opt_in_flags_require_offline_mode():
         DevelopmentGameTimeline(forward_only=True, return_display_tail=True)
     with pytest.raises(ValueError, match="offline"):
         DevelopmentGameTimeline(forward_only=True, buy_clock_tail=True)
+
+
+def test_measured_view_keeps_a_death_shown_with_the_round_result():
+    # A recorder that died returns only at the next purchase phase, so a weak SELF
+    # claim while the Round result is shown does not reopen the death.
+    rows = return_rows(tail_signals=("result",))
+    tail = replay(rows, return_display_tail=True)
+    measured = replay(rows, return_display_tail=True, measured_view_precedence=True)
+    frame = lambda result: next(  # noqa: E731
+        f for f in result["frames"] if f["sample"]["native_pts_tick"] == 6)
+    assert frame(tail)["round"]["value"] == "ENDED"
+    assert frame(tail)["life"]["reason"] == "next_round_self_return_bracket_candidate"
+    assert frame(measured)["life"]["value"] == "DEAD"
+    # A row after the result display may already lie in the purchase phase.
+    later = return_rows(tail_signals=("result",))
+    later = [r for r in later if not (r["sample"]["native_pts_tick"] == 6
+                                      and "result" in r["signals"])]
+    later.append(row(5, ["result"]))
+    carried = replay(later, return_display_tail=True, measured_view_precedence=True)
+    assert frame(carried)["life"]["value"] == "UNKNOWN"
+    # Outside a result phase the bracket still applies with the option.
+    plain = replay(return_rows(), return_display_tail=True, measured_view_precedence=True)
+    assert frame(plain)["life"]["value"] == "UNKNOWN"
