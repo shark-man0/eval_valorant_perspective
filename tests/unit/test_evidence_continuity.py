@@ -369,3 +369,34 @@ def test_zero_width_end_at_the_first_result_display_is_widened_back():
     assert lowers == [70]
     # Without the option the zero-width edge is unchanged.
     assert "rule_lower_sample" not in edge[0]
+
+
+def test_post_round_countdown_is_ended_and_moves_the_end_edge():
+    # Combat clock 45..43, then the short countdown after the decided Round:
+    # 6 is shown before the result banner and the new score, 5..3 after.
+    rows = [at(0, ["active"], (2, 0), 45), at(1, score=(2, 0), timer=44),
+            at(2, score=(2, 0), timer=43), at(3, score=(2, 0), timer=6),
+            at(4, ["result"], (2, 1), 5), at(5, ["result"], (2, 1), 4),
+            at(6, score=(2, 1), timer=3)]
+    before = run(rows, False, practical_visual_state=True)
+    assert values(before, "round")[3] == "ACTIVE"
+    edge = [t for t in before["transitions"] if t["kind"] == "round_end"]
+    assert [e["upper_sample"]["native_pts_tick"] for e in edge] == [40]
+    result = run(rows, practical_visual_state=True)
+    assert values(result, "round") == ["ACTIVE"] * 3 + ["ENDED"] * 4
+    assert result["frames"][3]["round"]["reason"] == "post_round_countdown_after_measured_end"
+    ends = [t for t in result["transitions"] if t["kind"] == "round_end"]
+    assert len(ends) == 1
+    # The combat clock at 2 s is another phase's reading: the exact lower bound.
+    assert ends[0]["lower_sample"]["native_pts_tick"] == 20
+    assert ends[0]["upper_sample"]["native_pts_tick"] == 30
+    assert ends[0]["rule_upper_sample"]["native_pts_tick"] == 40
+    assert ends[0]["lower_sample_basis"] == "post_round_countdown"
+    # A reading that does not continue the countdown leaves everything as it was.
+    rows[3] = at(3, score=(2, 0), timer=42)
+    rows[5] = at(5, ["result"], (2, 1), 9)
+    rows[6] = at(6, score=(2, 1), timer=8)
+    kept = run(rows, practical_visual_state=True)
+    assert values(kept, "round")[3] == "ACTIVE"
+    assert [t["upper_sample"]["native_pts_tick"] for t in kept["transitions"]
+            if t["kind"] == "round_end"] == [40]

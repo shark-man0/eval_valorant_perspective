@@ -25,6 +25,7 @@ match specific conditions and no threshold changes in any recognizer.
 | ENDED after a score change | One-point increment; later ENDED anchor with the new score | As above | Rows from the first new-score frame to the anchor are ENDED |
 | Round end candidate | Same inputs | One increment is one decided Round | `round_end` between the last known-undecided frame and the first result cue or new-score frame |
 | Existing score-update end edges | An existing end edge whose lower frame is only the last old-score frame | Display lead as above | Lower bound moved back to the last known-undecided frame (`lower_sample_basis: score_display_lead`, `rule_lower_sample` kept) |
+| Countdown after a decided Round | An existing end edge whose upper frame is ENDED (measured, or a one-point score increment) with one clock reading `r` at `t`; earlier or later rows of the same segment reading `t + r - t_k` | The single Round clock counts down one second per second within a phase; at least two matching readings | Matching rows without a measured ACTIVE or purchase cue become ENDED (`post_round_countdown_after_measured_end`). If the chain starts before the edge (at most the display lead), the edge moves to its first row; the lower bound is the frame before it when that frame shows another clock reading, otherwise the display-lead walk (`lower_sample_basis: post_round_countdown`, rule samples kept) |
 | Zero-width end at the first result display | An existing end edge whose lower and upper frame are the same frame with a measured result cue | The result is displayed after the Round is decided, so the decision lies before that frame | Lower bound moved back through same-scope frames with no result, BUY or intermission cue and one old score at most, to the latest measured ACTIVE cue or the display lead (`lower_sample_basis: result_display_lead`, `rule_lower_sample` kept). Frame values are unchanged |
 | Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side (the earlier anchor itself when it is closer), and rows after the projected start become ACTIVE. A projection before the earlier anchor is rejected |
 | Purchase before combat | A measured BUY anchor, then the next measured BUY anchor or the combat start projected from two countdown readings after the next ACTIVE anchor; equal score readings; no result or intermission cue | The purchase phase precedes the combat phase of its Round and never follows it | Unmeasured ACTIVE values in between (single visual cues, never measured anchors) become BUY; Round start candidates lying wholly inside are archived in `superseded_transition_candidates` |
@@ -223,6 +224,19 @@ in 27 the edge frame is the first frame after the Round end (post-round clock
 or result banner); in 6 the post-round clock was already shown one second
 earlier, so the edge is one second late. The 5 in the protected recordings were
 not viewed.
+
+The countdown rule above (2026-11-20) addresses those late edges. Fixed
+comparison: Round UNKNOWN 3,202 to 3,131 seconds, 14 seconds ACTIVE to ENDED,
+Life and Camera unchanged, 69/69 kept, no consistency violation added. Fresh
+runs (fourteen matches): Round UNKNOWN 3,154 to 3,077 in the ten and 762 to 752
+in the protected four; ACTIVE to ENDED 28 and 18 seconds; zero-width ends 38 to
+32. One end candidate the second human sheet marked as later than the actual
+end (the Round had ended before the frames shown) was a duplicate of an earlier
+candidate and is gone; all other human boundaries stay contained (start 24/24,
+end 29/29). AI review of the changed seconds in the ten matches (all 28 ACTIVE
+to ENDED and 20 of 77 UNKNOWN to ENDED, at random): 48/48 show the post-round
+clock (0:06 to 0:00) or the result banner. The protected seconds were not
+viewed.
 
 Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
 without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40

@@ -820,6 +820,7 @@ def apply_evidence_continuity(
         ]
         _life_pass(states, observations, segment, revise, starts)
     _demote_current_view_maps(states, revise.history)
+    _post_round_countdown(states, observations, transitions or [], revise)
     _widen_score_display_ends(states, observations, transitions or [])
     _relocate_revised_edges(states, transitions or [])
     return revise.history, events
@@ -863,6 +864,124 @@ def _relocate_revised_edges(
         event["evidence_ids"] = sorted(set(event["evidence_ids"])
                                        | set(states[m][domain]["evidence_ids"]))
         event["edge_basis"] = "earliest_frame_of_revised_run"
+
+
+def _decided_at(states: list[dict[str, Any]], u: int) -> bool:
+    """The frame shows a score one point above the latest earlier single reading."""
+    now = _scores(states[u])
+    if len(now) != 1:
+        return False
+    t_u = native_time(states[u]["sample"])
+    k = u - 1
+    while k >= 0 and t_u - native_time(states[k]["sample"]) <= SCORE_SEARCH:
+        if not states[k + 1]["continuity"].get("carry_allowed", False):
+            return False
+        earlier = _scores(states[k])
+        if len(earlier) > 1:
+            return False
+        if earlier and earlier != now:
+            (old,), (new,) = earlier, now
+            return len(old) == len(new) and all(
+                b >= a for a, b in zip(old, new, strict=True)
+            ) and sum(new) - sum(old) == 1
+        k -= 1
+    return False
+
+
+def _post_round_countdown(
+    states: list[dict[str, Any]], observations: dict[str, Any],
+    transitions: list[dict[str, Any]], revise: _Reviser,
+) -> None:
+    """Rows showing the countdown that follows a decided Round are ENDED.
+
+    The single Round clock counts down one second per second within a phase.
+    For an existing end edge whose upper frame is ENDED, measured or showing a
+    one-point score increment, with one clock reading ``r`` at ``t``, rows of
+    the same segment whose reading is ``t + r - t_k`` show the same countdown
+    and so the same phase. The chain is followed while readings match, before
+    the edge at most the display lead and after it until the countdown expires,
+    and stops at a purchase or intermission cue, a row without a reading or any
+    other reading. Two matching readings are required. Matching rows without a
+    measured ACTIVE or purchase cue become ENDED. When the chain starts before
+    the edge, the edge moves to its first row; the frame before it is the lower
+    bound if it shows another reading (the previous phase's clock), otherwise
+    the display-lead walk applies. The rule's own samples are kept.
+    """
+    index = {f["sample"]["sample_sha256"]: i for i, f in enumerate(states)}
+
+    def joined(i: int, j: int) -> bool:
+        """Adjacent frames i < j of one carry segment, without a phase cue."""
+        return bool(
+            states[j]["continuity"].get("carry_allowed", False)
+            and source_scope(states[i]["sample"]) == source_scope(states[j]["sample"])
+            and not _signals(_rows(states[i], observations)) & {"buy", "intermission"}
+            and not _signals(_rows(states[j], observations)) & {"buy", "intermission"}
+        )
+
+    def same_phase(i: int, expiry: Fraction) -> bool | None:
+        """True on a matching reading, False on another reading, None without one."""
+        reading = _clock(states[i], observations)
+        if reading is None:
+            return None
+        return reading[0] == expiry - native_time(states[i]["sample"])
+
+    for event in transitions:
+        if event["kind"] != "round_end" or "basis" in event:
+            continue
+        u = index.get(event["upper_sample"]["sample_sha256"])
+        if u is None or states[u]["round"]["value"] != "ENDED" or not (
+            _anchor(states[u]["round"], {"ENDED"}) or _decided_at(states, u)
+        ):
+            continue
+        reading = _clock(states[u], observations)
+        if reading is None:
+            continue
+        t_u = native_time(states[u]["sample"])
+        expiry = t_u + reading[0]
+
+        before: list[int] = []
+        k = u
+        while k > 0 and joined(k - 1, k) and t_u - native_time(
+            states[k - 1]["sample"]
+        ) <= DECISION_DISPLAY_LEAD and same_phase(k - 1, expiry):
+            k -= 1
+            before.append(k)
+        after: list[int] = []
+        k = u
+        while k + 1 < len(states) and joined(k, k + 1) and native_time(
+            states[k + 1]["sample"]
+        ) <= expiry and same_phase(k + 1, expiry):
+            k += 1
+            after.append(k)
+        chain = [*before, *after]
+        if not chain:
+            continue  # Two matching readings, the anchor and one more, are required.
+        evidence = list(reading[1])
+        for i in chain:
+            evidence += _clock(states[i], observations)[1]  # type: ignore[index]
+        for i in chain:
+            frame = states[i]
+            if _signals(_rows(frame, observations)) & {"active", "buy"}:
+                continue
+            if frame["round"]["value"] in {"UNKNOWN", "ACTIVE"}:
+                revise(frame, "round", "ENDED", ["ENDED"], evidence,
+                       "post_round_countdown_after_measured_end")
+        if not before:
+            continue
+        m = min(before)
+        if states[m]["round"]["value"] != "ENDED":
+            continue  # A measured ACTIVE cue on the chain keeps the rule edge.
+        event["rule_upper_sample"] = deepcopy(event["upper_sample"])
+        event["rule_lower_sample"] = deepcopy(event["lower_sample"])
+        event["upper_sample"] = deepcopy(states[m]["sample"])
+        event["evidence_ids"] = sorted(set(event["evidence_ids"]) | set(evidence))
+        lower: int | None = None
+        if m > 0 and joined(m - 1, m) and same_phase(m - 1, expiry) is False:
+            lower = m - 1
+        else:
+            lower = _result_display_lead(states, observations, m)
+        event["lower_sample"] = deepcopy(states[lower if lower is not None else m]["sample"])
+        event["lower_sample_basis"] = "post_round_countdown"
 
 
 def _widen_score_display_ends(
