@@ -1,1 +1,3 @@
 *.sh text eol=lf
+# Hash-pinned knowledge snapshots must be byte-identical on every OS.
+config/game_knowledge/*.json -text

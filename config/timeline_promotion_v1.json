@@ -1,0 +1,67 @@
+{
+  "version": "timeline_formal_promotion_v1",
+  "purpose": "共通タイムライン（development_application_timeline_v1）の候補を、証拠条件を満たした場合にだけ正式Event/Fact/Round境界へ昇格させる閾値。値は開発用36試合で較正した運用値であり、独立評価で資格付けされた値ではない。",
+  "qualification_label": "promoted_from_shared_timeline",
+  "round_boundary": {
+    "max_start_bracket_sec": 6.0,
+    "max_end_bracket_sec": 6.0,
+    "boundary_state_lookup_sec": 3,
+    "competing_candidate_merge_sec": 3.0,
+    "no_buy_after_start_sec": 10,
+    "max_buy_lookback_sec": 60,
+    "max_end_search_after_segment_sec": 45,
+    "max_ended_tail_sec": 15,
+    "confidence": 0.8
+  },
+  "player_death": {
+    "max_prior_self_gap_sec": 10,
+    "corroboration_window_sec": 30,
+    "sustained_spectator_window_sec": 6,
+    "min_sustained_spectator_observed_sec": 3,
+    "confidence": 0.7
+  },
+  "buy_phase": {
+    "min_observed_buy_seconds": 3,
+    "confidence": 0.8
+  },
+  "state_snapshot": {
+    "min_field_confidence": 0.9,
+    "min_interval_sec": 5,
+    "hp_range": [
+      0,
+      100
+    ],
+    "armor_range": [
+      0,
+      50
+    ],
+    "score_range": [
+      0,
+      99
+    ],
+    "weapon_names_source": "valorant_ai_coach.knowledge.load_game_knowledge (#96)"
+  },
+  "second_features": {
+    "purpose": "#153/#155の読み取り値（extract_second_features.py）を確定Roundへ載せる条件。信頼度は安定性・整合性の条件を通った読み取りに付ける運用値で、独立資格付け（independently_qualified）ではない。",
+    "agent_min_score": 0.6,
+    "agent_min_frames": 60,
+    "agent_min_share": 0.6,
+    "alive_confidence": 0.9,
+    "alive_increase_hold_sec": 3,
+    "utility_confidence": 0.85,
+    "kill_confidence": 0.85,
+    "feed_match_window_sec": 3.0,
+    "feed_repeat_sec": 2.0,
+    "spike_clear_score": 0.9,
+    "revive_min_live_sec": 5,
+    "snapshot_min_interval_sec": 5,
+    "top_bar_min_coverage": 0.9,
+    "death_drop_before_sec": 4,
+    "death_drop_after_sec": 2,
+    "death_feed_lookback_sec": 10,
+    "recovered_death_confidence": 0.7,
+    "score_min_reads": 3,
+    "score_min_share": 0.6,
+    "enemy_eco_confidence": 0.8
+  }
+}

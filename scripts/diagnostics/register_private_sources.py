@@ -106,11 +106,23 @@ def prior_sources(registry: Path) -> tuple[set[str], set[str], list[dict[str, st
     return ids, hashes, anchors
 
 
+def _remove_batch(batch: Path) -> None:
+    for path in batch.rglob("*"):
+        if path.is_file():
+            os.chmod(path, 0o600)
+    shutil.rmtree(batch, ignore_errors=True)
+
+
 def register(
     source_dir: Path, registry: Path, batch_id: str, *,
     unused_and_distinct: bool = False, unedited: bool = False,
-    ffprobe: str = "ffprobe", ffmpeg: str = "ffmpeg",
+    ffprobe: str = "ffprobe", ffmpeg: str = "ffmpeg", catalog: Any = None,
 ) -> tuple[Path, dict[str, Any]]:
+    """Register nine recordings; with a catalog the batch is adopted all-or-nothing.
+
+    The catalog is checked before anything is written, and a refused adoption removes
+    the batch again (copies only; originals are never touched).
+    """
     batch_id = valid_id(batch_id)
     source_dir, registry = source_dir.resolve(), registry.resolve()
     _check_output_privacy(registry / batch_id)
@@ -176,6 +188,8 @@ def register(
             "records": records,
         }
         validate_inventory(manifest)
+        if catalog is not None and catalog.legacy_conflicts(records):
+            raise ValueError("CATALOG_CONFLICT")
         batch.mkdir(mode=0o700)
         (batch / "sources").mkdir(mode=0o700)
         write_private(batch / "allocation.json", manifest)
@@ -219,6 +233,19 @@ def register(
         summary["allocation_sha256"] = sha256_file(batch / "allocation.json")
         summary["manifest_sha256"] = sha256_file(batch / "manifest.json")
         write_private(batch / "public_summary.json", summary)
+        if catalog is not None:
+            try:
+                imported = catalog.import_legacy(batch / "manifest.json", atomic=True)
+            except BaseException:
+                _remove_batch(batch)
+                raise
+            if imported["conflicts"]:
+                _remove_batch(batch)  # atomic import wrote nothing either
+                raise ValueError("CATALOG_CONFLICT")
+            summary["catalog_import"] = {
+                key: value if key != "conflicts" else len(value)
+                for key, value in imported.items()
+            }
         return batch, summary
     finally:
         lock.rmdir()
@@ -261,6 +288,14 @@ def main() -> None:
     intake.add_argument("--user-confirmed-unedited", action="store_true")
     intake.add_argument("--ffprobe", default="ffprobe")
     intake.add_argument("--ffmpeg", default="ffmpeg")
+    intake.add_argument(
+        "--catalog", type=Path,
+        help="録画カタログ（#62の正本）へ割当をそのまま取り込む。新規の運用ではカタログを使う",
+    )
+    intake.add_argument(
+        "--legacy-compat", action="store_true",
+        help="カタログを使わない旧方式（互換モード。正式運用では使わない）",
+    )
     check = sub.add_parser("verify")
     check.add_argument("--batch", type=Path, required=True)
     check.add_argument("--trusted-manifest-sha256", required=True)
@@ -268,10 +303,16 @@ def main() -> None:
     args = parser.parse_args()
     try:
         if args.command == "register":
-            _, summary = register(
+            from valorant_ai_coach.recordings.admission import require_catalog
+
+            # Formal operation adopts the batch into the catalog (explicit or
+            # VALORANT_RECORDING_CATALOG); without one only --legacy-compat runs.
+            catalog = require_catalog(args.catalog, legacy_compat=args.legacy_compat)
+            batch, summary = register(
                 args.source_dir, args.registry, args.batch_id,
                 unused_and_distinct=args.user_confirmed_unused_and_distinct,
                 unedited=args.user_confirmed_unedited, ffprobe=args.ffprobe, ffmpeg=args.ffmpeg,
+                catalog=catalog,
             )
         else:
             summary = verify(args.batch, args.trusted_manifest_sha256,

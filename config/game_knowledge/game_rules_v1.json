@@ -1,0 +1,38 @@
+{
+  "version": "game_rules_v1",
+  "game_version_checked": "13.10",
+  "use": "Priors and constraints for candidate generation and ranking. A rule value never proves that an event happened in a recording.",
+  "verification_status_values": {
+    "secondary_consistent": "Two or more secondary sources agree; not yet checked against our recordings.",
+    "recording_consistent": "Also consistent with readings from DEVELOPMENT recordings (see docs/game_knowledge_base.md).",
+    "repository_contract": "Already fixed by a contract in this repository."
+  },
+  "rules": {
+    "rounds_to_win": {"value": 13, "unit": "rounds", "mode": "competitive/unrated", "source": "community_rule_references", "status": "secondary_consistent"},
+    "regulation_rounds_per_half": {"value": 12, "unit": "rounds", "source": "community_rule_references", "status": "secondary_consistent"},
+    "overtime_at_score": {"value": [12, 12], "unit": "score", "note": "Overtime continues until one team leads by 2 (or a vote ends it).", "source": "community_rule_references", "status": "secondary_consistent"},
+    "round_time_limit_sec": {"value": 100, "unit": "s", "note": "Combat phase timer starts at 1:40 after barriers drop.", "source": "community_rule_references", "status": "secondary_consistent"},
+    "buy_phase_sec": {"value": 30, "unit": "s", "source": "community_rule_references", "status": "secondary_consistent"},
+    "buy_phase_half_start_sec": {"value": 45, "unit": "s", "note": "First round of each half and overtime rounds.", "source": "community_rule_references", "status": "secondary_consistent"},
+    "spike_plant_sec": {"value": 4, "unit": "s", "source": "community_rule_references", "status": "secondary_consistent"},
+    "spike_detonation_sec": {"value": 45, "unit": "s", "note": "Replaces the round timer after a plant.", "source": "community_rule_references", "status": "secondary_consistent"},
+    "spike_defuse_sec": {"value": 7, "unit": "s", "source": "community_rule_references", "status": "secondary_consistent"},
+    "spike_defuse_checkpoint_sec": {"value": 3.5, "unit": "s", "source": "community_rule_references", "status": "secondary_consistent"},
+    "team_size": {"value": 5, "unit": "players", "source": "community_rule_references", "status": "secondary_consistent"},
+    "hud_ability_order": {"value": ["C", "Q", "E", "X"], "note": "Left to right in the bottom-centre ability HUD; X is the ultimate.", "source": "config/ability_slot_contract_v1.json", "status": "repository_contract"},
+    "api_slot_to_key": {"value": {"Grenade": "C", "Ability1": "Q", "Ability2": "E", "Ultimate": "X", "Passive": "P"}, "note": "valorant-api slot naming. Keybinds are user-configurable; this maps semantic slots, not keys.", "source": "valorant_api_content", "status": "secondary_consistent"},
+    "credits_half_start": {"value": 800, "unit": "credits", "note": "Every player starts each half with this amount; credits do not carry over the side switch.", "source": "community_economy_references", "status": "secondary_consistent"},
+    "round_win_credits": {"value": 3000, "unit": "credits", "source": "community_economy_references", "status": "secondary_consistent"},
+    "round_loss_credits": {"value": [1900, 2400, 2900], "unit": "credits", "note": "First, second and third-or-later consecutive loss. A player who survives a lost round receives 1000 instead.", "source": "community_economy_references", "status": "secondary_consistent"},
+    "kill_credits": {"value": 200, "unit": "credits", "note": "Paid to the player who gets the kill.", "source": "community_economy_references", "status": "secondary_consistent"},
+    "spike_plant_credits": {"value": 300, "unit": "credits", "note": "Paid to every attacker, whatever the round result.", "source": "community_economy_references", "status": "secondary_consistent"},
+    "credits_cap": {"value": 9000, "unit": "credits", "source": "community_economy_references", "status": "secondary_consistent"},
+    "light_shield_cost": {"value": 400, "unit": "credits", "source": "community_economy_references", "status": "secondary_consistent"},
+    "heavy_shield_cost": {"value": 1000, "unit": "credits", "source": "community_economy_references", "status": "secondary_consistent"}
+  },
+  "derived_bounds": {
+    "max_round_duration_sec": {"value": 149, "formula": "round_time_limit_sec + spike_detonation_sec + spike_plant_sec", "note": "Upper bound for a single combat phase including a last-second plant."},
+    "max_regulation_rounds": {"value": 24, "formula": "2 * regulation_rounds_per_half"},
+    "full_buy_min_cost": {"value": 3900, "formula": "highest Rifles cost (valorant_content weapons: Vandal, Phantom 2900) + heavy_shield_cost", "note": "Cheapest standard full buy (rifle and heavy shield), abilities excluded."}
+  }
+}

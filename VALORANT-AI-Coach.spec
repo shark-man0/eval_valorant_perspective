@@ -29,13 +29,16 @@ for relative in (
     "config/event_source_contract_v1.json",
     "config/hud_layout_1080p_v3.json",
     "config/role_contract_v1.json",
+    "config/rule_producer_status_v1.json",
     "config/rule_trigger_registry_v2.json",
+    "config/timeline_promotion_v1.json",
     "config/valorant_evaluation_rules_v4.json",
     "config/weapon_visual_registry_contract_v1.json",
 ):
     add_file(relative)
 
 add_json_tree("schemas")
+add_json_tree("config/game_knowledge")
 add_file("config/visual_v2/MANIFEST.json")
 add_json_tree("config/visual_v2/config")
 add_json_tree("config/visual_v2/schemas")
