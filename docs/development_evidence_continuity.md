@@ -25,6 +25,7 @@ match specific conditions and no threshold changes in any recognizer.
 | ENDED after a score change | One-point increment; later ENDED anchor with the new score | As above | Rows from the first new-score frame to the anchor are ENDED |
 | Round end candidate | Same inputs | One increment is one decided Round | `round_end` between the last known-undecided frame and the first result cue or new-score frame |
 | Existing score-update end edges | An existing end edge whose lower frame is only the last old-score frame | Display lead as above | Lower bound moved back to the last known-undecided frame (`lower_sample_basis: score_display_lead`, `rule_lower_sample` kept) |
+| Zero-width end at the first result display | An existing end edge whose lower and upper frame are the same frame with a measured result cue | The result is displayed after the Round is decided, so the decision lies before that frame | Lower bound moved back through same-scope frames with no result, BUY or intermission cue and one old score at most, to the latest measured ACTIVE cue or the display lead (`lower_sample_basis: result_display_lead`, `rule_lower_sample` kept). Frame values are unchanged |
 | Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side (the earlier anchor itself when it is closer), and rows after the projected start become ACTIVE. A projection before the earlier anchor is rejected |
 | Purchase before combat | A measured BUY anchor, then the next measured BUY anchor or the combat start projected from two countdown readings after the next ACTIVE anchor; equal score readings; no result or intermission cue | The purchase phase precedes the combat phase of its Round and never follows it | Unmeasured ACTIVE values in between (single visual cues, never measured anchors) become BUY; Round start candidates lying wholly inside are archived in `superseded_transition_candidates` |
 | Purchase countdown | A measured ACTIVE anchor whose countdown projects the combat start `S`; earlier rows of the same score with timer readings `r` where `t + r = S` (±1 s), at least two; no other reading before `S` and no result cue after the first match | The purchase countdown of a Round ends when its combat countdown starts | Rows from the first matching reading up to `S - 1` become BUY (rows with a current spectator, death or elimination cue are skipped); start candidates inside the interval are retired |
@@ -195,9 +196,28 @@ human second / error in seconds when not / no candidate:
 | Start | 10 contain, 0 missed, 2 no candidate | 12 contain, 0 missed, 0 no candidate |
 | End | 8 contain, 3 one second off, 1 no candidate | 9 contain, 3 one second off, 0 no candidate |
 
-The three one-second end errors are zero-width candidates (the score change
-second) identical in the base engine; the human marks the result banner one
-second earlier.
+The three one-second end errors were zero-width candidates (lower and upper on
+the same frame) identical in the base engine; the human marks the result banner
+one second earlier. The zero-width rule above (2026-11-20) moves their lower
+bound back.
+
+A second boundary sheet (2026-11-20): 30 boundaries drawn at random from all
+fourteen matches (the ten above and the four protected recordings), again
+marked by the user without seeing a prediction. One end lay before the window
+shown and is excluded. Candidate containing the human second, with both sheets
+together (24 + 29 boundaries):
+
+| Kind | Base | Combined, before the zero-width rule | Combined, with it |
+| --- | --- | --- | --- |
+| Start | 18 contain, 6 no candidate | 24 contain | 24 contain |
+| End | 18 contain, 8 off by 1 to 4 s, 3 no candidate | 22 contain, 7 off by 1 or 2 s | 29 contain |
+
+Every remaining miss before the rule was a zero-width candidate. On the
+fourteen fresh runs the rule widens 57 of 95 zero-width ends (median end width
+3 to 5 s, maximum unchanged at 17 s) and changes no frame value. The fixed
+comparison is unchanged in every domain and keeps 69/69. The 38 zero-width ends
+left have no measured result cue on their frame and were not sampled by either
+sheet; they are unverified.
 
 Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
 without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40

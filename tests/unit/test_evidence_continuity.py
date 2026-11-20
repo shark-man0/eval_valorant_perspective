@@ -343,3 +343,29 @@ def test_death_hypothesis_survives_the_score_update_until_a_new_round_is_seen():
     # After a measured purchase phase every player is alive again.
     later = run(rows + [at(7, ["buy"], (0, 1)), at(8, ["report"], (0, 1))])
     assert values(later, "life")[7:] == ["ALIVE", "ALIVE"]
+
+
+def test_zero_width_end_at_the_first_result_display_is_widened_back():
+    # The old score is read before the result, then the result appears with an
+    # unread score: the visual edge opens and closes on the result frame.
+    rows = [at(0, ["active"], (2, 0))]
+    rows += [at(s, ["report"], (2, 0) if s % 3 else None) for s in range(1, 9)]
+    rows += [at(9, ["report", "result"]), at(10, ["report", "result"], (2, 1))]
+    before = run(rows, False, practical_visual_state=True)
+    edge = [t for t in before["transitions"] if t["kind"] == "round_end"]
+    assert edge and edge[0]["lower_sample"] == edge[0]["upper_sample"]
+    result = run(rows, practical_visual_state=True)
+    ends = [t for t in result["transitions"] if t["kind"] == "round_end"]
+    assert len(ends) == 1
+    assert ends[0]["upper_sample"]["native_pts_tick"] == 90
+    assert ends[0]["rule_lower_sample"]["native_pts_tick"] == 90
+    # The lower bound stops at the display lead before the result.
+    assert ends[0]["lower_sample"]["native_pts_tick"] == 40
+    assert ends[0]["lower_sample_basis"] == "result_display_lead"
+    # A measured ACTIVE cue is the latest frame known undecided.
+    rows[7] = at(7, ["active"], (2, 0))
+    active = run(rows, practical_visual_state=True)["transitions"]
+    lowers = [t["lower_sample"]["native_pts_tick"] for t in active if t["kind"] == "round_end"]
+    assert lowers == [70]
+    # Without the option the zero-width edge is unchanged.
+    assert "rule_lower_sample" not in edge[0]

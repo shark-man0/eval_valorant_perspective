@@ -874,7 +874,8 @@ def _widen_score_display_ends(
     An existing end edge whose lower frame is only the last old-score display may
     already follow the decision. Its lower bound moves to the latest measured
     ACTIVE cue, or old-score frame earlier than the update by the display lead.
-    The rule's own lower sample is kept.
+    A zero-width edge at the first result display is widened the same way
+    (see ``_result_display_lead``). The rule's own lower sample is kept.
     """
     index = {f["sample"]["sample_sha256"]: i for i, f in enumerate(states)}
     for event in transitions:
@@ -883,6 +884,13 @@ def _widen_score_display_ends(
         lo = index.get(event["lower_sample"]["sample_sha256"])
         hi = index.get(event["upper_sample"]["sample_sha256"])
         if lo is None or hi is None:
+            continue
+        if lo == hi and "result" in _signals(_rows(states[hi], observations)):
+            k = _result_display_lead(states, observations, hi)
+            if k is not None:
+                event["rule_lower_sample"] = deepcopy(event["lower_sample"])
+                event["lower_sample"] = deepcopy(states[k]["sample"])
+                event["lower_sample_basis"] = "result_display_lead"
             continue
         if _signals(_rows(states[lo], observations)) & {"active", "result"}:
             continue  # Already a measured ACTIVE (or result) frame.
@@ -911,6 +919,38 @@ def _widen_score_display_ends(
         event["rule_lower_sample"] = deepcopy(event["lower_sample"])
         event["lower_sample"] = deepcopy(states[k]["sample"])
         event["lower_sample_basis"] = "score_display_lead"
+
+
+def _result_display_lead(
+    states: list[dict[str, Any]], observations: dict[str, Any], hi: int
+) -> int | None:
+    """Return the earlier lower frame of a zero-width end at a first result display.
+
+    The result is displayed after the Round is decided, so a bracket that opens
+    and closes on that frame is empty. The lower bound moves back through frames
+    of the same scope that show one old score at most, no result, BUY or
+    intermission, and stops at the latest measured ACTIVE cue or at the display
+    lead. A different old score stops the walk at the frame after it.
+    """
+    t_hi = native_time(states[hi]["sample"])
+    scope = source_scope(states[hi]["sample"])
+    old: set[tuple[int, ...]] = set()
+    k = hi
+    while k > 0 and states[k]["continuity"].get("carry_allowed", False):
+        prev = states[k - 1]
+        cues = _signals(_rows(prev, observations))
+        if (
+            not prev["continuity"].get("carry_allowed", False)
+            or source_scope(prev["sample"]) != scope
+            or cues & {"result", "buy", "intermission"}
+            or old and _scores(prev) and _scores(prev) != old
+        ):
+            break
+        old = old or _scores(prev)
+        k -= 1
+        if "active" in cues or native_time(prev["sample"]) <= t_hi - DECISION_DISPLAY_LEAD:
+            break
+    return k if k != hi else None
 
 
 def _demote_current_view_maps(
