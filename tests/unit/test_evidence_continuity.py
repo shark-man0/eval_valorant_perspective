@@ -400,3 +400,22 @@ def test_post_round_countdown_is_ended_and_moves_the_end_edge():
     assert values(kept, "round")[3] == "ACTIVE"
     assert [t["upper_sample"]["native_pts_tick"] for t in kept["transitions"]
             if t["kind"] == "round_end"] == [40]
+
+
+def test_unread_clock_between_two_countdown_readings_is_in_the_same_phase():
+    rows = [at(0, ["active"], (2, 0), 45), at(1, score=(2, 0), timer=44),
+            at(2, score=(2, 0), timer=43), at(3, score=(2, 0), timer=7),
+            at(4, score=(2, 0)), at(5, ["result"], (2, 1), 5),
+            at(6, score=(2, 1)), at(7, score=(2, 1), timer=3)]
+    result = run(rows, practical_visual_state=True)
+    rounds = values(result, "round")
+    assert rounds[:3] == ["ACTIVE"] * 3
+    assert rounds[3:] == ["ENDED"] * 5
+    ends = [t for t in result["transitions"] if t["kind"] == "round_end"]
+    assert [(e["lower_sample"]["native_pts_tick"], e["upper_sample"]["native_pts_tick"])
+            for e in ends] == [(20, 30)]
+    # Without a later matching reading the unread row is not revised.
+    rows[7] = at(7, score=(2, 1))
+    rows[3] = at(3, score=(2, 0), timer=42)
+    revised = run(rows, practical_visual_state=True)["frames"][6]["round"]
+    assert revised["reason"] != "post_round_countdown_after_measured_end"

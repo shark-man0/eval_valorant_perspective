@@ -900,9 +900,10 @@ def _post_round_countdown(
     the same segment whose reading is ``t + r - t_k`` show the same countdown
     and so the same phase. The chain is followed while readings match, before
     the edge at most the display lead and after it until the countdown expires,
-    and stops at a purchase or intermission cue, a row without a reading or any
-    other reading. Two matching readings are required. Matching rows without a
-    measured ACTIVE or purchase cue become ENDED. When the chain starts before
+    and stops at a purchase or intermission cue or any other reading; rows
+    without a reading count only between two matching readings. Two matching
+    readings are required. Matching rows without a measured ACTIVE or purchase
+    cue become ENDED. When the chain starts before
     the edge, the edge moves to its first row; the frame before it is the lower
     bound if it shows another reading (the previous phase's clock), otherwise
     the display-lead walk applies. The rule's own samples are kept.
@@ -925,6 +926,30 @@ def _post_round_countdown(
             return None
         return reading[0] == expiry - native_time(states[i]["sample"])
 
+    def walk(u: int, step: int, expiry: Fraction, low: Fraction, high: Fraction) -> list[int]:
+        """Frames from ``u`` in one direction showing the countdown to ``expiry``.
+
+        Frames without a reading between two matching readings lie inside the
+        same phase; an open gap at the end of the walk is dropped.
+        """
+        found: list[int] = []
+        gap: list[int] = []
+        k = u
+        while 0 <= k + step < len(states):
+            i, j = (k + step, k) if step < 0 else (k, k + step)
+            if not joined(i, j) or not low <= native_time(states[k + step]["sample"]) <= high:
+                break
+            match = same_phase(k + step, expiry)
+            if match is False:
+                break
+            k += step
+            if match is None:
+                gap.append(k)
+            else:
+                found += [*gap, k]
+                gap = []
+        return found
+
     for event in transitions:
         if event["kind"] != "round_end" or "basis" in event:
             continue
@@ -939,26 +964,16 @@ def _post_round_countdown(
         t_u = native_time(states[u]["sample"])
         expiry = t_u + reading[0]
 
-        before: list[int] = []
-        k = u
-        while k > 0 and joined(k - 1, k) and t_u - native_time(
-            states[k - 1]["sample"]
-        ) <= DECISION_DISPLAY_LEAD and same_phase(k - 1, expiry):
-            k -= 1
-            before.append(k)
-        after: list[int] = []
-        k = u
-        while k + 1 < len(states) and joined(k, k + 1) and native_time(
-            states[k + 1]["sample"]
-        ) <= expiry and same_phase(k + 1, expiry):
-            k += 1
-            after.append(k)
+        before = walk(u, -1, expiry, t_u - DECISION_DISPLAY_LEAD, t_u)
+        after = walk(u, 1, expiry, t_u, expiry)
         chain = [*before, *after]
         if not chain:
             continue  # Two matching readings, the anchor and one more, are required.
         evidence = list(reading[1])
         for i in chain:
-            evidence += _clock(states[i], observations)[1]  # type: ignore[index]
+            clock = _clock(states[i], observations)
+            if clock is not None:
+                evidence += clock[1]
         for i in chain:
             frame = states[i]
             if _signals(_rows(frame, observations)) & {"active", "buy"}:

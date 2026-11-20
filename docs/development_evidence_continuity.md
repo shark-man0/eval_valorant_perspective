@@ -25,7 +25,7 @@ match specific conditions and no threshold changes in any recognizer.
 | ENDED after a score change | One-point increment; later ENDED anchor with the new score | As above | Rows from the first new-score frame to the anchor are ENDED |
 | Round end candidate | Same inputs | One increment is one decided Round | `round_end` between the last known-undecided frame and the first result cue or new-score frame |
 | Existing score-update end edges | An existing end edge whose lower frame is only the last old-score frame | Display lead as above | Lower bound moved back to the last known-undecided frame (`lower_sample_basis: score_display_lead`, `rule_lower_sample` kept) |
-| Countdown after a decided Round | An existing end edge whose upper frame is ENDED (measured, or a one-point score increment) with one clock reading `r` at `t`; earlier or later rows of the same segment reading `t + r - t_k` | The single Round clock counts down one second per second within a phase; at least two matching readings | Matching rows without a measured ACTIVE or purchase cue become ENDED (`post_round_countdown_after_measured_end`). If the chain starts before the edge (at most the display lead), the edge moves to its first row; the lower bound is the frame before it when that frame shows another clock reading, otherwise the display-lead walk (`lower_sample_basis: post_round_countdown`, rule samples kept) |
+| Countdown after a decided Round | An existing end edge whose upper frame is ENDED (measured, or a one-point score increment) with one clock reading `r` at `t`; earlier or later rows of the same segment reading `t + r - t_k` | The single Round clock counts down one second per second within a phase; at least two matching readings | Matching rows, and rows without a reading between two matching ones, without a measured ACTIVE or purchase cue become ENDED (`post_round_countdown_after_measured_end`). If the chain starts before the edge (at most the display lead), the edge moves to its first row; the lower bound is the frame before it when that frame shows another clock reading, otherwise the display-lead walk (`lower_sample_basis: post_round_countdown`, rule samples kept) |
 | Zero-width end at the first result display | An existing end edge whose lower and upper frame are the same frame with a measured result cue | The result is displayed after the Round is decided, so the decision lies before that frame | Lower bound moved back through same-scope frames with no result, BUY or intermission cue and one old score at most, to the latest measured ACTIVE cue or the display lead (`lower_sample_basis: result_display_lead`, `rule_lower_sample` kept). Frame values are unchanged |
 | Round start candidate | BUY or ENDED anchor, later ACTIVE anchor, equal score | A new Round starts only after its purchase phase | `round_start` bracket. The first countdown reading (30 to 100 s, within 60 s of the ACTIVE anchor) confirmed by a second consistent reading projects the start at `t - (100 - shown)`: the bracket closes to the frames 1 s either side (the earlier anchor itself when it is closer), and rows after the projected start become ACTIVE. A projection before the earlier anchor is rejected |
 | Purchase before combat | A measured BUY anchor, then the next measured BUY anchor or the combat start projected from two countdown readings after the next ACTIVE anchor; equal score readings; no result or intermission cue | The purchase phase precedes the combat phase of its Round and never follows it | Unmeasured ACTIVE values in between (single visual cues, never measured anchors) become BUY; Round start candidates lying wholly inside are archived in `superseded_transition_candidates` |
@@ -238,6 +238,26 @@ end 29/29). AI review of the changed seconds in the ten matches (all 28 ACTIVE
 to ENDED and 20 of 77 UNKNOWN to ENDED, at random): 48/48 show the post-round
 clock (0:06 to 0:00) or the result banner. The protected seconds were not
 viewed.
+
+Rows without a clock reading between two matching readings (added the same
+day, after the third human sheet showed an ACTIVE value on a frame with the
+result banner whose clock had not been read): fixed comparison Round UNKNOWN
+3,131 to 3,076 and ACTIVE to ENDED 24 more seconds (38 in all), 69/69 kept;
+fresh runs Round UNKNOWN 3,077 to 3,007 (ten) and 752 to 729 (protected four).
+AI review of the changed seconds in the ten matches (all 24 ACTIVE to ENDED and
+16 of 70 UNKNOWN to ENDED, at random): 40/40 show the post-round clock or the
+result banner.
+
+Third human sheet (2026-11-20): 120 frames drawn uniformly from all fourteen
+fresh runs (24 from the protected recordings), labelled by the user without
+seeing any prediction; one frame marked unknown is excluded. Correct /
+incorrect / abstained, base / this option / combined with #151: Round
+77/1/42, 103/0/17, 103/0/17; Life 84/10/25, 105/6/8, 112/0/7; Camera 101/2/16,
+101/2/16, 109/1/9. The frames that disagreed with any version were viewed on
+the originals (AI review): no labelling error found. Three frames right after
+the recorder's death are labelled first-person view and dead; the death is
+right, whether the death camera counts as the recorder's own view is a matter
+of definition.
 
 Random human GT (2026-11-19): the user labelled 80 frames of the fresh run
 without seeing any prediction: 40 drawn uniformly from all 21,999 seconds and 40
