@@ -20,7 +20,7 @@ scoreboards, and some SPECTATOR seconds were carried from learned claims.
 | --- | --- | --- |
 | Spectator label (lower left, "switch player") | Normalized cross-correlation with a 158x28 reference crop of the label, searched within 6 px, at 1920x1080 (other 16:9 sizes are resized; other aspect ratios are UNCHECKED) | `PRESENT` at 0.55 or more, `ABSENT` at 0.30 or less, otherwise undecided |
 | Ability bar (bottom centre) | Four icon slots compared with the recorder's own icons; the second-lowest slot score is used, so three of four icons must agree | own HUD at 0.60 or more |
-| Astra's astral form (bottom of this table, 2026-11-20) | Colour composition of the central screen reduced to 320x180 (rows 30-140, columns 70-300): purple share, bright magenta share (the floor plan of the map) and brightness spread | astral at purple 0.80, bright magenta 0.10 and spread 25 or more, held over a run spanning at least 1 s (gaps up to 1.5 s) |
+| Astra's astral form (2026-11-20) | Colour composition of the central screen reduced to 320x180 (rows 30-140, columns 70-300): purple share, bright magenta share (the floor plan of the map) and brightness spread | astral at purple 0.80, bright magenta 0.10 and spread 25 or more, held over a run spanning at least 1 s (gaps up to 1.5 s) |
 | Remote control (optional references) | The key hint shown above the ability bar while an ability is steered, searched across the band above the bar, and the control-duration icon at the screen centre above the bar | remote at 0.60 or more for both |
 
 The recorder's own icons are learned per recording: 300 evenly spaced frames
