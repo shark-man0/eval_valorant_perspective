@@ -236,8 +236,8 @@ end (the Round had ended before the frames shown) was a duplicate of an earlier
 candidate and is gone; all other human boundaries stay contained (start 24/24,
 end 29/29). AI review of the changed seconds in the ten matches (all 28 ACTIVE
 to ENDED and 20 of 77 UNKNOWN to ENDED, at random): 48/48 show the post-round
-clock (0:06 to 0:00) or the result banner. The protected seconds were not
-viewed.
+clock (0:06 to 0:00) or the result banner. The protected seconds are covered
+below.
 
 Rows without a clock reading between two matching readings (added the same
 day, after the third human sheet showed an ACTIVE value on a frame with the
@@ -246,7 +246,10 @@ result banner whose clock had not been read): fixed comparison Round UNKNOWN
 fresh runs Round UNKNOWN 3,077 to 3,007 (ten) and 752 to 729 (protected four).
 AI review of the changed seconds in the ten matches (all 24 ACTIVE to ENDED and
 16 of 70 UNKNOWN to ENDED, at random): 40/40 show the post-round clock or the
-result banner.
+result banner. With the user's permission (2026-11-20) every second of the
+protected recordings that the countdown rule changed was viewed as well (53:
+20 ACTIVE to ENDED, 33 UNKNOWN to ENDED, AI review): 53/53 show the post-round
+clock (0:06 to 0:00) or the result banner.
 
 Third human sheet (2026-11-20): 120 frames drawn uniformly from all fourteen
 fresh runs (24 from the protected recordings), labelled by the user without
