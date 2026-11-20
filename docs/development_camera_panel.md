@@ -20,6 +20,7 @@ scoreboards, and some SPECTATOR seconds were carried from learned claims.
 | --- | --- | --- |
 | Spectator label (lower left, "switch player") | Normalized cross-correlation with a 158x28 reference crop of the label, searched within 6 px, at 1920x1080 (other 16:9 sizes are resized; other aspect ratios are UNCHECKED) | `PRESENT` at 0.55 or more, `ABSENT` at 0.30 or less, otherwise undecided |
 | Ability bar (bottom centre) | Four icon slots compared with the recorder's own icons; the second-lowest slot score is used, so three of four icons must agree | own HUD at 0.60 or more |
+| Astra's astral form (bottom of this table, 2026-11-20) | Colour composition of the central screen reduced to 320x180 (rows 30-140, columns 70-300): purple share, bright magenta share (the floor plan of the map) and brightness spread | astral at purple 0.80, bright magenta 0.10 and spread 25 or more, held over a run spanning at least 1 s (gaps up to 1.5 s) |
 | Remote control (optional references) | The key hint shown above the ability bar while an ability is steered, searched across the band above the bar, and the control-duration icon at the screen centre above the bar | remote at 0.60 or more for both |
 
 The recorder's own icons are learned per recording: 300 evenly spaced frames
@@ -32,6 +33,10 @@ Rows (`stream_kind: camera_panel`, strong evidence):
 
 - label `PRESENT` gives `spectator` (unless a remote cue is also present: no row);
 - a remote cue without the label gives `remote`;
+- a held astral form with the label `ABSENT` and the recorder's own health digits
+  gives `remote` (the body stays in place while the recorder steers the form, as
+  with a drone; the user's labelling); an astral frame outside a held run gives
+  no row;
 - label `ABSENT` and own ability bar give `owner_hud`;
 - anything else gives no row. Label absence alone is never evidence.
 
@@ -282,14 +287,41 @@ spectator rows kept a death latch alive and the learned own-view rows in the
 buy menu could not end it. The undecidable frames are mostly Round or match
 result screens.
 
+### Astra's astral form (2026-11-20)
+
+The user labels the astral form as a remote view (the body cannot move and the
+recorder controls something else). Colour alone was checked first: a purple
+share separates nothing, because a recorder standing in a purple smoke shows the
+same share (DEV2). The astral form also shows a bright magenta floor plan with
+sharp edges; a smoke is darker and uniform, and Astra's Cosmic Divide wall is
+bright but uniform. Keyframe scan of all ten development matches (about one
+frame per second): the three conditions hold on 189 frames, all in
+first_new_cold, the only match where the recorder plays Astra; no frame of the
+other nine. On the fixed comparison's samples (measured on the recording machine
+from the full decoded frame, pixel identity checked) one frame of
+issue_oldfull001 also met them: the purple wash of a Round transition, a single
+frame. Astral uses last seconds, so a run spanning at least 1 s is required;
+single astral frames (24 of 61 runs in first_new_cold) stay undecided.
+
+| Check | Result |
+| --- | --- |
+| Fixed comparison, first_new_cold (other nine unchanged) | Camera SELF to REMOTE 158 s; Life DEAD to ALIVE 4 s (DEAD with a first-person view before); withdrawn: Camera 3 s, Life 3 s. Camera UNKNOWN 1,039 to 1,042, Life 1,195 to 1,198; 69/69 kept |
+| Fresh run, first_new_cold (camera panel rerun on the original) | Camera SELF to REMOTE 160 s, SELF to UNKNOWN 1 s |
+| AI review of the changed seconds (not human GT) | Fixed: all 10 seconds other than SELF to REMOTE viewed: 4 DEAD to ALIVE right (purchase phase), 2 withdrawn SELF were astral frames (wrong before), 1 withdrawn SELF was right (buy menu), 3 withdrawn DEAD were right. Fresh: 60 of the REMOTE seconds and every run edge sampled (earlier run without the hold): all astral form |
+| Human GT, 120 frames over fourteen matches | Camera 109/1/9 to 110/0/9 (the Astra frame) |
+| Human GT, 80 frames | Camera 71/1/7 unchanged: its Astra frame is a single astral frame, left SELF |
+
 ## Limits
 
 - Development matches only; holdout recordings were not used.
 - The thresholds and geometry assume the recordings' HUD scale and language.
-- REMOTE is measured only for the Owl Drone control hint of this recorder's key
-  bindings. Other steerable abilities (Fade's Prowler, Cypher's camera, Skye's
-  Trailblazer) and Astra's astral form were not reviewed and are still
-  read as SELF when the own ability bar stays visible.
+- REMOTE is measured for the Owl Drone control hint of this recorder's key
+  bindings and for Astra's astral form held for a second or more. Other
+  steerable abilities (Fade's Prowler, Cypher's camera, Skye's Trailblazer) and
+  single astral frames are still read as SELF when the own ability bar stays
+  visible. The astral thresholds come from one recorder's Astra games (one
+  match); the other nine show no false frame, the protected and new
+  recordings were not used.
 - A measured spectator label before a purchase phase can keep a death latch
   for the first seconds of the buy menu (one event of two seconds seen).
 - The fresh run repeats the same ten development matches; generalization to

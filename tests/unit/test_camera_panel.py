@@ -69,8 +69,8 @@ def test_rows_use_label_and_learned_own_ability_bar(reference):
     result = cp.camera_rows(measured, reference)
     signals = {r["sample"]["native_pts_tick"]: r["signals"] for r in result["observations"]}
     assert result["own_ability_bar"]["available"] is True
-    assert result["counts"] == {"spectator_label": 10, "remote_control": 0, "own_ability_bar": 40,
-                                "undecided": 1}
+    assert result["counts"] == {"spectator_label": 10, "remote_control": 0, "astral_view": 0,
+                                "own_ability_bar": 40, "undecided": 1}
     assert signals[0] == ["owner_hud"] and signals[400] == ["spectator"]
     assert 500 not in signals
     assert all(r["context"]["stream_kind"] == "camera_panel" for r in result["observations"])
@@ -207,3 +207,47 @@ def test_carried_alive_before_a_measured_spectator_view_is_withdrawn():
     assert frames[2]["camera"]["value"] == "SELF"
     assert [h["basis"] for h in result["measured_view_return_history"]] == [
         "carried_alive_before_measured_spectator_view"]
+
+
+def hsv_frame(hsv_fill, stripes=None, health=True):
+    """A 1080p frame of one HSV colour, optionally with bright HSV stripes."""
+    hsv = np.zeros((1080, 1920, 3), np.uint8)
+    hsv[:] = hsv_fill
+    if stripes is not None:
+        for x in range(0, 1920, 160):
+            hsv[:, x : x + 50] = stripes
+    image = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+    if health:
+        x, y = cp.HEALTH_BOX[:2]
+        for offset in (10, 40, 70):
+            image[y + 12 : y + 45, x + offset : x + offset + 20] = 255
+    return image
+
+
+def test_astral_form_is_a_remote_view_and_purple_smoke_or_a_pink_wall_is_not(reference):
+    astral = hsv_frame((145, 200, 150), stripes=(155, 180, 250))
+    smoke = hsv_frame((145, 200, 120))
+    wall = hsv_frame((155, 180, 245))
+    measured = cp.measure_astral(astral)
+    assert measured["present"] is True
+    assert measured["bright_magenta_share"] >= cp.ASTRAL_BRIGHT
+    assert cp.measure_astral(smoke)["present"] is False  # no bright floor plan
+    assert cp.measure_astral(wall)["present"] is False  # bright, but no spread
+    assert cp.measure_astral(np.zeros((1080, 1440, 3), np.uint8))["checked"] is False
+    images = [frame(icons=OWN, seed=i) for i in range(40)]
+    images += [astral, astral, hsv_frame((145, 200, 150), stripes=(155, 180, 250), health=False)]
+    images += [frame(icons=OWN, seed=300 + i) for i in range(5)] + [astral]
+
+    def tick_sample(i):
+        return obs(i * 15360)["sample"]  # one sample per second
+
+    rows = cp.camera_rows(
+        [(tick_sample(i), cp.measure_frame(img, reference)) for i, img in enumerate(images)],
+        reference,
+    )
+    signals = {r["sample"]["native_pts_tick"] // 15360: r["signals"] for r in rows["observations"]}
+    assert signals[40] == signals[41] == ["remote"]
+    assert 42 not in signals  # no living HUD: undecided
+    assert 48 not in signals  # a single astral frame is not a held form: undecided
+    assert rows["counts"]["astral_view"] == 2
+    assert rows["bindings"]["thresholds"]["astral_purple"] == cp.ASTRAL_PURPLE

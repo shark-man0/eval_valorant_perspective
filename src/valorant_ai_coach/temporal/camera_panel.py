@@ -4,6 +4,14 @@
   while the recorder views another player. A normalized cross-correlation with a
   reference crop of that label measures it; between the presence and absence
   thresholds the label is undecided.
+* Astra's astral form replaces the recorder's view with a purple starfield over
+  a bright magenta floor plan of the map while the body stays in place: the
+  recorder controls something else, as with a drone (REMOTE). It is measured
+  from the colour composition of the central screen: a purple share, a bright
+  magenta share (the floor plan) and the brightness spread (its sharp edges).
+  A uniformly purple smoke is darker and has no bright plan; a single bright
+  wall lacks the spread. The form is held for a while, so only a run of such
+  frames spanning a second or more counts; shorter runs stay undecided.
 * The ability bar shows the abilities of the player whose HUD is displayed. A
   team never fields the same agent twice and only teammates can be spectated,
   so the recorder's own ability icons identify the recorder's HUD. The icons are
@@ -50,6 +58,17 @@ HEALTH_BOX = (575, 1000, 105, 58)
 HEALTH_DIGIT_HEIGHT = (28, 40)
 HEALTH_DIGIT_WIDTH = (6, 26)
 HEALTH_DIGIT_AREA = 120
+# Astral form: central region of a 320x180 reduction (rows, columns) and thresholds.
+ASTRAL_SIZE = (320, 180)
+ASTRAL_REGION = (30, 140, 70, 300)
+ASTRAL_PURPLE = 0.80
+ASTRAL_BRIGHT = 0.10
+ASTRAL_SPREAD = 25.0
+# The astral form is held: a run of measured frames (gaps of at most ASTRAL_GAP
+# seconds) spanning at least ASTRAL_MIN_SPAN. A shorter run (e.g. the purple wash
+# of the Round transition) is left undecided.
+ASTRAL_GAP = 1.5
+ASTRAL_MIN_SPAN = 1.0
 LABEL_PRESENT = 0.55
 LABEL_ABSENT = 0.30
 OWN_BAR_MATCH = 0.60
@@ -142,6 +161,29 @@ def measure_remote(image: NDArray[np.uint8], reference: RemoteReference) -> dict
         "hint_score": round(hint, 6),
         "duration_score": round(duration, 6),
         "present": hint >= REMOTE_HINT_MATCH and duration >= REMOTE_DURATION_MATCH,
+    }
+
+
+def measure_astral(image: NDArray[np.uint8]) -> dict[str, Any]:
+    """Colour composition of the central screen; ``present`` for the astral form."""
+    native = _native(image)
+    if native is None:
+        return {"checked": False, "present": None}
+    small = cv2.resize(native, ASTRAL_SIZE, interpolation=cv2.INTER_AREA)
+    hsv = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+    top, bottom, left, right = ASTRAL_REGION
+    region = hsv[top:bottom, left:right].astype(np.int32)
+    hue, sat, val = region[..., 0], region[..., 1], region[..., 2]
+    purple = float(((hue >= 130) & (hue <= 165) & (sat >= 90) & (val >= 70)).mean())
+    bright = float(((hue >= 135) & (hue <= 170) & (sat >= 100) & (val >= 220)).mean())
+    spread = float(val.std())
+    return {
+        "checked": True,
+        "purple_share": round(purple, 6),
+        "bright_magenta_share": round(bright, 6),
+        "brightness_spread": round(spread, 6),
+        "present": purple >= ASTRAL_PURPLE and bright >= ASTRAL_BRIGHT
+        and spread >= ASTRAL_SPREAD,
     }
 
 
@@ -264,7 +306,25 @@ def measure_frame(
         "slots": bar_slots(image),
         "health_digits": health_digits(image),
         "remote": None if remote is None else measure_remote(image, remote),
+        "astral": measure_astral(image),
     }
+
+
+def _held_astral(measured: list[tuple[dict[str, Any], dict[str, Any]]]) -> set[str]:
+    """Samples of astral-form runs spanning at least ``ASTRAL_MIN_SPAN`` seconds."""
+    times = sorted(
+        (int(sample["native_pts_tick"]) / 15360, sample["sample_sha256"])
+        for sample, m in measured if (m.get("astral") or {}).get("present")
+    )
+    held: set[str] = set()
+    run: list[tuple[float, str]] = []
+    for item in [*times, (float("inf"), "")]:
+        if run and item[0] - run[-1][0] > ASTRAL_GAP:
+            if run[-1][0] - run[0][0] >= ASTRAL_MIN_SPAN:
+                held.update(sha for _, sha in run)
+            run = []
+        run.append(item)
+    return held
 
 
 def camera_rows(
@@ -287,13 +347,18 @@ def camera_rows(
         "health_box": HEALTH_BOX,
         "thresholds": {"label_present": LABEL_PRESENT, "label_absent": LABEL_ABSENT,
                        "own_bar": OWN_BAR_MATCH, "remote_hint": REMOTE_HINT_MATCH,
-                       "remote_duration": REMOTE_DURATION_MATCH},
+                       "remote_duration": REMOTE_DURATION_MATCH,
+                       "astral_purple": ASTRAL_PURPLE, "astral_bright": ASTRAL_BRIGHT,
+                       "astral_spread": ASTRAL_SPREAD, "astral_gap": ASTRAL_GAP,
+                       "astral_min_span": ASTRAL_MIN_SPAN},
         "own_bar_prototype_sha256": own.get("prototype_sha256"),
         "implementation_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     }
     producer = digest(bindings)
+    held = _held_astral(measured)
     rows = []
-    counts = {"spectator_label": 0, "remote_control": 0, "own_ability_bar": 0, "undecided": 0}
+    counts = {"spectator_label": 0, "remote_control": 0, "astral_view": 0,
+              "own_ability_bar": 0, "undecided": 0}
     for sample, m in measured:
         label, slot = m["label"], m["slots"]
         own_score = (
@@ -308,6 +373,18 @@ def camera_rows(
         elif remote_cue and remote_cue["present"] and label["state"] != "PRESENT":
             signals = ["remote"]
             counts["remote_control"] += 1
+        elif (m.get("astral") or {}).get("present"):
+            if (
+                sample["sample_sha256"] in held
+                and label["state"] == "ABSENT"
+                and (m.get("health_digits") or 0) > 0
+            ):
+                # The recorder's own living HUD with the held astral form: remote view.
+                signals = ["remote"]
+                counts["astral_view"] += 1
+            else:
+                counts["undecided"] += 1
+                continue
         elif (
             label["state"] == "ABSENT"
             and own_score is not None and own_score >= OWN_BAR_MATCH
@@ -323,6 +400,7 @@ def camera_rows(
             producer=producer,
             signals=signals,
             raw={"camera_panel": {"label": label, "remote": remote_cue,
+                                  "astral": m.get("astral"),
                                   "health_digits": m.get("health_digits"),
                                   "own_ability_bar_score": None if own_score is None
                                   else round(own_score, 6)},
