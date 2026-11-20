@@ -69,8 +69,8 @@ def test_rows_use_label_and_learned_own_ability_bar(reference):
     result = cp.camera_rows(measured, reference)
     signals = {r["sample"]["native_pts_tick"]: r["signals"] for r in result["observations"]}
     assert result["own_ability_bar"]["available"] is True
-    assert result["counts"] == {"spectator_label": 10, "remote_control": 0, "astral_view": 0,
-                                "own_ability_bar": 40, "undecided": 1}
+    assert result["counts"] == {"spectator_label": 10, "remote_control": 0, "camera_view": 0,
+                                "astral_view": 0, "own_ability_bar": 40, "undecided": 1}
     assert signals[0] == ["owner_hud"] and signals[400] == ["spectator"]
     assert 500 not in signals
     assert all(r["context"]["stream_kind"] == "camera_panel" for r in result["observations"])
@@ -251,3 +251,34 @@ def test_astral_form_is_a_remote_view_and_purple_smoke_or_a_pink_wall_is_not(ref
     assert 48 not in signals  # a single astral frame is not a held form: undecided
     assert rows["counts"]["astral_view"] == 2
     assert rows["bindings"]["thresholds"]["astral_purple"] == cp.ASTRAL_PURPLE
+
+
+def test_camera_view_hint_needs_the_whole_box_and_its_crosshair_cell(tmp_path, reference):
+    box = np.zeros((84, 104), np.uint8)
+    box[10:38, 6:42] = RNG.integers(0, 256, (28, 36)).astype(np.uint8)  # crosshair cell
+    box[10:38, 60:98] = RNG.integers(0, 256, (28, 38)).astype(np.uint8)  # exit key
+    box[45:80, 6:98] = RNG.integers(0, 256, (35, 92)).astype(np.uint8)  # keys
+    path = tmp_path / "camera_hint.png"
+    cv2.imwrite(str(path), box)
+    camera = cp.CameraHintReference.load(path)
+    shown = frame(icons=OWN, seed=500)
+    x, y = cp.REMOTE_BAND[0] + 300, cp.REMOTE_BAND[1] + 20
+    shown[y : y + 84, x : x + 104] = box[..., None]
+    other = shown.copy()  # same box, another icon in the crosshair cell
+    other[y + 10 : y + 38, x + 6 : x + 42] = RNG.integers(0, 256, (28, 36))[..., None]
+    assert cp.measure_camera_hint(shown, camera)["present"] is True
+    assert cp.measure_camera_hint(other, camera)["present"] is False
+    assert cp.measure_camera_hint(frame(icons=OWN, seed=501), camera)["present"] is False
+    images = [frame(icons=OWN, seed=i) for i in range(40)] + [shown]
+    rows = cp.camera_rows(
+        [(sample(i), cp.measure_frame(img, reference, camera=camera))
+         for i, img in enumerate(images)],
+        reference, camera=camera,
+    )
+    signals = {r["sample"]["native_pts_tick"]: r["signals"] for r in rows["observations"]}
+    assert signals[400] == ["remote"] and rows["counts"]["camera_view"] == 1
+    assert rows["bindings"]["camera_hint_reference_sha256"] == camera.sha256
+    small = tmp_path / "small.png"
+    cv2.imwrite(str(small), np.zeros((10, 10), np.uint8))
+    with pytest.raises(ValueError):
+        cp.CameraHintReference.load(small)  # smaller than the crosshair cell

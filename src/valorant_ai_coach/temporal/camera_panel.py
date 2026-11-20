@@ -12,6 +12,10 @@
   A uniformly purple smoke is darker and has no bright plan; a single bright
   wall lacks the spread. The form is held for a while, so only a run of such
   frames spanning a second or more counts; shorter runs stay undecided.
+* A placed camera (Cypher's spycam) is viewed from the ability's own key hint:
+  a two-cell box with the aiming crosshair and the exit key. Both the whole box
+  and its crosshair cell must match the reference, which separates it from the
+  single "view camera" hint and from bow aiming hints of the same box style.
 * The ability bar shows the abilities of the player whose HUD is displayed. A
   team never fields the same agent twice and only teammates can be spectated,
   so the recorder's own ability icons identify the recorder's HUD. The icons are
@@ -69,6 +73,9 @@ ASTRAL_SPREAD = 25.0
 # of the Round transition) is left undecided.
 ASTRAL_GAP = 1.5
 ASTRAL_MIN_SPAN = 1.0
+# Camera view hint: whole box and crosshair cell (rows, columns of the reference).
+CAMERA_HINT_MATCH = 0.90
+CAMERA_HINT_CELL = (8, 40, 4, 44)
 LABEL_PRESENT = 0.55
 LABEL_ABSENT = 0.30
 OWN_BAR_MATCH = 0.60
@@ -118,6 +125,46 @@ class LabelReference:
         if image is None or image.shape != (LABEL_BOX[3], LABEL_BOX[2]):
             raise ValueError(f"Spectator label reference must be {LABEL_BOX[2]}x{LABEL_BOX[3]}")
         return cls(image.astype(np.float32), hashlib.sha256(data).hexdigest())
+
+
+@dataclass(frozen=True)
+class CameraHintReference:
+    """Key hint shown while a placed camera is viewed (crosshair and exit key)."""
+
+    hint: NDArray[np.float32]
+    cell: NDArray[np.float32]
+    sha256: str
+
+    @classmethod
+    def load(cls, path: Path) -> CameraHintReference:
+        data = path.read_bytes()
+        image = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_GRAYSCALE)
+        top, bottom, left, right = CAMERA_HINT_CELL
+        if (
+            image is None
+            or image.shape[0] > REMOTE_BAND[3] or image.shape[1] > REMOTE_BAND[2]
+            or image.shape[0] < bottom or image.shape[1] < right
+        ):
+            raise ValueError("Readable camera hint reference within the remote band required")
+        hint = image.astype(np.float32)
+        return cls(hint, hint[top:bottom, left:right], hashlib.sha256(data).hexdigest())
+
+
+def measure_camera_hint(
+    image: NDArray[np.uint8], reference: CameraHintReference
+) -> dict[str, Any]:
+    native = _native(image)
+    if native is None:
+        return {"checked": False, "present": None}
+    x, y, w, h = REMOTE_BAND
+    band = _gray(native[y : y + h, x : x + w])
+    hint, cell = _ncc(band, reference.hint), _ncc(band, reference.cell)
+    return {
+        "checked": True,
+        "hint_score": round(hint, 6),
+        "cell_score": round(cell, 6),
+        "present": hint >= CAMERA_HINT_MATCH and cell >= CAMERA_HINT_MATCH,
+    }
 
 
 @dataclass(frozen=True)
@@ -299,6 +346,7 @@ def measure_frame(
     image: NDArray[np.uint8],
     reference: LabelReference,
     remote: RemoteReference | None = None,
+    camera: CameraHintReference | None = None,
 ) -> dict[str, Any]:
     """Per-frame measurements; only small crops are kept."""
     return {
@@ -306,6 +354,7 @@ def measure_frame(
         "slots": bar_slots(image),
         "health_digits": health_digits(image),
         "remote": None if remote is None else measure_remote(image, remote),
+        "camera_hint": None if camera is None else measure_camera_hint(image, camera),
         "astral": measure_astral(image),
     }
 
@@ -331,6 +380,7 @@ def camera_rows(
     measured: list[tuple[dict[str, Any], dict[str, Any]]],
     reference: LabelReference,
     remote: RemoteReference | None = None,
+    camera: CameraHintReference | None = None,
 ) -> dict[str, Any]:
     """Return a supplement with one row per frame decided by the two displays."""
     absent = [m["slots"] for _, m in measured
@@ -342,6 +392,7 @@ def camera_rows(
         "version": VERSION,
         "label_reference_sha256": reference.sha256,
         "remote_reference_sha256": None if remote is None else remote.sha256,
+        "camera_hint_reference_sha256": None if camera is None else camera.sha256,
         "label_box": LABEL_BOX,
         "bar_box": BAR_BOX,
         "health_box": HEALTH_BOX,
@@ -350,14 +401,15 @@ def camera_rows(
                        "remote_duration": REMOTE_DURATION_MATCH,
                        "astral_purple": ASTRAL_PURPLE, "astral_bright": ASTRAL_BRIGHT,
                        "astral_spread": ASTRAL_SPREAD, "astral_gap": ASTRAL_GAP,
-                       "astral_min_span": ASTRAL_MIN_SPAN},
+                       "astral_min_span": ASTRAL_MIN_SPAN,
+                       "camera_hint": CAMERA_HINT_MATCH},
         "own_bar_prototype_sha256": own.get("prototype_sha256"),
         "implementation_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     }
     producer = digest(bindings)
     held = _held_astral(measured)
     rows = []
-    counts = {"spectator_label": 0, "remote_control": 0, "astral_view": 0,
+    counts = {"spectator_label": 0, "remote_control": 0, "camera_view": 0, "astral_view": 0,
               "own_ability_bar": 0, "undecided": 0}
     for sample, m in measured:
         label, slot = m["label"], m["slots"]
@@ -367,12 +419,18 @@ def camera_rows(
         )
         signals: list[str] = []
         remote_cue = m.get("remote")
-        if label["state"] == "PRESENT" and not (remote_cue and remote_cue["present"]):
+        camera_cue = m.get("camera_hint")
+        steering = bool(remote_cue and remote_cue["present"])
+        viewing = bool(camera_cue and camera_cue["present"])
+        if label["state"] == "PRESENT" and not (steering or viewing):
             signals = ["spectator"]
             counts["spectator_label"] += 1
-        elif remote_cue and remote_cue["present"] and label["state"] != "PRESENT":
+        elif steering and label["state"] != "PRESENT":
             signals = ["remote"]
             counts["remote_control"] += 1
+        elif viewing and label["state"] != "PRESENT":
+            signals = ["remote"]
+            counts["camera_view"] += 1
         elif (m.get("astral") or {}).get("present"):
             if (
                 sample["sample_sha256"] in held
@@ -400,6 +458,7 @@ def camera_rows(
             producer=producer,
             signals=signals,
             raw={"camera_panel": {"label": label, "remote": remote_cue,
+                                  "camera_hint": camera_cue,
                                   "astral": m.get("astral"),
                                   "health_digits": m.get("health_digits"),
                                   "own_ability_bar_score": None if own_score is None
@@ -458,6 +517,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--label-reference", type=Path, required=True)
     parser.add_argument("--remote-hint", type=Path)
     parser.add_argument("--remote-duration", type=Path)
+    parser.add_argument("--camera-hint", type=Path,
+                        help="Key hint shown while a placed camera is viewed")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.output.exists():
@@ -480,12 +541,13 @@ def main(argv: list[str] | None = None) -> int:
         RemoteReference.load(args.remote_hint, args.remote_duration)
         if args.remote_hint is not None and args.remote_duration is not None else None
     )
+    camera = None if args.camera_hint is None else CameraHintReference.load(args.camera_hint)
     missing: list[dict[str, Any]] = []
     measured = [
-        (sample, measure_frame(image, reference, remote))
+        (sample, measure_frame(image, reference, remote, camera))
         for sample, image in decode_samples(args.video, list(samples.values()), missing)
     ]
-    result = camera_rows(measured, reference, remote)
+    result = camera_rows(measured, reference, remote, camera)
     result["samples_requested"] = len(samples)
     result["samples_not_pixel_identical"] = len(missing)
     args.output.write_text(json.dumps(result), encoding="utf-8")

@@ -21,6 +21,7 @@ scoreboards, and some SPECTATOR seconds were carried from learned claims.
 | Spectator label (lower left, "switch player") | Normalized cross-correlation with a 158x28 reference crop of the label, searched within 6 px, at 1920x1080 (other 16:9 sizes are resized; other aspect ratios are UNCHECKED) | `PRESENT` at 0.55 or more, `ABSENT` at 0.30 or less, otherwise undecided |
 | Ability bar (bottom centre) | Four icon slots compared with the recorder's own icons; the second-lowest slot score is used, so three of four icons must agree | own HUD at 0.60 or more |
 | Astra's astral form (2026-11-20) | Colour composition of the central screen reduced to 320x180 (rows 30-140, columns 70-300): purple share, bright magenta share (the floor plan of the map) and brightness spread | astral at purple 0.80, bright magenta 0.10 and spread 25 or more, held over a run spanning at least 1 s (gaps up to 1.5 s) |
+| Camera view hint (optional reference, 2026-11-20) | The two-cell key hint shown while Cypher's placed camera is viewed (aiming crosshair, exit key), searched in the band above the ability bar: the whole box and its crosshair cell | camera view at 0.90 or more for both |
 | Remote control (optional references) | The key hint shown above the ability bar while an ability is steered, searched across the band above the bar, and the control-duration icon at the screen centre above the bar | remote at 0.60 or more for both |
 
 The recorder's own icons are learned per recording: 300 evenly spaced frames
@@ -33,6 +34,7 @@ Rows (`stream_kind: camera_panel`, strong evidence):
 
 - label `PRESENT` gives `spectator` (unless a remote cue is also present: no row);
 - a remote cue without the label gives `remote`;
+- a camera view hint without the label gives `remote`;
 - a held astral form with the label `ABSENT` and the recorder's own health digits
   gives `remote` (the body stays in place while the recorder steers the form, as
   with a drone; the user's labelling); an astral frame outside a held run gives
@@ -311,15 +313,34 @@ single astral frames (24 of 61 runs in first_new_cold) stay undecided.
 | Human GT, 120 frames over fourteen matches | Camera 109/1/9 to 110/0/9 (the Astra frame) |
 | Human GT, 80 frames | Camera 71/1/7 unchanged: its Astra frame is a single astral frame, left SELF |
 
+### Cypher's camera (2026-11-20)
+
+The recorder plays Cypher in issue_freshfull005; the other agents with a steered
+or viewed ability in the ten matches are Sova (drone, measured before) and Astra
+(above). Fade, Skye and the like were not played by the recorder. While the
+camera is viewed, the key hint shows a crosshair cell and an exit key; the
+normal "view camera" hint has one cell, and Sova's bow shows a box of the same
+style with another icon. On the fixed comparison's samples (measured on the
+recording machine, pixel identity checked) the whole box and its crosshair
+cell both reach 0.90 on 150 frames, all in issue_freshfull005; the highest
+other frames are Sova's bow (box 0.89, cell 0.75) and no frame of the other
+nine matches reaches 0.76 on the cell.
+
+| Check | Result |
+| --- | --- |
+| Fixed comparison (issue_freshfull005 only changes) | Camera SELF to REMOTE 57 s, withdrawn SELF 14 s (Camera UNKNOWN 1,042 to 1,056); Life unchanged; 69/69 kept |
+| Fresh run, issue_freshfull005 (camera panel rerun on the original) | 64 camera-view rows; Camera SELF to REMOTE 64 s |
+| AI review (not human GT) | All 14 withdrawn seconds: 9 were camera views (SELF was wrong), 5 the recorder's own first-person view (SELF was right). 16 of the REMOTE seconds at random: 16/16 camera view |
+
 ## Limits
 
 - Development matches only; holdout recordings were not used.
 - The thresholds and geometry assume the recordings' HUD scale and language.
 - REMOTE is measured for the Owl Drone control hint of this recorder's key
-  bindings and for Astra's astral form held for a second or more. Other
-  steerable abilities (Fade's Prowler, Cypher's camera, Skye's Trailblazer) and
-  single astral frames are still read as SELF when the own ability bar stays
-  visible. The astral thresholds come from one recorder's Astra games (one
+  bindings, Cypher's camera view hint and Astra's astral form held for a second
+  or more. Abilities the recorder never played here (Fade's Prowler, Skye's
+  Trailblazer and others) and single astral frames are still read as SELF when
+  the own ability bar stays visible. The astral thresholds come from one recorder's Astra games (one
   match); the other nine show no false frame, the protected and new
   recordings were not used.
 - A measured spectator label before a purchase phase can keep a death latch
