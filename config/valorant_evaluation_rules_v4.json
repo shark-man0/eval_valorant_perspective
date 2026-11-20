@@ -138,6 +138,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": true,
         "display_clip_strategy": "代表例8〜15秒を最大3本程度",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": 3,
+          "count_is_approximate": true,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "ヘッドラインは単発の成否より継続的な癖を見たいという人間基準のため。極端な例だけクリップ化する。"
       },
       "trigger": {
@@ -224,6 +233,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": true,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "接敵直前〜射撃中の技術判断が中心で、長い戦術文脈を必要としない。"
       },
       "trigger": {
@@ -311,6 +329,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": true,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "接敵直前〜射撃中の技術判断が中心で、長い戦術文脈を必要としない。"
       },
       "trigger": {
@@ -399,6 +426,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": true,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "接敵直前〜射撃中の技術判断が中心で、長い戦術文脈を必要としない。"
       },
       "trigger": {
@@ -483,6 +519,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": true,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "射撃時の移動状態・停止状態は接敵前後の短い映像で直接確認できる。"
       },
       "trigger": {
@@ -574,6 +619,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": true,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "射撃時の移動状態・停止状態は接敵前後の短い映像で直接確認できる。"
       },
       "trigger": {
@@ -664,6 +718,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "敵位置を認識していたかと、その後なぜ露出する移動を選んだかを直前情報まで含めて確認する必要がある。"
       },
       "trigger": {
@@ -750,6 +813,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "交戦後に位置変更が必要だったかは、交戦内容と直後の圧力・退路まで見ないと判断できない。"
       },
       "trigger": {
@@ -836,6 +908,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "単独ピークの善悪は人数差、防衛/攻撃、取得済み情報、情報取り目的などラウンド状況に強く依存する。"
       },
       "trigger": {
@@ -924,6 +1005,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "ピーク方法そのものの選択は、角との距離と接敵状況を含む短い場面で判断できる。"
       },
       "trigger": {
@@ -1006,6 +1096,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則8〜15秒の1クリップ",
+        "display_clip_policy": {
+          "min_seconds": 8,
+          "max_seconds": 15,
+          "clips_per_evaluation": 1,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "一度のピークで何方向の射線に身体を晒したかは瞬間的な画面情報で判定できる。"
       },
       "trigger": {
@@ -1094,6 +1193,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "リピークは一度目の接敵、敵武器や位置、自分の武器不利など直前の交戦履歴が必要。"
       },
       "trigger": {
@@ -1180,6 +1288,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "遮蔽・退路の有無は、その位置へ入った経緯と敵の圧力、味方Utilityによる退路支援まで見る必要がある。"
       },
       "trigger": {
@@ -1273,6 +1390,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "オフアングルが成立していたかは、待ち位置だけでなく敵に事前に読まれる要因や直前の露出も確認したい。"
       },
       "trigger": {
@@ -1356,6 +1482,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "ポストプラント位置は設置後の人数、味方配置、未ケア方向、Spike位置が変化する局面全体で評価する。"
       },
       "trigger": {
@@ -1445,6 +1580,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "守りの配置はラウンド開始時の全体配置と、スタック等の作戦意図を含めて判断する必要がある。"
       },
       "trigger": {
@@ -1535,6 +1679,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "音を聞いた瞬間だけでなく、聞いた後のスモーク要求・味方招集・ケア・静音行動まで追う必要がある。"
       },
       "trigger": {
@@ -1624,6 +1777,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "人数状況はラウンド中に何度も変化し、それに応じて固まる/広がる判断も変わるため。"
       },
       "trigger": {
@@ -1719,6 +1881,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "未確認エリアへ進む直前の情報状況と、索敵/フラッシュを使った進行まで一連で確認する。"
       },
       "trigger": {
@@ -1804,6 +1975,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "人数有利・不利での行動は、人数差が生まれた時点からその後どうリスクを取ったかまでラウンド全体で見る必要がある。"
       },
       "trigger": {
@@ -1895,6 +2075,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "人数有利・不利での行動は、人数差が生まれた時点からその後どうリスクを取ったかまでラウンド全体で見る必要がある。"
       },
       "trigger": {
@@ -1990,6 +2179,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "戦闘を継続すべきか離脱すべきかは、直前のUtility・被弾・敵圧力と直後の結果までで判断できる。"
       },
       "trigger": {
@@ -2082,6 +2280,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "ローテーションは、それ以前に得た索敵・味方報告・敵の進行速度と、移動開始タイミングを比較する必要がある。"
       },
       "trigger": {
@@ -2171,6 +2378,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "残り時間の使い方は、ラウンド全体の進行と設置/阻止までの残時間を継続的に追う必要がある。"
       },
       "trigger": {
@@ -2267,6 +2483,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "死亡時点だけでなく、死亡前にUtilityを使える合理的な機会があったか、突然死など例外だったかを確認する。"
       },
       "trigger": {
@@ -2363,6 +2588,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "味方とのタイミング合わせは、サイト進入や交戦の局面全体で味方位置とUtility投入タイミングを比較する必要がある。"
       },
       "trigger": {
@@ -2454,6 +2688,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "設置判断はサイト安全度、撃ち合い、人数、残り時間が変化するサイト取得局面の流れで評価する。"
       },
       "trigger": {
@@ -2555,6 +2798,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "設置後/解除時の時間管理は、Spike設置からラウンド終了までのポストプラント/リテイク局面全体を見る。"
       },
       "trigger": {
@@ -2648,6 +2900,15 @@
         "requires_previous_round_context": true,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "購入画面/判断場面10〜20秒＋経済状況テキスト",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "economy_text",
+          "supplement_required": true
+        },
         "classification_reason": "チームBuyとの同期は前ラウンド結果と現在の所持金・味方Buyを合わせて判断するため。"
       },
       "trigger": {
@@ -2741,6 +3002,15 @@
         "requires_previous_round_context": true,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "購入画面/判断場面10〜20秒＋経済状況テキスト",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "economy_text",
+          "supplement_required": true
+        },
         "classification_reason": "武器回収/セーブは現在ラウンドの勝算だけでなく、次ラウンドの購入可能性を判断時点で見積もる必要がある。"
       },
       "trigger": {
@@ -2834,6 +3104,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "ファーストデスが『変なプッシュ』だったかは、ラウンド開始からの作戦・情報・味方位置を知らないと判定できない。"
       },
       "trigger": {
@@ -2921,6 +3200,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "ファーストキル後に一旦退くべきだったかは、キル取得前後の位置関係と直後の敵反応を見る必要がある。"
       },
       "trigger": {
@@ -3011,6 +3299,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "クラッチは人数、残時間、Spike、既知敵位置を継続的に更新しながら判断するためラウンド全体が必要。"
       },
       "trigger": {
@@ -3100,6 +3397,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "ラーク開始の妥当性や遅すぎるかどうかは、ラウンド開始からの人数・ローテーション・味方進行との時間関係で評価する。"
       },
       "trigger": {
@@ -3188,6 +3494,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "エントリー役への追従は、サイト進入開始からSpace獲得・トレード可能状態までの一連の局面で見る。"
       },
       "trigger": {
@@ -3278,6 +3593,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "アンチエコは敵経済、味方の集団行動、ショットガン警戒などラウンド全体の安全管理として評価する。"
       },
       "trigger": {
@@ -3367,6 +3691,15 @@
         "requires_previous_round_context": true,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "購入画面/判断場面10〜20秒＋経済状況テキスト",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "economy_text",
+          "supplement_required": true
+        },
         "classification_reason": "セーブ判断は現在のエリア/人数不利と、次ラウンドの武器価値・購入可能性を合わせて判断する。"
       },
       "trigger": {
@@ -3457,6 +3790,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "Ult価値は発動瞬間だけでなく、その局面で得られるエリア・キル・設置/解除支援などの効果まで確認する。"
       },
       "trigger": {
@@ -3548,6 +3890,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "Smokeは味方ピーク直前/敵クリア前というタイミング差を見るため、投入前後の短い流れが必要。"
       },
       "trigger": {
@@ -3636,6 +3987,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "索敵Utilityは開幕だけでなく『しばらく情報がない場所』への再取得も評価するため、情報鮮度をラウンド全体で追う。"
       },
       "trigger": {
@@ -3724,6 +4084,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "核心部分15〜25秒。局面全体は時系列要約を併記",
+        "display_clip_policy": {
+          "min_seconds": 15,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "timeline_summary",
+          "supplement_required": true
+        },
         "classification_reason": "DuelistのSpace獲得後の生存は、エントリー開始から獲得エリアの維持/拡張までを見る必要がある。"
       },
       "trigger": {
@@ -3814,6 +4183,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "Sentinelのサイト保持はメイン入口を継続して確認できていたかをラウンド中の配置変化込みで評価する。"
       },
       "trigger": {
@@ -3904,6 +4282,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "根拠となる場面10〜25秒。必要なら複数クリップ",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 25,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": null,
+          "supplement_required": false
+        },
         "classification_reason": "Flank管理は一度の確認ではなく、裏見Utilityの設置と継続的な警戒が維持されたかを見る必要がある。"
       },
       "trigger": {
@@ -3996,6 +4383,15 @@
         "requires_previous_round_context": false,
         "uses_whole_match_aggregation": false,
         "display_clip_strategy": "原則10〜20秒。必要なら直前情報を説明文で補足",
+        "display_clip_policy": {
+          "min_seconds": 10,
+          "max_seconds": 20,
+          "clips_per_evaluation": null,
+          "max_clips_per_match": null,
+          "count_is_approximate": false,
+          "supplement": "preceding_context_text",
+          "supplement_required": false
+        },
         "classification_reason": "Operatorの適正は長い射線、遮蔽までの距離、構えた位置と接敵までの状態を短いシーケンスで確認する。"
       },
       "trigger": {

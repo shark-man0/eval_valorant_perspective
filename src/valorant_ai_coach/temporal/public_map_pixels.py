@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+from collections.abc import Sequence
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, cast
@@ -25,21 +26,33 @@ class PublicMapPixels:
     similarity transform remains a hypothesis, not a qualified marker transform or Zone.
     """
 
-    def __init__(self, index_path: Path, layout_path: Path) -> None:
+    def __init__(
+        self, index_path: Path, layout_path: Path, *,
+        verified_references: Sequence[tuple[str, str, Path, str]] = (),
+    ) -> None:
         index = read_json(index_path)
         root = index_path.parent.resolve()
         self.layout = HudLayout.load(layout_path)
         self.orb: Any = cast(Any, cv2).SIFT_create(nfeatures=1200, contrastThreshold=0.008)
         self.matcher = cv2.FlannBasedMatcher(dict(algorithm=1, trees=3), dict(checks=32))
+        self.exact_matcher = cv2.BFMatcher(cv2.NORM_L2)
         self.references = []
         assets = {}
+        paths: dict[str, tuple[str, Path, str | None]] = {}
         for record in index["maps"]:
             path = (root / record["reference"]).resolve()
             if root not in path.parents:
                 raise ValueError("Map reference outside catalog")
-            if not path.is_file():
-                continue
-            image = cv2.imread(str(path), cv2.IMREAD_UNCHANGED)
+            if path.is_file():
+                paths[record["id"]] = (record["name"], path, None)
+        for name, map_id, path, pinned_sha in verified_references:
+            paths.setdefault(map_id, (name, path, pinned_sha))
+        for map_id, (name, path, expected_sha) in paths.items():
+            data = path.read_bytes()
+            asset_hash = hashlib.sha256(data).hexdigest()
+            if expected_sha is not None and asset_hash != expected_sha:
+                raise ValueError("Verified Map reference bytes changed")
+            image = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_UNCHANGED)
             if image is None or image.ndim != 3:
                 raise ValueError("Readable public map reference required")
             gray = cv2.cvtColor(image[:, :, :3], cv2.COLOR_BGR2GRAY)
@@ -47,8 +60,9 @@ class PublicMapPixels:
                 gray[image[:, :, 3] == 0] = 0
             keypoints, descriptors = self.orb.detectAndCompute(gray, None)
             if descriptors is not None:
-                self.references.append((record["name"], record["id"], keypoints, descriptors))
-            assets[record["id"]] = file_sha(path)
+                size = (image.shape[1], image.shape[0])
+                self.references.append((name, map_id, keypoints, descriptors, size))
+            assets[map_id] = asset_hash
         if not self.references:
             raise ValueError("Readable map reference features required")
         self.bindings = {
@@ -70,7 +84,44 @@ class PublicMapPixels:
         }
         self.fingerprint = digest(self.bindings)
 
-    def inspect(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+    def inspect(
+        self, image: NDArray[np.uint8], *, recover_alignment: bool = False,
+    ) -> dict[str, Any]:
+        baseline = self._inspect(image, self.matcher)
+        raw = baseline["raw"]
+        ranks = raw["reference_ranking"]
+        if not recover_alignment or raw["map_name_candidates"] or not ranks:
+            return baseline
+        old = ranks[0]
+        if old["inliers"] < 12:
+            return baseline
+        recovered = self._inspect(image, self.exact_matcher)
+        candidates = recovered["raw"]["map_name_candidates"]
+        if not candidates or candidates[0]["map_id"] != old["map_id"]:
+            return baseline
+        new = candidates[0]
+        left, top, right, bottom = raw["roi_pixel_bounds"]
+        audit = np.array([
+            [.3*(right-left), .3*(bottom-top), 1.],
+            [.7*(right-left), .3*(bottom-top), 1.],
+            [.3*(right-left), .7*(bottom-top), 1.],
+            [.7*(right-left), .7*(bottom-top), 1.],
+        ]).T
+        try:
+            original = np.linalg.solve(old["reference_to_roi_homography_candidate"], audit)
+            exact = np.linalg.solve(new["reference_to_roi_homography_candidate"], audit)
+        except np.linalg.LinAlgError:
+            return baseline
+        if float(np.linalg.norm(original[:2] - exact[:2], axis=0).max()) > 12.:
+            return baseline
+        recovered["raw"]["alignment_recovery"] = "agreeing_exact_descriptor_search"
+        return recovered
+
+    def inspect_exact(self, image: NDArray[np.uint8]) -> dict[str, Any]:
+        """Register a frame without the randomized FLANN search."""
+        return self._inspect(image, self.exact_matcher)
+
+    def _inspect(self, image: NDArray[np.uint8], matcher: Any) -> dict[str, Any]:
         if image.dtype != np.uint8 or image.ndim != 3 or image.shape[2] != 3:
             raise ValueError("Native BGR pixels required")
         h, w = image.shape[:2]
@@ -80,8 +131,8 @@ class PublicMapPixels:
         keypoints, descriptors = self.orb.detectAndCompute(gray, None)
         ranking = []
         if descriptors is not None and len(keypoints) >= 4:
-            for name, identity, reference_points, reference_descriptors in self.references:
-                pairs = self.matcher.knnMatch(reference_descriptors, descriptors, k=2)
+            for name, identity, reference_points, reference_descriptors, size in self.references:
+                pairs = matcher.knnMatch(reference_descriptors, descriptors, k=2)
                 good = [p[0] for p in pairs if len(p) == 2 and p[0].distance < 0.75 * p[1].distance]
                 unique: dict[int, Any] = {}
                 for match in sorted(good, key=lambda m: m.distance):
@@ -109,13 +160,18 @@ class PublicMapPixels:
                 if not 0.1 <= scale <= 3 or coverage < 0.08:
                     continue
                 matrix = np.vstack([affine, [0, 0, 1]])
+                inliers = mask.ravel().astype(bool)
+                predicted = source[inliers] @ affine[:, :2].T + affine[:, 2]
+                residual = np.linalg.norm(predicted - target[inliers], axis=1) / scale
                 ranking.append(
                     {
                         "map_id": identity,
                         "map_name": name,
+                        "reference_image_size_px": list(size),
                         "inliers": count,
                         "matches": len(good),
                         "inlier_ratio": count / len(good),
+                        "fit_residual_p95_reference_px": float(np.percentile(residual, 95)),
                         "reference_to_roi_homography_candidate": matrix.tolist(),
                         "ownership": "UNKNOWN",
                         "qualified": False,

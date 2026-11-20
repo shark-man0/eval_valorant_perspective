@@ -16,14 +16,15 @@ from typing import Any, Protocol
 from valorant_ai_coach.clips import ClipArtifact, ClipGenerationError
 from valorant_ai_coach.hud import HudAnalyzer, HudObservations
 from valorant_ai_coach.rules import EvaluationAggregator
+from valorant_ai_coach.rules.policy_runtime import GATE_REPORT_ONLY, enforce_confidence_floor
 from valorant_ai_coach.schema_validation import SchemaValidator
 from valorant_ai_coach.storage import SQLiteRepository
 from valorant_ai_coach.video import FrameSample, VideoMetadata
 
 from .frame_planner import FramePlanner, PlannedFrame
 from .hud_video_processor import HudVideoProcessingResult, HudVideoProcessor, NativeLifecycleOptions
-from .match_aggregation_service import aggregate_saved_match
-from .round_analyzer import RoundAnalysis, RoundAnalyzer
+from .match_aggregation_service import PROVISIONAL_PARTIAL_MARKER, aggregate_saved_match
+from .round_analyzer import ADMISSION_PROVISIONAL_PARTIAL, RoundAnalysis, RoundAnalyzer
 
 LOGGER = logging.getLogger(__name__)
 ProgressCallback = Callable[[float, str], None]
@@ -198,6 +199,8 @@ class MatchAnalysisPipeline:
             "round_package_fingerprints": expected_package_fingerprints,
             "saved_round_package_fingerprints": saved_package_fingerprints,
         }
+        if self._provisional_partial_enabled():
+            checkpoint_state["provisional_evaluation"] = PROVISIONAL_PARTIAL_MARKER
         self.repository.save_job_checkpoint(identifier, "analyzing", checkpoint_state)
         progress(0.03, "動画メタデータを取得しました")
         errors: list[str] = []
@@ -621,7 +624,23 @@ class MatchAnalysisPipeline:
         try:
             self.validator.validate_round_package(package)
             if RoundAnalyzer.boundary_context_is_uncertain(package):
-                if self.repository.list_round_evaluations(match_id, round_no):
+                stored = self.repository.list_round_evaluations(match_id, round_no)
+                if stored and self._provisional_partial_enabled():
+                    output = {
+                        "schema_version": "3.0",
+                        "analysis_id": f"RESTORED-{match_id}-R{round_no}",
+                        "match_id": match_id, "round_no": round_no, "evaluations": stored,
+                    }
+                    candidates = self.round_analyzer.selector.select(package)
+                    self.validator.validate_ai_output(
+                        output, round_package=package,
+                        candidate_rule_ids={candidate.rule_id for candidate in candidates},
+                    )
+                    return RoundAnalysis(
+                        package, tuple(candidates), {}, output, {},
+                        admission=ADMISSION_PROVISIONAL_PARTIAL,
+                    )
+                if stored:
                     LOGGER.warning("暫定境界の保存済み採点を再利用しません: %s", round_no)
                     return None
                 output = {
@@ -736,6 +755,21 @@ class MatchAnalysisPipeline:
                 "hud": self.validator.schemas.hud_observation,
             },
         }
+        # Opt-in evaluation semantics (#25, #31 §6-1) are part of the result identity.
+        # They are added only when enabled so that existing resumable jobs keep their
+        # fingerprint.
+        if self._provisional_partial_enabled():
+            payload["provisional_evaluation"] = {
+                "marker": PROVISIONAL_PARTIAL_MARKER,
+                "admissible_rules": sorted(
+                    self.round_analyzer.provisional_policy.table.admissible_rule_ids()
+                    if self.round_analyzer.provisional_policy is not None
+                    else ()
+                ),
+            }
+        gate = getattr(self.round_analyzer, "round_timeline_gate", None)
+        if gate is not None and gate.mode != GATE_REPORT_ONLY:
+            payload["round_timeline_gate"] = gate.mode
         if self.round_boundary_mode == "practical":
             assert self.native_lifecycle_options is not None
             contract_path = self.native_lifecycle_options.unedited_input_contract_path
@@ -777,6 +811,10 @@ class MatchAnalysisPipeline:
             if callable(visual_fingerprint):
                 payload["visual_resources"] = visual_fingerprint()
         return self._json_fingerprint(payload)
+
+    def _provisional_partial_enabled(self) -> bool:
+        policy = getattr(self.round_analyzer, "provisional_policy", None)
+        return policy is not None and bool(policy.enabled)
 
     @staticmethod
     def _full_source_sha256(path: Path) -> str:
@@ -897,21 +935,8 @@ class MatchAnalysisPipeline:
 
     @staticmethod
     def _enforce_confidence_policy(evaluation: dict[str, Any]) -> dict[str, Any]:
-        item = deepcopy(evaluation)
-        confidence = float(item["confidence"])
-        if item["label"] in {"good", "improve"} and confidence < 0.55:
-            item.update(
-                {
-                    "label": "unscored",
-                    "clip_id": None,
-                    "display_clip": None,
-                    "improvement": None,
-                    "missing_information": list(item["missing_information"])
-                    or ["評価信頼度が0.55未満です"],
-                    "unscored_reason_code": "low_confidence",
-                }
-            )
-        return item
+        # Shared with the timeline bridge (policy_runtime.enforce_confidence_floor).
+        return enforce_confidence_floor(evaluation)
 
     def _aggregate_round_evaluations(
         self, round_results: list[Any]

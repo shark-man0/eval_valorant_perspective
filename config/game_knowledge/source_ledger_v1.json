@@ -1,0 +1,120 @@
+{
+  "version": "game_knowledge_source_ledger_v1",
+  "updated": "2026-11-16",
+  "policy": [
+    "External knowledge describes the game, never what happened in a recording. It may rank or constrain candidates; it is never evidence that an event occurred.",
+    "Private recordings, extracted crops, labels, model weights and third-party images are never committed. Committed files hold metadata, hashes and URLs only.",
+    "Every knowledge item carries its source id, game version and verification status. Unverified items are usable as priors only."
+  ],
+  "rights_categories": {
+    "usable": "Metadata may be committed and used for recognition development.",
+    "conditional": "Usable locally under the stated conditions; binaries stay in the private cache and are not redistributed.",
+    "not_usable": "Not used. The entry records why, so later work does not re-investigate it."
+  },
+  "sources": [
+    {
+      "id": "valorant_api_content",
+      "url": "https://valorant-api.com/v1/",
+      "kind": "secondary",
+      "publisher": "valorant-api.com (unofficial community API that mirrors Riot client data)",
+      "provides": ["agent names, roles, ability slot names (en-US, ja-JP)", "weapon stats and shop costs", "map minimap transforms and callouts (en-US, ja-JP)", "client version"],
+      "game_version": "13.10.00.5893614 (release-13.10, build 2026-11-07)",
+      "retrieval": "Fetched in a browser on 2026-11-16T04:14Z; the compact snapshot text was SHA-256 verified on both sides.",
+      "committed_files": {
+        "config/game_knowledge/valorant_content_en_13.10.json": "765d6eee8f67f993785504aad864c40f75566fd9ebca6b50b7a6109ef313804c",
+        "config/game_knowledge/valorant_content_ja_13.10.json": "f585f508e18fb83d5f341262f6890575f4743a3869bdb996c2d0688c256e820c"
+      },
+      "update_frequency": "Each VALORANT patch (about every two weeks). Re-snapshot when the client version on recordings changes.",
+      "rights": "conditional",
+      "terms": "Data originates from Riot Games. Riot's 'Legal Jibber Jabber' fan-content policy allows non-commercial fan projects to use game assets with attribution. Names and numeric stats are committed as metadata; images stay in the private cache.",
+      "known_gaps": ["No round/economy rules", "Passive slots have no HUD icon for most agents", "Callout coordinates are region anchors, not polygons"],
+      "trust": "high for names/uuids (client data mirror); medium for numeric stats (may lag a patch)"
+    },
+    {
+      "id": "valorant_api_media",
+      "url": "https://media.valorant-api.com/",
+      "kind": "secondary",
+      "publisher": "valorant-api.com media CDN (Riot client textures)",
+      "provides": ["ability icons", "agent display/killfeed/minimap portraits", "weapon display and kill-feed icons", "minimap images"],
+      "game_version": "13.10.00.5893614",
+      "retrieval": "Browser bundle valorant_reference_assets_13.10.vakb (268 files, 15,712,798 bytes). Each file carries a SHA-256 in the bundle index; the bundle hash is pinned in reference_assets_13.10.json.",
+      "rights": "conditional",
+      "terms": "Riot-owned images. Kept in the local private cache only (VALORANT_KNOWLEDGE_CACHE or ~/.valorant_ai_coach/knowledge). Not committed, not redistributed, not sent to remote APIs.",
+      "trust": "high (client textures). Rendered HUD icons differ in scale, colour and antialiasing; matching must tolerate domain shift."
+    },
+    {
+      "id": "riot_developer_portal",
+      "url": "https://developer.riotgames.com/docs/valorant",
+      "kind": "primary",
+      "publisher": "Riot Games",
+      "provides": ["VAL-CONTENT-V1 content catalog (names, ids)", "VAL-MATCH-V1 match history (production key only)"],
+      "rights": "conditional",
+      "terms": "Requires a Riot API key. Match data for personal projects needs an approved production key; a development key expires every 24 h. Not assumed available.",
+      "status": "Loader exists (maps/public_catalog.py) for a caller-supplied catalog copy. Not used in this snapshot.",
+      "trust": "authoritative"
+    },
+    {
+      "id": "playvalorant_official",
+      "url": "https://playvalorant.com/",
+      "kind": "primary",
+      "publisher": "Riot Games",
+      "provides": ["agent pages", "patch notes"],
+      "rights": "conditional",
+      "terms": "Readable for verification. Page text and images are not copied into the repository.",
+      "status": "Used as the reference for patch-level verification of rules when values change.",
+      "trust": "authoritative"
+    },
+    {
+      "id": "community_rule_references",
+      "url": "https://www.gamerevolution.com/guides/655332-valorant-how-long-take-defuse-spike",
+      "kind": "secondary",
+      "publisher": "Game press guides (gamerevolution.com, gameriv.com, mein-mmo.de)",
+      "provides": ["round 100 s", "spike detonation 45 s", "plant 4 s", "defuse 7 s with 3.5 s checkpoint", "buy phase 30 s, 45 s at half start", "first to 13"],
+      "rights": "usable",
+      "terms": "Numbers only, restated in our own words. No text copied.",
+      "trust": "medium; values consistent across sources. Treated as priors and checked against recordings (timer readings) before any use beyond candidate ranking."
+    },
+    {
+      "id": "community_economy_references",
+      "url": "https://dignitas.gg/articles/an-easy-valorant-economy-guide",
+      "urls": ["https://dignitas.gg/articles/an-easy-valorant-economy-guide", "https://esports.gg/news/valorant/entry-frag-part-two-understanding-the-weapons-and-economy-of-valorant", "https://mobalytics.gg/blog/valorant/ultimate-economy-guide/", "https://www.thespike.gg/valorant/news/guns-abilities-and-team-economy-in-valorant/2"],
+      "kind": "secondary",
+      "publisher": "Game press and team guides (dignitas.gg, esports.gg, mobalytics.gg, thespike.gg)",
+      "provides": ["credits at half start 800", "round win 3000, loss 1900/2400/2900, survivor of a lost round 1000", "kill 200, spike plant 300 to every attacker", "credit cap 9000", "light shield 400, heavy shield 1000"],
+      "rights": "usable",
+      "terms": "Numbers only, restated in our own words. No text copied.",
+      "trust": "medium; values consistent across sources (checked 2026-11-18). Used only as bounds on what a team can afford, never as evidence of a purchase."
+    },
+    {
+      "id": "valorant_wiki",
+      "url": "https://wiki.playvalorant.com/en-us/",
+      "kind": "secondary",
+      "publisher": "Community wiki",
+      "rights": "conditional",
+      "terms": "Community knowledge; verification aid only. Not scraped.",
+      "status": "Not used in this snapshot.",
+      "trust": "medium"
+    },
+    {
+      "id": "overwolf_gep",
+      "url": "https://dev.overwolf.com/ow-native/live-game-data-gep/supported-games/valorant/",
+      "kind": "secondary",
+      "publisher": "Overwolf",
+      "provides": ["live kill/death/match events while the game runs"],
+      "rights": "not_usable",
+      "terms": "Requires an Overwolf app running beside the game during play. Cannot be applied to existing recordings. Events are not ground truth (delays, missing fields).",
+      "status": "Not used. Re-evaluate only if new recordings are captured with an Overwolf app.",
+      "trust": "n/a"
+    },
+    {
+      "id": "youtube_videos",
+      "url": "https://developers.google.com/youtube/terms/developer-policies",
+      "kind": "secondary",
+      "publisher": "YouTube",
+      "rights": "not_usable",
+      "terms": "Downloading or storing video/audio for training is not permitted by default. Not used.",
+      "status": "Not used.",
+      "trust": "n/a"
+    }
+  ]
+}

@@ -99,3 +99,14 @@ def live_identity_signals():
         "spectator_detector_checked": True,
         "spectator_panel_present": False,
     }
+
+
+@pytest.fixture(autouse=True)
+def _legacy_recording_compat(monkeypatch):
+    """Synthetic legacy registries in the suite run in the explicit compatibility mode.
+
+    Formal operation requires the recording catalog (#62); tests of that requirement
+    remove this variable themselves (tests/unit/test_catalog_admission.py).
+    """
+    monkeypatch.setenv("VALORANT_RECORDING_LEGACY_COMPAT", "1")
+    monkeypatch.delenv("VALORANT_RECORDING_CATALOG", raising=False)
