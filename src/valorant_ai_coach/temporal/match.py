@@ -367,6 +367,7 @@ def run_match(
     current_menu_return_candidate: bool = False,
     practical_visual_state: bool = False,
     checkpoint_dir: Path | None = None,
+    evidence_continuity: bool = False,
 ) -> dict[str, Any]:
     began = time.perf_counter()
     if checkpoint_dir is not None and retain_frames:
@@ -402,6 +403,7 @@ def run_match(
             current_hp_return_candidate,
             current_menu_return_candidate,
             practical_visual_state,
+            evidence_continuity,
         )
     ):
         raise ValueError("Explicit development ACTIVE clock bridge boolean required")
@@ -547,6 +549,8 @@ def run_match(
                     "current_hp_return_candidate": current_hp_return_candidate,
                     "current_menu_return_candidate": current_menu_return_candidate,
                     "practical_visual_state": practical_visual_state,
+                    # Added only when enabled so existing checkpoint bindings stay valid.
+                    **({"evidence_continuity": True} if evidence_continuity else {}),
                 },
             },
         )
@@ -868,6 +872,7 @@ def run_match(
         current_hp_return_candidate=current_hp_return_candidate,
         current_menu_return_candidate=current_menu_return_candidate,
         practical_visual_state=practical_visual_state,
+        evidence_continuity=evidence_continuity,
     )
     baseline_engine = (
         DevelopmentGameTimeline(
@@ -881,6 +886,7 @@ def run_match(
             current_hp_return_candidate=current_hp_return_candidate,
             current_menu_return_candidate=current_menu_return_candidate,
             practical_visual_state=practical_visual_state,
+            evidence_continuity=evidence_continuity,
         )
         if baseline_producers
         else None
@@ -1125,6 +1131,7 @@ def main() -> None:
     parser.add_argument("--current-hp-return-candidate", action="store_true")
     parser.add_argument("--current-menu-return-candidate", action="store_true")
     parser.add_argument("--practical-visual-state", action="store_true")
+    parser.add_argument("--evidence-continuity", action="store_true")
     args = parser.parse_args()
     result = run_match(
         policy_path=args.policy,
@@ -1151,6 +1158,7 @@ def main() -> None:
         current_menu_return_candidate=args.current_menu_return_candidate,
         practical_visual_state=args.practical_visual_state,
         checkpoint_dir=args.checkpoint_dir,
+        evidence_continuity=args.evidence_continuity,
     )
     print(json.dumps(result, ensure_ascii=False), flush=True)
 
