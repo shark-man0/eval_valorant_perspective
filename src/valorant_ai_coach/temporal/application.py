@@ -413,6 +413,7 @@ def export_application(
     practical_visual_state: bool = False,
     evidence_continuity: bool = False,
     measured_view_precedence: bool = False,
+    admission_purpose: str = "development_analysis",
 ) -> dict[str, Any]:
     """Admission, optional existing-engine join, JSON/CSV and evaluation handoff."""
     from valorant_ai_coach.rules.development_timeline import review_timeline
@@ -434,7 +435,7 @@ def export_application(
         raise ValueError("Explicit development Map/clock booleans required")
     if output.exists():
         raise ValueError("New output directory required")
-    policy = SourcePolicy(read_json(policy_path))
+    policy = SourcePolicy(read_json(policy_path), purpose=admission_purpose)
     receipt, timeline = read_json(receipt_path), read_json(timeline_path)
     if not receipt["whole_file_completed"] or not receipt["source_bytes_verified_before_and_after"]:
         raise ValueError("Completed whole-file acquisition required")
@@ -582,6 +583,7 @@ def export_application(
         "practical_visual_state_requested_for_export": practical_visual_state,
         "evidence_continuity_requested_for_export": evidence_continuity,
         "measured_view_precedence_requested_for_export": measured_view_precedence,
+        "admission_purpose": admission_purpose,
         "export_engine_configuration": timeline["configuration"],
         "output_sha256s": {p.name: file_sha(p) for p in output.iterdir()},
         "formal_outputs": 0,
