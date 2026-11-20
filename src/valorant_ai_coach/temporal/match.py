@@ -914,6 +914,9 @@ def run_match(
             ):
                 baseline_engine.add(supplied)
     timeline = engine.rebuild()
+    # The engine is not used after the rebuild; release it before the baseline
+    # rebuild so that two engines and two timelines are never held at once.
+    del engine
     write_private(
         output / "observations_PRIVATE.json",
         {
@@ -923,8 +926,12 @@ def run_match(
         },
     )
     write_private(output / "timeline_PRIVATE.json", timeline)
+    has_baseline = baseline_engine is not None
     if baseline_engine is not None:
-        write_private(output / "baseline_timeline_PRIVATE.json", baseline_engine.rebuild())
+        baseline_timeline = baseline_engine.rebuild()
+        del baseline_engine
+        write_private(output / "baseline_timeline_PRIVATE.json", baseline_timeline)
+        del baseline_timeline
     if audit_sample_plan is not None:
         write_private(output / "native_audit_aliases_PRIVATE.json", {"records": aliases})
         write_private(
@@ -1083,7 +1090,7 @@ def run_match(
             )
         },
     }
-    if baseline_engine is not None:
+    if has_baseline:
         receipt["artifact_sha256s"]["baseline_timeline_PRIVATE.json"] = file_sha(
             output / "baseline_timeline_PRIVATE.json"
         )
