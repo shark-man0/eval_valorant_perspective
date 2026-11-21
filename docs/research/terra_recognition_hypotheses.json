@@ -1,0 +1,53 @@
+{
+  "schema_version": "terra.public_recognition_hypotheses.v1",
+  "status": "PROPOSED_NOT_IMPLEMENTED_OR_MEASURED",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H01",
+      "priority": 1,
+      "type": "ADDITIVE_GENERATOR",
+      "pattern_ids": [
+        "VP01",
+        "VP03",
+        "VP06"
+      ],
+      "proposal": "原解像度ROIで複数半径の部分円弧と内外コントラストを調べ、旧D全件を保持したまま候補を追加する。",
+      "expected_candidates": "肖像様の輪郭が部分的に見える位置や、近接・重なりによる複数候補。",
+      "possible_false_candidates": "円形UI、文字、線の交差や背景模様。",
+      "controls": "対象クラスと中心を人手で独立確認し、旧DとD+追加器を同一入力・候補予算で比較。旧D候補の消失は0を要求。",
+      "status": "UNTESTED",
+      "ownership": "UNKNOWN"
+    },
+    {
+      "hypothesis_id": "H02",
+      "priority": 2,
+      "type": "RERANK_FEATURES",
+      "pattern_ids": [
+        "VP01",
+        "VP03",
+        "VP04"
+      ],
+      "proposal": "外周の角度別支持、内側の模様、重畳、背景線を別特徴にして候補を後段で順位付けする。",
+      "expected_candidates": "この特徴自体は候補を増やさない。",
+      "possible_false_candidates": "円形UIや背景の誤順位。",
+      "controls": "旧順位、円弧のみ、円弧+内部、円弧+内部+周辺のablationを未見の物理試合群で比較。",
+      "status": "UNTESTED",
+      "ownership": "UNKNOWN"
+    },
+    {
+      "hypothesis_id": "H03",
+      "priority": 3,
+      "type": "RERANK_FEATURES",
+      "pattern_ids": [
+        "VP02",
+        "VP05"
+      ],
+      "proposal": "X様の腕・交点と背景直線を別々に表現して順位付けに利用する。",
+      "expected_candidates": "この特徴自体は候補を増やさない。",
+      "possible_false_candidates": "高コントラスト文字、菱形、背景線の交差。",
+      "controls": "色・勾配・複合特徴を比較し、今回Dが検出済みの例を未検出と数えない。",
+      "status": "UNTESTED",
+      "ownership": "UNKNOWN"
+    }
+  ]
+}
