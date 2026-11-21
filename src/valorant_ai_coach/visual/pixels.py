@@ -12,6 +12,7 @@ from numpy.typing import NDArray
 from valorant_ai_coach.video.geometry import normalized_roi_bounds
 
 from .remote import classify_remote_view
+from .self_marker import SelfMarkerTracker
 
 Image = NDArray[Any]
 
@@ -61,6 +62,7 @@ class PixelMeasurementExtractor:
         self.previous_cover_score = 0.0
         self.normal_seen: set[str] = set()
         self.absent_since: dict[str, float] = {}
+        self.self_marker = SelfMarkerTracker()
 
     def _template_score(
         self, image: Image, path: str | None
@@ -103,6 +105,7 @@ class PixelMeasurementExtractor:
         )
         if not contiguous:
             self.previous_entities, self.previous_position = [], None
+            self.self_marker.reset()
         world, world_bounds = _roi(frame, profile, "world")
         gray = cv2.resize(cv2.cvtColor(world, cv2.COLOR_BGR2GRAY), (320, 180))
         camera_score = None
@@ -371,6 +374,29 @@ class PixelMeasurementExtractor:
         if len(remote_signals) == 1 and "ability_control_active" in remote_signals:
             remote_signals.clear()
         remote = classify_remote_view(hud, remote_signals)
+        marker_observation = None
+        if "minimap_self_marker" in profile:
+            # Experimental measurements stay outside strict observations and
+            # cannot become Zone/Movement/GOOD/IMPROVE facts via validated=true.
+            minimap.pop("self_x_norm", None)
+            minimap.pop("self_y_norm", None)
+            minimap["track_confidence"] = 0.0
+            position = self.previous_position = None
+            displacement = None
+            if "minimap" in profile.get("rois", {}):
+                crop, _ = _roi(frame, profile, "minimap")
+                marker_observation = self.self_marker.observe(
+                    crop, float(hud.get("time_sec", 0)), profile["minimap_self_marker"],
+                    ownership_eligible=(
+                        remote["primary_state"] == "live_first_person"
+                        and values.get("player_specific_hud_valid") is True
+                        and not set(hud.get("state_flags", ())) & {
+                            "visual_transition", "buy_phase_banner", "round_end_banner",
+                        }
+                    ),
+                ).to_dict()
+            else:
+                self.self_marker.reset()
         cast_score, _ = self._template_score(world, profile.get("cast_template"))
         effect_score, _ = self._template_score(world, profile.get("world_effect_template"))
         meta = {
@@ -401,6 +427,8 @@ class PixelMeasurementExtractor:
             "cast_animation_score": cast_score if calibration else min(0.64, cast_score),
             "slot_index": cast_slot,
         }
+        if marker_observation is not None:
+            meta["minimap_self_observation"] = marker_observation
         return {
             "motion": {
                 "state": motion_state,

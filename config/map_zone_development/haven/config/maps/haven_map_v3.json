@@ -1,0 +1,256 @@
+{
+  "version": "3.0",
+  "map_id": "haven",
+  "display_name": "Haven (development: shaded plant footprints only)",
+  "geometry_version": "haven_public_plant_footprints_ccw90_2026-10-23_v1",
+  "geometry_status": "development_public_texture_partial_regions",
+  "geometry_confidence_cap": 0.9,
+  "observed_client_builds": [],
+  "validity_policy": {
+    "status": "provisional_until_runtime_alignment_passes",
+    "invalidate_when": "reference minimap mask alignment fails persistently or known map geometry changes",
+    "on_invalidate": "calibration_required; do not resolve named zones"
+  },
+  "coordinate_system": {
+    "space": "normalized_map_canvas",
+    "definition": "Haven public texture rotated90deg counterclockwise; normalized visible-floor bbox, not ROI/world metres.",
+    "x_range": [
+      0,
+      1
+    ],
+    "y_range": [
+      0,
+      1
+    ],
+    "origin": "top_left",
+    "orientation": "Fixed authored orientation after lossless CCW90 transform: A left, B centre, C right.",
+    "reference_minimap_roi_px_1920x1080": [
+      0,
+      0,
+      1024,
+      1024
+    ],
+    "reference_map_mask_bbox_within_roi_px": [
+      85,
+      33,
+      944,
+      989
+    ],
+    "calibration_note": "The 1024x1024 public asset is an authoring canvas, not a 1920x1080 HUD ROI. Runtime uses explicit actual ROI and whole-outline calibration."
+  },
+  "minimap_runtime_profile": {
+    "mvp_supported_orientation": "fixed_map_orientation",
+    "require_full_static_map_mask_visible": true,
+    "dynamic_rotation_supported": false,
+    "player_centered_dynamic_crop_supported": false,
+    "zoom_or_hud_scale_change_behavior": "recalibrate static mask; if stable alignment cannot be recovered -> calibration_required",
+    "runtime_alignment_reference_asset": "assets/haven_reference.png"
+  },
+  "coverage_mask_file": "config/maps/haven_operational_mask_v1.json",
+  "resolution_priority": [
+    "location_label",
+    "polygon",
+    "coarse_fallback",
+    "unknown"
+  ],
+  "zones": [
+    {
+      "zone_id": "haven_a_plant",
+      "zone_name": "A plant footprint",
+      "kind": "site",
+      "site_id": "A",
+      "site_affinity": [
+        "A"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.0034924330616996507,
+          0.5805439330543933
+        ],
+        [
+          0.0034924330616996507,
+          0.6684100418410042
+        ],
+        [
+          0.01979045401629802,
+          0.6684100418410042
+        ],
+        [
+          0.020954598370197905,
+          0.6841004184100419
+        ],
+        [
+          0.13736903376018628,
+          0.6841004184100419
+        ],
+        [
+          0.13736903376018628,
+          0.6244769874476988
+        ],
+        [
+          0.07683352735739232,
+          0.6391213389121339
+        ],
+        [
+          0.07450523864959255,
+          0.6370292887029289
+        ],
+        [
+          0.06984866123399301,
+          0.6213389121338913
+        ],
+        [
+          0.07217694994179279,
+          0.6182008368200836
+        ],
+        [
+          0.1362048894062864,
+          0.6035564853556485
+        ],
+        [
+          0.13736903376018628,
+          0.5805439330543933
+        ]
+      ],
+      "display_group": "A_PLANT_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "haven_b_plant",
+      "zone_name": "B plant footprint",
+      "kind": "site",
+      "site_id": "B",
+      "site_affinity": [
+        "B"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.4330616996507567,
+          0.5638075313807531
+        ],
+        [
+          0.4330616996507567,
+          0.6631799163179917
+        ],
+        [
+          0.5564610011641443,
+          0.6631799163179917
+        ],
+        [
+          0.5564610011641443,
+          0.5638075313807531
+        ]
+      ],
+      "display_group": "B_PLANT_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    },
+    {
+      "zone_id": "haven_c_plant",
+      "zone_name": "C plant footprint",
+      "kind": "site",
+      "site_id": "C",
+      "site_affinity": [
+        "C"
+      ],
+      "priority": 100,
+      "polygon_norm": [
+        [
+          0.8358556461001164,
+          0.5889121338912134
+        ],
+        [
+          0.8358556461001164,
+          0.6035564853556485
+        ],
+        [
+          0.889406286379511,
+          0.6035564853556485
+        ],
+        [
+          0.8905704307334109,
+          0.6213389121338913
+        ],
+        [
+          0.8207217694994179,
+          0.6223849372384938
+        ],
+        [
+          0.8207217694994179,
+          0.700836820083682
+        ],
+        [
+          0.8975552968568102,
+          0.700836820083682
+        ],
+        [
+          0.8987194412107101,
+          0.6851464435146444
+        ],
+        [
+          0.9173457508731082,
+          0.6851464435146444
+        ],
+        [
+          0.9185098952270081,
+          0.700836820083682
+        ],
+        [
+          0.9965075669383003,
+          0.700836820083682
+        ],
+        [
+          0.9965075669383003,
+          0.6537656903765691
+        ],
+        [
+          0.9871944121071012,
+          0.6527196652719666
+        ],
+        [
+          0.9871944121071012,
+          0.6391213389121339
+        ],
+        [
+          0.9417927823050058,
+          0.6380753138075314
+        ],
+        [
+          0.9417927823050058,
+          0.5889121338912134
+        ]
+      ],
+      "display_group": "C_PLANT_FOOTPRINT",
+      "geometry_confidence_cap": 0.9
+    }
+  ],
+  "sites": [
+    {
+      "site_id": "A",
+      "zone_ids": [
+        "haven_a_plant"
+      ]
+    },
+    {
+      "site_id": "B",
+      "zone_ids": [
+        "haven_b_plant"
+      ]
+    },
+    {
+      "site_id": "C",
+      "zone_ids": [
+        "haven_c_plant"
+      ]
+    }
+  ],
+  "topology_edges": [],
+  "authoring_limits": [
+    "Only public shaded plant footprints; not whole Sites or callout boundaries.",
+    "Public asset rotated losslessly CCW90 before registration; no runtime automatic or dynamic rotation recovery.",
+    "No Callout labels/Topology/LOS/walkability claims.",
+    "Client build correspondence unverified; every frame requires outline alignment.",
+    "Footprint exterior polygons do not model internal obstacles, holes or legal plantability."
+  ]
+}
