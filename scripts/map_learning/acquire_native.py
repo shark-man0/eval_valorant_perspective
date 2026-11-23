@@ -34,7 +34,7 @@ def _packet_selection(source, video: Path):
     raw = subprocess.check_output([
         "ffprobe", "-v", "error", "-select_streams", "v:0", "-show_packets",
         "-show_entries", "packet=pts", "-of", "csv=p=0", str(video),
-    ], text=True, timeout=240)
+    ], encoding="ascii", timeout=240)
     ticks = sorted(int(row.split(",")[0]) for row in raw.splitlines() if row.strip())
     if not ticks or len(ticks) != len(set(ticks)):
         raise ValueError("Native packet clock does not match admitted recording")
