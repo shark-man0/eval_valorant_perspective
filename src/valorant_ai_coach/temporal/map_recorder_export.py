@@ -37,7 +37,7 @@ from .map_recorder_selection import MapRecorderSelector
 from .map_recording_alignment import NativeMapFlowAlignment, RecordingMapAlignment
 from .map_recording_anchors import EVIDENCE as ANCHOR_ALIGNMENT
 from .map_recording_anchors import RecordingMapAnchors
-from .public_map_pixels import PublicMapPixels
+from .public_map_pixels import CONTRAST_ALIGNMENT, PublicMapPixels
 from .replay import SourcePolicy, file_sha, read_json, write_private
 
 
@@ -126,7 +126,8 @@ def export_recorder_paths(
     refs, asset_hashes = _agent_references(catalog)
     if direct_detector not in (None, "external", "augmented", "fast", "cascade", "guided"):
         raise ValueError("Known direct Map detector required")
-    if registration not in ("reference", "exact", "recording-anchors") or (
+    recording_anchors = registration in ("recording-anchors", "recording-anchors-contrast")
+    if (registration not in ("reference", "exact") and not recording_anchors) or (
         registration != "reference" and direct_detector != "guided"
     ):
         raise ValueError("Exact Map registration requires guided development replay")
@@ -192,7 +193,7 @@ def export_recorder_paths(
     alignment = (
         RecordingMapAlignment(projector, exact=exact) if direct_detector == "guided" else None
     )
-    anchors = RecordingMapAnchors() if registration == "recording-anchors" else None
+    anchors = RecordingMapAnchors() if recording_anchors else None
     flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
     operable: set[str] = set()
@@ -314,6 +315,11 @@ def export_recorder_paths(
                 )
                 if anchored.get("alignment_recovery") == ANCHOR_ALIGNMENT:
                     raw = anchored
+            if (registration == "recording-anchors-contrast" and not raw["map_name_candidates"]
+                    and result["selection_status"] == "RESEARCH_SELECTED"):
+                raw = projector.recover_contrast(
+                    image, raw, alignment.map_uuid, tuple(result["support_center_frame_px"]),
+                )
         projected = project_recorder_witness(
             image, sample, pool, result,
             raw,
@@ -321,6 +327,8 @@ def export_recorder_paths(
         )
         if direct_detector and projected is not None:
             direct_stages["projection_available"] += 1
+            if raw.get("alignment_recovery") == CONTRAST_ALIGNMENT:
+                direct_stages["contrast_projection_available"] += 1
         if (
             training_evidence and projected is not None and projected["kind"] == "selected"
             and not adjacent and result["support_count"] >= 2
@@ -334,10 +342,13 @@ def export_recorder_paths(
         if adjacent and projected is not None:
             projected["selection_reason"] = ADJACENT_PORTRAIT_REASON
         if (direct is not None and projected is not None and not adjacent
+                and raw.get("alignment_recovery") != CONTRAST_ALIGNMENT
                 and result["selection_status"] == "RESEARCH_SELECTED"):
             direct.remember_projection(image)
         if (flow is not None and projected is not None and not adjacent
-                and raw.get("alignment_recovery") not in ("native_flow", ANCHOR_ALIGNMENT)
+                and raw.get("alignment_recovery") not in (
+                    "native_flow", ANCHOR_ALIGNMENT, CONTRAST_ALIGNMENT,
+                )
                 and result["selection_status"] == "RESEARCH_SELECTED"):
             flow.remember(image, sample, result["track_anchor"], raw)
         rows.append(projected)

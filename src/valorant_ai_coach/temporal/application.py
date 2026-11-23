@@ -394,6 +394,18 @@ def build_application_timeline(
     return result
 
 
+def write_timeline_csv(path: Path, seconds: list[dict[str, Any]]) -> None:
+    """Write one row per recording second with JSON cells for nested values."""
+    with path.open("x", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(seconds[0]))
+        writer.writeheader()
+        for row in seconds:
+            writer.writerow({
+                k: json.dumps(v, ensure_ascii=False) if isinstance(v, (dict, list)) else v
+                for k, v in row.items()
+            })
+
+
 def export_application(
     *,
     timeline_path: Path,
@@ -535,18 +547,7 @@ def export_application(
     output.mkdir(parents=True, mode=0o700)
     write_private(output / "timeline_PRIVATE.json", bundle)
     write_private(output / "evaluation_PRIVATE.json", review_timeline(bundle))
-    # A single CSV row per recording second; nested objects use JSON cells.
-    with (output / "timeline_1s_PRIVATE.csv").open("w", encoding="utf-8", newline="") as stream:
-        fields = list(bundle["seconds"][0])
-        writer = csv.DictWriter(stream, fieldnames=fields)
-        writer.writeheader()
-        for row in bundle["seconds"]:
-            writer.writerow(
-                {
-                    k: json.dumps(v, ensure_ascii=False) if isinstance(v, (dict, list)) else v
-                    for k, v in row.items()
-                }
-            )
+    write_timeline_csv(output / "timeline_1s_PRIVATE.csv", bundle["seconds"])
     if any(file_sha(Path(p)) != sha for p, sha in input_bindings.items()):
         raise ValueError("Input changed during export")
     manifest = {

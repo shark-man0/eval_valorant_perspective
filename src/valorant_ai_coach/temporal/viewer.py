@@ -14,6 +14,8 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from .application import VERSION
+from .map_display import load_map_display
+from .map_timeline_report import load_map_timeline
 from .replay import SourcePolicy, file_sha, read_json
 
 HTML = r"""<!doctype html><html lang="ja"><meta charset="utf-8">
@@ -40,6 +42,10 @@ max-height:400px;
 overflow:auto}
 .muted{color:#bbc6d0}a{color:#86ccff}details{border-top:1px solid #415263;
 padding:8px}
+#mapTrack{height:auto;aspect-ratio:8/7;background:#17232e;cursor:default;border-radius:8px}
+#mapTrackStatus{min-height:1.5em;font-weight:600}
+.map-legend{display:flex;flex-wrap:wrap;gap:14px;color:#bbc6d0;margin:8px 0}
+.map-legend span::before{content:'●';margin-right:5px;color:var(--dot)}
 .error{color:#ff8f8f}@media(max-width:850px){main{display:block}}
 </style><h1>共通タイムライン <small>開発用</small></h1>
 <p class="muted">推定・候補を含みます。灰色はUNKNOWN。元の未編集録画を参照します。</p>
@@ -58,7 +64,14 @@ padding:8px}
 <h3>視点対象・スキル構成の照合候補</h3><pre id="viewedIdentity"></pre>
 <h3>簡易Round境界候補</h3><pre id="visualRound"></pre>
 <h3>Map・Zone候補</h3><pre id="map"></pre>
-</section><section><h2>イベント候補</h2><div id="events"></div>
+</section><section><section id="recorderMap" hidden><h2>録画者の位置・軌跡候補</h2>
+<p id="mapTrackStatus" aria-live="polite"></p><canvas id="mapTrack" width="640" height="560"
+aria-label="実マップと直近10秒の観測点、観測エッジ、Named Zone"></canvas>
+<div class="map-legend"><span style="--dot:#fadc97">この秒の観測</span>
+<span style="--dot:#90bdcb">直近10秒の観測・エッジ</span>
+<span style="--dot:#6fd4ad">Named Zone候補</span></div>
+<p id="mapReferenceStatus" class="muted"></p></section>
+<h2>イベント候補</h2><div id="events"></div>
 <details><summary>状態・不確実性・native参照</summary><pre id="detail"></pre></details>
 <details open><summary>根拠を選択</summary><select id="evidence"></select>
 <pre id="raw"></pre></details>
@@ -78,6 +91,80 @@ const fmt=value=>JSON.stringify(value,null,2);
 
 const colors={BUY:'#dcb74e',ACTIVE:'#4dba94',ENDED:'#dd7777',ALIVE:'#4dba94',
 DEAD:'#dd7777',DOWNED:'#cf8ddd',SELF:'#4dba94',SPECTATOR:'#e7a56f',REMOTE:'#749ee8'};
+
+const atlasImages=new Map();
+function getAtlas(asset){
+const sha=asset.reference_sha256;
+if(!atlasImages.has(sha)){
+const img=new Image();
+img.src=base+'/api/recorder-map/atlas?sha='+encodeURIComponent(sha);
+atlasImages.set(sha,img.decode().then(()=>img).catch(()=>null));
+}
+return atlasImages.get(sha);
+}
+const sameAtlas=(a,b)=>a.map_id===b?.map_id&&a.reference_sha256===b?.reference_sha256;
+function zoneName(name,mapName){
+const prefix=mapName.toLowerCase()+'_';
+return (name.startsWith(prefix)?name.slice(prefix.length):name).replaceAll('_',' ');
+}
+
+async function drawRecorderMap(windowRows,requestId){
+const last=windowRows.at(-1);
+const current=last.recorder_map_observations;
+const prior=windowRows.flatMap(r=>r.recorder_map_observations);
+const mapPoint=current.at(-1)||prior.at(-1)||
+(overview.recorder_map_atlases.length===1?overview.recorder_map_atlases[0]:null);
+const c=el('mapTrack'),g=c.getContext('2d'),pad=15;
+g.clearRect(0,0,c.width,c.height);
+const status=el('mapTrackStatus'),reference=el('mapReferenceStatus');
+reference.textContent='';
+if(!mapPoint||current.some(p=>!sameAtlas(p,mapPoint))){
+status.textContent=mapPoint?'UNKNOWN · 複数のMap参照候補を検出':'UNKNOWN · この秒の位置候補なし';
+return;
+}
+const mapName=overview.recorder_map_names[mapPoint.map_id]||mapPoint.map_id;
+const activeZones=new Set(current.map(p=>p.zone_candidate).filter(Boolean));
+const zoneLabels=[...activeZones].map(z=>zoneName(z,mapName)).join('・');
+status.textContent=current.length?
+mapName+' · '+current.length+'観測点 · '+(zoneLabels||'Named Zone UNKNOWN'):
+mapName+' · UNKNOWN · この秒の位置候補なし';
+const points=prior.filter(p=>sameAtlas(p,mapPoint));
+const edges=windowRows.flatMap(r=>r.native_edges_ending_here);
+const asset=overview.recorder_map_atlases.find(m=>sameAtlas(m,mapPoint));
+const atlas=asset?await getAtlas(asset):null;
+if(requestId!==request)return;
+if(!atlas&&!points.length)return;
+const xs=points.map(p=>p.map_reference_px[0]),ys=points.map(p=>p.map_reference_px[1]);
+const xmin=atlas?0:Math.min(...xs),ymin=atlas?0:Math.min(...ys);
+const w=atlas?asset.size[0]:Math.max(12,Math.max(...xs)-xmin);
+const h=atlas?asset.size[1]:Math.max(12,Math.max(...ys)-ymin);
+const scale=Math.min((c.width-pad*2)/w,(c.height-pad*2)/h);
+const toCanvas=([x,y])=>[(c.width-w*scale)/2+(x-xmin)*scale,(c.height-h*scale)/2+(y-ymin)*scale];
+reference.textContent=atlas?'照合済み参照マップ。線は取得済み観測点の接続です。':
+'参照画像なし。観測点を相対表示しています。';
+if(atlas){
+g.drawImage(atlas,...toCanvas([0,0]),w*scale,h*scale);
+for(const [name,ring] of Object.entries(asset.zones)){
+const active=activeZones.has(name);
+g.beginPath();g.moveTo(...toCanvas(ring[0]));
+for(const p of ring.slice(1))g.lineTo(...toCanvas(p));
+g.closePath();g.lineWidth=active?2:1;
+g.strokeStyle=active?'#6fd4ad':'#6fd4ad66';
+if(active){g.fillStyle='#6fd4ad38';g.fill()}
+g.stroke();}
+}
+const keys=new Set(points.map(p=>p.sample.sample_sha256));
+g.strokeStyle='#90bdcb';g.lineWidth=2;
+for(const [a,b] of edges){
+if(!keys.has(a.sample.sample_sha256)||!keys.has(b.sample.sample_sha256))continue;
+g.beginPath();g.moveTo(...toCanvas(a.map_reference_px));
+g.lineTo(...toCanvas(b.map_reference_px));g.stroke()}
+const now=new Set(current.map(p=>p.sample.sample_sha256));
+for(const p of points){
+const here=now.has(p.sample.sample_sha256);
+g.fillStyle=here?'#fadc97':'#9db7c9';
+g.beginPath();g.arc(...toCanvas(p.map_reference_px),here?4:2.5,0,2*Math.PI);g.fill()}
+}
 
 function allowed(row){return !roundFilter || row.round_candidates.includes(Number(roundFilter))}
 function draw(){const c=el('chart'),g=c.getContext('2d');
@@ -167,6 +254,13 @@ c.map_position_norm||c.center_frame_px||'UNKNOWN'))+
 '\n同appearance代替があるnative仮説: '+(map.correspondence_reviews||[]).filter(
 r=>r.provisional_highlight_ambiguous).length+'（本人確定には使いません）'+
 '\n移動候補: '+map.movement_candidates.length+'（未取得区間は移動と解釈しません）';
+
+if(overview.recorder_map){
+const windowRows=await api('/api/recorder-map?n='+second);
+if(current!==request)return;
+el('recorderMap').hidden=false;
+await drawRecorderMap(windowRows,current);
+if(current!==request)return;}
 
 el('detail').textContent=fmt(row);
 el('evidence').replaceChildren();
@@ -284,7 +378,9 @@ def recording_view_metadata(bundle: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> ThreadingHTTPServer:
+def make_server(
+    bundle_path: Path, policy_path: Path, *, port: int = 0, map_report_path: Path | None = None,
+) -> ThreadingHTTPServer:
     bundle = read_json(bundle_path)
     if bundle.get("version") != VERSION or bundle.get("formal_outputs") != 0:
         raise ValueError("Development application bundle required")
@@ -298,6 +394,17 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
         raise ValueError("Original registered recording changed")
     token = secrets.token_urlsafe(24)
     seconds = bundle["seconds"]
+    recorder_map = (
+        load_map_timeline(map_report_path, bundle_path, bundle) if map_report_path else None
+    )
+    map_assets: dict[str, bytes] = {}
+    map_atlases: list[dict[str, Any]] = []
+    if recorder_map is not None and map_report_path is not None:
+        display_path = map_report_path.with_suffix(".display.json")
+        if display_path.exists():
+            map_atlases, map_assets = load_map_display(
+                display_path, map_report_path, recorder_map["rows"],
+            )
     overview = {
         **recording_view_metadata(bundle),
         "native_origin_seconds": float(Fraction(bundle["recording"]["native_origin_seconds"])),
@@ -316,6 +423,12 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
             for r in seconds
         ],
     }
+    if recorder_map is not None:
+        from valorant_ai_coach.knowledge import load_game_knowledge
+
+        overview["recorder_map"] = recorder_map["summary"]
+        overview["recorder_map_names"] = {m.uuid: m.name for m in load_game_knowledge().maps}
+        overview["recorder_map_atlases"] = map_atlases
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format: str, *args: Any) -> None:
@@ -347,6 +460,12 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
                 data: Any
                 if route == "/":
                     payload, content_type = HTML.encode("utf-8"), "text/html; charset=utf-8"
+                elif route == "/api/recorder-map/atlas":
+                    atlas = map_assets.get(query.get("sha", [""])[0])
+                    if atlas is None:
+                        self.send_error(404)
+                        return
+                    payload, content_type = atlas, "image/png"
                 else:
                     if route == "/api/overview":
                         data = overview
@@ -361,6 +480,11 @@ def make_server(bundle_path: Path, policy_path: Path, *, port: int = 0) -> Threa
                         data = bundle["events"][query["id"][0]]
                     elif route == "/api/evaluation":
                         data = read_json(bundle_path.parent / "evaluation_PRIVATE.json")
+                    elif route == "/api/recorder-map" and recorder_map is not None:
+                        second = int(query["n"][0])
+                        if not 0 <= second < len(seconds):
+                            raise ValueError("Second outside recording")
+                        data = recorder_map["rows"][max(0, second - 9):second + 1]
                     else:
                         self.send_error(404)
                         return
@@ -419,12 +543,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", type=Path)
     parser.add_argument("--policy", type=Path)
+    parser.add_argument("--development-map-report", type=Path)
     parser.add_argument("--review-packet", type=Path)
     parser.add_argument("--review-answers", type=Path)
     parser.add_argument("--port", type=int, default=0)
     args = parser.parse_args()
     if args.review_packet is not None:
-        if args.review_answers is None or args.bundle is not None or args.policy is not None:
+        if (args.review_answers is None or args.bundle is not None or args.policy is not None
+                or args.development_map_report is not None):
             parser.error("Review mode requires --review-packet and --review-answers")
         from .timeline_review import make_review_server
 
@@ -432,7 +558,9 @@ def main() -> None:
     else:
         if args.bundle is None or args.policy is None or args.review_answers is not None:
             parser.error("Timeline mode requires --bundle and --policy")
-        server = make_server(args.bundle, args.policy, port=args.port)
+        server = make_server(
+            args.bundle, args.policy, port=args.port, map_report_path=args.development_map_report,
+        )
     print(server.viewer_url, flush=True)  # type: ignore[attr-defined]
     try:
         server.serve_forever()

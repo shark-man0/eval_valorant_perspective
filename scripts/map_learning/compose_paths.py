@@ -82,16 +82,28 @@ def _corroborated_links(segments, known, admitted, operable):
     return result
 
 
-def compose_paths(reference, learned, timeline, timeline_sha, *, link_corroborated=False):
+def compose_paths(
+    reference, learned, timeline, timeline_sha, *, link_corroborated=False, marker_companion=False,
+):
     source, agent = _check_source(reference, timeline_sha)
     if _check_source(learned, timeline_sha) != (source, agent):
         raise ValueError("Recorder identity differs between replays")
     for key in ("frame_manifest_sha256", "map_catalog_fingerprint", "zone_catalog_sha256"):
         if reference[key] != learned[key]:
             raise ValueError(f"Replay inputs differ in {key}")
-    if reference.get("experimental_direct_tracker") or not learned.get(
-        "experimental_direct_tracker"
-    ):
+    if marker_companion:
+        first = reference.get("experimental_model_receipts", {})
+        second = learned.get("experimental_model_receipts", {})
+        if (
+            not reference.get("experimental_direct_tracker")
+            or not learned.get("experimental_direct_tracker")
+            or set(first) != {"marker", "portrait"} or set(second) != set(first)
+            or first["portrait"] != second["portrait"] or first["marker"] == second["marker"]
+            or reference.get("registration") != learned.get("registration")
+        ):
+            raise ValueError("Companion replay must change only the marker model receipt")
+    elif (reference.get("experimental_direct_tracker")
+          or not learned.get("experimental_direct_tracker")):
         raise ValueError("Expected the reference replay and a CNN replay")
     evidence = reference["comparison_evidence"]
     operable = set(evidence["operable_sample_refs"])
@@ -110,6 +122,7 @@ def compose_paths(reference, learned, timeline, timeline_sha, *, link_corroborat
         for key in unresolved - known.keys()
         if (point := candidates.get(key)) is not None
         and point["kind"] == "selected"
+        and (not marker_companion or point["support_count"] >= 2)
         and point["map_id"] == map_uuid
         and point["reference_sha256"] in textures
     }
@@ -144,6 +157,7 @@ def compose_paths(reference, learned, timeline, timeline_sha, *, link_corroborat
         "operable_coverage": measure_operable_coverage(paths, timeline["seconds"], rows, operable),
         "new_cnn_native_positions": len(admitted),
         "timeline_sha256": timeline_sha,
+        "zone_catalog_sha256": reference["zone_catalog_sha256"],
     }
 
 
@@ -152,6 +166,7 @@ def main():
     for field in ("reference-path", "learned-path", "bundle-path", "output"):
         parser.add_argument(f"--{field}", type=Path, required=True)
     parser.add_argument("--link-corroborated", action="store_true")
+    parser.add_argument("--marker-companion", action="store_true")
     args = parser.parse_args()
     report = compose_paths(
         read_json(args.reference_path),
@@ -159,6 +174,7 @@ def main():
         read_json(args.bundle_path),
         file_sha(args.bundle_path),
         link_corroborated=args.link_corroborated,
+        marker_companion=args.marker_companion,
     )
     write_private(
         args.output,

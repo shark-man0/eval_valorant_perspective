@@ -97,6 +97,28 @@ CNN measured that edge and both methods measured the same endpoint on the
 same native sample with agreement within three reference pixels. The
 original segments and coordinates are retained.
 
+Use `recover_gaps.py` with the composed report and its original reference
+replay to recheck vacant seconds against the exact native frame manifest. It
+builds recording references from prior marker measurements agreed by the
+public atlas and a base recognizer. It keeps measured primary coordinates and
+edges. Pass the marker-companion composition and its base CNN replay with
+`--companion-report` and `--companion-baseline` to include verified companion
+positions. Conflicting new positions are left unresolved.
+
+For continual learning, `compose_paths.py --marker-companion` takes two
+two-head exports with the same portrait receipt and distinct marker
+receipts. It keeps the incumbent coordinates and admits only new selected
+positions with at least two native observations from the companion where the
+incumbent left the portrait unresolved. Evaluate each model and the composed
+result on the same admitted footage before using it.
+
+`valorant_ai_coach.temporal.viewer --development-map-report` and the
+desktop menu 「開発用: Map軌跡」 display the path alongside its exact timeline.
+The timeline evaluation CLI accepts the same option to report coverage and
+observed Named Zone seconds in the development report. Both verify the
+timeline digest and native observations. Map candidates stay out of Fact
+creation, promotion and scoring.
+
 `export_paths.py --registration exact` uses deterministic exact descriptor
 matching. `--registration recording-anchors` additionally attempts to register
 an otherwise unresolved current frame against two successful earlier frames
@@ -104,3 +126,64 @@ from the same source, acquisition and minimap geometry. Both independent
 matches must agree on landmark probes and the measured marker center. The
 report retains the two native anchor IDs. This feature does not interpolate
 trajectory gaps.
+
+`--registration recording-anchors-contrast` additionally retries unresolved
+alignments of measured positions with two deterministic contrast transforms of
+the current minimap. Both atlas fits must agree on the recording Map and on
+the marker and four reference probes. Recovered fits cannot become tracking
+anchors.
+
+## Replay a complete DEVELOPMENT recording
+
+`run_recording.py` admits the exact original recording through the recording
+catalog and the source policy. FFmpeg decodes the first native video frame in
+each 200 ms bin, and the replay checks its PTS against the original packet
+clock. The common timeline supplies the current view and life evidence for
+the Map recognizers. Set `VALORANT_RECORDING_CATALOG` to your local catalog
+and use a new private output directory outside the checkout. FFmpeg and
+ffprobe must be installed.
+
+```sh
+PYTHONPATH=src:. python scripts/map_learning/run_recording.py \
+  --policy-path "$SOURCE_POLICY" --source-sha256 "$SOURCE_SHA256" \
+  --hud-config "$HUD_CONFIG" --spectator-label "$SPECTATOR_LABEL" \
+  --layout config/hud_layout_1080p_v3.json \
+  --map-catalog "$MAP_CATALOG" --asset-cache "$ASSET_CACHE" \
+  --zones-path "$ZONES" --models-directory "$CNN_MODELS" \
+  --threshold "$CNN_THRESHOLD" --output "$RUN_OUTPUT"
+```
+
+For the companion detector, supply both `--companion-models-directory` and
+`--companion-threshold`. The full-frame cache can use tens of gigabytes. Use
+`--frame-cache` to place it on a separate volume and `--acquisition` to replay
+a receipt created by `acquire_native.py`. Hardware decoding is optional via
+`--hwaccel`. `--lossless-webp` uses a smaller native frame cache with an FFmpeg
+build that provides libwebp. Compare decoded pixel hashes before treating
+runs from different decoders or encoders as equivalent.
+With `--camera-hint`, the replay passes a private placed-camera reference to
+the existing shared timeline recognizer. Use a reference for the capture
+settings under evaluation and record the option when comparing coverage.
+
+The run writes `map_standard_PRIVATE.json` and `map_recovered_PRIVATE.json`,
+their separate analysis directories, the shared one-second timeline, and a
+completion receipt with counts, timings and artifact hashes. Compare coverage
+over the seconds with current operability evidence. The separate position and
+trajectory counters reflect observations and measured edges. A missing
+position remains UNKNOWN.
+
+Gap recovery rejects a new point well outside the exact atlas artwork when
+the atlas provides a transparent background. Its rejection counts are separate
+from positioning coverage. Original points and links remain in the report.
+
+```sh
+PYTHONPATH=src python -m valorant_ai_coach.temporal.viewer \
+  --policy "$SOURCE_POLICY" \
+  --bundle "$RUN_OUTPUT/timeline/timeline_PRIVATE.json" \
+  --development-map-report "$RUN_OUTPUT/map_recovered_PRIVATE.json"
+```
+
+The viewer shows the registered atlas, current measured points, recent
+measured links and registered Named Zone polygons. Each link joins observed
+endpoints. When the selected second has no position, the viewer displays
+UNKNOWN and leaves the current marker empty. The replay and viewer export
+development Map candidates only.

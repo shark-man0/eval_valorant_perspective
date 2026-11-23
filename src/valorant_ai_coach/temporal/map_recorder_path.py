@@ -14,6 +14,7 @@ from shapely.geometry import Point, Polygon
 
 from .evidence import digest, freeze_native_sample, is_sha, native_time, source_scope
 from .map_recording_anchors import EVIDENCE as ANCHOR_ALIGNMENT
+from .public_map_pixels import CONTRAST_ALIGNMENT
 
 VERSION = "development_recorder_map_path_v1"
 
@@ -54,6 +55,7 @@ def project_recorder_witness(
     evidence = reference.get("evidence")
     flow_recovery = alignment.get("alignment_recovery") == "native_flow"
     anchor_recovery = alignment.get("alignment_recovery") == ANCHOR_ALIGNMENT
+    contrast_recovery = alignment.get("alignment_recovery") == CONTRAST_ALIGNMENT
     anchors = alignment.get("registration_anchor_sample_refs")
     portrait_anchors = selection.get("portrait_anchor_sample_refs")
     if anchor_recovery and (
@@ -116,6 +118,7 @@ def project_recorder_witness(
         **({"alignment_recovery": "native_flow"} if flow_recovery else {}),
         **({"alignment_recovery": ANCHOR_ALIGNMENT, "registration_anchor_sample_refs": anchors}
            if anchor_recovery else {}),
+        **({"alignment_recovery": CONTRAST_ALIGNMENT} if contrast_recovery else {}),
         **({"portrait_anchor_sample_refs": portrait_anchors}
            if portrait_anchors is not None else {}),
         **({"selection_method": selection["selection_method"],
