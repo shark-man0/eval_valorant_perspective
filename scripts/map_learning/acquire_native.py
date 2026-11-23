@@ -53,18 +53,21 @@ def _packet_selection(source, video: Path):
     return base, duration, origin, list(expected.values())
 
 
-def _decoded_frames(folder: Path, base: Fraction, expected: list[int]):
+def _decoded_frames(folder: Path, base: Fraction, expected: list[int], extension: str = "png"):
     log = (folder / "decode_PRIVATE.log").read_text(encoding="utf-8", errors="replace")
     bases = re.findall(r"config in time[ _]base: (\d+/\d+)", log)
     observed = [int(tick) for tick in re.findall(r"n:\s*\d+\s+pts:\s*(-?\d+)\s+pts_time:", log)]
-    files = sorted(folder.glob("frame_*.png"))
+    files = sorted(folder.glob(f"frame_*.{extension}"))
     if (not bases or any(Fraction(value) != base for value in bases)
             or observed != expected or len(observed) != len(files)):
         raise ValueError("Decoded native timebase or 5 Hz packet selection differs")
     return [[tick, str(path)] for tick, path in zip(observed, files, strict=True)]
 
 
-def acquire(policy_path: Path, source_sha: str, output: Path, *, hwaccel: str | None = None):
+def acquire(
+    policy_path: Path, source_sha: str, output: Path, *,
+    hwaccel: str | None = None, lossless_webp: bool = False,
+):
     _, source = development_source(policy_path, source_sha)
     video = Path(source["managed_path"]).resolve(strict=True)
     before = video.stat()
@@ -82,15 +85,18 @@ def acquire(policy_path: Path, source_sha: str, output: Path, *, hwaccel: str | 
     started = time.monotonic()
     log_path = folder / "decode_PRIVATE.log"
     acceleration = ["-hwaccel", hwaccel] if hwaccel else []
+    extension = "webp" if lossless_webp else "png"
+    encoding = (["-c:v", "libwebp", "-lossless", "1", "-compression_level", "3", "-pix_fmt", "bgra"]
+                if lossless_webp else ["-pix_fmt", "rgb24", "-compression_level", "1"])
     with log_path.open("xb") as log:
         subprocess.run([
             "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "info", "-threads", "3",
             *acceleration, "-copyts", "-i", str(video), "-an", "-sn", "-dn", "-map", "0:v:0",
             "-filter_threads", "1", "-vf", filt, "-fps_mode", "passthrough",
-            "-frames:v", str(len(expected)), "-pix_fmt", "rgb24", "-threads", "3",
-            "-compression_level", "1", str(folder / "frame_%06d.png"),
+            "-frames:v", str(len(expected)), *encoding, "-threads", "3",
+            str(folder / f"frame_%06d.{extension}"),
         ], check=True, stdout=subprocess.DEVNULL, stderr=log, timeout=7200)
-    frames = _decoded_frames(folder, base, expected)
+    frames = _decoded_frames(folder, base, expected, extension)
     after = video.stat()
     if (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
         raise ValueError("Original recording was modified during acquisition")
@@ -113,8 +119,10 @@ def main() -> None:
     parser.add_argument("--source-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--hwaccel")
+    parser.add_argument("--lossless-webp", action="store_true")
     args = parser.parse_args()
-    acquire(args.policy_path, args.source_sha256, args.output, hwaccel=args.hwaccel)
+    acquire(args.policy_path, args.source_sha256, args.output,
+            hwaccel=args.hwaccel, lossless_webp=args.lossless_webp)
 
 
 if __name__ == "__main__":

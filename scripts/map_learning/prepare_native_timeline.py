@@ -14,7 +14,12 @@ from acquire_native import development_source
 
 from valorant_ai_coach.rules.development_timeline import review_timeline
 from valorant_ai_coach.temporal.application import build_application_timeline, write_timeline_csv
-from valorant_ai_coach.temporal.camera_panel import LabelReference, camera_rows, measure_frame
+from valorant_ai_coach.temporal.camera_panel import (
+    CameraHintReference,
+    LabelReference,
+    camera_rows,
+    measure_frame,
+)
 from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample
 from valorant_ai_coach.temporal.game import DevelopmentGameTimeline, observation
 from valorant_ai_coach.temporal.match import frame_observations
@@ -31,6 +36,7 @@ _VIEW_VETOES = {
 
 def prepare(
     *, policy_path: Path, acquisition: Path, hud_config: Path, spectator_label: Path, output: Path,
+    camera_hint: Path | None = None,
 ):
     start = time.monotonic()
     receipt = read_json(acquisition)
@@ -43,6 +49,7 @@ def prepare(
         raise ValueError("Private timeline output must remain outside Git checkouts")
     output.mkdir(parents=True, mode=0o700, exist_ok=False)
     label = LabelReference.load(spectator_label)
+    hint = CameraHintReference.load(camera_hint) if camera_hint is not None else None
     hud = ProfileHudObserver(hud_config)
     producer = digest({"profile": hud.fingerprint, "method": "current_profile_view_veto_v1"})
     base = Fraction(receipt["base"])
@@ -54,6 +61,8 @@ def prepare(
     frame_paths = {}
     previous_bin = -1
     for index, (tick, path) in enumerate(receipt["frames"]):
+        if index and index % 2500 == 0:
+            print(f"Measured {index} of {len(receipt['frames'])} native frames", flush=True)
         elapsed = (tick - receipt["origin"]) * base
         bin_index = int(5 * elapsed)
         if not 0 <= elapsed < duration or bin_index <= previous_bin:
@@ -73,7 +82,7 @@ def prepare(
         policy.admit(sample)
         key = sample["sample_sha256"]
         frame_paths[key] = {"sample": sample, "path": path}
-        measurements.append((sample, measure_frame(image, label)))
+        measurements.append((sample, measure_frame(image, label, camera=hint)))
         if index % 50 == 0:
             views[key] = frame_observations(hud.inspect(image), sample, hud.fingerprint)
             continue
@@ -86,7 +95,7 @@ def prepare(
             raw={"ui": ui, "qualified": False, "formal_outputs": 0},
             context={"stream_kind": "existing_profile_veto_only"},
         )]
-    panel = camera_rows(measurements, label)
+    panel = camera_rows(measurements, label, camera=hint)
     for record in panel["observations"]:
         views[record["sample"]["sample_sha256"]].append(record)
     engine = DevelopmentGameTimeline(
@@ -124,6 +133,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("policy-path", "acquisition", "hud-config", "spectator-label", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--camera-hint", type=Path)
     cv2.setNumThreads(1)
     prepare(**vars(parser.parse_args()))
 

@@ -59,15 +59,18 @@ def run(args):
     acquisition = args.acquisition
     if acquisition is None:
         cache = args.frame_cache or output / "native_frames"
-        acquire(args.policy_path, args.source_sha256, cache, hwaccel=args.hwaccel)
+        acquire(args.policy_path, args.source_sha256, cache, hwaccel=args.hwaccel,
+                lossless_webp=args.lossless_webp)
         acquisition = cache / "verified_acquisition_PRIVATE.json"
     receipt = read_json(acquisition)
     if receipt["sha256"] != args.source_sha256:
         raise ValueError("Acquisition is for a different recording")
     timeline_root = output / "timeline"
     cv2.setNumThreads(1)
-    prepare(policy_path=args.policy_path, acquisition=acquisition, hud_config=args.hud_config,
-            spectator_label=args.spectator_label, output=timeline_root)
+    prepare(
+        policy_path=args.policy_path, acquisition=acquisition, hud_config=args.hud_config,
+        spectator_label=args.spectator_label, camera_hint=args.camera_hint, output=timeline_root,
+    )
     print(f"Timeline ready: {len(receipt['frames'])} exact native observations", flush=True)
     bundle = timeline_root / "timeline_PRIVATE.json"
     frame_manifest = timeline_root / "map_frames_PRIVATE.json"
@@ -164,10 +167,12 @@ def main() -> None:
                  "asset-cache", "zones-path", "models-directory", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--source-sha256", required=True)
+    parser.add_argument("--camera-hint", type=Path)
     parser.add_argument("--threshold", type=float, required=True)
     parser.add_argument("--acquisition", type=Path)
     parser.add_argument("--frame-cache", type=Path)
     parser.add_argument("--hwaccel")
+    parser.add_argument("--lossless-webp", action="store_true")
     parser.add_argument("--companion-models-directory", type=Path)
     parser.add_argument("--companion-threshold", type=float)
     parser.add_argument("--compare-without-portraits", action="store_true")
@@ -177,7 +182,7 @@ def main() -> None:
         parser.error("Supply a companion checkpoint and its calibrated threshold together")
     if not 1 <= args.jobs <= 4:
         parser.error("--jobs must be between 1 and 4")
-    if args.acquisition is not None and (args.frame_cache is not None or args.hwaccel is not None):
+    if args.acquisition is not None and (args.frame_cache or args.hwaccel or args.lossless_webp):
         parser.error("--acquisition is already decoded")
     os.umask(0o077)
     run(args)

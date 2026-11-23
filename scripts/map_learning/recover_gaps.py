@@ -31,6 +31,10 @@ from valorant_ai_coach.temporal.map_recorder_path import (
     project_recorder_witness,
 )
 from valorant_ai_coach.temporal.map_recording_anchors import RecordingMapAnchors
+from valorant_ai_coach.temporal.map_reference_support import (
+    clearly_outside_atlas,
+    read_atlas_void_distances,
+)
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 from valorant_ai_coach.temporal.public_map_pixels import CONTRAST_ALIGNMENT, PublicMapPixels
 from valorant_ai_coach.temporal.replay import SourcePolicy, file_sha, read_json, write_private
@@ -115,6 +119,14 @@ def recover(
     projector = PublicMapPixels(map_catalog, layout, verified_references=knowledge.map_references)
     map_id = reference["recording_map_uuid"]
     assets = projector.bindings["asset_sha256s"]
+    atlas_name = next((entry["reference"] for entry in read_json(map_catalog)["maps"]
+                       if entry["id"] == map_id), None)
+    atlas_path = map_catalog.parent / atlas_name if atlas_name is not None else None
+    if atlas_path is None or not atlas_path.is_file():
+        atlas_path = next(
+            (path for _, uid, path, _ in knowledge.map_references if uid == map_id), None,
+        )
+    void_distances = read_atlas_void_distances(atlas_path, assets[map_id]) if atlas_path else None
     companion = _load_companion(
         companion_report, companion_baseline, bundle_path, timeline, manifest_sha=manifest_sha,
         baseline=reference,
@@ -151,6 +163,7 @@ def recover(
         at = native_time(sample)
         point = known.get(key)
         offer = (key in operable and point is not None and point["kind"] == "selected"
+                 and not clearly_outside_atlas(void_distances, point["map_reference_px"])
                  and (last_offer is None or at - last_offer >= 8))
         if not offer and key not in vacancies:
             rescue.previous = None
@@ -221,6 +234,9 @@ def recover(
             image, sample, pool, result, raw, reference_sha256s=assets,
         )
         if measured is not None:
+            if clearly_outside_atlas(void_distances, measured["map_reference_px"]):
+                counts["recovered_point_outside_atlas"] += 1
+                continue
             recovered[key] = measured
             if raw.get("alignment_recovery") == CONTRAST_ALIGNMENT:
                 counts["contrast_recovered"] += 1
@@ -228,6 +244,9 @@ def recover(
         if key in known or key not in operable:
             continue
         if point["map_id"] != map_id or point["reference_sha256"] != assets[map_id]:
+            continue
+        if clearly_outside_atlas(void_distances, point["map_reference_px"]):
+            counts["companion_point_outside_atlas"] += 1
             continue
         if key not in recovered:
             recovered[key] = point

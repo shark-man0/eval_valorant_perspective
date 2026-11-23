@@ -157,8 +157,12 @@ For the companion detector, supply both `--companion-models-directory` and
 `--companion-threshold`. The full-frame cache can use tens of gigabytes. Use
 `--frame-cache` to place it on a separate volume and `--acquisition` to replay
 a receipt created by `acquire_native.py`. Hardware decoding is optional via
-`--hwaccel`. Compare decoded pixel hashes before treating runs from different
-decoders as equivalent.
+`--hwaccel`. `--lossless-webp` uses a smaller native frame cache with an FFmpeg
+build that provides libwebp. Compare decoded pixel hashes before treating
+runs from different decoders or encoders as equivalent.
+With `--camera-hint`, the replay passes a private placed-camera reference to
+the existing shared timeline recognizer. Use a reference for the capture
+settings under evaluation and record the option when comparing coverage.
 
 The run writes `map_standard_PRIVATE.json` and `map_recovered_PRIVATE.json`,
 their separate analysis directories, the shared one-second timeline, and a
@@ -166,6 +170,10 @@ completion receipt with counts, timings and artifact hashes. Compare coverage
 over the seconds with current operability evidence. The separate position and
 trajectory counters reflect observations and measured edges. A missing
 position remains UNKNOWN.
+
+Gap recovery rejects a new point well outside the exact atlas artwork when
+the atlas provides a transparent background. Its rejection counts are separate
+from positioning coverage. Original points and links remain in the report.
 
 ```sh
 PYTHONPATH=src python -m valorant_ai_coach.temporal.viewer \
