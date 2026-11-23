@@ -111,3 +111,43 @@ def test_review_separates_role_view_error_and_abstention(tmp_path):
     assert result["by_view"]["REMOTE"]["selection_in_excluded_view"] == 1
     assert result["by_view"]["DEAD"]["rejected_excluded_view"] == 1
     assert result["atlas_error_reference_px"]["median"] == 3.0
+
+
+def test_stratified_sample_and_review_use_exact_reports(tmp_path):
+    from scripts.map_learning.sample_review import sample_review
+
+    path, timeline, report, ids = fixture(tmp_path)
+    old = tmp_path / "standard.json"
+    new = tmp_path / "recovered.json"
+    sample = tmp_path / "plan.json"
+    review = tmp_path / "review.json"
+    keep, recovered, _ = report["segments"][0]
+    standard = {**report, "segments": [[keep]]}
+    standard["second_rows"] = join_recorder_seconds(standard, timeline)
+    old.write_text(json.dumps(standard), encoding="utf-8")
+    final = {**report, "segments": [[keep, recovered]], "primary_report_sha256": file_sha(old)}
+    final["second_rows"] = join_recorder_seconds(final, timeline)
+    new.write_text(json.dumps(final), encoding="utf-8")
+
+    plan = sample_review(path, old, new, per_stratum=1)
+    assert plan == sample_review(path, old, new, per_stratum=1)
+    assert {row["sample_sha256"]: row["stratum"] for row in plan["cases"]} == {
+        ids[0]: "retained_selection", ids[1]: "new_selection", ids[2]: "abstained",
+    }
+    sample.write_text(json.dumps(plan), encoding="utf-8")
+    review.write_text(json.dumps({
+        "schema": "development_map_independent_review_v1", "reviewer": "HUMAN",
+        "timeline_sha256": file_sha(path), "sample_plan_sha256": file_sha(sample),
+        "cases": [
+            {"sample_sha256": ids[1], "view": "SELF_LIVE", "candidate_role": "OTHER",
+             "candidate_sha256": digest(recovered)},
+            {"sample_sha256": ids[2], "view": "UNKNOWN", "candidate_role": "UNKNOWN"},
+        ],
+    }), encoding="utf-8")
+    results = evaluate(path, new, review, sample_plan=sample)
+    assert results["review_sample_abstention_rate"] == 0.5
+    assert results["by_stratum"]["new_selection"]["wrong_role"] == 1
+    assert results["by_stratum"]["retained_selection"]["planned"] == 1
+    assert "wrong_role" not in results["by_stratum"]["abstained"]
+    with pytest.raises(ValueError, match="matching standard report"):
+        sample_review(path, new, old, per_stratum=1)

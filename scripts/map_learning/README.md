@@ -215,3 +215,37 @@ UNKNOWN and leaves the current marker empty. The replay and viewer export
 development Map candidates only.
 The Map switch keeps the video at its current time. The next-recovery and
 next-UNKNOWN controls seek both the video and timeline to the selected second.
+
+### Batch replay and stratified review
+
+`run_batch.py --plan … --output …` accepts a private JSON plan with
+`schema: development_map_batch_v1`, `recording_catalog`, `run_options` and
+`recordings`. Use the same kebab-case option keys as `run_recording.py`, such
+as `hud-config` and `threshold`, and list any switches in `run_flags`
+without the leading dashes. Each entry in `recordings` has a registered
+`recording_id` and can specify either `acquisition` or `frame-cache`,
+an optional `baseline_run` completion receipt, or `prepare_weak_crops:
+true` on a registered TRAIN recording outside regression. Resolve paths
+relative to the plan file or supply absolute paths. The batch journals
+development use, runs the same one-second analysis for each recording,
+produces weak crop lineage for eligible sources and compares each specified
+baseline on exact native inputs. Review per-stage failure states in the
+private batch receipt. Keep all batch data outside Git.
+
+`sample_review.py --bundle … --standard … --recovered … --output …`
+freezes a per-recording draw before human annotation. Its strata cover
+retained, new, lost and abstained selections, with separate excluded and
+uncertain view controls. Each stratum contributes at most one sample per
+second and the plan includes the population size. Run `evaluate_review.py`
+with `--sample-plan` and bind the review's `sample_plan_sha256` to the
+exact plan. Review the chosen marker role and select its independent atlas
+position separately. Leave occlusion and ambiguous matches UNKNOWN.
+The report gives separate abstention and role error rates for the reviewed
+sample, plus per-stratum counts and coordinate errors. An equal-quota
+sample describes the review strata and needs population weighting for an
+overall estimate.
+
+`--strict-recovery-tracking` clears the local recovery chain when reference
+evidence vetoes a point, no usable atlas projection is obtained, or the
+companion and portrait recovery disagree. The default remains the
+reproduction setting for the six-recording development baseline.
