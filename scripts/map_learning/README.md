@@ -163,6 +163,12 @@ runs from different decoders or encoders as equivalent.
 With `--camera-hint`, the replay passes a private placed-camera reference to
 the existing shared timeline recognizer. Use a reference for the capture
 settings under evaluation and record the option when comparing coverage.
+`--screen-atlas-void` also abstains on standard-pass positions well outside the
+atlas artwork. A veto clears the local position chain before a rejected
+candidate can supply a portrait or flow anchor. Use the default settings to
+reproduce the existing six-recording benchmark. Try `--portrait-mode reference`
+to keep the learned marker detector and use the external portrait matcher.
+Use a fixed development comparison to select between modes.
 
 The run writes `map_standard_PRIVATE.json` and `map_recovered_PRIVATE.json`,
 their separate analysis directories, the shared one-second timeline, and a
@@ -170,6 +176,25 @@ completion receipt with counts, timings and artifact hashes. Compare coverage
 over the seconds with current operability evidence. The separate position and
 trajectory counters reflect observations and measured edges. A missing
 position remains UNKNOWN.
+Exact, stateless atlas fits are shared between the passes of each run. The cache
+key binds the native observation and geometry configuration. Use
+`--no-shared-alignment-cache` for a timing comparison. When the recorder or
+Map cannot be bound, the run still saves a development result with the recovery
+status and the observations it could retain.
+
+To add a training candidate stream, use `--training-candidates` and pass the
+reference report and its native manifest to `prepare_crops.py`. Points clearly
+outside the atlas are excluded from this stream. The crop tool enforces the
+registered TRAIN split. Keep reviewed examples for scoring.
+Run `compare_runs.py --baseline … --candidate … --output …` with the two
+completion receipts to compare standard and recovered coverage on the same
+source, native PTS and decoded pixels. `evaluate_review.py --bundle … --report …
+--review … --output …` accepts a private `development_map_independent_review_v1`
+packet. Supply `timeline_sha256`, reviewer (`HUMAN` or `AI_VISUAL`) and `cases`.
+Each case contains `sample_sha256`, `view` and `candidate_role`. Bind a reviewed
+selection with `candidate_sha256` (the canonical evidence digest of the exact
+point). A reviewed SELF point may also supply `independent_atlas_px` and its
+`reference_sha256`. See the evaluator for accepted view and role values.
 
 Gap recovery rejects a new point well outside the exact atlas artwork when
 the atlas provides a transparent background. Its rejection counts are separate
@@ -179,7 +204,8 @@ from positioning coverage. Original points and links remain in the report.
 PYTHONPATH=src python -m valorant_ai_coach.temporal.viewer \
   --policy "$SOURCE_POLICY" \
   --bundle "$RUN_OUTPUT/timeline/timeline_PRIVATE.json" \
-  --development-map-report "$RUN_OUTPUT/map_recovered_PRIVATE.json"
+  --development-map-report "$RUN_OUTPUT/map_recovered_PRIVATE.json" \
+  --standard-map-report "$RUN_OUTPUT/map_standard_PRIVATE.json"
 ```
 
 The viewer shows the registered atlas, current measured points, recent
@@ -187,3 +213,5 @@ measured links and registered Named Zone polygons. Each link joins observed
 endpoints. When the selected second has no position, the viewer displays
 UNKNOWN and leaves the current marker empty. The replay and viewer export
 development Map candidates only.
+The Map switch keeps the video at its current time. The next-recovery and
+next-UNKNOWN controls seek both the video and timeline to the selected second.

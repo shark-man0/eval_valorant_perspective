@@ -65,6 +65,10 @@ padding:8px}
 <h3>簡易Round境界候補</h3><pre id="visualRound"></pre>
 <h3>Map・Zone候補</h3><pre id="map"></pre>
 </section><section><section id="recorderMap" hidden><h2>録画者の位置・軌跡候補</h2>
+<div id="mapControls" hidden><label>Map出力 <select id="mapMode">
+<option value="recovered">欠測回復後</option><option value="standard">標準出力</option>
+</select></label><button id="nextRecovery">次の回復地点</button></div>
+<button id="nextMapUnknown">次のUNKNOWN</button>
 <p id="mapTrackStatus" aria-live="polite"></p><canvas id="mapTrack" width="640" height="560"
 aria-label="実マップと直近10秒の観測点、観測エッジ、Named Zone"></canvas>
 <div class="map-legend"><span style="--dot:#fadc97">この秒の観測</span>
@@ -256,9 +260,12 @@ r=>r.provisional_highlight_ambiguous).length+'（本人確定には使いませ�
 '\n移動候補: '+map.movement_candidates.length+'（未取得区間は移動と解釈しません）';
 
 if(overview.recorder_map){
-const windowRows=await api('/api/recorder-map?n='+second);
+const mode=el('mapMode').value;
+const windowRows=await api('/api/recorder-map?n='+second+'&mode='+mode);
 if(current!==request)return;
 el('recorderMap').hidden=false;
+el('nextMapUnknown').disabled=!mapJump(mode,false);
+el('nextRecovery').disabled=!mapJump('recovered',true);
 await drawRecorderMap(windowRows,current);
 if(current!==request)return;}
 
@@ -291,6 +298,16 @@ el('go').onclick=()=>select(Number(el('time').value));
 el('prev').onclick=()=>select(selected-1);
 
 el('next').onclick=()=>select(selected+1);
+function mapJump(mode,recovery){
+const flags=overview.recorder_map_presence[mode];
+return overview.seconds.slice(selected+1).find(r=>allowed(r)&&(recovery?
+flags[r.timestamp]&&!overview.recorder_map_presence.standard?.[r.timestamp]:!flags[r.timestamp]));
+}
+el('mapMode').onchange=()=>select(selected,false);
+el('nextMapUnknown').onclick=()=>{
+const row=mapJump(el('mapMode').value,false);if(row)select(row.timestamp)};
+el('nextRecovery').onclick=()=>{
+const row=mapJump('recovered',true);if(row){el('mapMode').value='recovered';select(row.timestamp)}};
 el('slider').oninput=e=>select(Number(e.target.value));
 
 el('chart').onclick=e=>select((e.clientX-e.target.getBoundingClientRect().left)/e.target.clientWidth*overview.seconds.length);
@@ -311,6 +328,7 @@ const n=Math.floor(v.currentTime-offset);
 if(!v.seeking&&n!==selected)select(n,false)};
 
 (async()=>{overview=await api('/api/overview');
+el('mapControls').hidden=!overview.recorder_map_presence?.standard;
 el('summary').textContent=overview.seconds.length+
 '秒行 / 映像観測 '+overview.observed_seconds+'秒 / 元動画 '+
 overview.original_duration_float_seconds+'秒'+
@@ -380,6 +398,7 @@ def recording_view_metadata(bundle: dict[str, Any]) -> dict[str, Any]:
 
 def make_server(
     bundle_path: Path, policy_path: Path, *, port: int = 0, map_report_path: Path | None = None,
+    standard_map_report_path: Path | None = None,
 ) -> ThreadingHTTPServer:
     bundle = read_json(bundle_path)
     if bundle.get("version") != VERSION or bundle.get("formal_outputs") != 0:
@@ -397,6 +416,12 @@ def make_server(
     recorder_map = (
         load_map_timeline(map_report_path, bundle_path, bundle) if map_report_path else None
     )
+    map_modes = {"recovered": recorder_map} if recorder_map is not None else {}
+    if standard_map_report_path is not None:
+        if (map_report_path is None or read_json(map_report_path).get("primary_report_sha256")
+                != file_sha(standard_map_report_path)):
+            raise ValueError("Standard Map report must be the recovery report's exact input")
+        map_modes["standard"] = load_map_timeline(standard_map_report_path, bundle_path, bundle)
     map_assets: dict[str, bytes] = {}
     map_atlases: list[dict[str, Any]] = []
     if recorder_map is not None and map_report_path is not None:
@@ -429,6 +454,10 @@ def make_server(
         overview["recorder_map"] = recorder_map["summary"]
         overview["recorder_map_names"] = {m.uuid: m.name for m in load_game_knowledge().maps}
         overview["recorder_map_atlases"] = map_atlases
+        overview["recorder_map_presence"] = {
+            mode: [bool(row["recorder_map_observations"]) for row in result["rows"]]
+            for mode, result in map_modes.items()
+        }
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format: str, *args: Any) -> None:
@@ -484,7 +513,8 @@ def make_server(
                         second = int(query["n"][0])
                         if not 0 <= second < len(seconds):
                             raise ValueError("Second outside recording")
-                        data = recorder_map["rows"][max(0, second - 9):second + 1]
+                        mode = query.get("mode", ["recovered"])[0]
+                        data = map_modes[mode]["rows"][max(0, second - 9):second + 1]
                     else:
                         self.send_error(404)
                         return
@@ -544,13 +574,14 @@ def main() -> None:
     parser.add_argument("--bundle", type=Path)
     parser.add_argument("--policy", type=Path)
     parser.add_argument("--development-map-report", type=Path)
+    parser.add_argument("--standard-map-report", type=Path)
     parser.add_argument("--review-packet", type=Path)
     parser.add_argument("--review-answers", type=Path)
     parser.add_argument("--port", type=int, default=0)
     args = parser.parse_args()
     if args.review_packet is not None:
         if (args.review_answers is None or args.bundle is not None or args.policy is not None
-                or args.development_map_report is not None):
+                or args.development_map_report is not None or args.standard_map_report is not None):
             parser.error("Review mode requires --review-packet and --review-answers")
         from .timeline_review import make_review_server
 
@@ -560,6 +591,7 @@ def main() -> None:
             parser.error("Timeline mode requires --bundle and --policy")
         server = make_server(
             args.bundle, args.policy, port=args.port, map_report_path=args.development_map_report,
+            standard_map_report_path=args.standard_map_report,
         )
     print(server.viewer_url, flush=True)  # type: ignore[attr-defined]
     try:

@@ -233,6 +233,11 @@ class DirectRecorderTracker:
         self.recover_adjacent_portrait = recover_adjacent_portrait
         self.projected_portrait: _ProjectedPortrait | None = None
 
+    def discard_projection(self) -> None:
+        """A rejected position cannot support the next observation."""
+        self.previous = None
+        self.projected_portrait = None
+
     def remember_projection(self, image: ColorImage) -> None:
         """Retain one immediately preceding, independently projected portrait."""
         if not self.recover_adjacent_portrait or self.previous is None:

@@ -58,7 +58,8 @@ def test_cnn_complement_keeps_reference_and_requires_unresolved_exact_portrait()
         },
     }
     learned = {**reference, "experimental_direct_tracker": True, "segments": [points]}
-    timeline = {"seconds": [{"timestamp": 0, "sample_refs": ids}]}
+    timeline = {"source": {"source_sha256": "a" * 64},
+                "seconds": [{"timestamp": 0, "sample_refs": ids}]}
     composed = compose_paths(reference, learned, timeline, "timeline")
     first, second = composed["segments"]
     assert first == [points[0]]
@@ -96,3 +97,11 @@ def test_cnn_complement_keeps_reference_and_requires_unresolved_exact_portrait()
     ] == 0
     with pytest.raises(ValueError, match="change only"):
         compose_paths(primary, learned, timeline, "timeline", marker_companion=True)
+
+    unbound = {**reference, "recording_agent_uuid_binding": None, "segments": []}
+    unbound_learned = {**unbound, "experimental_direct_tracker": True}
+    unknown = compose_paths(unbound, unbound_learned, timeline, "timeline")
+    assert unknown["second_rows"][0]["coverage"] == "UNKNOWN"
+    with pytest.raises(ValueError, match="Agent binding"):
+        compose_paths({**unbound, "segments": [[points[0]]]}, unbound_learned,
+                      timeline, "timeline")

@@ -4,7 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from valorant_ai_coach.temporal.evidence import freeze_native_sample
+from scripts.map_learning.evaluate_review import evaluate
+from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample
 from valorant_ai_coach.temporal.map_recorder_path import VERSION, join_recorder_seconds
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 from valorant_ai_coach.temporal.replay import file_sha
@@ -84,3 +85,29 @@ def test_map_sidecar_rejects_unbound_or_formal_claims(tmp_path, change):
     sidecar.write_text(json.dumps(report), encoding="utf-8")
     with pytest.raises(ValueError):
         load_map_timeline(sidecar, path, timeline)
+
+
+def test_review_separates_role_view_error_and_abstention(tmp_path):
+    path, timeline, report, ids = fixture(tmp_path)
+    point, wrong, _ = report["segments"][0]
+    report["segments"] = [[point, wrong]]
+    report["second_rows"] = join_recorder_seconds(report, timeline)
+    sidecar = tmp_path / "map.json"
+    sidecar.write_text(json.dumps(report), encoding="utf-8")
+    review = tmp_path / "review.json"
+    review.write_text(json.dumps({
+        "schema": "development_map_independent_review_v1", "reviewer": "HUMAN",
+        "timeline_sha256": file_sha(path), "cases": [
+            {"sample_sha256": ids[0], "view": "SELF_LIVE", "candidate_role": "SELF",
+             "candidate_sha256": digest(point), "reference_sha256": point["reference_sha256"],
+             "independent_atlas_px": [46, 90.2]},
+            {"sample_sha256": ids[1], "view": "REMOTE", "candidate_role": "OTHER",
+             "candidate_sha256": digest(wrong)},
+            {"sample_sha256": ids[2], "view": "DEAD", "candidate_role": "UNKNOWN"},
+        ],
+    }), encoding="utf-8")
+    result = evaluate(path, sidecar, review)
+    assert result["reviewed_selection_error_rate"] == 0.5
+    assert result["by_view"]["REMOTE"]["selection_in_excluded_view"] == 1
+    assert result["by_view"]["DEAD"]["rejected_excluded_view"] == 1
+    assert result["atlas_error_reference_px"]["median"] == 3.0

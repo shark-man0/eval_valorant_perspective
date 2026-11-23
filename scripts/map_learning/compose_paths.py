@@ -18,7 +18,7 @@ from valorant_ai_coach.temporal.map_recorder_path import (
 from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 
 
-def _check_source(report: dict[str, Any], timeline_sha: str) -> tuple[str, str]:
+def _check_source(report: dict[str, Any], timeline_sha: str, source: str) -> str | None:
     if (
         report.get("schema") != VERSION
         or report.get("qualified") is not False
@@ -27,10 +27,13 @@ def _check_source(report: dict[str, Any], timeline_sha: str) -> tuple[str, str]:
         or report.get("timeline_sha256") != timeline_sha
     ):
         raise ValueError("Matching unqualified native Map replay required")
-    binding = report.get("recording_agent_uuid_binding")
-    if not binding or binding.get("qualified") is not False:
+    binding = report["recording_agent_uuid_binding"]
+    if binding is None and not report["segments"]:
+        return None
+    if (not binding or binding.get("qualified") is not False
+            or binding["source_sha256"] != source):
         raise ValueError("Recorder Agent binding required")
-    return binding["source_sha256"], binding["uuid"]
+    return binding["uuid"]
 
 
 def _positions(report, timeline_samples, source_sha):
@@ -85,8 +88,9 @@ def _corroborated_links(segments, known, admitted, operable):
 def compose_paths(
     reference, learned, timeline, timeline_sha, *, link_corroborated=False, marker_companion=False,
 ):
-    source, agent = _check_source(reference, timeline_sha)
-    if _check_source(learned, timeline_sha) != (source, agent):
+    source = timeline["source"]["source_sha256"]
+    agent = _check_source(reference, timeline_sha, source)
+    if _check_source(learned, timeline_sha, source) != agent:
         raise ValueError("Recorder identity differs between replays")
     for key in ("frame_manifest_sha256", "map_catalog_fingerprint", "zone_catalog_sha256"):
         if reference[key] != learned[key]:
