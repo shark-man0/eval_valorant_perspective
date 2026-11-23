@@ -80,14 +80,24 @@ def run(args):
         "knowledge-asset-cache": args.asset_cache,
         "zones-path": args.zones_path, "registration": "recording-anchors",
     }
+    cache_options = (
+        {} if args.no_shared_alignment_cache else {"exact-alignment-cache": output / "exact_fits"}
+    )
     plans = {
-        "reference": ({"learned-stage": "reference"}, ("--path-quality",)),
+        "reference": (
+            {"learned-stage": "reference"},
+            ("--path-quality", "--training-evidence") if args.training_candidates
+            else ("--path-quality",),
+        ),
         "adaptive": (
             {"learned-stage": "both", "models-directory": args.models_directory,
              "threshold": args.threshold},
             ("--path-quality", "--refine-center", "--recording-portraits"),
         ),
     }
+    if args.portrait_mode == "reference":
+        plans["adaptive"] = ({"learned-stage": "marker", "models-directory": args.models_directory,
+                              "threshold": args.threshold}, ("--path-quality",))
     if args.companion_models_directory is not None:
         plans["companion"] = (
             {**plans["adaptive"][0], "marker-models-directory": args.companion_models_directory,
@@ -101,7 +111,10 @@ def run(args):
     def replay(name):
         started = time.monotonic()
         options, flags = plans[name]
-        _run("export_paths.py", {**shared, **options, "output": reports[name]}, flags)
+        stage_options = {**shared, **cache_options, **options, "output": reports[name]}
+        if args.screen_atlas_void:
+            flags = (*flags, "--screen-atlas-void")
+        _run("export_paths.py", stage_options, flags)
         elapsed = time.monotonic() - started
         print(f"Map stage {name}: {elapsed:.2f} seconds", flush=True)
         return name, elapsed
@@ -121,6 +134,7 @@ def run(args):
         "layout": args.layout, "asset-cache": args.asset_cache, "zones-path": args.zones_path,
         "models-directory": args.models_directory, "threshold": args.threshold,
         "primary-report": standard, "reference-report": reference, "output": final,
+        **cache_options,
     }
     if "companion" in reports:
         composed = output / "map_companion_composed_PRIVATE.json"
@@ -176,10 +190,18 @@ def main() -> None:
     parser.add_argument("--companion-models-directory", type=Path)
     parser.add_argument("--companion-threshold", type=float)
     parser.add_argument("--compare-without-portraits", action="store_true")
+    parser.add_argument("--no-shared-alignment-cache", action="store_true")
+    parser.add_argument("--training-candidates", action="store_true")
+    parser.add_argument("--screen-atlas-void", action="store_true")
+    parser.add_argument("--portrait-mode", choices=("two-head", "reference"), default="two-head")
     parser.add_argument("--jobs", type=int, default=2)
     args = parser.parse_args()
     if (args.companion_models_directory is None) != (args.companion_threshold is None):
         parser.error("Supply a companion checkpoint and its calibrated threshold together")
+    if args.portrait_mode == "reference" and (
+        args.companion_models_directory is not None or args.compare_without_portraits
+    ):
+        parser.error("Companion and recording-portrait ablations require the two-head mode")
     if not 1 <= args.jobs <= 4:
         parser.error("--jobs must be between 1 and 4")
     if args.acquisition is not None and (args.frame_cache or args.hwaccel or args.lossless_webp):

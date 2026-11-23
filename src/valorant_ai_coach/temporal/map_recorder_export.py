@@ -23,6 +23,7 @@ from .map_direct_recorder import (
     corroborate_direct_selection,
     measured_direct_view,
 )
+from .map_exact_alignment_cache import ExactAlignmentCache
 from .map_path_quality import measure_path_quality
 from .map_portrait_rim import Reference
 from .map_recorder_knowledge import KnowledgeRecorderMap
@@ -37,6 +38,7 @@ from .map_recorder_selection import MapRecorderSelector
 from .map_recording_alignment import NativeMapFlowAlignment, RecordingMapAlignment
 from .map_recording_anchors import EVIDENCE as ANCHOR_ALIGNMENT
 from .map_recording_anchors import RecordingMapAnchors
+from .map_reference_support import atlas_distances_for, clearly_outside_atlas
 from .public_map_pixels import CONTRAST_ALIGNMENT, PublicMapPixels
 from .replay import SourcePolicy, file_sha, read_json, write_private
 
@@ -117,6 +119,8 @@ def export_recorder_paths(
     training_evidence: bool = False,
     path_quality: bool = False,
     experimental_model_receipts: dict[str, str] | None = None,
+    exact_alignment_cache: Path | None = None,
+    screen_atlas_void: bool = False,
 ) -> dict[str, Any]:
     """Use existing current observations and preserve their native IDs and acquisition gaps."""
     bundle = read_json(bundle_path)
@@ -190,10 +194,14 @@ def export_recorder_paths(
                                            compare_centers=direct_detector == "guided",
                                            recover_adjacent_portrait=recover_adjacent_portrait)
     exact = registration != "reference"
+    if exact_alignment_cache is not None and (not exact or not direct_detector):
+        raise ValueError("The alignment cache requires exact direct replay")
+    exact_fits = ExactAlignmentCache(projector, exact_alignment_cache)
     alignment = (
         RecordingMapAlignment(projector, exact=exact) if direct_detector == "guided" else None
     )
     anchors = RecordingMapAnchors() if recording_anchors else None
+    atlas_voids: dict[str, NDArray[np.float32] | None] = {}
     flow = NativeMapFlowAlignment() if recover_native_flow else None
     rows: list[dict[str, Any] | None] = []
     operable: set[str] = set()
@@ -286,9 +294,8 @@ def export_recorder_paths(
             continue
         if direct_detector:
             direct_stages["projection_attempted"] += 1
-        measured = (projector.inspect_exact(image) if exact else
-                    projector.inspect(image, recover_alignment=recover_map_alignment))
-        raw = measured["raw"]
+        raw = (exact_fits.inspect(image, sample) if exact else
+               projector.inspect(image, recover_alignment=recover_map_alignment)["raw"])
         adjacent = result["selection_reason"] == ADJACENT_PORTRAIT_REASON
         if adjacent:
             if flow is not None:
@@ -325,12 +332,32 @@ def export_recorder_paths(
             raw,
             reference_sha256s=projector.bindings["asset_sha256s"],
         )
+        outside_atlas = False
+        if (screen_atlas_void or training_evidence) and projected is not None:
+            map_id = projected["map_id"]
+            if map_id not in atlas_voids:
+                atlas_voids[map_id] = atlas_distances_for(
+                    catalog, map_id, projected["reference_sha256"],
+                    knowledge.map_references if knowledge is not None else (),
+                )
+            outside_atlas = clearly_outside_atlas(
+                atlas_voids[map_id], projected["map_reference_px"],
+            )
+        if screen_atlas_void and outside_atlas:
+            if direct is not None:
+                direct.discard_projection()
+            if flow is not None:
+                flow.anchor = None
+            direct_stages["outside_atlas"] += 1
+            rows.append(None)
+            continue
         if direct_detector and projected is not None:
             direct_stages["projection_available"] += 1
             if raw.get("alignment_recovery") == CONTRAST_ALIGNMENT:
                 direct_stages["contrast_projection_available"] += 1
         if (
-            training_evidence and projected is not None and projected["kind"] == "selected"
+            training_evidence and not outside_atlas and projected is not None
+            and projected["kind"] == "selected"
             and not adjacent and result["support_count"] >= 2
         ):
             training_rows.append({
@@ -400,6 +427,8 @@ def export_recorder_paths(
             "source_sha256": binding.source_sha256, "qualified": False,
         } if binding else None
     write_private(output, report)
+    if exact_alignment_cache is not None:
+        print(f"Exact Map alignment cache: {exact_fits.hits} hits, {exact_fits.misses} misses")
     return report
 
 

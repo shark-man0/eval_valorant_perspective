@@ -34,6 +34,8 @@ def main() -> None:
     parser.add_argument("--recording-portraits", action="store_true")
     parser.add_argument("--training-evidence", action="store_true")
     parser.add_argument("--path-quality", action="store_true")
+    parser.add_argument("--exact-alignment-cache", type=Path)
+    parser.add_argument("--screen-atlas-void", action="store_true")
     parser.add_argument(
         "--registration", default="reference",
         choices=("reference", "exact", "recording-anchors", "recording-anchors-contrast"),

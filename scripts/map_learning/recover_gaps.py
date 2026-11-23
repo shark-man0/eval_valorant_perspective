@@ -19,6 +19,7 @@ from valorant_ai_coach.temporal.map_direct_recorder import (
     RecorderUUID,
     measured_direct_view,
 )
+from valorant_ai_coach.temporal.map_exact_alignment_cache import ExactAlignmentCache
 from valorant_ai_coach.temporal.map_path_quality import measure_path_quality
 from valorant_ai_coach.temporal.map_recorder_export import _load_native_image, _pixels_match
 from valorant_ai_coach.temporal.map_recorder_knowledge import KnowledgeRecorderMap
@@ -32,8 +33,8 @@ from valorant_ai_coach.temporal.map_recorder_path import (
 )
 from valorant_ai_coach.temporal.map_recording_anchors import RecordingMapAnchors
 from valorant_ai_coach.temporal.map_reference_support import (
+    atlas_distances_for,
     clearly_outside_atlas,
-    read_atlas_void_distances,
 )
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 from valorant_ai_coach.temporal.public_map_pixels import CONTRAST_ALIGNMENT, PublicMapPixels
@@ -76,6 +77,7 @@ def recover(
     layout: Path, asset_cache: Path, zones_path: Path, models_directory: Path, threshold: float,
     primary_report: Path, reference_report: Path, companion_report: Path | None = None,
     companion_baseline: Path | None = None,
+    exact_alignment_cache: Path | None = None,
 ) -> dict[str, Any]:
     timeline = read_json(bundle_path)
     primary = read_json(primary_report)
@@ -88,11 +90,25 @@ def recover(
     if (reference["frame_manifest_sha256"] != manifest_sha
             or reference["zone_catalog_sha256"] != file_sha(zones_path)):
         raise ValueError("Matching Map frame and Zone receipts required")
-    binding = reference["recording_agent_uuid_binding"]
-    if (not binding or binding.get("qualified") is not False
-            or binding["source_sha256"] != timeline["source"]["source_sha256"]):
-        raise ValueError("Unqualified recorder Agent binding required")
+    source = timeline["source"]["source_sha256"]
     policy = SourcePolicy(read_json(policy_path))
+    if source not in policy.allowed or policy.allowed[source]["split"] != "DEVELOPMENT":
+        raise ValueError("Catalog-admitted DEVELOPMENT recording required")
+    binding = reference["recording_agent_uuid_binding"]
+    map_id = reference["recording_map_uuid"]
+    if binding is not None and (binding.get("qualified") is not False
+                                or binding["source_sha256"] != source):
+        raise ValueError("Unqualified recorder Agent binding required")
+    if binding is None or map_id is None:
+        if binding is None and primary["segments"]:
+            raise ValueError("Unbound recorder cannot have measured Map segments")
+        operable = set(reference["comparison_evidence"]["operable_sample_refs"])
+        return {
+            **primary, "primary_report_sha256": file_sha(primary_report), "recovery_counts": {},
+            "recovery_status": "recorder_unbound" if binding is None else "map_unbound",
+            "path_quality": measure_path_quality(primary, timeline["seconds"],
+                                                 primary["second_rows"], operable),
+        }
     knowledge = KnowledgeRecorderMap.load(asset_cache, map_catalog)
     identity = RecorderUUID(
         binding["source_sha256"], binding["uuid"], tuple(binding["evidence_samples"]),
@@ -117,16 +133,11 @@ def recover(
     rescue = RecordingPortraitTracker(bank, identity, knowledge)
     geometry = RecordingMapAnchors()
     projector = PublicMapPixels(map_catalog, layout, verified_references=knowledge.map_references)
-    map_id = reference["recording_map_uuid"]
+    exact_fits = ExactAlignmentCache(projector, exact_alignment_cache)
     assets = projector.bindings["asset_sha256s"]
-    atlas_name = next((entry["reference"] for entry in read_json(map_catalog)["maps"]
-                       if entry["id"] == map_id), None)
-    atlas_path = map_catalog.parent / atlas_name if atlas_name is not None else None
-    if atlas_path is None or not atlas_path.is_file():
-        atlas_path = next(
-            (path for _, uid, path, _ in knowledge.map_references if uid == map_id), None,
-        )
-    void_distances = read_atlas_void_distances(atlas_path, assets[map_id]) if atlas_path else None
+    void_distances = atlas_distances_for(
+        map_catalog, map_id, assets[map_id], knowledge.map_references,
+    )
     companion = _load_companion(
         companion_report, companion_baseline, bundle_path, timeline, manifest_sha=manifest_sha,
         baseline=reference,
@@ -182,7 +193,7 @@ def recover(
         )
         if offer:
             last_offer = at
-            raw = projector.inspect_exact(image)["raw"]
+            raw = exact_fits.inspect(image, sample)
             geometry.observe(image, sample, raw, map_id, (0., 0.), recover=False)
             for selector in (classic, learned):
                 selector.previous = None
@@ -222,7 +233,7 @@ def recover(
         ):
             counts["reference_selector_veto"] += 1
             continue
-        raw = projector.inspect_exact(image)["raw"]
+        raw = exact_fits.inspect(image, sample)
         if not raw["map_name_candidates"]:
             raw = geometry.observe(image, sample, raw, map_id, tuple(center))
         if not raw["map_name_candidates"]:
@@ -266,6 +277,8 @@ def recover(
     if not measured_native_edges(primary) <= measured_native_edges(path):
         raise ValueError("Missing an existing measured trajectory edge")
     seconds = join_recorder_seconds(path, timeline)
+    if exact_alignment_cache is not None:
+        print(f"Exact Map alignment cache: {exact_fits.hits} hits, {exact_fits.misses} misses")
     return {
         **path, "timeline_sha256": file_sha(bundle_path), "frame_manifest_sha256": manifest_sha,
         "primary_report_sha256": file_sha(primary_report),
@@ -289,6 +302,7 @@ def main() -> None:
     parser.add_argument("--threshold", type=float, required=True)
     parser.add_argument("--companion-report", type=Path)
     parser.add_argument("--companion-baseline", type=Path)
+    parser.add_argument("--exact-alignment-cache", type=Path)
     options = vars(parser.parse_args())
     output = options.pop("output")
     write_private(output, recover(**options))

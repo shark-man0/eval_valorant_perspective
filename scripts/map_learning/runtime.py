@@ -174,6 +174,11 @@ class AdaptiveRecordingTracker(LearnedRecorderTracker):
         self.continuity = RecordingPortraitTracker(self.bank, identity, reader)
         self.can_seed = False
 
+    def discard_projection(self):
+        super().discard_projection()
+        self.continuity.discard_projection()
+        self.can_seed = False
+
     def _observe_measured(self, image, roi, sample, frame, camera):
         self.bank.visit(sample, roi)
         pool, result = super()._observe_measured(image, roi, sample, frame, camera)

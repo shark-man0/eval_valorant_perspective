@@ -11,8 +11,25 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+from .replay import read_json
+
 # Reference-alignment and native-center uncertainty leave the nearby fringe unresolved.
 _ATLAS_FRINGE_PX = 12.0
+
+
+def atlas_distances_for(
+    catalog: Path, map_id: str, expected_sha: str,
+    verified_references: Sequence[tuple[str, str, Path, str]],
+) -> NDArray[np.float32] | None:
+    root = catalog.resolve().parent
+    relative = next((entry["reference"] for entry in read_json(catalog)["maps"]
+                     if entry["id"] == map_id), None)
+    path = (root / relative).resolve() if relative is not None else None
+    if path is not None and not path.is_relative_to(root):
+        raise ValueError("Map reference outside catalog")
+    if path is None or not path.is_file():
+        path = next((p for _, uid, p, _ in verified_references if uid == map_id), None)
+    return read_atlas_void_distances(path, expected_sha) if path is not None else None
 
 
 def read_atlas_void_distances(path: Path, sha256: str) -> NDArray[np.float32] | None:
