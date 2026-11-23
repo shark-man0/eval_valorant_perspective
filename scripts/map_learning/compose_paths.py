@@ -157,6 +157,7 @@ def compose_paths(
         "operable_coverage": measure_operable_coverage(paths, timeline["seconds"], rows, operable),
         "new_cnn_native_positions": len(admitted),
         "timeline_sha256": timeline_sha,
+        "zone_catalog_sha256": reference["zone_catalog_sha256"],
     }
 
 

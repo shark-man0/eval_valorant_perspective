@@ -132,3 +132,50 @@ alignments of measured positions with two deterministic contrast transforms of
 the current minimap. Both atlas fits must agree on the recording Map and on
 the marker and four reference probes. Recovered fits cannot become tracking
 anchors.
+
+## Replay a complete DEVELOPMENT recording
+
+`run_recording.py` admits the exact original recording through the recording
+catalog and the source policy. FFmpeg decodes the first native video frame in
+each 200 ms bin, and the replay checks its PTS against the original packet
+clock. The common timeline supplies the current view and life evidence for
+the Map recognizers. Set `VALORANT_RECORDING_CATALOG` to your local catalog
+and use a new private output directory outside the checkout. FFmpeg and
+ffprobe must be installed.
+
+```sh
+PYTHONPATH=src:. python scripts/map_learning/run_recording.py \
+  --policy-path "$SOURCE_POLICY" --source-sha256 "$SOURCE_SHA256" \
+  --hud-config "$HUD_CONFIG" --spectator-label "$SPECTATOR_LABEL" \
+  --layout config/hud_layout_1080p_v3.json \
+  --map-catalog "$MAP_CATALOG" --asset-cache "$ASSET_CACHE" \
+  --zones-path "$ZONES" --models-directory "$CNN_MODELS" \
+  --threshold "$CNN_THRESHOLD" --output "$RUN_OUTPUT"
+```
+
+For the companion detector, supply both `--companion-models-directory` and
+`--companion-threshold`. The full-frame cache can use tens of gigabytes. Use
+`--frame-cache` to place it on a separate volume and `--acquisition` to replay
+a receipt created by `acquire_native.py`. Hardware decoding is optional via
+`--hwaccel`. Compare decoded pixel hashes before treating runs from different
+decoders as equivalent.
+
+The run writes `map_standard_PRIVATE.json` and `map_recovered_PRIVATE.json`,
+their separate analysis directories, the shared one-second timeline, and a
+completion receipt with counts, timings and artifact hashes. Compare coverage
+over the seconds with current operability evidence. The separate position and
+trajectory counters reflect observations and measured edges. A missing
+position remains UNKNOWN.
+
+```sh
+PYTHONPATH=src python -m valorant_ai_coach.temporal.viewer \
+  --policy "$SOURCE_POLICY" \
+  --bundle "$RUN_OUTPUT/timeline/timeline_PRIVATE.json" \
+  --development-map-report "$RUN_OUTPUT/map_recovered_PRIVATE.json"
+```
+
+The viewer shows the registered atlas, current measured points, recent
+measured links and registered Named Zone polygons. Each link joins observed
+endpoints. When the selected second has no position, the viewer displays
+UNKNOWN and leaves the current marker empty. The replay and viewer export
+development Map candidates only.

@@ -14,6 +14,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from .application import VERSION
+from .map_display import load_map_display
 from .map_timeline_report import load_map_timeline
 from .replay import SourcePolicy, file_sha, read_json
 
@@ -41,7 +42,10 @@ max-height:400px;
 overflow:auto}
 .muted{color:#bbc6d0}a{color:#86ccff}details{border-top:1px solid #415263;
 padding:8px}
-#mapTrack{height:180px;background:#17232e;cursor:default}
+#mapTrack{height:auto;aspect-ratio:8/7;background:#17232e;cursor:default;border-radius:8px}
+#mapTrackStatus{min-height:1.5em;font-weight:600}
+.map-legend{display:flex;flex-wrap:wrap;gap:14px;color:#bbc6d0;margin:8px 0}
+.map-legend span::before{content:'●';margin-right:5px;color:var(--dot)}
 .error{color:#ff8f8f}@media(max-width:850px){main{display:block}}
 </style><h1>共通タイムライン <small>開発用</small></h1>
 <p class="muted">推定・候補を含みます。灰色はUNKNOWN。元の未編集録画を参照します。</p>
@@ -60,11 +64,14 @@ padding:8px}
 <h3>視点対象・スキル構成の照合候補</h3><pre id="viewedIdentity"></pre>
 <h3>簡易Round境界候補</h3><pre id="visualRound"></pre>
 <h3>Map・Zone候補</h3><pre id="map"></pre>
-<section id="recorderMap" hidden><h3>録画者の位置・軌跡候補</h3>
-<p id="mapTrackStatus"></p><canvas id="mapTrack" width="640" height="260"
-aria-label="直近10秒のMap観測点と観測点間の接続"></canvas>
-<p class="muted">直近10秒の参照座標。線は観測点同士の接続です。</p></section>
-</section><section><h2>イベント候補</h2><div id="events"></div>
+</section><section><section id="recorderMap" hidden><h2>録画者の位置・軌跡候補</h2>
+<p id="mapTrackStatus" aria-live="polite"></p><canvas id="mapTrack" width="640" height="560"
+aria-label="実マップと直近10秒の観測点、観測エッジ、Named Zone"></canvas>
+<div class="map-legend"><span style="--dot:#fadc97">この秒の観測</span>
+<span style="--dot:#90bdcb">直近10秒の観測・エッジ</span>
+<span style="--dot:#6fd4ad">Named Zone候補</span></div>
+<p id="mapReferenceStatus" class="muted"></p></section>
+<h2>イベント候補</h2><div id="events"></div>
 <details><summary>状態・不確実性・native参照</summary><pre id="detail"></pre></details>
 <details open><summary>根拠を選択</summary><select id="evidence"></select>
 <pre id="raw"></pre></details>
@@ -85,28 +92,69 @@ const fmt=value=>JSON.stringify(value,null,2);
 const colors={BUY:'#dcb74e',ACTIVE:'#4dba94',ENDED:'#dd7777',ALIVE:'#4dba94',
 DEAD:'#dd7777',DOWNED:'#cf8ddd',SELF:'#4dba94',SPECTATOR:'#e7a56f',REMOTE:'#749ee8'};
 
-function drawRecorderMap(windowRows){
+const atlasImages=new Map();
+function getAtlas(asset){
+const sha=asset.reference_sha256;
+if(!atlasImages.has(sha)){
+const img=new Image();
+img.src=base+'/api/recorder-map/atlas?sha='+encodeURIComponent(sha);
+atlasImages.set(sha,img.decode().then(()=>img).catch(()=>null));
+}
+return atlasImages.get(sha);
+}
+const sameAtlas=(a,b)=>a.map_id===b?.map_id&&a.reference_sha256===b?.reference_sha256;
+function zoneName(name,mapName){
+const prefix=mapName.toLowerCase()+'_';
+return (name.startsWith(prefix)?name.slice(prefix.length):name).replaceAll('_',' ');
+}
+
+async function drawRecorderMap(windowRows,requestId){
 const last=windowRows.at(-1);
 const current=last.recorder_map_observations;
 const prior=windowRows.flatMap(r=>r.recorder_map_observations);
-const mapPoint=current.at(-1)||prior.at(-1);
-const onMap=p=>p.map_id===mapPoint?.map_id&&p.reference_sha256===mapPoint?.reference_sha256;
-const points=prior.filter(onMap);
-const edges=windowRows.flatMap(r=>r.native_edges_ending_here);
-const c=el('mapTrack'),g=c.getContext('2d'),pad=18;
+const mapPoint=current.at(-1)||prior.at(-1)||
+(overview.recorder_map_atlases.length===1?overview.recorder_map_atlases[0]:null);
+const c=el('mapTrack'),g=c.getContext('2d'),pad=15;
 g.clearRect(0,0,c.width,c.height);
-el('mapTrackStatus').textContent=current.length?
-(overview.recorder_map_names[mapPoint.map_id]||mapPoint.map_id)+' / '+current.length+'点 / '+
-(Array.from(new Set(current.map(p=>p.zone_candidate).filter(Boolean))).join('・')||'Zone不明'):
-'この秒の位置候補なし（UNKNOWN）';
-if(!points.length)return;
-const coords=points.map(p=>p.map_reference_px),xs=coords.map(p=>p[0]),ys=coords.map(p=>p[1]);
-const xmin=Math.min(...xs),ymin=Math.min(...ys);
-const w=Math.max(12,Math.max(...xs)-xmin),h=Math.max(12,Math.max(...ys)-ymin);
+const status=el('mapTrackStatus'),reference=el('mapReferenceStatus');
+reference.textContent='';
+if(!mapPoint||current.some(p=>!sameAtlas(p,mapPoint))){
+status.textContent=mapPoint?'UNKNOWN · 複数のMap参照候補を検出':'UNKNOWN · この秒の位置候補なし';
+return;
+}
+const mapName=overview.recorder_map_names[mapPoint.map_id]||mapPoint.map_id;
+const activeZones=new Set(current.map(p=>p.zone_candidate).filter(Boolean));
+const zoneLabels=[...activeZones].map(z=>zoneName(z,mapName)).join('・');
+status.textContent=current.length?
+mapName+' · '+current.length+'観測点 · '+(zoneLabels||'Named Zone UNKNOWN'):
+mapName+' · UNKNOWN · この秒の位置候補なし';
+const points=prior.filter(p=>sameAtlas(p,mapPoint));
+const edges=windowRows.flatMap(r=>r.native_edges_ending_here);
+const asset=overview.recorder_map_atlases.find(m=>sameAtlas(m,mapPoint));
+const atlas=asset?await getAtlas(asset):null;
+if(requestId!==request)return;
+if(!atlas&&!points.length)return;
+const xs=points.map(p=>p.map_reference_px[0]),ys=points.map(p=>p.map_reference_px[1]);
+const xmin=atlas?0:Math.min(...xs),ymin=atlas?0:Math.min(...ys);
+const w=atlas?asset.size[0]:Math.max(12,Math.max(...xs)-xmin);
+const h=atlas?asset.size[1]:Math.max(12,Math.max(...ys)-ymin);
 const scale=Math.min((c.width-pad*2)/w,(c.height-pad*2)/h);
 const toCanvas=([x,y])=>[(c.width-w*scale)/2+(x-xmin)*scale,(c.height-h*scale)/2+(y-ymin)*scale];
+reference.textContent=atlas?'照合済み参照マップ。線は取得済み観測点の接続です。':
+'参照画像なし。観測点を相対表示しています。';
+if(atlas){
+g.drawImage(atlas,...toCanvas([0,0]),w*scale,h*scale);
+for(const [name,ring] of Object.entries(asset.zones)){
+const active=activeZones.has(name);
+g.beginPath();g.moveTo(...toCanvas(ring[0]));
+for(const p of ring.slice(1))g.lineTo(...toCanvas(p));
+g.closePath();g.lineWidth=active?2:1;
+g.strokeStyle=active?'#6fd4ad':'#6fd4ad66';
+if(active){g.fillStyle='#6fd4ad38';g.fill()}
+g.stroke();}
+}
 const keys=new Set(points.map(p=>p.sample.sample_sha256));
-g.strokeStyle='#78a6bd';g.lineWidth=2;
+g.strokeStyle='#90bdcb';g.lineWidth=2;
 for(const [a,b] of edges){
 if(!keys.has(a.sample.sample_sha256)||!keys.has(b.sample.sample_sha256))continue;
 g.beginPath();g.moveTo(...toCanvas(a.map_reference_px));
@@ -211,7 +259,8 @@ if(overview.recorder_map){
 const windowRows=await api('/api/recorder-map?n='+second);
 if(current!==request)return;
 el('recorderMap').hidden=false;
-drawRecorderMap(windowRows);}
+await drawRecorderMap(windowRows,current);
+if(current!==request)return;}
 
 el('detail').textContent=fmt(row);
 el('evidence').replaceChildren();
@@ -348,6 +397,14 @@ def make_server(
     recorder_map = (
         load_map_timeline(map_report_path, bundle_path, bundle) if map_report_path else None
     )
+    map_assets: dict[str, bytes] = {}
+    map_atlases: list[dict[str, Any]] = []
+    if recorder_map is not None and map_report_path is not None:
+        display_path = map_report_path.with_suffix(".display.json")
+        if display_path.exists():
+            map_atlases, map_assets = load_map_display(
+                display_path, map_report_path, recorder_map["rows"],
+            )
     overview = {
         **recording_view_metadata(bundle),
         "native_origin_seconds": float(Fraction(bundle["recording"]["native_origin_seconds"])),
@@ -371,6 +428,7 @@ def make_server(
 
         overview["recorder_map"] = recorder_map["summary"]
         overview["recorder_map_names"] = {m.uuid: m.name for m in load_game_knowledge().maps}
+        overview["recorder_map_atlases"] = map_atlases
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format: str, *args: Any) -> None:
@@ -402,6 +460,12 @@ def make_server(
                 data: Any
                 if route == "/":
                     payload, content_type = HTML.encode("utf-8"), "text/html; charset=utf-8"
+                elif route == "/api/recorder-map/atlas":
+                    atlas = map_assets.get(query.get("sha", [""])[0])
+                    if atlas is None:
+                        self.send_error(404)
+                        return
+                    payload, content_type = atlas, "image/png"
                 else:
                     if route == "/api/overview":
                         data = overview
