@@ -260,17 +260,28 @@ reproduction setting for the six-recording development baseline.
 The optional `require_non_regression` per-recording switch needs
 `baseline_run`. The gate reports lost position seconds, selections or native
 edges, changed Map references, and lost Zone candidates even if total
-coverage grows. It also requires the same operability denominator.
+coverage grows. It also rejects any coordinate drift for a retained selection
+on the same atlas and reports changes to the exact set of evidenced
+operable seconds, including swaps with the same denominator. Keep the
+digest-bound `map_reference_PRIVATE.json` alongside each run receipt.
 `review_samples_per_stratum` freezes private review work from the run with
 separate camera and death controls. Neither option requires an immediate
 human answer. TRAIN rows that finish successfully produce a combined
 `training_receipt_PRIVATE.json` for `train.py`. The batch admits only one
 TRAIN recording per physical match and separates it from comparison matches.
 
+`summarize_runs.py --run … --run … --output …` accepts completed run
+receipts and verifies their matching Map reports. It keeps standard and
+recovered coverage separate and aggregates counts by Map and recorder Agent
+candidate. Coverage rates use the sum of evidenced operable seconds for
+each group. Failures are counted separately by reference, learned and gap
+recovery stage. Unbound Map or Agent candidates remain UNKNOWN.
+
 `export_sites.py --plant-core-seeds scripts/map_learning/plant_core_seeds_v1.json`
 supports public atlases whose plant shading cannot be traced as a simple
 footprint. A core uses shaded pixels around a site seed tied to that exact
-atlas hash. Sunset has A and B cores. Keep the reviewed shapes from existing
-registries with `--existing`. The timeline and evaluation reports count
+atlas hash. Sunset has A and B cores. Split A, Breeze B and Pearl A fill
+previously missing plant areas. Use `--existing` to extend an exact atlas
+without replacing its registered polygons. The timeline and evaluation reports count
 selected observations with a unique Named Zone separately from support-only
 observations and conflicting Zone candidates. All remain development evidence.

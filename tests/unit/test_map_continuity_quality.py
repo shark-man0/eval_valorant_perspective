@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from scripts.map_learning.export_sites import (
+    missing_plant_cores,
     nearby_plant_footprints,
     plant_footprints,
     seeded_plant_cores,
@@ -103,3 +104,9 @@ def test_seeded_plant_cores_stay_inside_paint_and_never_fill_holes():
         assert np.all(hsv[top:bottom+1, left:right+1] == paint)
     assert seeded_plant_cores(image, {"A": (.3, .3), "B": (.7, .7)}) == {}
     assert seeded_plant_cores(image, {"A": (.15, .2), "B": (.13, .14)}) == {}
+    existing = {"A plant footprint": cores["A plant core"]}
+    assert missing_plant_cores(image, existing, {"A": (.15, .2), "B": (.7, .7)}) == {
+        "B plant core": cores["B plant core"],
+    }
+    with pytest.raises(ValueError, match="overlaps"):
+        missing_plant_cores(image, {"another Zone": cores["A plant core"]}, {"A": (.15, .2)})

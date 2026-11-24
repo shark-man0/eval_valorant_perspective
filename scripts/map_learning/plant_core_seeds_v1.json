@@ -8,6 +8,21 @@
         "A": [0.815, 0.365],
         "B": [0.092, 0.4]
       }
+    },
+    {
+      "map_id": "d960549e-485c-e861-8d71-aa9d1aed12a2",
+      "reference_sha256": "cc102270353627dab124a7c4ecc429fa150982aa7f243b944ac15f8f83b5b7c8",
+      "site_seeds_norm": {"A": [0.323, 0.121]}
+    },
+    {
+      "map_id": "2fb9a4fd-47b8-4e7d-a969-74b4046ebd53",
+      "reference_sha256": "82c6472afe6f34ac4c0d979fbf6df0a739c174292edf593f29b9495f3b3f84a2",
+      "site_seeds_norm": {"B": [0.121, 0.267]}
+    },
+    {
+      "map_id": "fd267378-4d1d-484f-ff52-77821ed10dc2",
+      "reference_sha256": "5e0e7d4a80d830d9b8bb0f265cb14245be583bce87a69d3f53a07e9083ca810c",
+      "site_seeds_norm": {"A": [0.885, 0.271]}
     }
   ]
 }

@@ -240,13 +240,64 @@ def test_map_regression_gate_flags_losses_even_when_aggregate_matches():
     from scripts.map_learning.compare_runs import regression_failures
 
     counts = {
-        "before": {"operable_seconds_with_current_evidence": 3},
-        "after": {"operable_seconds_with_current_evidence": 3},
         "seconds_with_lost_observations": 0, "native_selections_lost": 0,
         "native_edges_lost": 0, "changed_map_references": 0, "lost_named_zone_candidates": 0,
-        "gained_named_zone_candidates": 2,
+        "gained_named_zone_candidates": 2, "changed_positions_on_same_reference": 0,
+        "lost_operable_seconds": [], "gained_operable_seconds": [],
     }
     assert regression_failures({"outputs": {"standard": counts}}) == {}
     assert regression_failures({"outputs": {"standard": {**counts, "native_edges_lost": 1}}}) == {
         "standard": ["native_edges_lost"],
+    }
+
+
+def test_map_regression_compares_equal_count_operable_sets_and_retained_coordinates(tmp_path):
+    from scripts.map_learning.compare_runs import compare, regression_failures
+
+    _, timeline, report, ids = fixture(tmp_path)
+
+    def run(name, operable_refs, position_change):
+        root = tmp_path / name
+        (root / "timeline").mkdir(parents=True)
+
+        def save(filename, value):
+            path = root / filename
+            path.write_text(json.dumps(value), encoding="utf-8")
+            return file_sha(path)
+
+        timeline_name = "timeline/timeline_PRIVATE.json"
+        hashes = {timeline_name: save(timeline_name, timeline)}
+        map_report = deepcopy(report)
+        map_report["segments"][0][0]["map_reference_px"][0] += position_change
+        map_report["timeline_sha256"] = hashes[timeline_name]
+        map_report["second_rows"] = join_recorder_seconds(map_report, timeline)
+        reference_sha = save("map_reference_PRIVATE.json", {
+            **map_report, "comparison_evidence": {"operable_sample_refs": operable_refs},
+        })
+        map_report.update(reference_report_sha256=reference_sha, operable_coverage={
+            "operable_seconds_with_current_evidence": 1,
+        })
+        for mode in ("standard", "recovered"):
+            filename = f"map_{mode}_PRIVATE.json"
+            hashes[filename] = save(filename, map_report)
+        save("run_PRIVATE.json", {
+            "schema": "development_map_recording_run_v1", "formal_map_outputs": 0,
+            "source_sha256": timeline["source"]["source_sha256"], "output_sha256s": hashes,
+        })
+        return root / "run_PRIVATE.json"
+
+    baseline = run("baseline", ids[:2], 0)
+    candidate = run("candidate", ids[2:], 2.5)
+    assert regression_failures(compare(baseline, baseline)) == {}
+    result = compare(baseline, candidate)
+    for mode in ("standard", "recovered"):
+        counts = result["outputs"][mode]
+        assert counts["before"] == counts["after"]
+        assert counts["lost_operable_seconds"] == [0]
+        assert counts["gained_operable_seconds"] == [1]
+        assert counts["changed_positions_on_same_reference"] == 1
+        assert counts["max_position_change_reference_px"] == 2.5
+    assert regression_failures(result) == {
+        mode: ["changed_positions_on_same_reference", "operable_seconds_changed"]
+        for mode in ("standard", "recovered")
     }
