@@ -1119,10 +1119,20 @@ class SecondFeaturePromoter:
             report.counts[f"ammo_{kind}"] += kinds.get(kind, 0)
         last: float | None = None
         shots = 0
+        start = item.start.time_sec
         for change in changes:
             if change.kind != "shot":
                 continue
             before = records[change.previous_index].observation.sec
+            held = self._weapon_or_reserve_changed(
+                view, records, start, change.previous_index, change.index
+            )
+            if held is not None:
+                # A drop to another weapon's magazine with the reserve unread at one
+                # end looks like a shot; the weapon name or the nearest reserve
+                # reading on each side shows the switch.
+                report.rejected[held] += 1
+                continue
             first = last is None or change.sec - last > self.policy.shot_pause_sec
             last = change.sec
             second = int(change.sec)
@@ -1166,6 +1176,39 @@ class SecondFeaturePromoter:
             report.counts["shot_events"] += 1
             report.counts["first_shots"] += int(first)
         stats["shot_events"] = shots
+
+    def _weapon_or_reserve_changed(
+        self, view: TimelineView, records: Sequence[SecondRecord], start: int,
+        before: int, after: int,
+    ) -> str | None:
+        """Why a magazine drop is not a shot, or None.
+
+        The weapon read at (or one second outside) each end must not differ, and the
+        reserve, taken at each end or from the nearest reading within 3 s outside
+        the interval, must not differ either.
+        """
+        def weapon(indices: Sequence[int]) -> str | None:
+            for index in indices:
+                if 0 <= index < len(records):
+                    name = self._weapon_at(view.row(start + index))
+                    if name is not None:
+                        return name
+            return None
+
+        def reserve(indices: Sequence[int]) -> int | None:
+            for index in indices:
+                if 0 <= index < len(records) and records[index].reserve is not None:
+                    return int(records[index].reserve)  # type: ignore[arg-type]
+            return None
+
+        w_before, w_after = weapon((before, before - 1)), weapon((after, after + 1))
+        if w_before is not None and w_after is not None and w_before != w_after:
+            return "shot_weapon_changed"
+        r_before = reserve([before - k for k in range(4)])
+        r_after = reserve([after + k for k in range(4)])
+        if r_before is not None and r_after is not None and r_before != r_after:
+            return "shot_reserve_changed"
+        return None
 
     def _feature_drop(self, start: float, end: float) -> str:
         """Second reader: do the keyframe magazine readings (#155/#169 features) also

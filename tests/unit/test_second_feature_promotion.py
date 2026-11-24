@@ -618,3 +618,29 @@ def test_a_revive_needs_the_top_bar_to_explain_live_own_view_after_a_death():
         death = next(e for e in result.rounds[0].events if e["type"] == "player_death")
         assert death["attributes"]["revive_corroborated_by_top_bar"] is rise
         assert verify_promotion(bundle, result)["counts"]["player_death"].get(expected) == 1
+
+
+def test_a_switch_read_with_the_reserve_missing_at_one_end_is_not_a_shot():
+    # Marshal 5/11, a switch to the Classic 12/36, back to the Marshal with only the
+    # magazine read: 12 -> 5 looks like seven shots without the weapon names or the
+    # next reserve reading.
+    readings = {90: (5, 11), 91: (12, 36), 93: (5, 11)}
+    bundle = _ammo_bundle(readings)
+    bundle["seconds"][92]["hud_observations"]["ammo_current"] = {
+        "status": "CANDIDATES", "candidates": [
+            {"value": 5, "confidence": 0.95, "evidence_ref": "ammo_current-ref"}]}
+    result, report = augment(bundle, records(140, lambda s: (5, 5)))
+    assert _shots(result) == []
+    assert report.rejected["shot_reserve_changed"] == 1
+
+    named = _ammo_bundle({91: (12, 36)})
+    named["seconds"][92]["hud_observations"]["ammo_current"] = {
+        "status": "CANDIDATES", "candidates": [
+            {"value": 5, "confidence": 0.95, "evidence_ref": "ammo_current-ref"}]}
+    for second, weapon in ((91, "クラシック"), (92, "マーシャル")):
+        named["seconds"][second]["hud_observations"]["weapon"] = {
+            "status": "CANDIDATES", "candidates": [
+                {"value": weapon, "confidence": 0.93, "evidence_ref": "weapon-ref"}]}
+    result, report = augment(named, records(140, lambda s: (5, 5)))
+    assert _shots(result) == []
+    assert report.rejected["shot_weapon_changed"] == 1
