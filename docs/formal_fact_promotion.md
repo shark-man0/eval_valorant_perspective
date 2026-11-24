@@ -143,7 +143,7 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 - `shot` Event（actor は本人、信頼度0.8）から、FactBuilder が `first_shot_detected` と `weapon` を作ります。移動の判定は #169 の目視確認を通っていないため、`shot_while_moving` と `first_shot_stationary` は作りません。
 - Event Source Contract の `shot` は、HUDの弾数の減少を認めるように `hud_or_visual_analyzer` に変えました。
 
-検算は2つです。`shot_vs_feature_ammo` は、タイムラインの読み取りだけで作った射撃について、同じ区間（タイムラインの秒は1秒の中のどこかで読まれるため前後1秒を含む）の特徴量の弾数も減っているかを見ます。特徴量で補った射撃は同じ読み取りどうしになるため `feature_sourced` として数えません。`recorder_kill_has_shot` は、キルフィードが本人のキルとした撃破の区間に射撃があるかを見ます。
+検算は2つです。`shot_vs_feature_ammo` は、タイムラインの読み取りだけで作った射撃について、特徴量の弾数も減っているかを見ます。タイムラインの秒は1秒の中のどこかで読まれるため、前後1秒を含む区間で減っていれば一致とします。区間の中で減っていない場合は、射撃より確実に前（開始の秒以前）と確実に後（終了の秒の1秒後以降）の読み取りを比べ、同じ値なら不一致、増えていれば（リロードや持ち替えを挟むため）判定しません。特徴量で補った射撃は同じ読み取りどうしになるため `feature_sourced` として数えません。`recorder_kill_has_shot` は、キルフィードが本人のキルとした撃破の区間に射撃があるかを見ます。
 
 ### 本人死亡の見落とし補完
 

@@ -1169,13 +1169,24 @@ class SecondFeaturePromoter:
 
     def _feature_drop(self, start: float, end: float) -> str:
         """Second reader: do the keyframe magazine readings (#155/#169 features) also
-        drop? A timeline second ``s`` was sampled somewhere in ``[s, s + 1)``, so the
-        readings compared are those in ``(start - 1, end + 1)``. ``undetermined`` with
-        fewer than two."""
-        reads = [m for sec, m in self._magazines if start - 1.0 < sec < end + 1.0]
-        if len(reads) < 2:
+        show the drop between the timeline readings of seconds ``start`` and ``end``?
+
+        A timeline second ``s`` was sampled somewhere in ``[s, s + 1)``. A feature
+        drop inside ``(start - 1, end + 1)`` agrees. A feature reading at or before
+        ``start`` is surely before the shot and one at or after ``end + 1`` surely
+        after it: the same count on both sides disagrees, a rise (reload or switch
+        in between) or no such pair leaves it ``undetermined``.
+        """
+        inside = [m for sec, m in self._magazines if start - 1.0 < sec < end + 1.0]
+        if any(b < a for a, b in zip(inside, inside[1:], strict=False)):
+            return "agree"
+        before = [m for sec, m in self._magazines if start - 2.0 <= sec <= start]
+        after = [m for sec, m in self._magazines if end + 1.0 <= sec <= end + 3.0]
+        if not before or not after:
             return "undetermined"
-        return "agree" if any(b < a for a, b in zip(reads, reads[1:], strict=False)) else "disagree"
+        if after[0] < before[-1]:
+            return "agree"
+        return "disagree" if after[0] == before[-1] else "undetermined"
 
     # -- economy ---------------------------------------------------------------------------
 

@@ -540,14 +540,26 @@ def test_unread_or_low_confidence_ammo_gives_no_shot():
 
 
 def test_shots_are_checked_against_the_feature_magazine_readings():
-    feature_records = records(140, lambda s: (5, 5))
-    feature_records[91] = SecondRecord(feature_records[91].observation, 25, None, 0)
-    feature_records[92] = SecondRecord(feature_records[92].observation, 22, None, 0)
-    # A timeline second is sampled anywhere inside it: the 98.4 and 99.4 readings
-    # bracket the shot read between 99 and 100 and show no drop.
-    feature_records[98] = SecondRecord(feature_records[98].observation, 12, None, 0)
-    feature_records[99] = SecondRecord(feature_records[99].observation, 12, None, 0)
-    result, report = augment(_ammo_bundle(_AMMO), feature_records)
+    # Feature keyframes sit at second + 0.4; only the timeline reads ammo in this test.
+    readings = {90: (25, 50), 92: (22, 50), 100: (20, 50), 101: (19, 50), 110: (9, 50),
+                111: (8, 50)}
+
+    def with_magazines(values: dict[int, int]) -> list[SecondRecord]:
+        from dataclasses import replace
+
+        out = records(140, lambda s: (5, 5))
+        for second, magazine in values.items():
+            # Agent unread on these keyframes: they cross-check but never fill.
+            obs = replace(out[second].observation, viewed_score=0.1)
+            out[second] = SecondRecord(obs, magazine, None, 0)
+        return out
+
+    feature_records = with_magazines({
+        91: 25, 92: 22,          # a drop inside the shot's interval: agree
+        98: 20, 99: 20, 102: 20,  # same count before and after 100-101: disagree
+        109: 9, 110: 9,          # both before the shot read at 111, none after
+    })
+    result, report = augment(_ammo_bundle(readings), feature_records)
     checks = [s["attributes"]["feature_ammo_check"] for s in _shots(result)]
     assert checks == ["agree", "disagree", "undetermined"]
     assert report.checks["shot_vs_feature_ammo"] == {
