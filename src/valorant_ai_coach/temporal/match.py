@@ -368,6 +368,7 @@ def run_match(
     practical_visual_state: bool = False,
     checkpoint_dir: Path | None = None,
     evidence_continuity: bool = False,
+    admission_purpose: str = "development_analysis",
 ) -> dict[str, Any]:
     began = time.perf_counter()
     if checkpoint_dir is not None and retain_frames:
@@ -417,7 +418,7 @@ def run_match(
     if checkpoint_dir is not None and retain_frames:
         raise ValueError("Checkpoint reuse does not retain native PNG frames")
     policy_data = read_json(policy_path)
-    policy = SourcePolicy(policy_data)
+    policy = SourcePolicy(policy_data, purpose=admission_purpose)
     candidates = [v for v in policy.allowed.values() if v["video_id"] == source_id]
     if len(candidates) != 1:
         raise ValueError("Registered, explicitly admitted DEVELOPMENT source required")
