@@ -112,6 +112,22 @@ def test_review_separates_role_view_error_and_abstention(tmp_path):
     assert result["by_view"]["DEAD"]["rejected_excluded_view"] == 1
     assert result["atlas_error_reference_px"]["median"] == 3.0
 
+    candidate = tmp_path / "all_abstained.json"
+    report["segments"] = []
+    report["second_rows"] = join_recorder_seconds(report, timeline)
+    candidate.write_text(json.dumps(report), encoding="utf-8")
+    changes = evaluate(path, sidecar, review, candidate_report=candidate)["selection_changes"]
+    assert changes == {"selection_removed": 2, "removed_other_role": 1, "removed_self_role": 1,
+                       "removed_in_excluded_view": 1, "both_abstained": 1}
+
+    labels = json.loads(review.read_text(encoding="utf-8"))
+    labels["cases"][1]["candidate_sha256"] = "a" * 64
+    review.write_text(json.dumps(labels), encoding="utf-8")
+    changes = evaluate(path, sidecar, review, candidate_report=candidate)["selection_changes"]
+    assert "removed_other_role" not in changes
+    assert changes["removed_unverified_role"] == 1
+    assert changes["removed_in_excluded_view"] == 1
+
 
 def test_stratified_sample_and_review_use_exact_reports(tmp_path):
     from scripts.map_learning.sample_review import sample_review
@@ -301,3 +317,43 @@ def test_map_regression_compares_equal_count_operable_sets_and_retained_coordina
         mode: ["changed_positions_on_same_reference", "operable_seconds_changed"]
         for mode in ("standard", "recovered")
     }
+
+
+def test_merge_recovery_fills_empty_seconds_and_preserves_incumbent(tmp_path, monkeypatch):
+    scripts = Path(__file__).resolve().parents[2] / "scripts/map_learning"
+    monkeypatch.syspath_prepend(str(scripts))
+    from merge_recovery_candidates import merge_recovery_candidates
+
+    timeline_path, timeline, report, ids = fixture(tmp_path)
+    reference = tmp_path / "reference.json"
+    reference.write_text(json.dumps({
+        **report, "comparison_evidence": {"operable_sample_refs": ids},
+    }), encoding="utf-8")
+    report.update({
+        "reference_report_sha256": file_sha(reference), "primary_report_sha256": "b" * 64,
+        "frame_manifest_sha256": "c" * 64, "zone_catalog_sha256": "d" * 64,
+        "operable_coverage": {"operable_seconds_with_current_evidence": 2},
+    })
+    first, linked, fill = report["segments"][0]
+    incumbent = {**report, "segments": [[first, linked]]}
+    changed = {**first, "map_reference_px": [3, 5]}
+    fill = {**fill, "fit_residual_p95_reference_px": 1.0}
+    candidate = {**report, "segments": [[changed, linked, fill]]}
+
+    def save(name, report):
+        report["second_rows"] = join_recorder_seconds(report, timeline)
+        path = tmp_path / name
+        path.write_text(json.dumps(report), encoding="utf-8")
+        return path
+
+    old = save("incumbent.json", incumbent)
+    new = save("candidate.json", candidate)
+    merged = merge_recovery_candidates(timeline_path, old, new, reference)
+    assert merged["segments"] == [[first, linked], [fill]]
+    assert merged["operable_coverage"]["operable_seconds_with_position"] == 2
+    assert merged["operable_coverage"]["operable_seconds_with_native_edge"] == 1
+    assert merged["formal_outputs"] == 0
+
+    candidate["zone_catalog_sha256"] = "e" * 64
+    with pytest.raises(ValueError, match="zone_catalog_sha256"):
+        merge_recovery_candidates(timeline_path, old, save("candidate.json", candidate), reference)
