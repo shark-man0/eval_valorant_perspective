@@ -270,6 +270,14 @@ evidence vetoes a point, no usable atlas projection is obtained, or the
 companion and portrait recovery disagree. The default remains the
 reproduction setting for the six-recording development baseline.
 
+`merge_recovery_candidates.py --bundle … --incumbent … --candidate …
+--reference … --output …` combines two recovered development reports from
+the same standard replay and exact reference. It keeps incumbent segments and
+admits directly aligned, supported candidate observations in wholly evidenced
+operable seconds that lack incumbent positions. Added segments retain only
+their own observed links. Use the result as a separate candidate in the
+ordinary comparison and evaluation workflow.
+
 
 The optional `require_non_regression` per-recording switch needs
 `baseline_run`. The gate reports lost position seconds, selections or native
