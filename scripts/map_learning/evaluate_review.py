@@ -18,13 +18,16 @@ _ROLES = {"SELF", "OTHER", "UNKNOWN"}
 
 
 def evaluate(
-    bundle: Path, report: Path, review: Path, *, sample_plan: Path | None = None,
+    bundle: Path, report: Path, review: Path, *,
+    sample_plan: Path | None = None, allow_partial: bool = False,
 ) -> dict[str, Any]:
     timeline, labels = read_json(bundle), read_json(review)
     if (labels["schema"] != "development_map_independent_review_v1"
             or labels["timeline_sha256"] != file_sha(bundle)
             or labels["reviewer"] not in {"HUMAN", "AI_VISUAL"}):
         raise ValueError("Exact development review provenance required")
+    if allow_partial and sample_plan is None:
+        raise ValueError("Partial review requires a frozen sample plan")
     cohorts: dict[str, str] = {}
     if sample_plan is not None:
         plan = read_json(sample_plan)
@@ -38,6 +41,8 @@ def evaluate(
         cohorts = {case["sample_sha256"]: case["stratum"] for case in plan["cases"]}
         if len(cohorts) != len(plan["cases"]):
             raise ValueError("Duplicate frame in the sample plan")
+        if not cohorts or cohorts.keys() - timeline["native_frames"].keys():
+            raise ValueError("Sample plan requires known native frames")
     paths = load_map_timeline(report, bundle, timeline)
     selected = {p["sample"]["sample_sha256"]: p
                 for row in paths["rows"] for p in row["recorder_map_observations"]
@@ -61,6 +66,21 @@ def evaluate(
         cohort_counts = by_cohort[cohort]
         case_counts = Counter(observations=1)
         point = selected.get(key)
+        candidate_sha = case.get("candidate_sha256")
+        matching = point is not None and candidate_sha == digest(point)
+        if sample_plan is not None and (
+            (point is None and (candidate_sha is not None or role != "UNKNOWN"))
+            or (point is not None and not matching)
+        ):
+            raise ValueError("Review candidate does not match the frozen report")
+        truth = case.get("independent_atlas_px")
+        if truth is not None and (matching or sample_plan is not None) and (
+            point is None or case.get("reference_sha256") != point["reference_sha256"]
+            or not isinstance(truth, list) or len(truth) != 2
+            or any(type(x) not in (int, float) or not math.isfinite(x) or x < 0
+                   for x in truth)
+        ):
+            raise ValueError("Position review must use the same exact map reference")
         excluded = view in {"REMOTE", "SPECTATOR", "DEAD"}
         if point is None:
             case_counts["abstained"] += 1
@@ -70,22 +90,20 @@ def evaluate(
             case_counts["selected"] += 1
             if excluded:
                 case_counts["selection_in_excluded_view"] += 1
-            if case.get("candidate_sha256") != digest(point) or role == "UNKNOWN":
+            if not matching or role == "UNKNOWN":
                 case_counts["unreviewed_selection"] += 1
             else:
                 case_counts["correct_role" if role == "SELF" else "wrong_role"] += 1
-                truth = case.get("independent_atlas_px")
-                if truth is not None and role == "SELF":
-                    if (case.get("reference_sha256") != point["reference_sha256"]
-                            or not isinstance(truth, list) or len(truth) != 2
-                            or any(type(x) not in (int, float) or not math.isfinite(x) or x < 0
-                                   for x in truth)):
-                        raise ValueError("Position review must use the same exact map reference")
+                if truth is not None and role == "SELF" and view == "SELF_LIVE":
                     error = math.dist(point["map_reference_px"], truth)
                     errors.append(error)
                     cohort_errors[cohort].append(error)
         view_counts.update(case_counts)
         cohort_counts.update(case_counts)
+    missing = cohorts.keys() - seen
+    if missing and not allow_partial:
+        raise ValueError(f"Incomplete frozen review: {len(missing)} of {len(cohorts)} missing")
+    missing_by_stratum = Counter(cohorts[key] for key in missing)
     correct = sum(values["correct_role"] for values in counts.values())
     wrong = sum(values["wrong_role"] for values in counts.values())
     role_total = correct + wrong
@@ -93,10 +111,15 @@ def evaluate(
     planned = Counter(cohorts.values())
     return {
         "reviewer": labels["reviewer"], "review_cases": len(seen),
+        "review_completion": {
+            "planned": len(cohorts), "reviewed": len(seen), "missing": len(missing),
+            "complete": not missing,
+        } if sample_plan is not None else None,
         "by_view": {view: dict(result) for view, result in counts.items()},
         "by_stratum": {
             name: {
                 **by_cohort[name], "planned": planned.get(name),
+                "missing": missing_by_stratum[name] if sample_plan is not None else None,
                 "atlas_error_reference_px": _error_summary(cohort_errors[name]),
             }
             for name in sorted(planned.keys() | by_cohort.keys())
@@ -123,9 +146,12 @@ def main() -> None:
     for name in ("bundle", "report", "review", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--sample-plan", type=Path)
+    parser.add_argument("--allow-partial", action="store_true",
+                        help="Report interim counts and identify missing frozen cases")
     args = parser.parse_args()
     write_private(args.output, evaluate(
-        args.bundle, args.report, args.review, sample_plan=args.sample_plan,
+        args.bundle, args.report, args.review,
+        sample_plan=args.sample_plan, allow_partial=args.allow_partial,
     ))
 
 

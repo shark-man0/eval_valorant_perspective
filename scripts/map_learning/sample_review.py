@@ -24,7 +24,8 @@ def _selected(report: Path, bundle: Path, timeline: dict[str, Any]) -> dict[str,
 
 
 def sample_review(
-    bundle: Path, standard: Path, recovered: Path, *, per_stratum: int,
+    bundle: Path, standard: Path, recovered: Path, *,
+    per_stratum: int, split_view_controls: bool = False,
 ) -> dict[str, Any]:
     if per_stratum < 1:
         raise ValueError("A positive per-recording stratum budget is required")
@@ -44,7 +45,12 @@ def sample_review(
             life = frame.get("life", {}).get("value")
             sample = frame["sample"]
             if camera in {"REMOTE", "SPECTATOR"} or life in {"DEAD", "DOWNED"}:
-                stratum = "excluded_view_control"
+                if not split_view_controls:
+                    stratum = "excluded_view_control"
+                elif camera in {"REMOTE", "SPECTATOR"}:
+                    stratum = f"{camera.lower()}_view_control"
+                else:
+                    stratum = "dead_or_downed_control"
             elif camera != "SELF" or life != "ALIVE":
                 stratum = "uncertain_view_control"
             elif key in old and key in final:
@@ -74,6 +80,7 @@ def sample_review(
         "schema": SCHEMA, "timeline_sha256": file_sha(bundle),
         "standard_sha256": standard_sha, "recovered_sha256": file_sha(recovered),
         "per_stratum": per_stratum, "populations": counts,
+        **({"split_view_controls": True} if split_view_controls else {}),
         "cases": [case for _, case in sorted(cases)],
         "qualification": "development_only", "formal_outputs": 0,
     }
@@ -84,10 +91,14 @@ def main() -> None:
     for name in ("bundle", "standard", "recovered", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--per-stratum", type=int, default=2)
+    parser.add_argument("--split-view-controls", action="store_true")
     args = parser.parse_args()
     write_private(
         args.output,
-        sample_review(args.bundle, args.standard, args.recovered, per_stratum=args.per_stratum),
+        sample_review(
+            args.bundle, args.standard, args.recovered, per_stratum=args.per_stratum,
+            split_view_controls=args.split_view_controls,
+        ),
     )
 
 
