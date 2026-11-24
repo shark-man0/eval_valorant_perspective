@@ -78,6 +78,7 @@ def recover(
     primary_report: Path, reference_report: Path, companion_report: Path | None = None,
     companion_baseline: Path | None = None,
     exact_alignment_cache: Path | None = None,
+    strict_recovery_tracking: bool = False,
 ) -> dict[str, Any]:
     timeline = read_json(bundle_path)
     primary = read_json(primary_report)
@@ -167,6 +168,7 @@ def recover(
     observations = timeline["observations"]
     counts: Counter[str] = Counter()
     recovered = {}
+    conflicting_samples = set()
     last_offer = None
     order = sorted(samples, key=lambda key: native_time(samples[key][0]))
     for key in order:
@@ -232,6 +234,8 @@ def recover(
             "direct_portrait_or_rim_unresolved", "direct_portrait_needs_adjacent_observation",
         ):
             counts["reference_selector_veto"] += 1
+            if strict_recovery_tracking:
+                rescue.discard_projection()
             continue
         raw = exact_fits.inspect(image, sample)
         if not raw["map_name_candidates"]:
@@ -240,19 +244,36 @@ def recover(
             raw = projector.recover_contrast(image, raw, map_id, tuple(center))
         if not raw["map_name_candidates"] or raw["map_name_candidates"][0]["map_id"] != map_id:
             counts["registration_unavailable"] += 1
+            if strict_recovery_tracking:
+                rescue.discard_projection()
             continue
         measured = project_recorder_witness(
             image, sample, pool, result, raw, reference_sha256s=assets,
         )
-        if measured is not None:
-            if clearly_outside_atlas(void_distances, measured["map_reference_px"]):
-                counts["recovered_point_outside_atlas"] += 1
-                continue
-            recovered[key] = measured
-            if raw.get("alignment_recovery") == CONTRAST_ALIGNMENT:
-                counts["contrast_recovered"] += 1
+        if measured is None:
+            if strict_recovery_tracking:
+                rescue.discard_projection()
+            continue
+        if clearly_outside_atlas(void_distances, measured["map_reference_px"]):
+            counts["recovered_point_outside_atlas"] += 1
+            if strict_recovery_tracking:
+                rescue.discard_projection()
+            continue
+        alternate = companion.get(key)
+        if (strict_recovery_tracking and alternate is not None
+                and alternate["map_id"] == measured["map_id"]
+                and alternate["reference_sha256"] == measured["reference_sha256"]
+                and not clearly_outside_atlas(void_distances, alternate["map_reference_px"])
+                and math.dist(alternate["map_reference_px"], measured["map_reference_px"]) > 3):
+            conflicting_samples.add(key)
+            counts["cross_detector_conflict"] += 1
+            rescue.discard_projection()
+            continue
+        recovered[key] = measured
+        if raw.get("alignment_recovery") == CONTRAST_ALIGNMENT:
+            counts["contrast_recovered"] += 1
     for key, point in companion.items():
-        if key in known or key not in operable:
+        if key in known or key not in operable or key in conflicting_samples:
             continue
         if point["map_id"] != map_id or point["reference_sha256"] != assets[map_id]:
             continue
@@ -303,6 +324,7 @@ def main() -> None:
     parser.add_argument("--companion-report", type=Path)
     parser.add_argument("--companion-baseline", type=Path)
     parser.add_argument("--exact-alignment-cache", type=Path)
+    parser.add_argument("--strict-recovery-tracking", action="store_true")
     options = vars(parser.parse_args())
     output = options.pop("output")
     write_private(output, recover(**options))

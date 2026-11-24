@@ -141,7 +141,8 @@ def run(args):
         _compose(adaptive, reports["companion"], bundle, composed, companion=True)
         recovery_options.update({"companion-report": composed, "companion-baseline": adaptive})
     recovery_started = time.monotonic()
-    _run("recover_gaps.py", recovery_options)
+    flags = ("--strict-recovery-tracking",) if args.strict_recovery_tracking else ()
+    _run("recover_gaps.py", recovery_options, flags)
     timings["recovery"] = time.monotonic() - recovery_started
     displays = [prepare_map_display(path, args.map_catalog, args.zones_path)
                 for path in (standard, final)]
@@ -193,6 +194,7 @@ def main() -> None:
     parser.add_argument("--no-shared-alignment-cache", action="store_true")
     parser.add_argument("--training-candidates", action="store_true")
     parser.add_argument("--screen-atlas-void", action="store_true")
+    parser.add_argument("--strict-recovery-tracking", action="store_true")
     parser.add_argument("--portrait-mode", choices=("two-head", "reference"), default="two-head")
     parser.add_argument("--jobs", type=int, default=2)
     args = parser.parse_args()

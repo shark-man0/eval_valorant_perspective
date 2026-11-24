@@ -45,7 +45,7 @@ padding:8px}
 #mapTrack{height:auto;aspect-ratio:8/7;background:#17232e;cursor:default;border-radius:8px}
 #mapTrackStatus{min-height:1.5em;font-weight:600}
 .map-legend{display:flex;flex-wrap:wrap;gap:14px;color:#bbc6d0;margin:8px 0}
-.map-legend span::before{content:'●';margin-right:5px;color:var(--dot)}
+.map-legend span::before{content:var(--symbol,'●');margin-right:5px;color:var(--dot)}
 .error{color:#ff8f8f}@media(max-width:850px){main{display:block}}
 </style><h1>共通タイムライン <small>開発用</small></h1>
 <p class="muted">推定・候補を含みます。灰色はUNKNOWN。元の未編集録画を参照します。</p>
@@ -71,9 +71,11 @@ padding:8px}
 <button id="nextMapUnknown">次のUNKNOWN</button>
 <p id="mapTrackStatus" aria-live="polite"></p><canvas id="mapTrack" width="640" height="560"
 aria-label="実マップと直近10秒の観測点、観測エッジ、Named Zone"></canvas>
-<div class="map-legend"><span style="--dot:#fadc97">この秒の観測</span>
-<span style="--dot:#90bdcb">直近10秒の観測・エッジ</span>
-<span style="--dot:#6fd4ad">Named Zone候補</span></div>
+<div class="map-legend"><span style="--dot:#fadc97">この秒の本人選択候補</span>
+<span style="--dot:#fadc97;--symbol:'○'">本人未選択の補助観測</span>
+<span style="--dot:#90bdcb;--symbol:'━'">直近10秒の観測間の接続</span>
+<span style="--dot:#6fd4ad;--symbol:'□'">Named Zone候補</span></div>
+<p id="mapEvidenceStatus" class="muted"></p>
 <p id="mapReferenceStatus" class="muted"></p></section>
 <h2>イベント候補</h2><div id="events"></div>
 <details><summary>状態・不確実性・native参照</summary><pre id="detail"></pre></details>
@@ -121,7 +123,9 @@ const mapPoint=current.at(-1)||prior.at(-1)||
 const c=el('mapTrack'),g=c.getContext('2d'),pad=15;
 g.clearRect(0,0,c.width,c.height);
 const status=el('mapTrackStatus'),reference=el('mapReferenceStatus');
+const evidence=el('mapEvidenceStatus');
 reference.textContent='';
+evidence.textContent='';
 if(!mapPoint||current.some(p=>!sameAtlas(p,mapPoint))){
 status.textContent=mapPoint?'UNKNOWN · 複数のMap参照候補を検出':'UNKNOWN · この秒の位置候補なし';
 return;
@@ -129,9 +133,22 @@ return;
 const mapName=overview.recorder_map_names[mapPoint.map_id]||mapPoint.map_id;
 const activeZones=new Set(current.map(p=>p.zone_candidate).filter(Boolean));
 const zoneLabels=[...activeZones].map(z=>zoneName(z,mapName)).join('・');
-status.textContent=current.length?
-mapName+' · '+current.length+'観測点 · '+(zoneLabels||'Named Zone UNKNOWN'):
-mapName+' · UNKNOWN · この秒の位置候補なし';
+const selectedPoints=current.filter(p=>p.kind==='selected');
+const witnessCount=current.length-selectedPoints.length;
+status.textContent=mapName+' · '+(selectedPoints.length?
+  '本人選択候補 '+selectedPoints.length+'点':'本人位置 UNKNOWN');
+const residuals=selectedPoints.map(p=>p.fit_residual_p95_reference_px).filter(Number.isFinite);
+const evidenceParts=[];
+if(witnessCount)evidenceParts.push('補助観測 '+witnessCount+'点');
+if(selectedPoints.length){
+  evidenceParts.push('直接校正 '+selectedPoints.filter(p=>!p.alignment_recovery).length+'点');
+  evidenceParts.push('校正回復 '+selectedPoints.filter(p=>p.alignment_recovery).length+'点');
+}
+if(residuals.length){
+  evidenceParts.push('校正残差 P95 最大 '+Math.max(...residuals).toFixed(1)+' 参照px');
+}
+evidenceParts.push(zoneLabels?'Named Zone候補 '+zoneLabels:'Named Zone UNKNOWN');
+evidence.textContent=evidenceParts.join(' · ');
 const points=prior.filter(p=>sameAtlas(p,mapPoint));
 const edges=windowRows.flatMap(r=>r.native_edges_ending_here);
 const asset=overview.recorder_map_atlases.find(m=>sameAtlas(m,mapPoint));
@@ -166,8 +183,10 @@ g.lineTo(...toCanvas(b.map_reference_px));g.stroke()}
 const now=new Set(current.map(p=>p.sample.sample_sha256));
 for(const p of points){
 const here=now.has(p.sample.sample_sha256);
-g.fillStyle=here?'#fadc97':'#9db7c9';
-g.beginPath();g.arc(...toCanvas(p.map_reference_px),here?4:2.5,0,2*Math.PI);g.fill()}
+const color=here?'#fadc97':'#9db7c9';
+g.beginPath();g.arc(...toCanvas(p.map_reference_px),here?4:2.5,0,2*Math.PI);
+if(p.kind==='selected'){g.fillStyle=color;g.fill()}
+else{g.strokeStyle=color;g.lineWidth=1.5;g.stroke()}}
 }
 
 function allowed(row){return !roundFilter || row.round_candidates.includes(Number(roundFilter))}
@@ -455,7 +474,10 @@ def make_server(
         overview["recorder_map_names"] = {m.uuid: m.name for m in load_game_knowledge().maps}
         overview["recorder_map_atlases"] = map_atlases
         overview["recorder_map_presence"] = {
-            mode: [bool(row["recorder_map_observations"]) for row in result["rows"]]
+            mode: [
+                any(p["kind"] == "selected" for p in row["recorder_map_observations"])
+                for row in result["rows"]
+            ]
             for mode, result in map_modes.items()
         }
 

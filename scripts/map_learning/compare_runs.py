@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import math
 from pathlib import Path
 
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
@@ -14,6 +15,24 @@ def _verified_file(base: Path, receipt, name: str) -> Path:
     if file_sha(path) != receipt["output_sha256s"][name]:
         raise ValueError(f"Completed Map artifact changed: {name}")
     return path
+
+
+def _native_key(point):
+    sample = point["sample"]
+    return sample["native_time_base"], sample["native_pts_tick"]
+
+
+def _native_observations(rows):
+    selected = {}
+    links = set()
+    for row in rows:
+        selected.update({
+            _native_key(p): p for p in row["recorder_map_observations"]
+            if p["kind"] == "selected"
+        })
+        links.update(tuple(_native_key(p) for p in pair)
+                     for pair in row["native_edges_ending_here"])
+    return selected, links
 
 
 def compare(baseline: Path, candidate: Path):
@@ -48,9 +67,32 @@ def compare(baseline: Path, candidate: Path):
             x, y = [bool(row["recorder_map_observations"]) for row in (first, second)]
             lost += x and not y
             gained += y and not x
-        result[mode] = {"before": before, "after": after,
-                        "seconds_with_new_observations": gained,
-                        "seconds_with_lost_observations": lost}
+        old_points, old_links = _native_observations(a)
+        new_points, new_links = _native_observations(b)
+        same_reference_drifts = []
+        reference_changes = zone_changes = 0
+        for key in old_points.keys() & new_points.keys():
+            left, right = old_points[key], new_points[key]
+            if (left["map_id"], left["reference_sha256"]) != (
+                right["map_id"], right["reference_sha256"],
+            ):
+                reference_changes += 1
+                continue
+            same_reference_drifts.append(
+                math.dist(left["map_reference_px"], right["map_reference_px"])
+            )
+            zone_changes += left.get("zone_candidate") != right.get("zone_candidate")
+        result[mode] = {
+            "before": before, "after": after,
+            "seconds_with_new_observations": gained, "seconds_with_lost_observations": lost,
+            "native_selections_gained": len(new_points.keys() - old_points.keys()),
+            "native_selections_lost": len(old_points.keys() - new_points.keys()),
+            "native_edges_gained": len(new_links - old_links),
+            "native_edges_lost": len(old_links - new_links),
+            "changed_map_references": reference_changes, "changed_zone_candidates": zone_changes,
+            "compared_positions_on_same_reference": len(same_reference_drifts),
+            "max_position_change_reference_px": max(same_reference_drifts, default=None),
+        }
     return {"native_observations": len(old_clock), "exact_native_input_match": True,
             "outputs": result, "formal_outputs": 0}
 
