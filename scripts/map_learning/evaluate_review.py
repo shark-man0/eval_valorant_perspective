@@ -17,9 +17,17 @@ _VIEWS = {"SELF_LIVE", "REMOTE", "SPECTATOR", "DEAD", "UNKNOWN"}
 _ROLES = {"SELF", "OTHER", "UNKNOWN"}
 
 
+def _selected_points(report: Path, bundle: Path, timeline: dict[str, Any]) -> dict[str, Any]:
+    paths = load_map_timeline(report, bundle, timeline)
+    return {p["sample"]["sample_sha256"]: p
+            for row in paths["rows"] for p in row["recorder_map_observations"]
+            if p["kind"] == "selected"}
+
+
 def evaluate(
     bundle: Path, report: Path, review: Path, *,
     sample_plan: Path | None = None, allow_partial: bool = False,
+    candidate_report: Path | None = None,
 ) -> dict[str, Any]:
     timeline, labels = read_json(bundle), read_json(review)
     if (labels["schema"] != "development_map_independent_review_v1"
@@ -43,10 +51,10 @@ def evaluate(
             raise ValueError("Duplicate frame in the sample plan")
         if not cohorts or cohorts.keys() - timeline["native_frames"].keys():
             raise ValueError("Sample plan requires known native frames")
-    paths = load_map_timeline(report, bundle, timeline)
-    selected = {p["sample"]["sample_sha256"]: p
-                for row in paths["rows"] for p in row["recorder_map_observations"]
-                if p["kind"] == "selected"}
+    selected = _selected_points(report, bundle, timeline)
+    candidate = (_selected_points(candidate_report, bundle, timeline)
+                 if candidate_report is not None else None)
+    changes: Counter[str] = Counter()
     seen = set()
     counts: dict[str, Counter[str]] = defaultdict(Counter)
     by_cohort: dict[str, Counter[str]] = defaultdict(Counter)
@@ -82,6 +90,18 @@ def evaluate(
         ):
             raise ValueError("Position review must use the same exact map reference")
         excluded = view in {"REMOTE", "SPECTATOR", "DEAD"}
+        if candidate is not None:
+            new_point = candidate.get(key)
+            if point is None:
+                changes["both_abstained" if new_point is None else "new_selection"] += 1
+            elif new_point is None:
+                changes["selection_removed"] += 1
+                changes["removed_in_excluded_view"] += excluded
+                label = role.lower() if matching and role != "UNKNOWN" else "unverified"
+                changes[f"removed_{label}_role"] += 1
+            else:
+                kind = "retained_exact_selection" if point == new_point else "changed_selection"
+                changes[kind] += 1
         if point is None:
             case_counts["abstained"] += 1
             if excluded:
@@ -130,6 +150,7 @@ def evaluate(
         "reviewed_selection_correct_rate": correct / role_total if role_total else None,
         "reviewed_selection_error_rate": wrong / role_total if role_total else None,
         "atlas_error_reference_px": _error_summary(errors),
+        **({"selection_changes": dict(changes)} if candidate is not None else {}),
         "qualified": False, "formal_outputs": 0,
     }
 
@@ -146,12 +167,15 @@ def main() -> None:
     for name in ("bundle", "report", "review", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--sample-plan", type=Path)
+    parser.add_argument("--candidate-report", type=Path,
+                        help="Compare decisions on the exact timeline using baseline review roles")
     parser.add_argument("--allow-partial", action="store_true",
                         help="Report interim counts and identify missing frozen cases")
     args = parser.parse_args()
     write_private(args.output, evaluate(
         args.bundle, args.report, args.review,
         sample_plan=args.sample_plan, allow_partial=args.allow_partial,
+        candidate_report=args.candidate_report,
     ))
 
 

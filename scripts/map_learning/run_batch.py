@@ -19,7 +19,7 @@ _PATH_OPTIONS = {
     "models-directory", "camera-hint", "companion-models-directory", "acquisition", "frame-cache",
 }
 _SHARED = _PATH_OPTIONS - {"acquisition", "frame-cache"} | {
-    "threshold", "companion-threshold", "jobs", "portrait-mode", "hwaccel",
+    "threshold", "companion-threshold", "jobs", "portrait-mode", "hwaccel", "png-compression",
 }
 _FLAGS = {
     "compare-without-portraits", "no-shared-alignment-cache", "screen-atlas-void",
@@ -59,6 +59,10 @@ def run_batch(plan_path: Path, output: Path) -> bool:
     if (not _REQUIRED <= common.keys() <= _SHARED or set(flags) - _FLAGS
             or len(set(flags)) != len(flags) or not recordings):
         raise ValueError("Batch requires known run options and at least one recording")
+    compression = common.get("png-compression", 1)
+    if (type(compression) is not int or not 0 <= compression <= 9
+            or ("lossless-webp" in flags and compression != 1)):
+        raise ValueError("Valid PNG acquisition compression required")
     options = {
         name: _path(value, root) if name in _PATH_OPTIONS else value
         for name, value in common.items()

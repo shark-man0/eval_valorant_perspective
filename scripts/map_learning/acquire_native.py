@@ -66,8 +66,12 @@ def _decoded_frames(folder: Path, base: Fraction, expected: list[int], extension
 
 def acquire(
     policy_path: Path, source_sha: str, output: Path, *,
-    hwaccel: str | None = None, lossless_webp: bool = False,
+    hwaccel: str | None = None, lossless_webp: bool = False, png_compression: int = 1,
 ):
+    if type(png_compression) is not int or not 0 <= png_compression <= 9:
+        raise ValueError("PNG compression must be an integer from 0 to 9")
+    if lossless_webp and png_compression != 1:
+        raise ValueError("PNG compression only applies to PNG acquisition")
     _, source = development_source(policy_path, source_sha)
     video = Path(source["managed_path"]).resolve(strict=True)
     before = video.stat()
@@ -87,7 +91,8 @@ def acquire(
     acceleration = ["-hwaccel", hwaccel] if hwaccel else []
     extension = "webp" if lossless_webp else "png"
     encoding = (["-c:v", "libwebp", "-lossless", "1", "-compression_level", "3", "-pix_fmt", "bgra"]
-                if lossless_webp else ["-pix_fmt", "rgb24", "-compression_level", "1"])
+                if lossless_webp else ["-pix_fmt", "rgb24", "-compression_level",
+                                       str(png_compression)])
     with log_path.open("xb") as log:
         subprocess.run([
             "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "info", "-threads", "3",
@@ -108,6 +113,7 @@ def acquire(
         "frames": frames,
         "native_pts_parity": True, "verified_source_before_after": True,
         "elapsed_decode_seconds": time.monotonic() - started,
+        **({"png_compression": png_compression} if png_compression != 1 else {}),
     }
     write_private(folder / "verified_acquisition_PRIVATE.json", receipt)
     return receipt
@@ -120,9 +126,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--hwaccel")
     parser.add_argument("--lossless-webp", action="store_true")
+    parser.add_argument("--png-compression", type=int, default=1)
     args = parser.parse_args()
     acquire(args.policy_path, args.source_sha256, args.output,
-            hwaccel=args.hwaccel, lossless_webp=args.lossless_webp)
+            hwaccel=args.hwaccel, lossless_webp=args.lossless_webp,
+            png_compression=args.png_compression)
 
 
 if __name__ == "__main__":
