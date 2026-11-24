@@ -112,6 +112,22 @@ def test_review_separates_role_view_error_and_abstention(tmp_path):
     assert result["by_view"]["DEAD"]["rejected_excluded_view"] == 1
     assert result["atlas_error_reference_px"]["median"] == 3.0
 
+    candidate = tmp_path / "all_abstained.json"
+    report["segments"] = []
+    report["second_rows"] = join_recorder_seconds(report, timeline)
+    candidate.write_text(json.dumps(report), encoding="utf-8")
+    changes = evaluate(path, sidecar, review, candidate_report=candidate)["selection_changes"]
+    assert changes == {"selection_removed": 2, "removed_other_role": 1, "removed_self_role": 1,
+                       "removed_in_excluded_view": 1, "both_abstained": 1}
+
+    labels = json.loads(review.read_text(encoding="utf-8"))
+    labels["cases"][1]["candidate_sha256"] = "a" * 64
+    review.write_text(json.dumps(labels), encoding="utf-8")
+    changes = evaluate(path, sidecar, review, candidate_report=candidate)["selection_changes"]
+    assert "removed_other_role" not in changes
+    assert changes["removed_unverified_role"] == 1
+    assert changes["removed_in_excluded_view"] == 1
+
 
 def test_stratified_sample_and_review_use_exact_reports(tmp_path):
     from scripts.map_learning.sample_review import sample_review

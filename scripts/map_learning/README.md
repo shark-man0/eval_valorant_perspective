@@ -238,6 +238,12 @@ produces weak crop lineage for eligible sources and compares each specified
 baseline on exact native inputs. Review per-stage failure states in the
 private batch receipt. Keep all batch data outside Git.
 
+For a disk-constrained native acquisition, use `--png-compression` in
+`acquire_native.py` or `run_recording.py`, or set `png-compression` in batch
+`run_options`. Levels 0 through 9 select the lossless PNG compression level.
+The default is 1. Higher levels trade encoding time for less scratch space.
+Native PTS selection and decoded pixel checks still apply.
+
 `sample_review.py --bundle … --standard … --recovered … --output …`
 freezes a per-recording draw before human annotation. Its strata cover
 retained, new, lost and abstained selections, with separate excluded and
@@ -250,6 +256,14 @@ The report gives separate abstention and role error rates for the reviewed
 sample, plus per-stratum counts and coordinate errors. An equal-quota
 sample describes the review strata and needs population weighting for an
 overall estimate.
+
+Use `evaluate_review.py --candidate-report` to compare decisions with the
+reviewed baseline on the same timeline. Removed `OTHER` selections, removed
+`SELF` selections and removals without an exact baseline label have separate
+counts. Excluded views have a separate count and can overlap those role
+counts. New or changed selections require their own review to measure role
+accuracy. This report preserves HUMAN or AI_VISUAL provenance and leaves the
+fixed-input non-regression gate in place.
 
 `--strict-recovery-tracking` clears the local recovery chain when reference
 evidence vetoes a point, no usable atlas projection is obtained, or the

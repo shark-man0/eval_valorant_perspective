@@ -60,7 +60,7 @@ def run(args):
     if acquisition is None:
         cache = args.frame_cache or output / "native_frames"
         acquire(args.policy_path, args.source_sha256, cache, hwaccel=args.hwaccel,
-                lossless_webp=args.lossless_webp)
+                lossless_webp=args.lossless_webp, png_compression=args.png_compression)
         acquisition = cache / "verified_acquisition_PRIVATE.json"
     receipt = read_json(acquisition)
     if receipt["sha256"] != args.source_sha256:
@@ -198,6 +198,7 @@ def main() -> None:
     parser.add_argument("--frame-cache", type=Path)
     parser.add_argument("--hwaccel")
     parser.add_argument("--lossless-webp", action="store_true")
+    parser.add_argument("--png-compression", type=int, default=1)
     parser.add_argument("--companion-models-directory", type=Path)
     parser.add_argument("--companion-threshold", type=float)
     parser.add_argument("--compare-without-portraits", action="store_true")
