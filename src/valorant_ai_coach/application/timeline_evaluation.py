@@ -728,6 +728,7 @@ def evaluate_timeline(
     promoter: TimelinePromoter | None = None,
     second_features: tuple[Sequence[Any], str | None] | None = None,
     frame_refs: Mapping[float, str] | None = None,
+    motion_frames: Sequence[Any] | None = None,
 ) -> TimelineEvaluation:
     _require_development_bundle(bundle)
     if not _SAFE_ID.match(match_id):
@@ -750,7 +751,7 @@ def evaluate_timeline(
             records, records_sha256 = second_features
             feature_report = SecondFeaturePromoter().augment(
                 bundle, promotion, records, records_sha256=records_sha256,
-                frame_refs=frame_refs,
+                frame_refs=frame_refs, motion_frames=motion_frames,
             ).to_dict()
         rounds = formal_rounds(rounds, promotion, view)
     packages = tuple(
@@ -1203,6 +1204,23 @@ def load_bundle(timeline_path: Path | None, replay_path: Path | None) -> dict[st
     return timeline_view_from_replay(replay)
 
 
+def _motion_frames(path: Path | None, source: Mapping[str, Any]) -> list[Any] | None:
+    """#169 60 fps engagement frames, only for the timeline's own source video."""
+    if path is None:
+        return None
+    from valorant_ai_coach.rules.engagement_motion import load_motion_frames
+
+    first = next(
+        (line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()), None
+    )
+    sha = None if first is None else (json.loads(first).get("sample") or {}).get("source_sha256")
+    if not sha or sha != source.get("source_sha256"):
+        raise TimelineEvaluationError(
+            "交戦区間フレームと共通タイムラインの元動画（SHA-256）が一致しません"
+        )
+    return load_motion_frames(path)
+
+
 def openai_coach(model: str) -> RoundCoach:
     """The production API coach for the bridge (needs OPENAI_API_KEY or the stored key)."""
     from valorant_ai_coach.ai.coach import OpenAICoach
@@ -1237,6 +1255,8 @@ def run(
     coach: RoundCoach | None = None,
     second_features_path: Path | None = None,
     development_map_path: Path | None = None,
+    engagement_motion_path: Path | None = None,
+    ammo_path: Path | None = None,
 ) -> dict[str, Any]:
     bundle = load_bundle(timeline_path, replay_path)
     _require_development_bundle(bundle)
@@ -1279,7 +1299,8 @@ def run(
     features = None
     if second_features_path is not None:
         features = (
-            load_records(second_features_path), records_source_sha256(second_features_path)
+            load_records(second_features_path, ammo_path),
+            records_source_sha256(second_features_path),
         )
     evaluation = evaluate_timeline(
         bundle,
@@ -1290,6 +1311,7 @@ def run(
         promoter=promoter,
         second_features=features,
         frame_refs=load_frame_refs(second_features_path) if second_features_path else None,
+        motion_frames=_motion_frames(engagement_motion_path, source),
     )
     stored_view = None
     if database is not None:
@@ -1366,6 +1388,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                           help="config/timeline_promotion_v1.json の代替")
     evaluate.add_argument("--second-features", type=Path,
                           help="#155 extract_second_features.py の出力（.jsonl / .jsonl.gz）")
+    evaluate.add_argument("--ammo", type=Path,
+                          help="#169 extract_second_features.py --ammo-only の出力（予備弾数）")
+    evaluate.add_argument("--engagement-motion", type=Path,
+                          help="#169 extract_engagement_motion.py の出力（初弾のフレーム特定）")
     evaluate.add_argument("--development-map-report", type=Path,
                           help="同じタイムラインから出力した開発用Map観測レポート")
     evaluate.add_argument("--coach", choices=("mock", "openai"), default="mock")
@@ -1389,6 +1415,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         coach=openai_coach(args.model) if args.coach == "openai" else None,
         second_features_path=args.second_features,
         development_map_path=args.development_map_report,
+        engagement_motion_path=args.engagement_motion,
+        ammo_path=args.ammo,
     )
     print(
         json.dumps(

@@ -62,6 +62,9 @@
     "recovered_death_confidence": 0.7,
     "score_min_reads": 3,
     "score_min_share": 0.6,
-    "enemy_eco_confidence": 0.8
+    "enemy_eco_confidence": 0.8,
+    "ammo_min_confidence": 0.9,
+    "shot_confidence": 0.8,
+    "shot_pause_sec": 3.0
   }
 }

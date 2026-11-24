@@ -479,3 +479,130 @@ def test_full_buy_bound_matches_the_knowledge_base():
         rules["derived_bounds"]["full_buy_min_cost"]["value"]
     )
     assert knowledge.rules["round_loss_credits"].source_id == "community_economy_references"
+
+
+# ----------------------------------------------------------------- shots (#169)
+
+
+def _ammo_bundle(readings: dict[int, tuple[int, int]], weapon: str | None = None,
+                 spectating: tuple[int, int] | None = None) -> dict[str, Any]:
+    t = Timeline(140)
+    add_round(t, 1, 0, ally=0, enemy=0, won=False, death_at=45)
+    add_round(t, 2, 66, ally=0, enemy=1, won=True)
+    for second, (magazine, reserve) in readings.items():
+        t.hud(second, second + 1, ammo_current=magazine, ammo_reserve=reserve)
+        if weapon is not None:
+            t.hud(second, second + 1, weapon=weapon)
+    if spectating is not None:
+        t.player(spectating[0], spectating[1], "ALIVE", "SPECTATOR")
+    return t.bundle()
+
+
+# R2 combat 86-126: a burst, a reload, a switch to the sidearm and two shots.
+_AMMO = {90: (25, 50), 91: (25, 50), 92: (22, 50), 93: (22, 50), 95: (25, 47),
+         96: (25, 47), 99: (12, 36), 100: (11, 36), 101: (10, 36)}
+
+
+def _shots(result, round_no: int = 2) -> list[dict[str, Any]]:
+    item = next(r for r in result.rounds if r.round_no == round_no)
+    return [e for e in item.events if e["type"] == "shot"]
+
+
+def test_shots_come_from_magazine_drops_and_exclude_reloads_and_switches():
+    bundle = _ammo_bundle(_AMMO, weapon="ヴァンダル")
+    result, report = augment(bundle, records(140, lambda s: (5, 5)))
+    shots = _shots(result)
+    assert [(s["time_sec"], s["attributes"]["first_shot"], s["attributes"]["rounds_fired"])
+            for s in shots] == [(92.0, True, 3), (100.0, True, 1), (101.0, False, 1)]
+    assert report.counts["ammo_reload"] == 1 and report.counts["ammo_weapon_switch"] == 1
+    assert all(s["actor"] == "player" and s["event_id"].startswith("tl-shot-R2-") for s in shots)
+    assert shots[0]["attributes"]["weapon"] == "Vandal"
+    assert shots[0]["attributes"]["evidence_provenance"]["evidence_refs"] == ["ammo_current-ref"]
+    facts = facts_of(result, 2)
+    assert facts["first_shot_detected"] == [True, True, False]
+    assert "first_shot_stationary" not in facts and "shot_while_moving" not in facts
+
+
+def test_no_shot_outside_own_live_view_or_across_a_gap():
+    readings = {90: (25, 50), 91: (20, 50), 100: (20, 50), 104: (18, 50)}
+    result, _ = augment(_ammo_bundle(readings, spectating=(90, 92)), records(140, lambda s: (5, 5)))
+    # 90->91 is in spectator view; 91->100 and 100->104 are too far apart.
+    assert _shots(result) == []
+
+
+def test_unread_or_low_confidence_ammo_gives_no_shot():
+    bundle = _ammo_bundle({90: (25, 50), 91: (22, 50)})
+    for second in (90, 91):
+        for name in ("ammo_current", "ammo_reserve"):
+            bundle["seconds"][second]["hud_observations"][name]["candidates"][0]["confidence"] = 0.5
+    result, _ = augment(bundle, records(140, lambda s: (5, 5)))
+    assert _shots(result) == []
+
+
+def test_shots_are_checked_against_the_feature_magazine_readings():
+    feature_records = records(140, lambda s: (5, 5))
+    feature_records[91] = SecondRecord(feature_records[91].observation, 25, None, 0)
+    feature_records[92] = SecondRecord(feature_records[92].observation, 22, None, 0)
+    # A timeline second is sampled anywhere inside it: the 98.4 and 99.4 readings
+    # bracket the shot read between 99 and 100 and show no drop.
+    feature_records[98] = SecondRecord(feature_records[98].observation, 12, None, 0)
+    feature_records[99] = SecondRecord(feature_records[99].observation, 12, None, 0)
+    result, report = augment(_ammo_bundle(_AMMO), feature_records)
+    checks = [s["attributes"]["feature_ammo_check"] for s in _shots(result)]
+    assert checks == ["agree", "disagree", "undetermined"]
+    assert report.checks["shot_vs_feature_ammo"] == {
+        "agree": 1, "disagree": 1, "undetermined": 1
+    }
+
+
+def test_first_shot_frame_from_engagement_motion():
+    from valorant_ai_coach.rules.engagement_motion import MotionFrame
+
+    frames = [MotionFrame(91.0 + k / 60, 100, 80, 0.1, 0.1, 0.0, 0.0,
+                          25 if k < 30 else 24) for k in range(60)]
+    result = promote(_ammo_bundle(_AMMO))
+    SecondFeaturePromoter().augment(_ammo_bundle(_AMMO), result, records(140, lambda s: (5, 5)),
+                                    records_sha256=SHA, motion_frames=frames)
+    first = _shots(result)[0]
+    assert first["attributes"]["first_shot_frame_sec"] == round(91.0 + 30 / 60, 4)
+
+
+def test_keyframe_ammo_fills_unread_timeline_seconds_in_the_recorders_hud_only():
+    feature_records = records(140, lambda s: (5, 5))
+    feature_records[91] = SecondRecord(feature_records[91].observation, 21, 50, 0)
+    result, _ = augment(_ammo_bundle({90: (25, 50)}), feature_records)
+    shot = _shots(result)[0]
+    assert shot["attributes"]["ammo_sources"] == ["timeline", "features"]
+    assert shot["attributes"]["feature_ammo_check"] == "feature_sourced"
+    # Another agent's HUD (a teammate viewed while alive) never fills a reading.
+    feature_records[91] = observation(91, agent="Jett")
+    feature_records[91] = SecondRecord(feature_records[91].observation, 21, 50, 0)
+    result, _ = augment(_ammo_bundle({90: (25, 50)}), feature_records)
+    assert _shots(result) == []
+
+
+def test_a_revive_needs_the_top_bar_to_explain_live_own_view_after_a_death():
+    from valorant_ai_coach.facts.timeline_promotion import verify_promotion
+
+    def revived_bundle() -> dict[str, Any]:
+        t = Timeline(140)
+        add_round(t, 1, 0, ally=0, enemy=0, won=False, death_at=45)
+        add_round(t, 2, 66, ally=0, enemy=1, won=True)
+        t.player(46, 52, "DEAD", "SPECTATOR")
+        t.player(52, 60, "ALIVE", "SELF")  # own live view again, with HP
+        t.hud(52, 60, hp="100")
+        return t.bundle()
+
+    def bar(rise: bool) -> Bar:
+        def inner(second: int) -> tuple[int, int]:
+            if 46 <= second < 51 or (not rise and 46 <= second < 66):
+                return (4, 5)
+            return (5, 5)
+        return inner
+
+    for rise, expected in ((True, "revived"), (False, "false")):
+        bundle = revived_bundle()
+        result, report = augment(bundle, records(140, bar(rise)))
+        death = next(e for e in result.rounds[0].events if e["type"] == "player_death")
+        assert death["attributes"]["revive_corroborated_by_top_bar"] is rise
+        assert verify_promotion(bundle, result)["counts"]["player_death"].get(expected) == 1
