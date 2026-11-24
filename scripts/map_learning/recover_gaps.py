@@ -12,7 +12,7 @@ import numpy as np
 from recording_portraits import RecordingPortraitBank, RecordingPortraitTracker
 from runtime import DenseMarkerCNN, LearnedRecorderTracker, load_models
 
-from valorant_ai_coach.temporal.evidence import freeze_native_sample, native_time
+from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample, is_sha, native_time
 from valorant_ai_coach.temporal.map_direct_recorder import (
     DensePortraitSearch,
     DirectRecorderTracker,
@@ -47,7 +47,7 @@ def _points(report):
 
 def _load_companion(companion, source, timeline_path, timeline, *, manifest_sha, baseline):
     if companion is None and source is None:
-        return {}
+        return {}, {}
     if companion is None or source is None:
         raise ValueError("Companion report and its original replay must be supplied together")
     load_map_timeline(companion, timeline_path, timeline)
@@ -69,7 +69,12 @@ def _load_companion(companion, source, timeline_path, timeline, *, manifest_sha,
     if any(point["kind"] != "selected" or point["support_count"] < 2
            for point in additions.values()):
         raise ValueError("Companion additions require at least two native observations")
-    return additions
+    models = report.get("companion_candidate_model_receipts", {})
+    if models and (set(models) != {"marker", "portrait"}
+                   or not all(is_sha(value) for value in models.values())
+                   or models["portrait"] != parent["experimental_model_receipts"]["portrait"]):
+        raise ValueError("Companion model evidence does not match the reference replay")
+    return additions, models
 
 
 def recover(
@@ -139,7 +144,7 @@ def recover(
     void_distances = atlas_distances_for(
         map_catalog, map_id, assets[map_id], knowledge.map_references,
     )
-    companion = _load_companion(
+    companion, companion_models = _load_companion(
         companion_report, companion_baseline, bundle_path, timeline, manifest_sha=manifest_sha,
         baseline=reference,
     )
@@ -168,6 +173,8 @@ def recover(
     observations = timeline["observations"]
     counts: Counter[str] = Counter()
     recovered = {}
+    recovery_evidence = {}
+    seed_evidence = {}
     conflicting_samples = set()
     last_offer = None
     order = sorted(samples, key=lambda key: native_time(samples[key][0]))
@@ -216,6 +223,10 @@ def recover(
                 ):
                     bank.visit(sample, bounds)
                     bank.remember(image, sample, center)
+                    seed_evidence[key] = {
+                        "method": "learned" if selector is learned else "public_reference",
+                        "model_receipt_sha256": receipt if selector is learned else None,
+                    }
                     counts["exemplar_offers"] += 1
                     break
             rescue.previous = None
@@ -270,6 +281,12 @@ def recover(
             rescue.discard_projection()
             continue
         recovered[key] = measured
+        recovery_evidence[key] = {
+            "method": "recording_portraits", "current_view": camera,
+            "portrait_anchors": {
+                anchor: seed_evidence[anchor] for anchor in measured["portrait_anchor_sample_refs"]
+            },
+        }
         if raw.get("alignment_recovery") == CONTRAST_ALIGNMENT:
             counts["contrast_recovered"] += 1
     for key, point in companion.items():
@@ -282,6 +299,10 @@ def recover(
             continue
         if key not in recovered:
             recovered[key] = point
+            recovery_evidence[key] = {
+                "method": "marker_companion", "heads": companion_models,
+                "current_view": "reference_operability_evidence",
+            }
             counts["companion_addition"] += 1
         elif math.dist(point["map_reference_px"], recovered[key]["map_reference_px"]) > 3:
             del recovered[key]
@@ -289,6 +310,10 @@ def recover(
     added = build_recorder_paths(
         (recovered.get(key) for key in order), zones=zones, callouts=callouts,
     )
+    candidate_evidence = {
+        key: {**recovery_evidence[key], "position_sha256": digest(point)}
+        for key, point in _points(added).items()
+    }
     path = {
         **added, "segments": sorted(
             primary["segments"] + added["segments"], key=lambda seg: native_time(seg[0]["sample"]),
@@ -307,6 +332,7 @@ def recover(
         "reference_report_sha256": file_sha(reference_report),
         "companion_report_sha256": file_sha(companion_report) if companion_report else None,
         "recovery_model_receipt_sha256": receipt,
+        "recovery_candidate_evidence": candidate_evidence,
         "second_rows": seconds, "recovery_counts": dict(counts),
         "operable_coverage": measure_operable_coverage(path, rows, seconds, operable),
         "path_quality": measure_path_quality(path, rows, seconds, operable),

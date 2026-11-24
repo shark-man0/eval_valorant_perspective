@@ -8,7 +8,7 @@ from pathlib import Path
 
 from compare_runs import _operable_seconds
 
-from valorant_ai_coach.temporal.evidence import is_sha, native_time
+from valorant_ai_coach.temporal.evidence import digest, is_sha, native_time
 from valorant_ai_coach.temporal.map_path_quality import measure_path_quality
 from valorant_ai_coach.temporal.map_recorder_path import (
     join_recorder_seconds,
@@ -45,9 +45,12 @@ def merge_recovery_candidates(bundle, incumbent_path, candidate_path, reference_
 
     def admissible(point):
         residual = point.get("fit_residual_p95_reference_px")
+        key = point["sample"]["sample_sha256"]
+        view = timeline["native_frames"][key].get("viewed_identity") or {}
         return (
-            point["sample"]["sample_sha256"] in vacancies and point["kind"] == "selected"
+            key in vacancies and point["kind"] == "selected"
             and point["support_count"] >= 2
+            and view.get("agent_signature_relation") != "DIFFERENT"
             and (point["map_id"], point["reference_sha256"]) in atlases
             and not point.get("alignment_recovery")
             and type(residual) in (int, float) and 0 <= residual <= 8
@@ -55,6 +58,29 @@ def merge_recovery_candidates(bundle, incumbent_path, candidate_path, reference_
 
     additions = [list(group) for s in candidate["segments"]
                  for keep, group in groupby(s, key=admissible) if keep]
+    evidence = {}
+    candidate_sha = file_sha(candidate_path)
+    recovery_lineage = candidate.get("recovery_candidate_evidence", {})
+    for segment in additions:
+        for point in segment:
+            key = point["sample"]["sample_sha256"]
+            frame = timeline["native_frames"][key]
+            point_sha = digest(point)
+            lineage = recovery_lineage.get(key)
+            if lineage is not None and lineage.get("position_sha256") != point_sha:
+                raise ValueError("Recovery evidence must match the exact candidate position")
+            evidence[key] = {
+                "position_sha256": point_sha,
+                "candidate_report_sha256": candidate_sha,
+                "lineage": lineage,
+                "camera_state": frame["camera"]["value"],
+                "life_state": frame["life"]["value"],
+                "hud_agent_relation": (frame.get("viewed_identity") or {}).get(
+                    "agent_signature_relation", "UNKNOWN",
+                ),
+                "track_support_count": point["support_count"],
+                "alignment_residual_p95_reference_px": point["fit_residual_p95_reference_px"],
+            }
     segments = sorted([*incumbent["segments"], *additions],
                       key=lambda segment: native_time(segment[0]["sample"]))
     merged = {**incumbent, "segments": segments}
@@ -67,8 +93,9 @@ def merge_recovery_candidates(bundle, incumbent_path, candidate_path, reference_
         "path_quality": measure_path_quality(merged, timeline["seconds"], rows, operable),
         "recovery_composition": {
             "incumbent_sha256": file_sha(incumbent_path),
-            "candidate_sha256": file_sha(candidate_path),
+            "candidate_sha256": candidate_sha,
             "added_native_selections": sum(map(len, additions)),
+            "added_evidence": evidence,
         },
     }
 
