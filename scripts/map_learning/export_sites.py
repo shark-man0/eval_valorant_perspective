@@ -151,6 +151,26 @@ def seeded_plant_cores(image, seeds):
     return result
 
 
+def missing_plant_cores(image, polygons, seeds):
+    pending = {
+        site: point for site, point in seeds.items()
+        if all(f"{site} plant {kind}" not in polygons for kind in ("footprint", "core"))
+    }
+    cores = seeded_plant_cores(image, pending)
+    if not cores:
+        return {}
+    occupied = np.zeros(image.shape[:2], np.uint8)
+    for polygon in polygons.values():
+        cv2.fillPoly(occupied, [np.asarray(polygon).round().astype(np.int32)], 1)
+    for polygon in cores.values():
+        core = np.zeros_like(occupied)
+        cv2.fillPoly(core, [np.asarray(polygon, dtype=np.int32)], 1)
+        if np.any(occupied & core):
+            raise ValueError("Plant core overlaps another registered Zone")
+        occupied |= core
+    return cores
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for option in ("asset-cache", "map-catalog", "output"):
@@ -172,9 +192,11 @@ def main():
             if record["map_id"] in seeds or not is_sha(record["reference_sha256"]):
                 raise ValueError("Unique exact references required for plant cores")
             seeds[record["map_id"]] = record
-    retained = {row["map_id"] for row in records}
+    retained = {row["map_id"]: row for row in records}
     for game_map in load_game_knowledge().maps:
-        if game_map.uuid in retained or game_map.uuid not in by_map:
+        prior = retained.get(game_map.uuid)
+        seed = seeds.get(game_map.uuid)
+        if game_map.uuid not in by_map or (prior is not None and seed is None):
             continue
         key = f"map:{game_map.uuid}:displayicon"
         if not assets.has(key):
@@ -191,20 +213,31 @@ def main():
         if len(sites) != len(anchors) or set(anchors) != set(game_map.sites):
             continue
         image = assets.image(key)
+        if seed is not None and (
+            seed["reference_sha256"] != asset.sha256
+            or not seed["site_seeds_norm"]
+            or not seed["site_seeds_norm"].keys() <= anchors.keys()
+        ):
+            raise ValueError("Plant-core seed must use the exact atlas and named sites")
+        if prior is not None:
+            if prior["reference_sha256"] != asset.sha256:
+                raise ValueError("Cannot extend Zones registered against a different atlas")
+            cores = missing_plant_cores(image, prior["polygons"], seed["site_seeds_norm"])
+            if cores:
+                prior["polygons"].update(cores)
+                prior["plant_core_extension"] = "pinned_atlas_site_paint_interior"
+            continue
         polygons = plant_footprints(image, anchors)
         method = "pinned_atlas_site_shading"
         if not polygons:
             polygons = nearby_plant_footprints(image, anchors)
             method = "pinned_atlas_site_shading_unique_nearby_anchor"
-        seed = seeds.get(game_map.uuid)
-        if not polygons and seed is not None:
-            if (
-                seed["reference_sha256"] != asset.sha256
-                or set(seed["site_seeds_norm"]) != set(game_map.sites)
-            ):
-                raise ValueError("Plant-core seed must use the exact atlas and named sites")
-            polygons = seeded_plant_cores(image, seed["site_seeds_norm"])
-            method = "pinned_atlas_site_paint_interior"
+        if seed is not None:
+            cores = missing_plant_cores(image, polygons, seed["site_seeds_norm"])
+            if cores:
+                method = ("pinned_atlas_site_shading_with_interior_cores" if polygons
+                          else "pinned_atlas_site_paint_interior")
+                polygons.update(cores)
         if polygons:
             records.append({"map_id": game_map.uuid, "reference_sha256": asset.sha256,
                             "polygons": polygons, "evidence": method})

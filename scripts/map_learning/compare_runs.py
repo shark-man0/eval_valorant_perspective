@@ -35,6 +35,23 @@ def _native_observations(rows):
     return selected, links
 
 
+def _operable_seconds(reference_path, reference_sha, timeline_sha, timeline):
+    if not reference_path.is_file() or file_sha(reference_path) != reference_sha:
+        raise ValueError("Operable-second comparison requires the bound Map reference replay")
+    reference = read_json(reference_path)
+    if (reference["timeline_sha256"] != timeline_sha or reference["qualified"] is not False
+            or reference["formal_outputs"] != 0):
+        raise ValueError("Exact development Map reference replay required")
+    refs = reference["comparison_evidence"]["operable_sample_refs"]
+    operable = set(refs)
+    if len(operable) != len(refs) or not operable <= timeline["native_frames"].keys():
+        raise ValueError("Operable evidence must identify distinct exact timeline samples")
+    return {
+        row["timestamp"] for row in timeline["seconds"]
+        if row["sample_refs"] and operable.issuperset(row["sample_refs"])
+    }
+
+
 def compare(baseline: Path, candidate: Path):
     manifests = []
     modes = ("standard", "recovered")
@@ -49,12 +66,26 @@ def compare(baseline: Path, candidate: Path):
         clock = tuple((s["source_sha256"], s["native_time_base"], s["native_pts_tick"],
                        s["native_pixel_sha256"]) for s in native)
         reports = {}
+        reference_sha = None
         for mode in modes:
             report = _verified_file(run.parent, receipt, f"map_{mode}_PRIVATE.json")
             rows = load_map_timeline(report, path, timeline)["rows"]
-            reports[mode] = (read_json(report)["operable_coverage"], rows)
-        manifests.append((receipt["source_sha256"], clock, reports))
-    (old_source, old_clock, old), (new_source, new_clock, new) = manifests
+            raw = read_json(report)
+            if reference_sha is not None and reference_sha != raw["reference_report_sha256"]:
+                raise ValueError("Standard and recovered outputs must share the same Map reference")
+            reference_sha = raw["reference_report_sha256"]
+            reports[mode] = (raw["operable_coverage"], rows)
+        eligible = _operable_seconds(
+            run.parent / "map_reference_PRIVATE.json", reference_sha,
+            receipt["output_sha256s"]["timeline/timeline_PRIVATE.json"], timeline,
+        )
+        if any(counts["operable_seconds_with_current_evidence"] != len(eligible)
+               for counts, _ in reports.values()):
+            raise ValueError("The reported operable-second count does not match the exact evidence")
+        manifests.append((receipt["source_sha256"], clock, reports, eligible))
+    (old_source, old_clock, old, old_eligible), (
+        new_source, new_clock, new, new_eligible,
+    ) = manifests
     if old_source != new_source or not old_clock or old_clock != new_clock:
         raise ValueError("Regression comparison requires the same source, native PTS and pixels")
     result = {}
@@ -86,6 +117,7 @@ def compare(baseline: Path, candidate: Path):
                 zone_changes += 1
                 lost_zones += old_zone is not None
                 gained_zones += new_zone is not None
+        changed_positions = sum(drift > 0 for drift in same_reference_drifts)
         result[mode] = {
             "before": before, "after": after,
             "seconds_with_new_observations": gained, "seconds_with_lost_observations": lost,
@@ -96,7 +128,10 @@ def compare(baseline: Path, candidate: Path):
             "changed_map_references": reference_changes, "changed_zone_candidates": zone_changes,
             "lost_named_zone_candidates": lost_zones, "gained_named_zone_candidates": gained_zones,
             "compared_positions_on_same_reference": len(same_reference_drifts),
+            "changed_positions_on_same_reference": changed_positions,
             "max_position_change_reference_px": max(same_reference_drifts, default=None),
+            "lost_operable_seconds": sorted(old_eligible - new_eligible),
+            "gained_operable_seconds": sorted(new_eligible - old_eligible),
         }
     return {"native_observations": len(old_clock), "exact_native_input_match": True,
             "outputs": result, "formal_outputs": 0}
@@ -110,11 +145,11 @@ def regression_failures(comparison):
             key for key in (
                 "seconds_with_lost_observations", "native_selections_lost", "native_edges_lost",
                 "changed_map_references", "lost_named_zone_candidates",
+                "changed_positions_on_same_reference",
             ) if counts[key]
         ]
-        field = "operable_seconds_with_current_evidence"
-        if counts["before"][field] != counts["after"][field]:
-            failures[mode].append("operable_evidence_changed")
+        if counts["lost_operable_seconds"] or counts["gained_operable_seconds"]:
+            failures[mode].append("operable_seconds_changed")
     return {mode: reasons for mode, reasons in failures.items() if reasons}
 
 
