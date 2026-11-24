@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 from tempfile import NamedTemporaryFile
+from time import monotonic, sleep
 from typing import Any, cast
 
 import numpy as np
@@ -34,14 +35,41 @@ class ExactAlignmentCache:
         key = digest(["exact_atlas_fit_v1", self.projector.fingerprint, sample["sample_sha256"]])
         path = directory / f"{key}.json"
         if path.exists():
-            entry = read_json(path)
-            if entry["key"] != key or entry["raw_sha256"] != digest(entry["raw"]):
-                raise ValueError("Exact alignment cache entry changed")
-            self.hits += 1
-            return cast(dict[str, Any], entry["raw"])
+            return self._read(path, key)
+
+        claim = path.with_suffix(".pending")
+        try:
+            descriptor = os.open(claim, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        except FileExistsError:
+            # A crashed worker may leave a claim. Retry independently after a bounded wait.
+            deadline = monotonic() + 2
+            while claim.exists() and not path.exists() and monotonic() < deadline:
+                sleep(0.02)
+            if path.exists():
+                return self._read(path, key)
+            return self._compute(image, path, key)
+        else:
+            os.close(descriptor)
+            try:
+                if path.exists():
+                    return self._read(path, key)
+                return self._compute(image, path, key)
+            finally:
+                claim.unlink()
+
+    def _read(self, path: Path, key: str) -> dict[str, Any]:
+        entry = read_json(path)
+        if entry["key"] != key or entry["raw_sha256"] != digest(entry["raw"]):
+            raise ValueError("Exact alignment cache entry changed")
+        self.hits += 1
+        return cast(dict[str, Any], entry["raw"])
+
+    def _compute(self, image: NDArray[np.uint8], path: Path, key: str) -> dict[str, Any]:
         raw = self.projector.inspect_exact(image)["raw"]
         self.misses += 1
-        with NamedTemporaryFile(mode="w", encoding="utf-8", dir=directory, delete=False) as stream:
+        with NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent, delete=False,
+        ) as stream:
             temporary = Path(stream.name)
             try:
                 json.dump({"key": key, "raw_sha256": digest(raw), "raw": raw}, stream,
