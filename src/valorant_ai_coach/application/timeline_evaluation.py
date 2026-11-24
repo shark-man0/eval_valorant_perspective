@@ -1168,6 +1168,9 @@ def render_markdown(report: Mapping[str, Any]) -> str:
             "", "## 開発用Map観測", "",
             f"位置候補 {summary['seconds_with_position']}秒、観測エッジ "
             f"{summary['seconds_with_native_edge']}秒、位置不明 {summary['unknown_seconds']}秒。",
+            f"本人選択候補 {summary['seconds_with_recorder_selection']}秒、補助観測のみ "
+            f"{summary['seconds_with_support_only']}秒、"
+            f"本人選択候補のZone競合 {summary['seconds_with_conflicting_selected_zones']}秒。",
             "秒数は観測の存在を表します。Zone滞在時間と評価スコアは算出対象外です。",
         ])
     return "\n".join(lines) + "\n"

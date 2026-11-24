@@ -11,6 +11,7 @@ import numpy as np
 
 from valorant_ai_coach.knowledge import load_game_knowledge
 from valorant_ai_coach.knowledge.assets import ReferenceAssets
+from valorant_ai_coach.temporal.evidence import is_sha
 from valorant_ai_coach.temporal.replay import read_json, write_private
 
 
@@ -100,17 +101,77 @@ def nearby_plant_footprints(image, anchors):
     }
 
 
+def seeded_plant_cores(image, seeds):
+    """Recover a contiguous interior patch around each reviewed atlas seed.
+
+    A core lies entirely in the connected plant-colored pixels, so walls and
+    disconnected pieces cannot be included by filling the outer contour.
+    """
+    if image.ndim != 3 or image.shape[2] != 4 or not seeds:
+        return {}
+    height, width = image.shape[:2]
+    labels, retained = _paint_components(image)
+    result = {}
+    used = set()
+    for site, (x, y) in sorted(seeds.items()):
+        if not (0 <= x < 1 and 0 <= y < 1):
+            return {}
+        px, py = int(x * width), int(y * height)
+        identity = int(labels[py, px])
+        if identity not in retained or identity in used:
+            return {}
+        used.add(identity)
+        mask = labels == identity
+        row_limits = {}
+        for direction in (-1, 1):
+            for row in range(py, -1 if direction < 0 else height, direction):
+                if not mask[row, px]:
+                    break
+                west = np.flatnonzero(~mask[row, :px])
+                east = np.flatnonzero(~mask[row, px+1:])
+                row_limits[row] = (
+                    int(west[-1]) + 1 if len(west) else 0,
+                    px + int(east[0]) if len(east) else width - 1,
+                )
+        best = (0, px, py, px, py)
+        top_left, top_right = 0, width - 1
+        for top in range(py, min(row_limits) - 1, -1):
+            lo, hi = row_limits[top]
+            top_left, top_right = max(top_left, lo), min(top_right, hi)
+            left, right = top_left, top_right
+            for bottom in range(py, max(row_limits) + 1):
+                lo, hi = row_limits[bottom]
+                left, right = max(left, lo), min(right, hi)
+                candidate = ((right - left) * (bottom - top), left, top, right, bottom)
+                best = max(best, candidate)
+        area, left, top, right, bottom = best
+        if area < .15 * retained[identity] or min(right-left, bottom-top) < 12:
+            return {}
+        result[f"{site} plant core"] = [[left, top], [right, top], [right, bottom], [left, bottom]]
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for option in ("asset-cache", "map-catalog", "output"):
         parser.add_argument(f"--{option}", required=True, type=Path)
     parser.add_argument("--existing", type=Path)
+    parser.add_argument("--plant-core-seeds", type=Path)
     args = parser.parse_args()
     assets = ReferenceAssets.load(args.asset_cache)
     index = read_json(args.map_catalog)
     root = args.map_catalog.parent.resolve()
     by_map = {row["id"]: row for row in index["maps"]}
     records = read_json(args.existing)["maps"] if args.existing else []
+    seeds = {}
+    if args.plant_core_seeds is not None:
+        source = read_json(args.plant_core_seeds)
+        if source["schema"] != "development_atlas_plant_core_seeds_v1":
+            raise ValueError("Known development plant-core seed schema required")
+        for record in source["maps"]:
+            if record["map_id"] in seeds or not is_sha(record["reference_sha256"]):
+                raise ValueError("Unique exact references required for plant cores")
+            seeds[record["map_id"]] = record
     retained = {row["map_id"] for row in records}
     for game_map in load_game_knowledge().maps:
         if game_map.uuid in retained or game_map.uuid not in by_map:
@@ -135,6 +196,15 @@ def main():
         if not polygons:
             polygons = nearby_plant_footprints(image, anchors)
             method = "pinned_atlas_site_shading_unique_nearby_anchor"
+        seed = seeds.get(game_map.uuid)
+        if not polygons and seed is not None:
+            if (
+                seed["reference_sha256"] != asset.sha256
+                or set(seed["site_seeds_norm"]) != set(game_map.sites)
+            ):
+                raise ValueError("Plant-core seed must use the exact atlas and named sites")
+            polygons = seeded_plant_cores(image, seed["site_seeds_norm"])
+            method = "pinned_atlas_site_paint_interior"
         if polygons:
             records.append({"map_id": game_map.uuid, "reference_sha256": asset.sha256,
                             "polygons": polygons, "evidence": method})

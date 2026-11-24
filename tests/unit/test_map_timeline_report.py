@@ -7,7 +7,7 @@ import pytest
 from scripts.map_learning.evaluate_review import evaluate
 from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample
 from valorant_ai_coach.temporal.map_recorder_path import VERSION, join_recorder_seconds
-from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
+from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline, summarize_map_seconds
 from valorant_ai_coach.temporal.replay import file_sha
 
 
@@ -206,4 +206,47 @@ def test_review_can_sample_excluded_view_kinds_separately(tmp_path):
     assert {row["sample_sha256"]: row["stratum"] for row in plan["cases"]} == {
         ids[0]: "spectator_view_control", ids[1]: "remote_view_control",
         ids[2]: "dead_or_downed_control",
+    }
+
+
+
+def test_map_summary_keeps_witnesses_and_conflicting_zones_out_of_unique_selected_zones():
+    def point(kind, zone, ref="a"):
+        return {"map_id": "map", "reference_sha256": ref * 64,
+                "kind": kind, "zone_candidate": zone}
+
+    observations = [
+        [point("measured_witness", "A")],
+        [point("selected", "A"), point("selected", None)],
+        [point("selected", "A"), point("selected", "B")],
+        [point("selected", "A", "a"), point("selected", "A", "b")],
+        [point("selected", "A"), point("measured_witness", "B")],
+        [],
+    ]
+    report = summarize_map_seconds([
+        {"recorder_map_observations": points, "trajectory_coverage": "UNKNOWN"}
+        for points in observations
+    ])
+    assert report["seconds_with_position"] == 5
+    assert report["seconds_with_recorder_selection"] == 4
+    assert report["seconds_with_support_only"] == 1
+    assert report["seconds_with_conflicting_selected_zones"] == 2
+    assert report["unique_selected_zone_observed_seconds"] == {"map/A": 1}
+    assert report["named_zone_observed_seconds"] == {"map/A": 5, "map/B": 2}
+    assert report["formal_outputs"] == 0
+
+
+def test_map_regression_gate_flags_losses_even_when_aggregate_matches():
+    from scripts.map_learning.compare_runs import regression_failures
+
+    counts = {
+        "before": {"operable_seconds_with_current_evidence": 3},
+        "after": {"operable_seconds_with_current_evidence": 3},
+        "seconds_with_lost_observations": 0, "native_selections_lost": 0,
+        "native_edges_lost": 0, "changed_map_references": 0, "lost_named_zone_candidates": 0,
+        "gained_named_zone_candidates": 2,
+    }
+    assert regression_failures({"outputs": {"standard": counts}}) == {}
+    assert regression_failures({"outputs": {"standard": {**counts, "native_edges_lost": 1}}}) == {
+        "standard": ["native_edges_lost"],
     }
