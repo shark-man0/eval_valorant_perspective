@@ -44,14 +44,36 @@ def write_private(path: Path, value: Any) -> None:
         stream.write("\n")
 
 
-class SourcePolicy:
-    """Exact allowlist from existing accepted DEVELOPMENT; never open source media."""
+ADMISSION_PURPOSES: tuple[str, ...] = ("development_analysis", "qualification", "final_evaluation")
+EVALUATION_EXPOSURE = {
+    "qualification": "INDEPENDENT_QUALIFICATION",
+    "final_evaluation": "INDEPENDENT_FINAL_EVALUATION",
+}
 
-    def __init__(self, policy: dict[str, Any]) -> None:
+
+class SourcePolicy:
+    """Exact allowlist from existing accepted DEVELOPMENT; never open source media.
+
+    ``purpose`` is chosen by the caller, never by the policy file. Every development
+    entry point keeps the default. Only the independent evaluation path passes
+    ``qualification`` or ``final_evaluation``; then the catalog must show the
+    recordings opened for that purpose and never exposed otherwise, and the policy
+    file must name the same purpose, so an evaluation policy cannot be fed to a
+    development command (or the reverse).
+    """
+
+    def __init__(self, policy: dict[str, Any], purpose: str = "development_analysis") -> None:
         self.legacy_anchors: dict[str, set[str]] = {}
+        if purpose not in ADMISSION_PURPOSES:
+            raise ValueError("Known admission purpose required")
+        if policy.get("purpose", "development_analysis") != purpose:
+            raise ValueError("Policy purpose differs from the caller's admission purpose")
+        self.purpose = purpose
         if "catalog" in policy:
             self._from_catalog(policy)
             return
+        if purpose != "development_analysis":
+            raise ValueError("Independent evaluation admits only through the recording catalog")
         manifest_path, allocation_path = Path(policy["manifest"]), Path(policy["allocation"])
         if (
             file_sha(manifest_path) != policy["manifest_sha256"]
@@ -98,8 +120,9 @@ class SourcePolicy:
         """Admission from the recording catalog (#62), the single source of truth.
 
         The catalog's guard decides development use (DEVELOPMENT, or a protected
-        recording with an explicit user authorisation). Receipts written under the
-        legacy manifests stay valid through the anchors recorded at import.
+        recording with an explicit user authorisation) or, for the evaluation
+        purposes, an opened and otherwise unexposed hold-out. Receipts written under
+        the legacy manifests stay valid through the anchors recorded at import.
         """
         from valorant_ai_coach.recordings.admission import resolve_catalog
 
@@ -110,7 +133,7 @@ class SourcePolicy:
         identifiers = list(policy.get("allowed_recording_ids") or [])
         if not identifiers or len(set(identifiers)) != len(identifiers):
             raise ValueError("Explicit existing source allowlist required")
-        catalog.guard(identifiers, "development_analysis")
+        catalog.guard(identifiers, self.purpose)
         allowed: dict[str, dict[str, Any]] = {}
         for identifier in identifiers:
             record = catalog.state.recordings[identifier]
@@ -124,8 +147,9 @@ class SourcePolicy:
                 "managed_path": str(catalog.local_path(location["path"])),
                 "status": "accepted",
                 "split": record.split,
-                "exposure": "DEVELOPMENT" if record.split == "DEVELOPMENT"
-                else "USER_AUTHORIZED_DEVELOPMENT",
+                "exposure": EVALUATION_EXPOSURE.get(self.purpose)
+                or ("DEVELOPMENT" if record.split == "DEVELOPMENT"
+                    else "USER_AUTHORIZED_DEVELOPMENT"),
             }
             self.legacy_anchors[record.source_sha256] = set(record.legacy_anchors)
         if set(allowed) & set(policy.get("protected_source_sha256s", [])):
