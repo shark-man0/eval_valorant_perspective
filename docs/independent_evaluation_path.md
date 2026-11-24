@@ -26,7 +26,9 @@ python -m valorant_ai_coach.temporal.independent_evaluation execute \
 - 評価用途では、録画カタログ経由の受け入れだけを認めます。旧方式の割当ファイルでは受け付けません。
 - 解析オプションは、承認済みの共通タイムライン（#150・#151）の設定に固定しています。補助入力や上書き、調整用の入力は受け付けません。
 - 出力は新しい非公開ディレクトリにだけ書き、受領ファイルに計画のハッシュ、承認の記録、計画時点と実行時点のカタログの先頭を残します。
-- 採点と正式な資格付けはしません。受領ファイルには `scoring: NOT_PERFORMED`、`formal_qualification: NOT_GRANTED`、`formal_outputs: 0` を記録します。
+- 中断した実行は `--resume` で、同じ計画と承認の記録のまま同じ出力先から続けられます。終わった録画はそのまま使い、途中の録画は出力を別名に退避してチェックポイントから解析し直します。
+- 64MB 以上の JSON 出力は、伸張して同じハッシュになることを確かめてから gzip に置き換えます。元のハッシュは各録画の完了記録に残します。
+- この経路では採点も正式な資格付けもしません。受領ファイルには `scoring: NOT_PERFORMED`、`formal_qualification: NOT_GRANTED`、`formal_outputs: 0` を記録します。採点は `independent_scoring` が、事前に固定した基準（`docs/independent_evaluation_protocol.md`）で行います。
 
 ## まだしていないこと
 

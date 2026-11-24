@@ -145,3 +145,54 @@ def test_execute_runs_the_frozen_pipeline_with_the_evaluation_purpose(setup, mon
     assert receipt["scoring"] == "NOT_PERFORMED" and receipt["formal_outputs"] == 0
     assert [r["recording_id"] for r in receipt["results"]] == [rid]
     assert (tmp_path / "run" / "independent_evaluation_receipt_PRIVATE.json").exists()
+
+
+def test_execute_resumes_without_rerunning_finished_steps_and_compacts(setup, monkeypatch):
+    catalog, ids, refs, reader, tmp_path = setup
+    rid = ids["QUALIFICATION"]
+    catalog.open_for_evaluation([rid], "qualification", "approved")
+    _prepare(catalog, ids, refs, reader, tmp_path, "QUALIFICATION")
+    runs: list[Path] = []
+    fail = {"camera": True}
+
+    def fake_run_match(**kwargs):
+        runs.append(kwargs["output"])
+        assert kwargs["checkpoint_dir"].name == "checkpoint"
+        kwargs["output"].mkdir()
+        (kwargs["output"] / "completion_PRIVATE.json").write_text("{}", encoding="utf-8")
+        (kwargs["output"] / "timeline_PRIVATE.json").write_text("[1]" * 50, encoding="utf-8")
+        return {}
+
+    def fake_camera(argv):
+        if fail["camera"]:
+            raise RuntimeError("interrupted")
+        Path(argv[argv.index("--output") + 1]).write_text("{}", encoding="utf-8")
+        return 0
+
+    def fake_export(**kwargs):
+        kwargs["output"].mkdir()
+        (kwargs["output"] / "timeline_PRIVATE.json").write_text("[2]" * 50, encoding="utf-8")
+        return {"output_sha256s": {}}
+
+    from valorant_ai_coach.temporal import application, camera_panel, match
+
+    monkeypatch.setattr(match, "run_match", fake_run_match)
+    monkeypatch.setattr(camera_panel, "main", fake_camera)
+    monkeypatch.setattr(application, "export_application", fake_export)
+    monkeypatch.setattr(ie, "COMPACT_MIN_BYTES", 10)
+    plan_path = tmp_path / "out" / "plan_PRIVATE.json"
+    with pytest.raises(RuntimeError):
+        ie.execute(plan_path=plan_path, approval_note="ok", output=tmp_path / "run")
+    with pytest.raises(ValueError, match="same plan"):
+        ie.execute(plan_path=plan_path, approval_note="other", output=tmp_path / "run",
+                   resume=True)
+    fail["camera"] = False
+    receipt = ie.execute(plan_path=plan_path, approval_note="ok", output=tmp_path / "run",
+                         resume=True)
+    assert len(runs) == 1  # the finished acquisition is not analysed again
+    (result,) = receipt["results"]
+    assert {c["file"] for c in result["compacted"]} == {"timeline_PRIVATE.json"}
+    work = tmp_path / "run" / rid
+    assert (work / "timeline" / "timeline_PRIVATE.json.gz").exists()
+    assert not (work / "timeline" / "timeline_PRIVATE.json").exists()
+    assert not (work / "checkpoint").exists() and receipt["resumed"] is True
