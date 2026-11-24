@@ -23,39 +23,25 @@ jobs:
       - name: Ensure FFmpeg integration-test dependency
         shell: pwsh
         run: |
-          if (-not (Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
-            $Installed = $false
-            for ($Attempt = 1; $Attempt -le 3 -and -not $Installed; $Attempt++) {
-              choco install ffmpeg --yes --no-progress
-              $Installed = $LASTEXITCODE -eq 0 -and (Get-Command ffmpeg -ErrorAction SilentlyContinue)
-              if (-not $Installed -and $Attempt -lt 3) {
-                Start-Sleep -Seconds (10 * $Attempt)
-              }
-            }
-            if (-not $Installed) { throw "FFmpeg installation failed after 3 attempts." }
+          # FFmpeg.org lists this Windows distributor. Pin the release asset
+          # and its SHA-256 so the runner uses direct binaries without package shims.
+          $Release = "https://github.com/GyanD/codexffmpeg/releases/download/9.1"
+          $Asset = "ffmpeg-9.1-essentials_build.zip"
+          $Expected = "b9bbbb3acece000cbeec994f856649354e52c773807841e78908374b24d658fd"
+          $Archive = Join-Path $env:RUNNER_TEMP $Asset
+          $Bundle = Join-Path $env:RUNNER_TEMP "valorant-test-ffmpeg"
+          Invoke-WebRequest -Uri "$Release/$Asset" -OutFile $Archive `
+            -MaximumRetryCount 2 -RetryIntervalSec 5 -TimeoutSec 120
+          if ((Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash -ne $Expected) {
+            throw "The FFmpeg release archive does not match the pinned SHA-256."
           }
-          # Killing a Chocolatey shim can leave its FFmpeg child holding the
-          # decoder log open. Run the encoder itself for deterministic cleanup.
-          $ResolvedFFmpeg = (Get-Command ffmpeg -ErrorAction Stop).Source
-          if ($env:ChocolateyInstall -and
-              $ResolvedFFmpeg.StartsWith((Join-Path $env:ChocolateyInstall "bin"),
-                  [System.StringComparison]::OrdinalIgnoreCase)) {
-            $PackageTools = Join-Path $env:ChocolateyInstall "lib\ffmpeg\tools"
-            $Encoders = @(Get-ChildItem -Path $PackageTools -Filter ffmpeg.exe -Recurse -File)
-            if ($Encoders.Count -ne 1) {
-              throw "Expected one FFmpeg binary in $PackageTools; found $($Encoders.Count)."
-            }
-            $BinaryDirectory = $Encoders[0].DirectoryName
-            if (-not (Test-Path (Join-Path $BinaryDirectory "ffprobe.exe"))) {
-              throw "The FFmpeg binary directory does not contain ffprobe.exe."
-            }
-            $BinaryDirectory | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-            $env:PATH = "$BinaryDirectory;$env:PATH"
+          Expand-Archive -LiteralPath $Archive -DestinationPath $Bundle
+          $BinaryDirectory = Join-Path $Bundle "ffmpeg-9.1-essentials_build/bin"
+          foreach ($Name in @("ffmpeg.exe", "ffprobe.exe")) {
+            & (Join-Path $BinaryDirectory $Name) -version
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
-          (Get-Command ffmpeg -ErrorAction Stop).Source
-          (Get-Command ffprobe -ErrorAction Stop).Source
-          ffmpeg -version
-          ffprobe -version
+          $BinaryDirectory | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - run: python -m pip install -c constraints-windows.txt -e ".[gui,dev,build]"
       - run: python tests/validate_dataset.py
       - run: python -m pytest --durations=25 --cov=valorant_ai_coach --cov-report=term-missing --cov-fail-under=75
