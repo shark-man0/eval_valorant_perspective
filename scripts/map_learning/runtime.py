@@ -89,6 +89,11 @@ class DenseMarkerCNN:
 
 
 class LearnedRecorderTracker(DirectRecorderTracker):
+    _portrait_rejections = (
+        "no_learned_peak", "learned_rim_or_crop", "learned_portrait_score",
+        "learned_portrait_margin", "external_portrait_conflict",
+    )
+
     def __init__(self, *args, portrait_model, refine_center=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.portrait_model = portrait_model
@@ -137,12 +142,14 @@ class LearnedRecorderTracker(DirectRecorderTracker):
         scale = image.shape[1] / 1920
         half = max(2, round(8 * scale))
         for i, p in enumerate(peaks):
+            self._rejection_stage = max(self._rejection_stage, 1)
             if p.warm_sectors < 5 or p.opposite_pairs < 1 or p.chromatic_rivals > 5:
                 continue
             x, y = p.center[0] + left, p.center[1] + top
             crop = image[y - half : y + half + 1, x - half : x + half + 1]
             if crop.shape[:2] != (2 * half + 1, 2 * half + 1):
                 continue
+            self._rejection_stage = max(self._rejection_stage, 2)
             values = (
                 self.portrait_model(image_tensor(cv2.resize(crop, (17, 17))))[0]
                 .softmax(dim=0)
@@ -150,8 +157,12 @@ class LearnedRecorderTracker(DirectRecorderTracker):
             )
             score = float(values[target])
             margin = score - float(np.delete(values, target).max())
-            if score < 0.8 or margin < 0.35:
+            if score < 0.8:
                 continue
+            self._rejection_stage = max(self._rejection_stage, 3)
+            if margin < 0.35:
+                continue
+            self._rejection_stage = max(self._rejection_stage, 4)
             # Preserve positive current evidence from the independent reference bank
             # while measuring whether the learned portrait separates close competitors.
             official = self.portrait_reader._portrait_scores(image, (x, y))

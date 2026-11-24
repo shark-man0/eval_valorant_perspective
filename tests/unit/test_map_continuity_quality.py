@@ -4,7 +4,11 @@ import cv2
 import numpy as np
 import pytest
 
-from scripts.map_learning.export_sites import nearby_plant_footprints, plant_footprints
+from scripts.map_learning.export_sites import (
+    nearby_plant_footprints,
+    plant_footprints,
+    seeded_plant_cores,
+)
 from scripts.map_learning.recording_portraits import RecordingPortraitBank
 from valorant_ai_coach.temporal.evidence import freeze_native_sample
 from valorant_ai_coach.temporal.map_path_quality import measure_path_quality
@@ -82,3 +86,20 @@ def test_plant_footprints_requires_one_to_one_public_site_anchors():
     }
     assert nearby_plant_footprints(image, {"A": (.17, .17), "B": (.2, .19)}) == {}
     assert nearby_plant_footprints(image, {"A": (.42, .42)}) == {}
+
+
+
+def test_seeded_plant_cores_stay_inside_paint_and_never_fill_holes():
+    hsv = np.zeros((120, 120, 3), np.uint8)
+    paint = (30, 100, 210)
+    hsv[8:60, 8:65] = paint
+    hsv[25:42, 28:45] = 0
+    hsv[74:113, 74:113] = paint
+    image = np.dstack([cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR), np.full(hsv.shape[:2], 255, np.uint8)])
+    cores = seeded_plant_cores(image, {"A": (.15, .2), "B": (.7, .7)})
+    assert set(cores) == {"A plant core", "B plant core"}
+    for ring in cores.values():
+        (left, top), _, (right, bottom), _ = ring
+        assert np.all(hsv[top:bottom+1, left:right+1] == paint)
+    assert seeded_plant_cores(image, {"A": (.3, .3), "B": (.7, .7)}) == {}
+    assert seeded_plant_cores(image, {"A": (.15, .2), "B": (.13, .14)}) == {}

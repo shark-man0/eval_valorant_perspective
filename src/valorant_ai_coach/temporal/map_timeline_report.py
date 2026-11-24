@@ -86,12 +86,23 @@ def load_map_timeline(
 def summarize_map_seconds(rows: list[dict[str, Any]]) -> dict[str, Any]:
     """Count one-second observations and edges for development analysis."""
     named: Counter[str] = Counter()
+    selected_zones: Counter[str] = Counter()
+    position = selected_seconds = conflict_seconds = 0
     for row in rows:
-        named.update({
-            f"{p['map_id']}/{p['zone_candidate']}"
-            for p in row["recorder_map_observations"] if p.get("zone_candidate") is not None
-        })
-    position = sum(bool(row["recorder_map_observations"]) for row in rows)
+        points = row["recorder_map_observations"]
+        position += bool(points)
+        named.update({f"{p['map_id']}/{p['zone_candidate']}"
+                      for p in points if p.get("zone_candidate") is not None})
+        selected = [p for p in points if p["kind"] == "selected"]
+        if not selected:
+            continue
+        selected_seconds += 1
+        references = {(p["map_id"], p["reference_sha256"]) for p in selected}
+        names = {p["zone_candidate"] for p in selected if p.get("zone_candidate") is not None}
+        if len(references) > 1 or len(names) > 1:
+            conflict_seconds += 1
+        elif len(names) == 1 and all(p.get("zone_candidate") is not None for p in selected):
+            selected_zones[f"{selected[0]['map_id']}/{next(iter(names))}"] += 1
     return {
         "qualification": "development_only",
         "formal_outputs": 0,
@@ -102,5 +113,9 @@ def summarize_map_seconds(rows: list[dict[str, Any]]) -> dict[str, Any]:
         ),
         "unknown_seconds": len(rows) - position,
         "named_zone_observed_seconds": dict(sorted(named.items())),
+        "seconds_with_recorder_selection": selected_seconds,
+        "seconds_with_support_only": position - selected_seconds,
+        "seconds_with_conflicting_selected_zones": conflict_seconds,
+        "unique_selected_zone_observed_seconds": dict(sorted(selected_zones.items())),
         "continuous_time_assumed": False,
     }

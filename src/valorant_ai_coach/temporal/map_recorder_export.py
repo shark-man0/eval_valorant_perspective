@@ -358,7 +358,8 @@ def export_recorder_paths(
         if (
             training_evidence and not outside_atlas and projected is not None
             and projected["kind"] == "selected"
-            and not adjacent and result["support_count"] >= 2
+            and not adjacent and raw.get("alignment_recovery") != CONTRAST_ALIGNMENT
+            and result["support_count"] >= 2
         ):
             training_rows.append({
                 "sample": sample,

@@ -169,6 +169,12 @@ candidate can supply a portrait or flow anchor. Use the default settings to
 reproduce the existing six-recording benchmark. Try `--portrait-mode reference`
 to keep the learned marker detector and use the external portrait matcher.
 Use a fixed development comparison to select between modes.
+`--contrast-registration` enables the two-fit contrast retry in this workflow.
+`--verify-adjacent-learning` allows the two-head tracker to recheck a current
+unresolved peak using the previous independently measured portrait. It requires
+current rim and independent reference evidence, admissible continuity, and a
+current direct atlas fit. Either retry remains a development candidate and
+cannot seed this retry or enter newly extracted weak training labels.
 
 The run writes `map_standard_PRIVATE.json` and `map_recovered_PRIVATE.json`,
 their separate analysis directories, the shared one-second timeline, and a
@@ -249,3 +255,22 @@ overall estimate.
 evidence vetoes a point, no usable atlas projection is obtained, or the
 companion and portrait recovery disagree. The default remains the
 reproduction setting for the six-recording development baseline.
+
+
+The optional `require_non_regression` per-recording switch needs
+`baseline_run`. The gate reports lost position seconds, selections or native
+edges, changed Map references, and lost Zone candidates even if total
+coverage grows. It also requires the same operability denominator.
+`review_samples_per_stratum` freezes private review work from the run with
+separate camera and death controls. Neither option requires an immediate
+human answer. TRAIN rows that finish successfully produce a combined
+`training_receipt_PRIVATE.json` for `train.py`. The batch admits only one
+TRAIN recording per physical match and separates it from comparison matches.
+
+`export_sites.py --plant-core-seeds scripts/map_learning/plant_core_seeds_v1.json`
+supports public atlases whose plant shading cannot be traced as a simple
+footprint. A core uses shaded pixels around a site seed tied to that exact
+atlas hash. Sunset has A and B cores. Keep the reviewed shapes from existing
+registries with `--existing`. The timeline and evaluation reports count
+selected observations with a unique Named Zone separately from support-only
+observations and conflicting Zone candidates. All remain development evidence.

@@ -217,6 +217,10 @@ def _portrait_feature(image: ColorImage, center: tuple[int, int]) -> NDArray[np.
 class DirectRecorderTracker:
     """Validate observed direct peaks against the binding and exact view gate."""
 
+    _portrait_rejections = (
+        "weak_texture_or_no_peak", "rim_sectors", "portrait_score", "agent_margin", "rival_rim",
+    )
+
     def __init__(
         self, search: DensePortraitSearch, identity: RecorderUUID, portrait_reader: Any, *,
         fallback_search: DensePortraitSearch | None = None,
@@ -342,10 +346,7 @@ class DirectRecorderTracker:
                         support_count=witness.count+1,
                     )
                     return pool, result
-                result["portrait_rejection"] = (
-                    "weak_texture_or_no_peak", "rim_sectors", "portrait_score",
-                    "agent_margin", "rival_rim",
-                )[self._rejection_stage]
+                result["portrait_rejection"] = self._portrait_rejections[self._rejection_stage]
             return pool, result
         index, score, margin = unique[0]
         chosen = peaks[index]

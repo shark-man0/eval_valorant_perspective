@@ -36,6 +36,7 @@ def main() -> None:
     parser.add_argument("--path-quality", action="store_true")
     parser.add_argument("--exact-alignment-cache", type=Path)
     parser.add_argument("--screen-atlas-void", action="store_true")
+    parser.add_argument("--verify-adjacent-learning", action="store_true")
     parser.add_argument(
         "--registration", default="reference",
         choices=("reference", "exact", "recording-anchors", "recording-anchors-contrast"),
@@ -47,6 +48,9 @@ def main() -> None:
     marker_directory = arguments.pop("marker_models_directory")
     refine = arguments.pop("refine_center")
     adaptive = arguments.pop("recording_portraits")
+    adjacent = arguments.pop("verify_adjacent_learning")
+    if adjacent and stage != "both":
+        parser.error("Adjacent learned portrait verification requires both CNN heads")
     if (refine or adaptive) and stage != "both":
         parser.error("Center refinement and recording portraits require both CNN heads")
     if marker_directory is not None and stage != "both":
@@ -84,6 +88,7 @@ def main() -> None:
         tracker = AdaptiveRecordingTracker if adaptive else LearnedRecorderTracker
         return tracker(
             detector, binding, knowledge, portrait_model=models["portrait"], refine_center=refine,
+            recover_adjacent_portrait=adjacent,
         )
 
     export_recorder_paths(

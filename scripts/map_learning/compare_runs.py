@@ -70,7 +70,7 @@ def compare(baseline: Path, candidate: Path):
         old_points, old_links = _native_observations(a)
         new_points, new_links = _native_observations(b)
         same_reference_drifts = []
-        reference_changes = zone_changes = 0
+        reference_changes = zone_changes = lost_zones = gained_zones = 0
         for key in old_points.keys() & new_points.keys():
             left, right = old_points[key], new_points[key]
             if (left["map_id"], left["reference_sha256"]) != (
@@ -81,7 +81,11 @@ def compare(baseline: Path, candidate: Path):
             same_reference_drifts.append(
                 math.dist(left["map_reference_px"], right["map_reference_px"])
             )
-            zone_changes += left.get("zone_candidate") != right.get("zone_candidate")
+            old_zone, new_zone = left.get("zone_candidate"), right.get("zone_candidate")
+            if old_zone != new_zone:
+                zone_changes += 1
+                lost_zones += old_zone is not None
+                gained_zones += new_zone is not None
         result[mode] = {
             "before": before, "after": after,
             "seconds_with_new_observations": gained, "seconds_with_lost_observations": lost,
@@ -90,6 +94,7 @@ def compare(baseline: Path, candidate: Path):
             "native_edges_gained": len(new_links - old_links),
             "native_edges_lost": len(old_links - new_links),
             "changed_map_references": reference_changes, "changed_zone_candidates": zone_changes,
+            "lost_named_zone_candidates": lost_zones, "gained_named_zone_candidates": gained_zones,
             "compared_positions_on_same_reference": len(same_reference_drifts),
             "max_position_change_reference_px": max(same_reference_drifts, default=None),
         }
@@ -97,12 +102,35 @@ def compare(baseline: Path, candidate: Path):
             "outputs": result, "formal_outputs": 0}
 
 
+def regression_failures(comparison):
+    """Identify regressions for an explicitly fixed-evidence development comparison."""
+    failures = {}
+    for mode, counts in comparison["outputs"].items():
+        failures[mode] = [
+            key for key in (
+                "seconds_with_lost_observations", "native_selections_lost", "native_edges_lost",
+                "changed_map_references", "lost_named_zone_candidates",
+            ) if counts[key]
+        ]
+        field = "operable_seconds_with_current_evidence"
+        if counts["before"][field] != counts["after"][field]:
+            failures[mode].append("operable_evidence_changed")
+    return {mode: reasons for mode, reasons in failures.items() if reasons}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("baseline", "candidate", "output"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--require-non-regression", action="store_true")
     args = parser.parse_args()
-    write_private(args.output, compare(args.baseline, args.candidate))
+    result = compare(args.baseline, args.candidate)
+    failures = regression_failures(result) if args.require_non_regression else {}
+    if args.require_non_regression:
+        result["regression_failures"] = failures
+    write_private(args.output, result)
+    if failures:
+        raise SystemExit("Map non-regression gate failed; see the private comparison")
 
 
 if __name__ == "__main__":

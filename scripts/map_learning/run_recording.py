@@ -78,7 +78,9 @@ def run(args):
         "bundle-path": bundle, "frame-manifest": frame_manifest, "policy-path": args.policy_path,
         "catalog": args.map_catalog, "layout": args.layout,
         "knowledge-asset-cache": args.asset_cache,
-        "zones-path": args.zones_path, "registration": "recording-anchors",
+        "zones-path": args.zones_path,
+        "registration": ("recording-anchors-contrast" if args.contrast_registration
+                         else "recording-anchors"),
     }
     cache_options = (
         {} if args.no_shared_alignment_cache else {"exact-alignment-cache": output / "exact_fits"}
@@ -112,6 +114,8 @@ def run(args):
         started = time.monotonic()
         options, flags = plans[name]
         stage_options = {**shared, **cache_options, **options, "output": reports[name]}
+        if args.verify_adjacent_learning and options["learned-stage"] == "both":
+            flags = (*flags, "--verify-adjacent-learning")
         if args.screen_atlas_void:
             flags = (*flags, "--screen-atlas-void")
         _run("export_paths.py", stage_options, flags)
@@ -165,6 +169,12 @@ def run(args):
         "one_second_rows": completion["one_second_rows"],
         "decode_seconds": receipt["elapsed_decode_seconds"],
         "decode_reused": args.acquisition is not None,
+        "map_options": {
+            "registration": shared["registration"],
+            "verify_adjacent_learning": args.verify_adjacent_learning,
+            "strict_recovery_tracking": args.strict_recovery_tracking,
+            "zone_catalog_sha256": file_sha(args.zones_path),
+        },
         "run_wall_seconds": time.monotonic() - started,
         "timeline_seconds": completion["elapsed_seconds"], "map_pass_seconds": timings,
         "standard": standard_result["operable_coverage"],
@@ -194,6 +204,8 @@ def main() -> None:
     parser.add_argument("--no-shared-alignment-cache", action="store_true")
     parser.add_argument("--training-candidates", action="store_true")
     parser.add_argument("--screen-atlas-void", action="store_true")
+    parser.add_argument("--verify-adjacent-learning", action="store_true")
+    parser.add_argument("--contrast-registration", action="store_true")
     parser.add_argument("--strict-recovery-tracking", action="store_true")
     parser.add_argument("--portrait-mode", choices=("two-head", "reference"), default="two-head")
     parser.add_argument("--jobs", type=int, default=2)
@@ -202,6 +214,7 @@ def main() -> None:
         parser.error("Supply a companion checkpoint and its calibrated threshold together")
     if args.portrait_mode == "reference" and (
         args.companion_models_directory is not None or args.compare_without_portraits
+        or args.verify_adjacent_learning
     ):
         parser.error("Companion and recording-portrait ablations require the two-head mode")
     if not 1 <= args.jobs <= 4:

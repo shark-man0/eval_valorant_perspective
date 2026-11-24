@@ -7,8 +7,9 @@ import os
 from pathlib import Path
 from subprocess import CalledProcessError
 
-from compare_runs import compare
+from compare_runs import compare, regression_failures
 from run_recording import _run
+from sample_review import sample_review
 
 from valorant_ai_coach.recordings.admission import resolve_catalog
 from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
@@ -22,7 +23,8 @@ _SHARED = _PATH_OPTIONS - {"acquisition", "frame-cache"} | {
 }
 _FLAGS = {
     "compare-without-portraits", "no-shared-alignment-cache", "screen-atlas-void",
-    "strict-recovery-tracking", "lossless-webp",
+    "strict-recovery-tracking", "lossless-webp", "verify-adjacent-learning",
+    "contrast-registration",
 }
 _REQUIRED = {
     "hud-config", "spectator-label", "map-catalog", "layout", "asset-cache", "zones-path",
@@ -30,6 +32,7 @@ _REQUIRED = {
 }
 _RECORD = {
     "recording_id", "acquisition", "frame-cache", "baseline_run", "prepare_weak_crops",
+    "require_non_regression", "review_samples_per_stratum",
 }
 
 
@@ -63,22 +66,38 @@ def run_batch(plan_path: Path, output: Path) -> bool:
     ids = [row["recording_id"] for row in recordings]
     if len(set(ids)) != len(ids):
         raise ValueError("Recordings must be unique in the batch")
+    training_matches = set()
+    other_matches = set()
     for row in recordings:
         rec = catalog.state.recordings.get(row["recording_id"])
         if row.keys() - _RECORD or rec is None or rec.split != "DEVELOPMENT":
             raise ValueError("Batch entries must name registered DEVELOPMENT recordings")
-        if type(row.get("prepare_weak_crops", False)) is not bool:
-            raise ValueError("prepare_weak_crops must be a boolean")
+        if any(type(row.get(key, False)) is not bool
+               for key in ("prepare_weak_crops", "require_non_regression")):
+            raise ValueError("Map batch switches must be boolean")
+        review_budget = row.get("review_samples_per_stratum", 0)
+        if type(review_budget) is not int or review_budget < 0:
+            raise ValueError("Review sample budget must be a nonnegative integer")
+        if row.get("require_non_regression") and not row.get("baseline_run"):
+            raise ValueError("A fixed baseline receipt is required for the non-regression gate")
         catalog.guard([rec.recording_id], "development_analysis")
         if row.get("prepare_weak_crops", False):
             if rec.learning.get("split") != "TRAIN" or row.get("baseline_run"):
                 raise ValueError("Weak crops require a registered TRAIN source outside regression")
             catalog.guard([rec.recording_id], "training")
+            if rec.physical_match_id in training_matches:
+                raise ValueError("A training match may contribute only one recording")
+            training_matches.add(rec.physical_match_id)
+        else:
+            other_matches.add(rec.physical_match_id)
+    if training_matches & other_matches:
+        raise ValueError("Separate physical matches are required for training and comparison")
 
     # Admission and plan validation finish before a run opens any source media.
     policy = output / "source_policy_PRIVATE.json"
     write_private(policy, {"catalog": str(catalog_path), "allowed_recording_ids": ids})
     completed = []
+    training_records = []
     for index, row in enumerate(recordings, start=1):
         rec = catalog.state.recordings[row["recording_id"]]
         run_dir = output / f"recording_{index:03d}"
@@ -111,22 +130,44 @@ def run_batch(plan_path: Path, output: Path) -> bool:
                     "native-manifest": run_dir / "timeline/map_frames_PRIVATE.json",
                     "layout": options["layout"], "output-directory": run_dir / "weak_crops",
                 })
-                entry["training_record_sha256"] = file_sha(
-                    run_dir / "weak_crops/training_record_PRIVATE.json"
-                )
+                training_record = run_dir / "weak_crops/training_record_PRIVATE.json"
+                entry["training_record_sha256"] = file_sha(training_record)
+            if row.get("review_samples_per_stratum"):
+                stage = "review_sample"
+                target = run_dir / "review_sample_PRIVATE.json"
+                write_private(target, sample_review(
+                    run_dir / "timeline/timeline_PRIVATE.json",
+                    run_dir / "map_standard_PRIVATE.json",
+                    run_dir / "map_recovered_PRIVATE.json",
+                    per_stratum=row["review_samples_per_stratum"], split_view_controls=True,
+                ))
+                entry["review_sample_sha256"] = file_sha(target)
             if row.get("baseline_run"):
                 stage = "regression"
                 regression = run_dir / "regression_PRIVATE.json"
-                write_private(regression, compare(_path(row["baseline_run"], root), receipt))
+                result = compare(_path(row["baseline_run"], root), receipt)
+                if row.get("require_non_regression"):
+                    result["regression_failures"] = regression_failures(result)
+                write_private(regression, result)
                 entry["regression_sha256"] = file_sha(regression)
+                if result.get("regression_failures"):
+                    raise ValueError("Map non-regression gate failed")
+            if training:
+                training_records.append(read_json(training_record))
         except (CalledProcessError, OSError, ValueError) as exc:
             entry.update(status="failed", stage=stage, error_type=type(exc).__name__)
         else:
             entry["status"] = "complete"
         completed.append(entry)
+    training_receipt = output / "training_receipt_PRIVATE.json"
+    if training_records:
+        write_private(training_receipt, {
+            "schema": "map_cnn_training_receipt_v2", "recordings": training_records,
+        })
     write_private(output / "batch_PRIVATE.json", {
         "schema": "development_map_batch_result_v1", "plan_sha256": content_sha,
         "recordings": completed, "formal_outputs": 0,
+        **({"training_receipt_sha256": file_sha(training_receipt)} if training_records else {}),
     })
     return all(row["status"] == "complete" for row in completed)
 

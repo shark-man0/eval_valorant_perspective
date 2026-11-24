@@ -1,0 +1,13 @@
+{
+  "schema": "development_atlas_plant_core_seeds_v1",
+  "maps": [
+    {
+      "map_id": "92584fbe-486a-b1b2-9faa-39b0f486b498",
+      "reference_sha256": "1188642e2f94f4fbb17d6c61feb9071d349dec21c9749349db710afbc1bbb228",
+      "site_seeds_norm": {
+        "A": [0.815, 0.365],
+        "B": [0.092, 0.4]
+      }
+    }
+  ]
+}
