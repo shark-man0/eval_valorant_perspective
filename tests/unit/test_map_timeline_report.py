@@ -339,7 +339,8 @@ def test_merge_recovery_fills_empty_seconds_and_preserves_incumbent(tmp_path, mo
     changed = {**first, "map_reference_px": [3, 5]}
     fill = {**fill, "fit_residual_p95_reference_px": 1.0}
     evidence = {"position_sha256": digest(fill), "method": "marker_companion",
-                "heads": {"marker": "e" * 64, "portrait": "f" * 64}}
+                "heads": {"marker": "e" * 64, "portrait": "f" * 64},
+                "current_view": "reference_operability_evidence"}
     candidate = {**report, "segments": [[changed, linked, fill]],
                  "recovery_candidate_evidence": {ids[2]: evidence}}
 
@@ -360,6 +361,14 @@ def test_merge_recovery_fills_empty_seconds_and_preserves_incumbent(tmp_path, mo
     assert set(recorded) == {ids[2]}
     assert recorded[ids[2]]["lineage"] == evidence
     assert recorded[ids[2]]["camera_state"] == "SELF"
+
+    for untracked in ({}, {ids[2]: {**evidence, "heads": {}}}):
+        untracked_path = save(
+            "untracked.json", {**candidate, "recovery_candidate_evidence": untracked},
+        )
+        skipped = merge_recovery_candidates(timeline_path, old, untracked_path, reference)
+        assert skipped["segments"] == incumbent["segments"]
+        assert skipped["recovery_composition"]["candidates_without_recognition_lineage"] == 1
 
     evidence["position_sha256"] = "f" * 64
     with pytest.raises(ValueError, match="exact candidate position"):

@@ -47,7 +47,7 @@ def _points(report):
 
 def _load_companion(companion, source, timeline_path, timeline, *, manifest_sha, baseline):
     if companion is None and source is None:
-        return {}, {}
+        return {}, {}, 0
     if companion is None or source is None:
         raise ValueError("Companion report and its original replay must be supplied together")
     load_map_timeline(companion, timeline_path, timeline)
@@ -70,11 +70,13 @@ def _load_companion(companion, source, timeline_path, timeline, *, manifest_sha,
            for point in additions.values()):
         raise ValueError("Companion additions require at least two native observations")
     models = report.get("companion_candidate_model_receipts", {})
-    if models and (set(models) != {"marker", "portrait"}
+    if models == {} and additions:
+        return {}, {}, len(additions)
+    if models != {} and (not isinstance(models, dict) or set(models) != {"marker", "portrait"}
                    or not all(is_sha(value) for value in models.values())
                    or models["portrait"] != parent["experimental_model_receipts"]["portrait"]):
         raise ValueError("Companion model evidence does not match the reference replay")
-    return additions, models
+    return additions, models, 0
 
 
 def recover(
@@ -144,7 +146,7 @@ def recover(
     void_distances = atlas_distances_for(
         map_catalog, map_id, assets[map_id], knowledge.map_references,
     )
-    companion, companion_models = _load_companion(
+    companion, companion_models, untracked_companion_count = _load_companion(
         companion_report, companion_baseline, bundle_path, timeline, manifest_sha=manifest_sha,
         baseline=reference,
     )
@@ -172,6 +174,9 @@ def recover(
     native = timeline["native_frames"]
     observations = timeline["observations"]
     counts: Counter[str] = Counter()
+    if untracked_companion_count:
+        counts["companion_model_evidence_missing"] = untracked_companion_count
+    portrait_reference_digest = digest(knowledge.provenance)
     recovered = {}
     recovery_evidence = {}
     seed_evidence = {}
@@ -226,6 +231,7 @@ def recover(
                     seed_evidence[key] = {
                         "method": "learned" if selector is learned else "public_reference",
                         "model_receipt_sha256": receipt if selector is learned else None,
+                        "portrait_reference_sha256": portrait_reference_digest,
                     }
                     counts["exemplar_offers"] += 1
                     break
