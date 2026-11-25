@@ -154,9 +154,9 @@ def run(args):
     if not measured_native_edges(standard_result) <= measured_native_edges(recovered):
         raise ValueError("Recovery removed a standard native edge")
     baseline = evaluate(timeline_path=bundle, output=output / "analysis_standard",
-                        match_id="map-development", development_map_path=standard)
+                        match_id="map-development", development_map_path=standard, promote=False)
     analysis = evaluate(timeline_path=bundle, output=output / "analysis_recovered",
-                        match_id="map-development", development_map_path=final)
+                        match_id="map-development", development_map_path=final, promote=False)
     if {k: v for k, v in baseline.items() if k != "development_map"} != {
         k: v for k, v in analysis.items() if k != "development_map"
     }:
