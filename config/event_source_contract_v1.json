@@ -51,9 +51,9 @@
       "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
     },
     "shot": {
-      "primary_producer": "visual_analyzer",
-      "mvp_status": "separate_module_required",
-      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "mvp_hud_with_cross_check",
+      "notes": "HUD: a drop of the magazine counter in the recorder's own observed live view with the reserve unchanged (#169 classify_ammo_change; reloads and weapon switches excluded). Movement while shooting still requires world-view temporal vision analysis."
     },
     "movement_state": {
       "primary_producer": "visual_analyzer",

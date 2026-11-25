@@ -1429,7 +1429,12 @@ def verify_promotion(
                 row.camera_status == _OBSERVED
                 for row in view.seconds[second + 1:item.end.time_sec + 1]
             )
-            if alive_again:
+            if alive_again and (event.get("attributes") or {}).get(
+                "revive_corroborated_by_top_bar"
+            ) is True:
+                # A death, then a revive the top bar confirms (#167 second features).
+                counts["player_death"]["revived"] += 1
+            elif alive_again:
                 counts["player_death"]["false"] += 1
                 failures.append({"kind": "player_death", "round_no": item.round_no,
                                  "time_sec": second, "alive_after": alive_again[:5]})
