@@ -1,9 +1,12 @@
+import cv2
 import numpy as np
 import pytest
 
+from scripts.map_learning.phase_portrait import phase_portraits
 from scripts.map_learning.portrait_cohort import portrait_seconds
-from scripts.map_learning.replay_temporal_portraits import tracked_runs
+from scripts.map_learning.replay_temporal_portraits import public_supported_runs, tracked_runs
 from scripts.map_learning.temporal_portrait_model import FEATURES, SCHEMA, pair_features, read_model
+from valorant_ai_coach.temporal.map_direct_recorder import DirectPeak
 from valorant_ai_coach.temporal.replay import write_private
 
 
@@ -71,3 +74,31 @@ def test_temporal_metric_refuses_its_own_physical_matches(tmp_path):
     descriptor = np.arange(243, dtype=float)
     descriptor /= np.linalg.norm(descriptor)
     assert pair_features(descriptor, descriptor).tolist() == pytest.approx([1] * 6)
+
+
+def test_weak_public_pixels_require_strong_current_portraits_on_both_sides():
+    assert list(public_supported_runs(list(range(6)), [0, 1, 0, 0, 1, 0])) == [[1, 2, 3, 4]]
+    assert list(public_supported_runs(list(range(6)), [1, 0, 0, 0, 0, 1])) == []
+    assert list(public_supported_runs(list(range(3)), [1, 0, 0])) == []
+
+
+def test_incumbent_phase_search_keeps_threshold_and_measures_shifted_pixels():
+    image = np.zeros((90, 1920, 3), np.uint8)
+    center = (43, 40)
+    image[34:47, 37:50] = np.random.default_rng(90).integers(10, 130, (13, 13, 3))
+    cv2.circle(image, center, 8, (130, 200, 250), 1)
+    image[center[1], center[0]] = (7, 55, 211)
+    peak = DirectPeak((41, 40), 0.9, 15, 6, 0)
+
+    def public(_image, _center):
+        return np.array([0.82, 0.61])
+
+    def cnn(patches):
+        return np.where((patches[:, 8, 8] == [7, 55, 211]).all(axis=1), 0.88, 0.79)
+
+    ((measured, evidence),) = phase_portraits(image, (0, 0, 90, 90), [peak], cnn, public, 0)
+    assert measured == center
+    assert evidence["initial_peak_roi_px"] == (41, 40)
+    assert not phase_portraits(
+        image, (0, 0, 90, 90), [peak], lambda patches: np.full(len(patches), 0.79), public, 0
+    )

@@ -412,3 +412,12 @@ The command writes the same recovered Map report format consumed by
 Use the original standard run, the prior recovered report and unchanged
 native inputs with `compare_runs.py`. Coordinate and identity reviews use
 `evaluate_review.py` on that same report. Formal outputs are zero.
+
+`--public-in-track` permits weaker public scores only inside short,
+consecutively measured spans bracketed by two strong current portraits
+with the same Agent. Current morphology and calibrated association scores
+remain required. `--phase-models` optionally explores adjacent pixel
+centers using the identical incumbent CNN receipt. It keeps the original
+CNN confidence criterion and requires a separately fitted enclosing
+outline to agree with the candidate center. Use these as paired replay
+experiments and inspect their role and coordinate error before adopting.

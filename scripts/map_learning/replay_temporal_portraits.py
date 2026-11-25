@@ -32,10 +32,12 @@ from valorant_ai_coach.temporal.visual_state import selected_agent
 
 if __package__:
     from .bracket_portraits import _camera, _fit, _reachable, _read_frame, _selection, load_inputs
+    from .phase_portrait import phase_portraits
     from .portrait_cohort import episodes, portrait_seconds
     from .temporal_portrait_model import pair_features, probability, read_model
 else:
     from bracket_portraits import _camera, _fit, _reachable, _read_frame, _selection, load_inputs
+    from phase_portrait import phase_portraits
     from portrait_cohort import episodes, portrait_seconds
     from temporal_portrait_model import pair_features, probability, read_model
 
@@ -143,7 +145,7 @@ def proposals(roi, templates, scale):
             yield center, (warm, pairs, rivals)
 
 
-def candidate_pixels(image, bounds, gallery, knowledge, target, model):
+def candidate_pixels(image, bounds, gallery, knowledge, target, model, public_in_track):
     left, top, right, bottom = bounds
     refs, templates, features = zip(*gallery, strict=True)
     features = np.asarray(features)
@@ -154,7 +156,7 @@ def candidate_pixels(image, bounds, gallery, knowledge, target, model):
             continue
         confidence = float(scores[target])
         margin = confidence - float(np.delete(scores, target).max())
-        if confidence < 0.73 or margin < 0.055:
+        if margin < 0.055 or (confidence < 0.73 and not public_in_track):
             continue
         feature = _portrait_feature(image, center)
         if feature is None:
@@ -171,6 +173,7 @@ def candidate_pixels(image, bounds, gallery, knowledge, target, model):
                     "appearance_scores": scores[rank].tolist(),
                     "public_agent_score": confidence,
                     "public_agent_margin": margin,
+                    "current_public_portrait": confidence >= 0.73,
                     "rim_sectors_pairs_rivals": shape,
                 },
             )
@@ -224,6 +227,43 @@ def tracked_runs(layers):
         yield run
 
 
+def public_supported_runs(run, strong):
+    """Keep weaker current observations only between two strong current portraits."""
+    observed = [i for i, accepted in enumerate(strong) if accepted]
+    covered = set(observed)
+    for left, right in zip(observed, observed[1:], strict=False):
+        # At 5 Hz, support gaps of at most two measured but weaker portraits.
+        if right - left <= 3:
+            covered.update(range(left, right + 1))
+    start = None
+    for i in range(len(run) + 1):
+        if i in covered:
+            if start is None:
+                start = i
+        elif start is not None:
+            if i - start >= 3:
+                yield run[start:i]
+            start = None
+
+
+def _phase_models(args, adaptive, knowledge, target):
+    from runtime import DenseMarkerCNN, load_models
+    from torch import from_numpy, inference_mode, set_num_threads
+
+    set_num_threads(1)
+    receipt = file_sha(args.phase_models / "training_summary_PRIVATE.json")
+    if adaptive.get("experimental_model_receipts") != {"marker": receipt, "portrait": receipt}:
+        raise ValueError("Phase search requires the original replay's marker and portrait CNNs")
+    models = load_models(args.phase_models, knowledge, receipt_sha256=receipt)
+
+    @inference_mode()
+    def score(patches):
+        batch = from_numpy(patches).permute(0, 3, 1, 2).float() / 255
+        return models["portrait"](batch).softmax(dim=1)[:, target].numpy()
+
+    return DenseMarkerCNN(models["marker"], args.phase_marker_threshold), score, receipt
+
+
 def replay(args):
     timeline, reference, adaptive, incumbent, operable, _, paths, rec = load_inputs(args)
     target_seconds = portrait_seconds(timeline, incumbent, reference, adaptive)
@@ -250,6 +290,11 @@ def replay(args):
         raise ValueError("Existing Agent, public appearance, and atlas bindings required")
     identity = binding["uuid"]
     target = knowledge._uuids.index(identity)
+    phase_detector, phase_score, phase_receipt = (
+        _phase_models(args, adaptive, knowledge, target)
+        if args.phase_models
+        else (None, None, None)
+    )
     map_id = reference["recording_map_uuid"]
     assets = projector.bindings["asset_sha256s"]
     atlas = atlas_distances_for(args.map_catalog, map_id, assets[map_id], knowledge.map_references)
@@ -276,7 +321,7 @@ def replay(args):
     counts["gallery_measurements"] = len(gallery)
     recovered, traces = [], {}
     for camera, scope in episodes(timeline, operable):
-        if len(gallery) < 2 or not targets.intersection(scope):
+        if (len(gallery) < 2 and phase_detector is None) or not targets.intersection(scope):
             continue
         layers, details = [], {}
         track = digest([METHOD, scope[0], camera, identity])
@@ -301,7 +346,36 @@ def replay(args):
                 image.shape[1],
                 image.shape[0],
             )
-            pixels = list(candidate_pixels(image, bounds, gallery, knowledge, target, model))
+            pixels = (
+                list(
+                    candidate_pixels(
+                        image,
+                        bounds,
+                        gallery,
+                        knowledge,
+                        target,
+                        model,
+                        args.public_in_track,
+                    )
+                )
+                if len(gallery) >= 2
+                else []
+            )
+            if not pixels and phase_detector is not None:
+                left, top, right, bottom = bounds
+                detected = phase_detector.peaks(
+                    image[top:bottom, left:right],
+                    identity,
+                    scale=image.shape[1] / 1920,
+                )
+                pixels = phase_portraits(
+                    image,
+                    bounds,
+                    detected,
+                    phase_score,
+                    knowledge._portrait_scores,
+                    target,
+                )
             if not pixels:
                 continue
             fit = _read_fit(image, frame["sample"], projector, map_id, args.alignment_cache, counts)
@@ -323,7 +397,15 @@ def replay(args):
                 ):
                     current.append(point)
                     details[id(point)] = {**evidence, "center_frame_px": list(center)}
-        for run in tracked_runs(layers):
+        verified_runs = (
+            run
+            for track in tracked_runs(layers)
+            for run in public_supported_runs(
+                track,
+                [details[id(p)]["current_public_portrait"] for p in track],
+            )
+        )
+        for run in verified_runs:
             for count, point in enumerate(run, start=1):
                 point["support_count"] = count
             segments = build_recorder_paths(iter(run))["segments"]
@@ -360,6 +442,8 @@ def replay(args):
             "method": METHOD,
             "model_sha256": model_sha,
             "counts": dict(counts),
+            "public_in_track": args.public_in_track,
+            "phase_model_receipt_sha256": phase_receipt,
             "target_seconds": len(target_seconds),
             "target_frames": len(targets),
             "added_evidence": traces,
@@ -390,9 +474,14 @@ def main():
     parser.add_argument("--recording-id", required=True)
     parser.add_argument("--pixel-overrides", type=Path)
     parser.add_argument("--alignment-cache", type=Path)
+    parser.add_argument("--public-in-track", action="store_true")
+    parser.add_argument("--phase-models", type=Path)
+    parser.add_argument("--phase-marker-threshold", type=float, default=0.5)
     args = parser.parse_args()
     if args.output.exists() or any((p / ".git").exists() for p in args.output.resolve().parents):
         raise ValueError("Choose a new private output outside Git")
+    if not 0 < args.phase_marker_threshold <= 1:
+        raise ValueError("The incumbent marker threshold must be in (0, 1]")
     cv2.setNumThreads(1)
     write_private(args.output, replay(args))
 
