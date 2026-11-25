@@ -13,7 +13,7 @@ def seal(path, value):
     with TemporaryDirectory(dir=path.parent) as temporary:
         staged = Path(temporary) / path.name
         write_private(staged, value)
-        with staged.open("rb") as handle:
+        with staged.open("r+b") as handle:
             os.fsync(handle.fileno())
         staged.replace(path)
 
