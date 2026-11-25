@@ -345,6 +345,15 @@ accepts a single point when the rim and current Agent evidence are stronger,
 both anchor portraits agree, and the native atlas coordinate is near the
 two-point path within a two-second bracket. It never contributes a link.
 
+`--atlas-neighborhood` also addresses the learned portrait score rejection.
+When the regular recheck has no candidate, the motion between two measured
+points locates a small search region on the current, directly registered
+minimap. Two masked template matches must agree on a current center, and the
+current warm rim and public Agent scores must pass the stronger thresholds.
+The replay checks that the previously pinned portrait model still reports
+`learned_portrait_score` on that frame. The prediction only locates pixels to
+search. Coordinates and edges come from the current pixel measurements.
+
 Start with `bracket_portraits.py plan --help` and supply the same timeline,
 native frame manifest, reference replay, adaptive replay, and recovered
 incumbent. The plan lists the exact native samples needed. The replay uses

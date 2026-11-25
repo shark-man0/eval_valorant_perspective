@@ -20,6 +20,7 @@ from valorant_ai_coach.temporal.evidence import (
     source_scope,
 )
 from valorant_ai_coach.temporal.map_direct_recorder import (
+    RecorderUUID,
     _portrait_feature,
     _rim_evidence,
     measured_direct_view,
@@ -45,8 +46,10 @@ from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 from valorant_ai_coach.temporal.visual_state import selected_agent
 
 if __package__:
+    from .atlas_neighborhood import bracket_excess, measured_atlas_neighborhood
     from .portrait_similarity import read_metric, region_similarity
 else:
+    from atlas_neighborhood import bracket_excess, measured_atlas_neighborhood
     from portrait_similarity import read_metric, region_similarity
 
 METHOD = "bracketed_portrait_v1"
@@ -267,7 +270,17 @@ def _anchor_feature(image, point, projector, knowledge, target, counts):
     ):
         counts["anchor_reference_unresolved"] += 1
         return None
-    return _portrait_feature(image, center)
+    feature = _portrait_feature(image, center)
+    if feature is None:
+        return None
+    radius = max(2, round(5 * image.shape[1] / 1920))
+    x, y = center
+    patch = (
+        image[y - radius : y + radius + 1, x - radius : x + radius + 1].copy()
+        if left + radius <= x < right - radius and top + radius <= y < bottom - radius
+        else None
+    )
+    return feature, patch
 
 
 def _center_evidence(image, center, knowledge, target, features, metric, neighbor_support):
@@ -409,7 +422,7 @@ def _reachable(before, after):
 def _strong_isolated(left, point, right, details):
     """Allow a strongly corroborated current point without creating a native edge."""
     first, center, last = (p["map_reference_px"] for p in (left, point, right))
-    excess = math.dist(first, center) + math.dist(center, last) - math.dist(first, last)
+    excess = bracket_excess(first, center, last)
     return (
         native_time(right["sample"]) - native_time(left["sample"]) <= 2
         and excess <= 8
@@ -453,7 +466,7 @@ def _prefer_unique(candidates, counts):
 
 
 def replay(args, inputs, brackets):
-    from runtime import DenseMarkerCNN, image_tensor, load_models
+    from runtime import DenseMarkerCNN, LearnedRecorderTracker, image_tensor, load_models
     from torch import inference_mode, set_num_threads
 
     timeline, reference, adaptive, incumbent, operable, unresolved, paths, recording = inputs
@@ -475,10 +488,16 @@ def replay(args, inputs, brackets):
     ):
         raise ValueError("A shared, exact development recorder binding is required")
     identity = binding["uuid"]
+    target = knowledge._uuids.index(identity)
     map_id = reference["recording_map_uuid"]
     assets = projector.bindings["asset_sha256s"]
     if reference["map_catalog_fingerprint"] != projector.fingerprint:
         raise ValueError("The replay atlas and layout fingerprint differs")
+    if any(
+        report.get("game_knowledge") != knowledge.provenance for report in (reference, adaptive)
+    ):
+        raise ValueError("Replay must use the portrait references bound to both comparisons")
+    portrait_reference_sha = digest(knowledge.provenance)
     receipt = file_sha(args.models_directory / "training_summary_PRIVATE.json")
     if receipt != adaptive["experimental_model_receipts"]["portrait"] or (
         receipt != adaptive["experimental_model_receipts"]["marker"]
@@ -486,6 +505,17 @@ def replay(args, inputs, brackets):
         raise ValueError("Replay requires the same marker and portrait model receipts")
     weights = load_models(args.models_directory, knowledge, receipt_sha256=receipt)
     detector = DenseMarkerCNN(weights["marker"], args.threshold)
+    incumbent_tracker = (
+        LearnedRecorderTracker(
+            detector,
+            RecorderUUID(binding["source_sha256"], identity, tuple(binding["evidence_samples"])),
+            knowledge,
+            portrait_model=weights["portrait"],
+            refine_center=True,
+        )
+        if args.atlas_neighborhood
+        else None
+    )
 
     @inference_mode()
     def score_portrait(crop, target):
@@ -514,7 +544,7 @@ def replay(args, inputs, brackets):
         left_point, right_point = points[span.left], points[span.right]
         if (left_point["map_id"], left_point["reference_sha256"]) != (map_id, assets[map_id]):
             continue
-        features = []
+        exemplars = []
         for key in (span.left, span.right):
             image = _read_frame(native[key], paths[key], args.pixel_overrides, counts)
             feature = (
@@ -525,16 +555,15 @@ def replay(args, inputs, brackets):
                     points[key],
                     projector,
                     knowledge,
-                    knowledge._uuids.index(
-                        identity,
-                    ),
+                    target,
                     counts,
                 )
             )
             if feature is not None:
-                features.append(feature)
-        if len(features) != 2:
+                exemplars.append(feature)
+        if len(exemplars) != 2:
             continue
+        features, patches = zip(*exemplars, strict=True)
         anchor = digest([METHOD, span.left, span.right, identity])
         observations = []
         records = {}
@@ -572,30 +601,56 @@ def replay(args, inputs, brackets):
                     args.neighbor_support,
                     counts,
                 )
-                if matches:
-                    alignment = _fit(image, projector, map_id, counts)
-                    if alignment is not None:
-                        viable = []
-                        for center, details in matches:
-                            pool = [{"center_frame_px": list(center), "proposal_kind": METHOD}]
-                            sample = frame["sample"]
-                            selection = _selection(key, center, identity, 1, anchor, pool)
-                            point = project_recorder_witness(
-                                image,
-                                sample,
-                                pool,
-                                selection,
-                                alignment,
-                                reference_sha256s=assets,
-                            )
-                            if (
-                                point is not None
-                                and _reachable(left_point, point)
-                                and _reachable(point, right_point)
-                                and not clearly_outside_atlas(void, point["map_reference_px"])
-                            ):
-                                viable.append((center, details, point))
-                        measurement = _prefer_unique(viable, counts)
+                alignment = (
+                    _fit(image, projector, map_id, counts)
+                    if matches or incumbent_tracker is not None
+                    else None
+                )
+                if alignment is not None and not matches and incumbent_tracker is not None:
+                    matches = measured_atlas_neighborhood(
+                        image,
+                        alignment,
+                        (left_point, right_point),
+                        frame["sample"],
+                        patches,
+                        knowledge._portrait_scores,
+                        target,
+                    )
+                    if matches:
+                        incumbent_tracker.previous = incumbent_tracker.projected_portrait = None
+                        _, decision = incumbent_tracker._observe_measured(
+                            image,
+                            bounds,
+                            frame["sample"],
+                            frame,
+                            span.view,
+                        )
+                        if decision.get("portrait_rejection") != "learned_portrait_score":
+                            matches = []
+                        else:
+                            counts["atlas_neighborhood_low_score"] += 1
+                if alignment is not None and matches:
+                    viable = []
+                    for center, details in matches:
+                        pool = [{"center_frame_px": list(center), "proposal_kind": METHOD}]
+                        sample = frame["sample"]
+                        selection = _selection(key, center, identity, 1, anchor, pool)
+                        point = project_recorder_witness(
+                            image,
+                            sample,
+                            pool,
+                            selection,
+                            alignment,
+                            reference_sha256s=assets,
+                        )
+                        if (
+                            point is not None
+                            and _reachable(left_point, point)
+                            and _reachable(point, right_point)
+                            and not clearly_outside_atlas(void, point["map_reference_px"])
+                        ):
+                            viable.append((center, details, point))
+                    measurement = _prefer_unique(viable, counts)
             if group and (
                 measurement is None
                 or not _continuous(
@@ -650,7 +705,7 @@ def replay(args, inputs, brackets):
                     "current_view": span.view,
                     "cnn_receipt_sha256": receipt,
                     "portrait_metric_receipt_sha256": metric_sha,
-                    "portrait_reference_sha256": digest(knowledge.provenance),
+                    "portrait_reference_sha256": portrait_reference_sha,
                     "bracket_sample_refs": [span.left, span.right],
                     "bracket_position_sha256s": [digest(left_point), digest(right_point)],
                     **records[key],
@@ -682,6 +737,12 @@ def replay(args, inputs, brackets):
             "marker_threshold": args.threshold,
             "neighbor_support": args.neighbor_support,
             "strong_isolated": args.strong_isolated,
+            "atlas_neighborhood": args.atlas_neighborhood,
+            "recognition_inputs": {
+                "cnn_receipt_sha256": receipt,
+                "portrait_metric_receipt_sha256": metric_sha,
+                "portrait_reference_sha256": portrait_reference_sha,
+            },
             "eligible_brackets": len(brackets),
             "counts": dict(counts),
             "evidence": evidence,
@@ -717,6 +778,7 @@ def main():
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--neighbor-support", action="store_true")
     parser.add_argument("--strong-isolated", action="store_true")
+    parser.add_argument("--atlas-neighborhood", action="store_true")
     args = parser.parse_args()
     output = args.output.resolve()
     if output.exists() or any((p / ".git").exists() for p in output.parents):

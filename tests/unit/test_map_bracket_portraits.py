@@ -1,6 +1,11 @@
+import cv2
 import numpy as np
 import pytest
 
+from scripts.map_learning.atlas_neighborhood import (
+    matching_centers,
+    measured_atlas_neighborhood,
+)
 from scripts.map_learning.bracket_portraits import (
     _corroborated_groups,
     _strong_isolated,
@@ -166,3 +171,50 @@ def test_isolated_point_needs_current_geometry_and_two_matching_witnesses():
     assert not _strong_isolated(
         left, {**current, "map_reference_px": [20, 40]}, right, measurements
     )
+
+
+def test_atlas_neighborhood_reports_current_marker_center_instead_of_the_prediction():
+    rng = np.random.default_rng(41)
+    template = rng.integers(10, 190, (11, 11, 3), dtype=np.uint8)
+    image = np.zeros((100, 1920, 3), dtype=np.uint8)
+    x, y = 44, 32
+    image[y - 5 : y + 6, x - 5 : x + 6] = template
+    cv2.circle(image, (x, y), 8, (60, 190, 250), 1)
+    alignment = {
+        "roi_pixel_bounds": [0, 0, 100, 100],
+        "map_name_candidates": [{"reference_to_roi_homography_candidate": np.eye(3).tolist()}],
+    }
+    bracket = [
+        {
+            "sample": {"native_pts_tick": tick, "native_time_base": "1/5"},
+            "map_reference_px": [px, 30],
+        }
+        for tick, px in ((0, 30), (4, 50))
+    ]
+    sample = {"native_pts_tick": 2, "native_time_base": "1/5"}
+
+    def official(_, __):
+        return np.array([0.84, 0.6])
+
+    ((center, evidence),) = measured_atlas_neighborhood(
+        image,
+        alignment,
+        bracket,
+        sample,
+        (template, template),
+        official,
+        0,
+    )
+    assert center == (x, y)
+    assert center != (40, 30)
+    assert evidence["proposal"] == "atlas_neighborhood"
+    assert not measured_atlas_neighborhood(
+        image,
+        alignment,
+        bracket,
+        sample,
+        (template, template),
+        official,
+        1,
+    )
+    assert not matching_centers(image[:, :100], (template, 255 - template), (40, 30), 1)
