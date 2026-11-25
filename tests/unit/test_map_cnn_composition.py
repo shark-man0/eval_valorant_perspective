@@ -90,6 +90,7 @@ def test_cnn_complement_keeps_reference_and_requires_unresolved_exact_portrait()
     companion = compose_paths(primary, backup, timeline, "timeline", marker_companion=True)
     assert companion["segments"][0] == [points[0]]
     assert companion["new_cnn_native_positions"] == 1
+    assert companion["companion_candidate_model_receipts"] == backup["experimental_model_receipts"]
     weak = deepcopy(backup)
     weak["segments"][0][1]["support_count"] = 1
     assert compose_paths(primary, weak, timeline, "timeline", marker_companion=True)[
