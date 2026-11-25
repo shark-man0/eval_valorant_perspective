@@ -4,7 +4,11 @@ import pytest
 
 from scripts.map_learning.phase_portrait import phase_portraits
 from scripts.map_learning.portrait_cohort import portrait_seconds
-from scripts.map_learning.replay_temporal_portraits import public_supported_runs, tracked_runs
+from scripts.map_learning.replay_temporal_portraits import (
+    proposals,
+    public_supported_runs,
+    tracked_runs,
+)
 from scripts.map_learning.temporal_portrait_model import FEATURES, SCHEMA, pair_features, read_model
 from valorant_ai_coach.temporal.map_direct_recorder import DirectPeak
 from valorant_ai_coach.temporal.replay import write_private
@@ -102,3 +106,24 @@ def test_incumbent_phase_search_keeps_threshold_and_measures_shifted_pixels():
     assert not phase_portraits(
         image, (0, 0, 90, 90), [peak], lambda patches: np.full(len(patches), 0.79), public, 0
     )
+
+
+def test_gallery_proposal_order_matches_second_template_agreement(monkeypatch):
+    rng = np.random.default_rng(2)
+    roi = rng.integers(0, 255, (60, 80, 3), dtype=np.uint8)
+    gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+    templates = tuple(gray[y : y + 11, x : x + 11].copy() for x, y in ((2, 3), (20, 10), (32, 42)))
+    fields = np.stack([cv2.matchTemplate(gray, item, cv2.TM_CCOEFF_NORMED) for item in templates])
+    joint = np.partition(fields, -2, axis=0)[-2]
+    peaks = np.argwhere(joint == cv2.dilate(joint, np.ones((7, 7), np.uint8)))
+    ranked = sorted(peaks, key=lambda p: (-joint[*p], *p))[:14]
+    expected = [
+        ((int(j) + 5, int(i) + 5), (16, 8, 0))
+        for i, j in ranked
+        if 11 <= int(j) + 5 < 69 and 11 <= int(i) + 5 < 49
+    ]
+    monkeypatch.setattr(
+        "scripts.map_learning.replay_temporal_portraits._rim_evidence",
+        lambda *_: (16, 8, 0),
+    )
+    assert list(proposals(roi, templates, 1)) == expected

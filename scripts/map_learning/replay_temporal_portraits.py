@@ -128,15 +128,23 @@ def proposals(roi, templates, scale):
             interpolation=cv2.INTER_AREA,
         )
     )
-    if min(gray.shape) < 11:
+    if min(gray.shape) < 11 or len(templates) < 2:
         return
-    fields = np.stack([cv2.matchTemplate(gray, patch, cv2.TM_CCOEFF_NORMED) for patch in templates])
-    np.nan_to_num(fields, copy=False, nan=-1, neginf=-1, posinf=-1)
-    joint = np.partition(fields, -2, axis=0)[-2]
+    peak_field = None
+    joint = np.full((gray.shape[0] - 10, gray.shape[1] - 10), -1, np.float32)
+    for patch in templates:
+        field = cv2.matchTemplate(gray, patch, cv2.TM_CCOEFF_NORMED)
+        np.nan_to_num(field, copy=False, nan=-1, neginf=-1, posinf=-1)
+        if peak_field is None:
+            peak_field = field
+        else:
+            np.maximum(joint, np.minimum(peak_field, field), out=joint)
+            np.maximum(peak_field, field, out=peak_field)
     peaks = np.argwhere(joint == cv2.dilate(joint, np.ones((7, 7), np.uint8)))
+    order = np.lexsort((peaks[:, 1], peaks[:, 0], -joint[peaks[:, 0], peaks[:, 1]]))
     hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
     extent = math.ceil(11 * scale)
-    for i, j in sorted(peaks, key=lambda p: (-joint[*p], *p))[:14]:
+    for i, j in peaks[order[:14]]:
         center = x, y = round(scale * (int(j) + 5)), round(scale * (int(i) + 5))
         if not (extent <= x < roi.shape[1] - extent and extent <= y < roi.shape[0] - extent):
             continue
