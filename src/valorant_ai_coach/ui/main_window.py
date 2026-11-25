@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import threading
 import uuid
 from http.server import ThreadingHTTPServer
@@ -17,6 +18,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QFrame,
     QHBoxLayout,
+    QInputDialog,
     QLabel,
     QLineEdit,
     QListWidget,
@@ -151,6 +153,9 @@ class MainWindow(QMainWindow):
         timeline_action = QAction("開発用: 共通タイムライン", self)
         timeline_action.triggered.connect(self._open_development_timeline)
         self.menuBar().addAction(timeline_action)
+        map_library_action = QAction("開発用: Map解析一覧", self)
+        map_library_action.triggered.connect(self._open_map_library)
+        self.menuBar().addAction(map_library_action)
         map_timeline_action = QAction("開発用: Map軌跡", self)
         map_timeline_action.triggered.connect(
             lambda: self._open_development_timeline(with_map=True)
@@ -1238,6 +1243,34 @@ class MainWindow(QMainWindow):
             )
         except (OSError, ValueError, KeyError, TypeError) as exc:
             QMessageBox.warning(self, "開発用タイムラインを開けません", sanitize_text(str(exc)))
+            return
+        self._start_development_viewer(server)
+
+    def _open_map_library(self) -> None:
+        directory = os.environ.get("VALORANT_MAP_LIBRARY") or QFileDialog.getExistingDirectory(
+            self, "開発用Mapライブラリを選択",
+        )
+        if not directory:
+            return
+        try:
+            from valorant_ai_coach.application.map_library import (
+                list_map_packages,
+                open_map_package,
+            )
+
+            entries = list_map_packages(Path(directory))
+            if not entries:
+                self.statusBar().showMessage("このライブラリに完了したMap解析はありません")
+                return
+            choices = [f"{index:02d}  {entry.label}" for index, entry in enumerate(entries, 1)]
+            picked, accepted = QInputDialog.getItem(
+                self, "開発用Map解析", "録画を選択", choices, editable=False,
+            )
+            if not accepted:
+                return
+            server = open_map_package(entries[choices.index(picked)].receipt)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            QMessageBox.warning(self, "Map解析を開けません", sanitize_text(str(exc)))
             return
         self._start_development_viewer(server)
 

@@ -16,7 +16,7 @@ pytest.importorskip("PySide6")
 
 from PySide6.QtCore import QCoreApplication, QEvent  # noqa: E402
 from PySide6.QtGui import QDesktopServices  # noqa: E402
-from PySide6.QtWidgets import QApplication, QFileDialog  # noqa: E402
+from PySide6.QtWidgets import QApplication, QFileDialog, QInputDialog  # noqa: E402
 
 from valorant_ai_coach.settings import AppSettings, SettingsStore  # noqa: E402
 from valorant_ai_coach.temporal import viewer  # noqa: E402
@@ -121,3 +121,34 @@ def test_desktop_comparison_uses_real_validated_catalog_factory(tmp_path, monkey
         window.deleteLater()
         QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
         app.processEvents()
+
+
+def test_desktop_map_library_opens_a_single_selected_package(tmp_path, monkeypatch):
+    from test_map_library import make_package
+
+    from valorant_ai_coach.application import map_library
+
+    library = tmp_path / "library"
+    receipt = map_library.publish_map_package(
+        library, label="Local test", **make_package(tmp_path),
+    )
+    server = FakeServer()
+    app = QApplication.instance() or QApplication([])
+    store = SettingsStore(tmp_path / "settings.json", credential_backend=MemoryCredentials())
+    store.save(AppSettings.defaults(tmp_path))
+    window = MainWindow(BackendFacade(store))
+    calls = []
+    monkeypatch.setenv("VALORANT_MAP_LIBRARY", str(library))
+    monkeypatch.setattr(QInputDialog, "getItem", lambda *a, **k: (a[3][0], True))
+    monkeypatch.setattr(QDesktopServices, "openUrl", lambda _url: True)
+    monkeypatch.setattr(map_library, "open_map_package", lambda p: calls.append(p) or server)
+    try:
+        action = next(item for item in window.menuBar().actions() if "Map解析一覧" in item.text())
+        action.trigger()
+        assert calls == [receipt]
+    finally:
+        window.close()
+        window.deleteLater()
+        QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+        app.processEvents()
+    assert server.close_count == 1

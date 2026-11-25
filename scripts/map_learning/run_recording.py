@@ -4,14 +4,18 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import cv2
 from acquire_native import acquire
+from checkpoints import pin, run_stage, seal
 from compose_paths import compose_paths
 from prepare_native_timeline import prepare
 
@@ -50,12 +54,32 @@ def _compose(reference, learned, timeline, output, *, companion=False):
     })
 
 
+def _timeline_files(root):
+    return tuple(root / name for name in (
+        "completion_PRIVATE.json", "timeline_PRIVATE.json", "map_frames_PRIVATE.json",
+        "timeline_1s_PRIVATE.csv", "evaluation_PRIVATE.json",
+    ))
+
+
+def _copy_timeline(cache, destination, acquisition):
+    receipt = read_json(cache / "completion_PRIVATE.json")
+    files = _timeline_files(cache)[1:]
+    if (receipt["acquisition_sha256"] != file_sha(acquisition)
+            or receipt.get("formal_outputs") != 0
+            or any(file_sha(p) != receipt["output_sha256s"][p.name] for p in files)):
+        raise ValueError("The reusable Map timeline differs from its exact acquisition")
+    destination.mkdir(mode=0o700)
+    for file in _timeline_files(cache):
+        shutil.copy2(file, destination / file.name)
+
+
 def run(args):
     started = time.monotonic()
     output = args.output.resolve()
     if any((root / ".git").exists() for root in (output, *output.parents)):
         raise ValueError("Private Map outputs must remain outside Git checkouts")
-    output.mkdir(parents=True, mode=0o700, exist_ok=False)
+    resume = getattr(args, "resume", False)
+    output.mkdir(parents=True, mode=0o700, exist_ok=resume)
     acquisition = args.acquisition
     if acquisition is None:
         cache = args.frame_cache or output / "native_frames"
@@ -67,10 +91,47 @@ def run(args):
         raise ValueError("Acquisition is for a different recording")
     timeline_root = output / "timeline"
     cv2.setNumThreads(1)
-    prepare(
-        policy_path=args.policy_path, acquisition=acquisition, hud_config=args.hud_config,
-        spectator_label=args.spectator_label, camera_hint=args.camera_hint, output=timeline_root,
-    )
+    if resume:
+        pin(output / "run_inputs_PRIVATE.json", {
+            "arguments": {k: str(v) for k, v in vars(args).items()},
+            "acquisition_sha256": file_sha(acquisition),
+        })
+        sealed = output / "run_PRIVATE.json"
+        if sealed.is_file():
+            completed = read_json(sealed)
+            if (completed["source_sha256"] != args.source_sha256
+                    or completed["formal_map_outputs"] != 0
+                    or any(file_sha(output / fn) != sha
+                           for fn, sha in completed["output_sha256s"].items())):
+                raise ValueError("Completed Map run changed")
+            return
+
+    def stage(name, paths, build, *, directory=None):
+        if resume:
+            run_stage(output, name, tuple(str(p.relative_to(output)) for p in paths), build,
+                      replace_directory=directory)
+        else:
+            build()
+
+    timeline_cache = getattr(args, "timeline_cache", None)
+
+    def build_timeline():
+        if timeline_cache is not None and timeline_cache.exists():
+            _copy_timeline(timeline_cache, timeline_root, acquisition)
+        else:
+            prepare(
+                policy_path=args.policy_path, acquisition=acquisition, hud_config=args.hud_config,
+                spectator_label=args.spectator_label, camera_hint=args.camera_hint,
+                output=timeline_root,
+            )
+        if timeline_cache is not None and not timeline_cache.exists():
+            timeline_cache.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+            with TemporaryDirectory(dir=timeline_cache.parent) as temporary:
+                staged = Path(temporary) / "timeline"
+                _copy_timeline(timeline_root, staged, acquisition)
+                staged.rename(timeline_cache)
+
+    stage("timeline", _timeline_files(timeline_root), build_timeline, directory="timeline")
     print(f"Timeline ready: {len(receipt['frames'])} exact native observations", flush=True)
     bundle = timeline_root / "timeline_PRIVATE.json"
     frame_manifest = timeline_root / "map_frames_PRIVATE.json"
@@ -118,7 +179,7 @@ def run(args):
             flags = (*flags, "--verify-adjacent-learning")
         if args.screen_atlas_void:
             flags = (*flags, "--screen-atlas-void")
-        _run("export_paths.py", stage_options, flags)
+        stage(name, (reports[name],), lambda: _run("export_paths.py", stage_options, flags))
         elapsed = time.monotonic() - started
         print(f"Map stage {name}: {elapsed:.2f} seconds", flush=True)
         return name, elapsed
@@ -127,10 +188,12 @@ def run(args):
         timings = dict(pool.map(replay, plans))
     reference, adaptive = reports["reference"], reports["adaptive"]
     standard = output / "map_standard_PRIVATE.json"
-    _compose(reference, adaptive, bundle, standard)
+    stage("standard", (standard,), lambda: _compose(reference, adaptive, bundle, standard))
     if "without_portraits" in reports:
-        _compose(reference, reports["without_portraits"], bundle,
-                 output / "map_standard_without_portraits_PRIVATE.json")
+        ablation = output / "map_standard_without_portraits_PRIVATE.json"
+        stage("ablation", (ablation,), lambda: _compose(
+            reference, reports["without_portraits"], bundle, ablation,
+        ))
     final = output / "map_recovered_PRIVATE.json"
     recovery_options = {
         "bundle-path": bundle, "frame-manifest": frame_manifest,
@@ -142,21 +205,34 @@ def run(args):
     }
     if "companion" in reports:
         composed = output / "map_companion_composed_PRIVATE.json"
-        _compose(adaptive, reports["companion"], bundle, composed, companion=True)
+        stage("companion_composed", (composed,), lambda: _compose(
+            adaptive, reports["companion"], bundle, composed, companion=True,
+        ))
         recovery_options.update({"companion-report": composed, "companion-baseline": adaptive})
     recovery_started = time.monotonic()
     flags = ("--strict-recovery-tracking",) if args.strict_recovery_tracking else ()
-    _run("recover_gaps.py", recovery_options, flags)
+    stage("recovered", (final,), lambda: _run("recover_gaps.py", recovery_options, flags))
     timings["recovery"] = time.monotonic() - recovery_started
-    displays = [prepare_map_display(path, args.map_catalog, args.zones_path)
-                for path in (standard, final)]
+    displays = [path.with_suffix(".display.json") for path in (standard, final)]
+    for name, path, display in zip(("standard", "recovered"), (standard, final), displays,
+                                   strict=True):
+        stage(f"display_{name}", (display,),
+              partial(prepare_map_display, path, args.map_catalog, args.zones_path))
     standard_result, recovered = read_json(standard), read_json(final)
     if not measured_native_edges(standard_result) <= measured_native_edges(recovered):
         raise ValueError("Recovery removed a standard native edge")
-    baseline = evaluate(timeline_path=bundle, output=output / "analysis_standard",
-                        match_id="map-development", development_map_path=standard, promote=False)
-    analysis = evaluate(timeline_path=bundle, output=output / "analysis_recovered",
-                        match_id="map-development", development_map_path=final, promote=False)
+    assessments = []
+    for name, path in (("standard", standard), ("recovered", final)):
+        directory = f"analysis_{name}"
+        found = output / directory
+        evaluation = found / "match_evaluation_PRIVATE.json"
+        stage(directory, (evaluation, found / "match_evaluation_PRIVATE.md"), partial(
+            evaluate,
+            timeline_path=bundle, output=found, match_id="map-development",
+            development_map_path=path, promote=False,
+        ), directory=directory)
+        assessments.append(read_json(evaluation))
+    baseline, analysis = assessments
     if {k: v for k, v in baseline.items() if k != "development_map"} != {
         k: v for k, v in analysis.items() if k != "development_map"
     }:
@@ -182,7 +258,10 @@ def run(args):
         "output_sha256s": {str(path.relative_to(output)): file_sha(path)
                             for path in (bundle, frame_manifest, standard, final, *displays)},
     }
-    write_private(output / "run_PRIVATE.json", report)
+    if resume:
+        seal(output / "run_PRIVATE.json", report)
+    else:
+        write_private(output / "run_PRIVATE.json", report)
     print({k: report[k] for k in ("standard", "recovered")}, flush=True)
 
 
@@ -195,6 +274,8 @@ def main() -> None:
     parser.add_argument("--camera-hint", type=Path)
     parser.add_argument("--threshold", type=float, required=True)
     parser.add_argument("--acquisition", type=Path)
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--timeline-cache", type=Path)
     parser.add_argument("--frame-cache", type=Path)
     parser.add_argument("--hwaccel")
     parser.add_argument("--lossless-webp", action="store_true")
@@ -222,6 +303,13 @@ def main() -> None:
         parser.error("--jobs must be between 1 and 4")
     if args.acquisition is not None and (args.frame_cache or args.hwaccel or args.lossless_webp):
         parser.error("--acquisition is already decoded")
+    if args.resume and args.acquisition is None:
+        parser.error("--resume requires an explicit verified acquisition")
+    if args.timeline_cache is not None and (
+        not args.resume
+        or any((p / ".git").exists() for p in (args.timeline_cache, *args.timeline_cache.parents))
+    ):
+        parser.error("--timeline-cache requires a resumable run and private output")
     os.umask(0o077)
     run(args)
 
