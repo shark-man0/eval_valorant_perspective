@@ -8,7 +8,7 @@ from itertools import groupby
 from pathlib import Path
 from typing import Any
 
-from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample, native_time
+from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample, is_sha, native_time
 from valorant_ai_coach.temporal.map_recorder_path import (
     VERSION,
     _same_run,
@@ -102,6 +102,7 @@ def compose_paths(
             not reference.get("experimental_direct_tracker")
             or not learned.get("experimental_direct_tracker")
             or set(first) != {"marker", "portrait"} or set(second) != set(first)
+            or not all(is_sha(x) for x in (*first.values(), *second.values()))
             or first["portrait"] != second["portrait"] or first["marker"] == second["marker"]
             or reference.get("registration") != learned.get("registration")
         ):
@@ -162,6 +163,7 @@ def compose_paths(
         "new_cnn_native_positions": len(admitted),
         "timeline_sha256": timeline_sha,
         "zone_catalog_sha256": reference["zone_catalog_sha256"],
+        **({"companion_candidate_model_receipts": second} if marker_companion else {}),
     }
 
 

@@ -55,16 +55,27 @@ def _pair(text: str) -> tuple[str, Path]:
     return name, Path(path)
 
 
+def _motion_sha(path: Path) -> str | None:
+    """Source video SHA-256 of a #169 row file (first row's native sample)."""
+    with path.open(encoding="utf-8") as stream:
+        for line in stream:
+            if line.strip():
+                return (json.loads(line).get("sample") or {}).get("source_sha256")
+    return None
+
+
 def measure(
     inputs: Sequence[tuple[str, str, Path]], output: Path,
     features: Sequence[Path] = (), catalog: Path | None = None,
-    coach_model: str | None = None,
+    coach_model: str | None = None, motion: Sequence[Path] = (), ammo: Sequence[Path] = (),
 ) -> dict[str, Any]:
     """``coach_model`` runs the OpenAI coach (API key required); otherwise the offline
     coach, whose GOOD/IMPROVE are never formal (only Rule Engine decisions are)."""
     output.mkdir(parents=True, mode=0o700)
     unique, skipped = deduplicate(inputs)
     by_sha = {str(records_source_sha256(path)): path for path in features}
+    motion_by_sha = {_motion_sha(path): path for path in motion}
+    ammo_by_sha = {_motion_sha(path): path for path in ammo}
     rows: list[dict[str, Any]] = []
     for name, kind, path, sha in unique:
         started = time.perf_counter()
@@ -75,6 +86,8 @@ def measure(
             match_id=f"DEV-{name}",
             database=output / f"{name}.db",
             second_features_path=by_sha.get(sha),
+            engagement_motion_path=motion_by_sha.get(sha),
+            ammo_path=ammo_by_sha.get(sha),
             coach=None if coach_model is None else openai_coach(coach_model),
         )
         feature = report.get("second_feature_promotion") or {}
@@ -196,6 +209,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--timeline", type=_pair, action="append", default=[])
     parser.add_argument("--replay", type=_pair, action="append", default=[])
+    parser.add_argument("--ammo", type=Path, action="append", default=[],
+                        help="#169 --ammo-only の出力（SHA-256で自動対応）")
+    parser.add_argument("--motion", type=Path, action="append", default=[],
+                        help="#169 extract_engagement_motion.py の出力（SHA-256で自動対応）")
     parser.add_argument("--features", type=Path, action="append", default=[],
                         help="extract_second_features.py の出力（SHA-256で自動対応）")
     parser.add_argument("--catalog", type=Path, help="録画カタログ（タイムライン未作成の一覧用）")
@@ -207,7 +224,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     ]
     if not inputs:
         parser.error("--timeline か --replay を1件以上指定してください")
-    summary = measure(inputs, args.output, args.features, args.catalog, args.coach_model)
+    summary = measure(inputs, args.output, args.features, args.catalog, args.coach_model,
+                      args.motion, args.ammo)
     print(json.dumps({k: summary[k] for k in ("coach", "inputs", "distinct_sources", "totals",
                                               "independent_signal_checks",
                                               "rules_ready_for_api")},

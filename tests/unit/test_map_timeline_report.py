@@ -338,7 +338,11 @@ def test_merge_recovery_fills_empty_seconds_and_preserves_incumbent(tmp_path, mo
     incumbent = {**report, "segments": [[first, linked]]}
     changed = {**first, "map_reference_px": [3, 5]}
     fill = {**fill, "fit_residual_p95_reference_px": 1.0}
-    candidate = {**report, "segments": [[changed, linked, fill]]}
+    evidence = {"position_sha256": digest(fill), "method": "marker_companion",
+                "heads": {"marker": "e" * 64, "portrait": "f" * 64},
+                "current_view": "reference_operability_evidence"}
+    candidate = {**report, "segments": [[changed, linked, fill]],
+                 "recovery_candidate_evidence": {ids[2]: evidence}}
 
     def save(name, report):
         report["second_rows"] = join_recorder_seconds(report, timeline)
@@ -353,7 +357,42 @@ def test_merge_recovery_fills_empty_seconds_and_preserves_incumbent(tmp_path, mo
     assert merged["operable_coverage"]["operable_seconds_with_position"] == 2
     assert merged["operable_coverage"]["operable_seconds_with_native_edge"] == 1
     assert merged["formal_outputs"] == 0
+    recorded = merged["recovery_composition"]["added_evidence"]
+    assert set(recorded) == {ids[2]}
+    assert recorded[ids[2]]["lineage"] == evidence
+    assert recorded[ids[2]]["camera_state"] == "SELF"
+
+    for untracked in ({}, {ids[2]: {**evidence, "heads": {}}}):
+        untracked_path = save(
+            "untracked.json", {**candidate, "recovery_candidate_evidence": untracked},
+        )
+        skipped = merge_recovery_candidates(timeline_path, old, untracked_path, reference)
+        assert skipped["segments"] == incumbent["segments"]
+        assert skipped["recovery_composition"]["candidates_without_recognition_lineage"] == 1
+
+    evidence["position_sha256"] = "f" * 64
+    with pytest.raises(ValueError, match="exact candidate position"):
+        merge_recovery_candidates(timeline_path, old, save("candidate.json", candidate), reference)
 
     candidate["zone_catalog_sha256"] = "e" * 64
     with pytest.raises(ValueError, match="zone_catalog_sha256"):
         merge_recovery_candidates(timeline_path, old, save("candidate.json", candidate), reference)
+
+    timeline["native_frames"][ids[2]]["viewed_identity"] = {"agent_signature_relation": "DIFFERENT"}
+    timeline_path.write_text(json.dumps(timeline), encoding="utf-8")
+    timeline_sha = file_sha(timeline_path)
+    reference.write_text(json.dumps({
+        **report, "timeline_sha256": timeline_sha,
+        "comparison_evidence": {"operable_sample_refs": ids},
+    }), encoding="utf-8")
+    for path_report in (incumbent, candidate):
+        path_report.update(
+            timeline_sha256=timeline_sha, reference_report_sha256=file_sha(reference),
+            zone_catalog_sha256="d" * 64,
+        )
+    guarded = merge_recovery_candidates(
+        timeline_path, save("incumbent.json", incumbent),
+        save("candidate.json", candidate), reference,
+    )
+    assert guarded["segments"] == [[first, linked]]
+    assert guarded["recovery_composition"]["added_evidence"] == {}

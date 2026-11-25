@@ -51,7 +51,13 @@ from valorant_ai_coach.events.source_contract import EventSourceContract
 from valorant_ai_coach.knowledge import GameKnowledge, load_game_knowledge
 from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rules.development_readiness import FEED_REPEAT_SEC, FeedKill, Observation
-from valorant_ai_coach.rules.second_series import SecondRecord, load_second_records
+from valorant_ai_coach.rules.engagement_motion import MotionFrame, first_shot_frame
+from valorant_ai_coach.rules.second_series import (
+    SecondRecord,
+    WeaponLimits,
+    ammo_events,
+    load_second_records,
+)
 from valorant_ai_coach.rules.side import ATTACK, SideObservation, infer_sides
 
 from .timeline_promotion import (
@@ -166,6 +172,9 @@ class SecondFeaturePolicy:
     score_min_reads: int
     score_min_share: float
     enemy_eco_confidence: float
+    ammo_min_confidence: float
+    shot_confidence: float
+    shot_pause_sec: float
 
     @classmethod
     def load(cls, path: Path | None = None) -> SecondFeaturePolicy:
@@ -192,9 +201,13 @@ class SecondFeaturePolicy:
             score_min_reads=int(raw["score_min_reads"]),
             score_min_share=float(raw["score_min_share"]),
             enemy_eco_confidence=float(raw["enemy_eco_confidence"]),
+            ammo_min_confidence=float(raw["ammo_min_confidence"]),
+            shot_confidence=float(raw["shot_confidence"]),
+            shot_pause_sec=float(raw["shot_pause_sec"]),
         )
         for name in (
-            "alive_confidence", "utility_confidence", "kill_confidence", "enemy_eco_confidence"
+            "alive_confidence", "utility_confidence", "kill_confidence", "enemy_eco_confidence",
+            "shot_confidence",
         ):
             if not 0.0 < getattr(policy, name) <= 1.0:
                 raise PromotionError(f"second_features.{name} は (0, 1] で指定してください")
@@ -232,8 +245,9 @@ class SecondFeatureReport:
         }
 
 
-def load_records(path: Path) -> list[SecondRecord]:
-    """Read ``extract_second_features.py`` output (.jsonl or .jsonl.gz)."""
+def load_records(path: Path, ammo_path: Path | None = None) -> list[SecondRecord]:
+    """Read ``extract_second_features.py`` output (.jsonl or .jsonl.gz); ``ammo_path``
+    (#169 ``--ammo-only`` rows) adds the reserve count by native sample identity."""
     if path.suffix == ".gz":
         import gzip
         import tempfile
@@ -243,8 +257,8 @@ def load_records(path: Path) -> list[SecondRecord]:
         with tempfile.TemporaryDirectory() as directory:
             plain = Path(directory) / "features.jsonl"
             plain.write_text(text, encoding="utf-8")
-            return load_second_records(plain)
-    return load_second_records(path)
+            return load_second_records(plain, ammo_path)
+    return load_second_records(path, ammo_path)
 
 
 def load_frame_refs(path: Path) -> dict[float, str]:
@@ -302,6 +316,7 @@ class SecondFeaturePromoter:
         *,
         records_sha256: str | None,
         frame_refs: Mapping[float, str] | None = None,
+        motion_frames: Sequence[MotionFrame] | None = None,
     ) -> SecondFeatureReport:
         report = SecondFeatureReport()
         self._refs: dict[int, str] = {}
@@ -311,6 +326,7 @@ class SecondFeaturePromoter:
             raise PromotionError("特徴量と共通タイムラインの元動画（SHA-256）が一致しません")
         view = TimelineView(bundle)
         by_second: dict[int, Observation] = {}
+        self._ammo_by_second: dict[int, tuple[int, int | None]] = {}
         used_frames: set[str] = set()
         for record in sorted(records, key=lambda r: r.observation.sec):
             # Timeline second s covers [s, s + 1); keyframes fall anywhere inside it.
@@ -326,10 +342,16 @@ class SecondFeaturePromoter:
                 report.counts["second_duplicate_readings"] += 1
                 continue
             by_second[second] = record.observation
+            if record.magazine is not None:
+                self._ammo_by_second[second] = (int(record.magazine), record.reserve)
             if ref:
                 used_frames.add(ref)
                 self._refs[second] = ref
         report.counts["aligned_seconds"] = len(by_second)
+        self._magazines = sorted(
+            (float(r.observation.sec), int(r.magazine)) for r in records if r.magazine is not None
+        )
+        self._motion = sorted(motion_frames or (), key=lambda f: f.sec)
         agent = self._recorder_agent(view, by_second, report)
         role = "unknown"
         if agent is not None:
@@ -364,13 +386,14 @@ class SecondFeaturePromoter:
             self._snapshots(view, by_second, item, agent, report, stats)
             self._recover_deaths(view, by_second, item, report, stats)
             self._eliminations(view, by_second, feed_new, item, report, stats)
-            self._revives_and_downed(view, item, report, stats)
+            self._revives_and_downed(view, by_second, item, report, stats)
+            self._shots(view, by_second, item, agent, report, stats)
             item.events.sort(key=_event_order)
             for event in item.events:
-                if event["type"] in {"kill", "state_snapshot"}:
+                if event["type"] in {"kill", "state_snapshot", "shot"}:
                     self.contract.validate_event(
-                        event, "hud_analyzer" if event["type"] == "kill"
-                        else "derived_event_builder"
+                        event, "derived_event_builder" if event["type"] == "state_snapshot"
+                        else "hud_analyzer"
                     )
             report.per_round[item.round_no] = stats
         self._enemy_economy(by_second, result, report)
@@ -398,11 +421,16 @@ class SecondFeaturePromoter:
           at 0 must have a promoted recorder death (``missed`` otherwise).
         * ``side_defense``: a Round given ``defense`` must show no spike header in the
           recorder's own view at all.
+        * ``shot_vs_feature_ammo``: the keyframe magazine readings of the features
+          also drop over a promoted shot's reading interval.
+        * ``recorder_kill_has_shot``: a kill the feed gives to the recorder has a
+          promoted shot in its drop interval (from 3 s before).
         """
         counts: dict[str, Counter[str]] = {
             k: Counter() for k in (
                 "top_bar_vs_kill_feed", "recorder_death_vs_kill_feed",
                 "first_death_vs_kill_feed", "recorder_death_recall", "side_defense",
+                "shot_vs_feature_ammo", "recorder_kill_has_shot",
             )
         }
         for item in result.rounds:
@@ -417,6 +445,16 @@ class SecondFeaturePromoter:
                 ] += 1
             deaths = [e for e in item.events if e["type"] == "player_death"]
             kills = [e for e in item.events if e["type"] == "kill"]
+            shots = [e for e in item.events if e["type"] == "shot"]
+            for shot in shots:
+                counts["shot_vs_feature_ammo"][shot["attributes"]["feature_ammo_check"]] += 1
+            for kill in kills:
+                if kill["actor"] != "player":
+                    continue
+                low, high = kill["attributes"]["drop_bracket_sec"]
+                counts["recorder_kill_has_shot"][
+                    "found" if any(low - 3 <= s["time_sec"] <= high for s in shots) else "missed"
+                ] += 1
             feed_secs = [
                 float(e["attributes"]["feed_sec"]) for e in kills
                 if "feed_sec" in e["attributes"]
@@ -988,6 +1026,211 @@ class SecondFeaturePromoter:
     def _recorder_live(self, view: TimelineView, low: int, high: int) -> bool:
         return any(self._own_live(view.row(s)) for s in range(max(0, low - 3), high + 1))
 
+    # -- shots (#169) -------------------------------------------------------------------
+
+    def _ammo_reading(self, row: SecondView | None) -> tuple[int, int | None, str] | None:
+        """The shared timeline's magazine (and reserve) reading of one second.
+
+        Only a single value with ``ammo_min_confidence`` counts; two readers that
+        disagree in one second give no reading.
+        """
+        if row is None:
+            return None
+
+        def single(name: str) -> tuple[int, str] | None:
+            values = {
+                (int(c["value"]), str(c.get("evidence_ref", "")))
+                for c in row.hud.get(name, ())
+                if isinstance(c.get("value"), int) and not isinstance(c.get("value"), bool)
+                and isinstance(c.get("confidence"), int | float)
+                and float(c["confidence"]) >= self.policy.ammo_min_confidence
+            }
+            if len({v for v, _ in values}) != 1:
+                return None
+            return min(values)
+
+        magazine = single("ammo_current")
+        if magazine is None:
+            return None
+        reserve = single("ammo_reserve")
+        return magazine[0], None if reserve is None else reserve[0], magazine[1]
+
+    def _weapon_at(self, row: SecondView | None) -> str | None:
+        if row is None:
+            return None
+        names = {
+            resolved.name
+            for c in row.hud.get("weapon", ())
+            if isinstance(c.get("confidence"), int | float)
+            and float(c["confidence"]) >= self.policy.ammo_min_confidence
+            and (resolved := self.knowledge.weapon(str(c.get("value", "")).strip())) is not None
+        }
+        return next(iter(names)) if len(names) == 1 else None
+
+    def _shots(
+        self, view: TimelineView, by_second: Mapping[int, Observation],
+        item: RoundPromotion, agent: str | None, report: SecondFeatureReport,
+        stats: dict[str, Any],
+    ) -> None:
+        """Shots from the shared timeline's magazine readings (#169 ``ammo_events``).
+
+        Readings are paired only inside the confirmed Round, in the recorder's own
+        observed live view (and, where the HUD agent was read, the recorder's own
+        HUD), at most ``MAX_READ_GAP_SEC`` apart. ``classify_ammo_change`` separates
+        a shot (magazine down, reserve unchanged) from a reload or a weapon switch
+        (reserve changed), so neither becomes a shot. The first shot of the Round or
+        after ``shot_pause_sec`` without one is ``first_shot``; the 60 fps engagement
+        frames, where read, place it to the frame (``first_shot_frame_sec``).
+        """
+        assert item.start is not None and item.end is not None
+        records: list[SecondRecord] = []
+        owned: list[bool] = []
+        refs: list[str] = []
+        sources: list[str] = []
+        for second in range(item.start.time_sec, item.end.time_sec + 1):
+            row = view.row(second)
+            obs = by_second.get(second)
+            own = self._own_live(row) and not (
+                obs is not None and obs.hud_present and obs.viewed_agent is not None
+                and agent is not None and obs.viewed_agent != agent
+            )
+            reading = self._ammo_reading(row) if own else None
+            source = "timeline"
+            if reading is None and own and self._own_hud(obs, agent) \
+                    and second in self._ammo_by_second:
+                # The same #169 reader on the second's keyframe fills seconds the
+                # timeline did not read, in the recorder's own HUD only.
+                magazine, reserve = self._ammo_by_second[second]
+                reading = (magazine, reserve, self._refs.get(second, ""))
+                source = "features"
+            sources.append(source if reading is not None else "")
+            records.append(SecondRecord(
+                Observation(float(second), True, agent, 1.0, (0.0, 0.0, 0.0, 0.0), None, None),
+                None if reading is None else reading[0], None, 0,
+                None if reading is None else reading[1],
+            ))
+            owned.append(own)
+            refs.append("" if reading is None else reading[2])
+        limits = WeaponLimits.from_knowledge(self.knowledge.weapons)
+        changes = ammo_events(records, owned, limits)
+        kinds = Counter(change.kind for change in changes)
+        stats["ammo_changes"] = dict(sorted(kinds.items()))
+        for kind in ("reload", "weapon_switch", "misread", "rise_unexplained"):
+            report.counts[f"ammo_{kind}"] += kinds.get(kind, 0)
+        last: float | None = None
+        shots = 0
+        start = item.start.time_sec
+        for change in changes:
+            if change.kind != "shot":
+                continue
+            before = records[change.previous_index].observation.sec
+            held = self._weapon_or_reserve_changed(
+                view, records, start, change.previous_index, change.index
+            )
+            if held is not None:
+                # A drop to another weapon's magazine with the reserve unread at one
+                # end looks like a shot; the weapon name or the nearest reserve
+                # reading on each side shows the switch.
+                report.rejected[held] += 1
+                continue
+            first = last is None or change.sec - last > self.policy.shot_pause_sec
+            last = change.sec
+            second = int(change.sec)
+            attributes: dict[str, Any] = {
+                "first_shot": first,
+                "rounds_fired": change.before - change.after,
+                "magazine": [change.before, change.after],
+                "reading_interval_sec": [before, change.sec],
+                "producer": PRODUCER,
+                "promotion_rule": "magazine_drop_in_own_live_view",
+                "evidence_provenance": {"ammo_source": "shared_timeline_hud_observations"},
+            }
+            if change.reserve_before is not None and change.reserve_after is not None:
+                attributes["reserve"] = [change.reserve_before, change.reserve_after]
+            weapon = self._weapon_at(view.row(second))
+            if weapon is not None:
+                attributes["weapon"] = weapon
+            if first and self._motion:
+                frame = first_shot_frame(self._motion, before, change.sec + 1.0)
+                if frame is not None:
+                    attributes["first_shot_frame_sec"] = round(frame, 4)
+                    report.counts["first_shots_frame_located"] += 1
+            pair = [sources[change.previous_index], sources[change.index]]
+            attributes["ammo_sources"] = pair
+            timeline_only = pair == ["timeline", "timeline"]
+            report.counts["shots_timeline_readings" if timeline_only
+                          else "shots_with_feature_readings"] += 1
+            attributes["feature_ammo_check"] = (
+                self._feature_drop(before, change.sec) if timeline_only else "feature_sourced"
+            )
+            evidence = tuple(dict.fromkeys(
+                r for r in (refs[change.previous_index], refs[change.index]) if r
+            ))
+            event = TimelinePromoter._event(
+                "shot", item.round_no, second, actor="player",
+                confidence=self.policy.shot_confidence, attributes=attributes,
+                evidence_refs=evidence,
+            )
+            item.events.append(event)
+            shots += 1
+            report.counts["shot_events"] += 1
+            report.counts["first_shots"] += int(first)
+        stats["shot_events"] = shots
+
+    def _weapon_or_reserve_changed(
+        self, view: TimelineView, records: Sequence[SecondRecord], start: int,
+        before: int, after: int,
+    ) -> str | None:
+        """Why a magazine drop is not a shot, or None.
+
+        The weapon read at (or one second outside) each end must not differ, and the
+        reserve, taken at each end or from the nearest reading within 3 s outside
+        the interval, must not differ either.
+        """
+        def weapon(indices: Sequence[int]) -> str | None:
+            for index in indices:
+                if 0 <= index < len(records):
+                    name = self._weapon_at(view.row(start + index))
+                    if name is not None:
+                        return name
+            return None
+
+        def reserve(indices: Sequence[int]) -> int | None:
+            for index in indices:
+                if 0 <= index < len(records) and records[index].reserve is not None:
+                    return int(records[index].reserve)  # type: ignore[arg-type]
+            return None
+
+        w_before, w_after = weapon((before, before - 1)), weapon((after, after + 1))
+        if w_before is not None and w_after is not None and w_before != w_after:
+            return "shot_weapon_changed"
+        r_before = reserve([before - k for k in range(4)])
+        r_after = reserve([after + k for k in range(4)])
+        if r_before is not None and r_after is not None and r_before != r_after:
+            return "shot_reserve_changed"
+        return None
+
+    def _feature_drop(self, start: float, end: float) -> str:
+        """Second reader: do the keyframe magazine readings (#155/#169 features) also
+        show the drop between the timeline readings of seconds ``start`` and ``end``?
+
+        A timeline second ``s`` was sampled somewhere in ``[s, s + 1)``. A feature
+        drop inside ``(start - 1, end + 1)`` agrees. A feature reading at or before
+        ``start`` is surely before the shot and one at or after ``end + 1`` surely
+        after it: the same count on both sides disagrees, a rise (reload or switch
+        in between) or no such pair leaves it ``undetermined``.
+        """
+        inside = [m for sec, m in self._magazines if start - 1.0 < sec < end + 1.0]
+        if any(b < a for a, b in zip(inside, inside[1:], strict=False)):
+            return "agree"
+        before = [m for sec, m in self._magazines if start - 2.0 <= sec <= start]
+        after = [m for sec, m in self._magazines if end + 1.0 <= sec <= end + 3.0]
+        if not before or not after:
+            return "undetermined"
+        if after[0] < before[-1]:
+            return "agree"
+        return "disagree" if after[0] == before[-1] else "undetermined"
+
     # -- economy ---------------------------------------------------------------------------
 
     def _score_before(
@@ -1130,8 +1373,8 @@ class SecondFeaturePromoter:
     # -- revive and DOWNED ----------------------------------------------------------------
 
     def _revives_and_downed(
-        self, view: TimelineView, item: RoundPromotion, report: SecondFeatureReport,
-        stats: dict[str, Any],
+        self, view: TimelineView, by_second: Mapping[int, Observation], item: RoundPromotion,
+        report: SecondFeatureReport, stats: dict[str, Any],
     ) -> None:
         assert item.window is not None and item.end is not None
         downed = sum(1 for row in view.seconds[item.window[0]:item.window[1]]
@@ -1151,6 +1394,16 @@ class SecondFeaturePromoter:
             if revived_at is not None:
                 death["attributes"]["revived_at_sec"] = revived_at
                 report.counts["revives"] += 1
+                # A revive raises the recorder's team on the top bar; a misread
+                # spectator view does not. Only a corroborated revive explains live
+                # own HUD after the death.
+                pairs = [
+                    pair for s in range(second - 2, revived_at + 2)
+                    if (pair := _bar_pair(by_second.get(s))) is not None
+                ]
+                rose = any(b[0] > a[0] for a, b in zip(pairs, pairs[1:], strict=False))
+                death["attributes"]["revive_corroborated_by_top_bar"] = rose
+                report.counts["revives_corroborated" if rose else "revives_uncorroborated"] += 1
         stats["revives"] = sum(
             1 for e in item.events
             if e["type"] == "player_death" and "revived_at_sec" in e["attributes"]

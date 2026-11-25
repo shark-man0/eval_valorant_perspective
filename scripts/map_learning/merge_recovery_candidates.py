@@ -8,7 +8,8 @@ from pathlib import Path
 
 from compare_runs import _operable_seconds
 
-from valorant_ai_coach.temporal.evidence import is_sha, native_time
+from valorant_ai_coach.temporal.evidence import digest, is_sha, native_time
+from valorant_ai_coach.temporal.map_direct_recorder import measured_direct_view
 from valorant_ai_coach.temporal.map_path_quality import measure_path_quality
 from valorant_ai_coach.temporal.map_recorder_path import (
     join_recorder_seconds,
@@ -17,6 +18,42 @@ from valorant_ai_coach.temporal.map_recorder_path import (
 )
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
+
+
+def _recognition_lineage(lineage, point, timeline, frame):
+    if not isinstance(lineage, dict):
+        return False
+    method = lineage.get("method")
+    view = lineage.get("current_view")
+    if method == "marker_companion":
+        heads = lineage.get("heads")
+        return (
+            view == "reference_operability_evidence"
+            and isinstance(heads, dict)
+            and set(heads) == {"marker", "portrait"}
+            and all(is_sha(value) for value in heads.values())
+        )
+    if method != "recording_portraits" or not is_sha(view):
+        return False
+    observations = [timeline["observations"][key] for key in frame["observation_ids"]]
+    if measured_direct_view(frame, observations) != view:
+        return False
+    anchors = lineage.get("portrait_anchors")
+    if not isinstance(anchors, dict) or len(anchors) < 2 or set(anchors) != set(
+        point.get("portrait_anchor_sample_refs", ())
+    ):
+        return False
+    return all(
+        is_sha(key)
+        and isinstance(seed, dict)
+        and is_sha(seed.get("portrait_reference_sha256"))
+        and (
+            (seed.get("method") == "learned" and is_sha(seed.get("model_receipt_sha256")))
+            or (seed.get("method") == "public_reference"
+                and seed.get("model_receipt_sha256") is None)
+        )
+        for key, seed in anchors.items()
+    )
 
 
 def merge_recovery_candidates(bundle, incumbent_path, candidate_path, reference_path):
@@ -43,18 +80,56 @@ def merge_recovery_candidates(bundle, incumbent_path, candidate_path, reference_
     atlases = {(p["map_id"], p["reference_sha256"]) for s in incumbent["segments"] for p in s
                if p["kind"] == "selected"}
 
+    recovery_lineage = candidate.get("recovery_candidate_evidence", {})
+    if not isinstance(recovery_lineage, dict):
+        raise ValueError("Recovery evidence must be indexed by native sample")
+    untracked_candidates = 0
+
     def admissible(point):
+        nonlocal untracked_candidates
         residual = point.get("fit_residual_p95_reference_px")
-        return (
-            point["sample"]["sample_sha256"] in vacancies and point["kind"] == "selected"
+        key = point["sample"]["sample_sha256"]
+        frame = timeline["native_frames"][key]
+        view = frame.get("viewed_identity") or {}
+        eligible_point = (
+            key in vacancies and point["kind"] == "selected"
             and point["support_count"] >= 2
+            and view.get("agent_signature_relation") != "DIFFERENT"
             and (point["map_id"], point["reference_sha256"]) in atlases
             and not point.get("alignment_recovery")
             and type(residual) in (int, float) and 0 <= residual <= 8
         )
+        if not eligible_point:
+            return False
+        lineage = recovery_lineage.get(key)
+        if not _recognition_lineage(lineage, point, timeline, frame):
+            untracked_candidates += 1
+            return False
+        if lineage.get("position_sha256") != digest(point):
+            raise ValueError("Recovery evidence must match the exact candidate position")
+        return True
 
     additions = [list(group) for s in candidate["segments"]
                  for keep, group in groupby(s, key=admissible) if keep]
+    evidence = {}
+    candidate_sha = file_sha(candidate_path)
+    for segment in additions:
+        for point in segment:
+            key = point["sample"]["sample_sha256"]
+            frame = timeline["native_frames"][key]
+            point_sha = digest(point)
+            evidence[key] = {
+                "position_sha256": point_sha,
+                "candidate_report_sha256": candidate_sha,
+                "lineage": recovery_lineage[key],
+                "camera_state": frame["camera"]["value"],
+                "life_state": frame["life"]["value"],
+                "hud_agent_relation": (frame.get("viewed_identity") or {}).get(
+                    "agent_signature_relation", "UNKNOWN",
+                ),
+                "track_support_count": point["support_count"],
+                "alignment_residual_p95_reference_px": point["fit_residual_p95_reference_px"],
+            }
     segments = sorted([*incumbent["segments"], *additions],
                       key=lambda segment: native_time(segment[0]["sample"]))
     merged = {**incumbent, "segments": segments}
@@ -67,8 +142,10 @@ def merge_recovery_candidates(bundle, incumbent_path, candidate_path, reference_
         "path_quality": measure_path_quality(merged, timeline["seconds"], rows, operable),
         "recovery_composition": {
             "incumbent_sha256": file_sha(incumbent_path),
-            "candidate_sha256": file_sha(candidate_path),
+            "candidate_sha256": candidate_sha,
             "added_native_selections": sum(map(len, additions)),
+            "added_evidence": evidence,
+            "candidates_without_recognition_lineage": untracked_candidates,
         },
     }
 
