@@ -166,7 +166,7 @@ reference.textContent=atlas?'照合済み参照マップ。線は取得済み観
 if(atlas){
 g.drawImage(atlas,...toCanvas([0,0]),w*scale,h*scale);
 for(const [name,ring] of Object.entries(asset.zones)){
-const active=activeZones.has(name);
+const active=activeZones.has(asset.zone_aliases?.[name]??name);
 g.beginPath();g.moveTo(...toCanvas(ring[0]));
 for(const p of ring.slice(1))g.lineTo(...toCanvas(p));
 g.closePath();g.lineWidth=active?2:1;
