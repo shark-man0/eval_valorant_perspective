@@ -257,10 +257,11 @@ def test_template_sources_must_be_train_recordings(tmp_path) -> None:  # type: i
     def archive(video_id: str, extra: bytes = b"") -> object:
         path = tmp_path / f"{video_id}.zip"
         with zipfile.ZipFile(path, "w") as handle:
-            handle.writestr("index.json", json.dumps(
+            # Stable ZIP metadata keeps the registered hash independent of wall-clock time.
+            handle.writestr(zipfile.ZipInfo("index.json"), json.dumps(
                 {"video_id": video_id, "file_name": f"{video_id}.mp4", "size_bytes": 10}))
             if extra:
-                handle.writestr("extra.bin", extra)
+                handle.writestr(zipfile.ZipInfo("extra.bin"), extra)
         return path
 
     sha = {"a": "1" * 64, "b": "2" * 64}
