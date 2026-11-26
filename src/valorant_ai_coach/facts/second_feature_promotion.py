@@ -175,6 +175,11 @@ class SecondFeaturePolicy:
     ammo_min_confidence: float
     shot_confidence: float
     shot_pause_sec: float
+    utility_used_confidence: float
+    ultimate_ready_charge: float
+    utility_available_charge: float
+    utility_spent_charge: float
+    utility_spent_hold_sec: int
 
     @classmethod
     def load(cls, path: Path | None = None) -> SecondFeaturePolicy:
@@ -204,10 +209,15 @@ class SecondFeaturePolicy:
             ammo_min_confidence=float(raw["ammo_min_confidence"]),
             shot_confidence=float(raw["shot_confidence"]),
             shot_pause_sec=float(raw["shot_pause_sec"]),
+            utility_used_confidence=float(raw["utility_used_confidence"]),
+            ultimate_ready_charge=float(raw["ultimate_ready_charge"]),
+            utility_available_charge=float(raw["utility_available_charge"]),
+            utility_spent_charge=float(raw["utility_spent_charge"]),
+            utility_spent_hold_sec=int(raw["utility_spent_hold_sec"]),
         )
         for name in (
             "alive_confidence", "utility_confidence", "kill_confidence", "enemy_eco_confidence",
-            "shot_confidence",
+            "shot_confidence", "utility_used_confidence",
         ):
             if not 0.0 < getattr(policy, name) <= 1.0:
                 raise PromotionError(f"second_features.{name} は (0, 1] で指定してください")
@@ -388,9 +398,14 @@ class SecondFeaturePromoter:
             self._eliminations(view, by_second, feed_new, item, report, stats)
             self._revives_and_downed(view, by_second, item, report, stats)
             self._shots(view, by_second, item, agent, report, stats)
+            self._engagements(item, report)
+            self._utility_uses(view, by_second, item, agent, report, stats)
             item.events.sort(key=_event_order)
             for event in item.events:
-                if event["type"] in {"kill", "state_snapshot", "shot"}:
+                if event["type"] in {
+                    "kill", "state_snapshot", "shot", "engagement_start", "utility_used",
+                    "ability_state",
+                }:
                     self.contract.validate_event(
                         event, "derived_event_builder" if event["type"] == "state_snapshot"
                         else "hud_analyzer"
@@ -502,6 +517,14 @@ class SecondFeaturePromoter:
         return row is not None and (row.camera_value, row.camera_status) == (
             "SELF", _OBSERVED
         ) and (row.life_value, row.life_status) == ("ALIVE", _OBSERVED)
+
+    @staticmethod
+    def _left_own_view(row: SecondView | None) -> bool:
+        """Observed to be another camera or not alive (not merely unobserved)."""
+        return row is not None and (
+            (row.camera_status == _OBSERVED and row.camera_value != "SELF")
+            or (row.life_status == _OBSERVED and row.life_value != "ALIVE")
+        )
 
     def _recorder_agent(
         self, view: TimelineView, by_second: Mapping[int, Observation],
@@ -1176,6 +1199,193 @@ class SecondFeaturePromoter:
             report.counts["shot_events"] += 1
             report.counts["first_shots"] += int(first)
         stats["shot_events"] = shots
+
+    def _engagements(self, item: RoundPromotion, report: SecondFeatureReport) -> None:
+        """An ``engagement_start`` at each promoted first shot (the first shot of the
+        Round or after a pause), placed at the 60 fps frame when it was located.
+
+        It carries only what the first shot shows: the recorder started firing.
+        Peeks, pre-aim and who was seen are not known from the HUD."""
+        for shot in [e for e in item.events if e["type"] == "shot"]:
+            attributes = shot["attributes"]
+            if not attributes.get("first_shot"):
+                continue
+            when = float(attributes.get("first_shot_frame_sec", shot["time_sec"]))
+            event = TimelinePromoter._event(
+                "engagement_start", item.round_no, int(shot["time_sec"]), actor="player",
+                confidence=float(shot["confidence"]),
+                attributes={
+                    "basis": "recorder_first_shot",
+                    # Only that the recorder started firing; nothing about the enemy.
+                    "observed": "recorder_started_firing",
+                    "not_inferred": [
+                        "enemy_visible", "peek", "preaim", "engagement_end", "opponent",
+                    ],
+                    "first_shot_event_id": shot["event_id"],
+                    "start_sec": when,
+                    "producer": PRODUCER,
+                    "promotion_rule": "first_shot_in_own_live_view",
+                    "evidence_provenance": {"derived_from": [shot["event_id"]]},
+                },
+                evidence_refs=attributes["evidence_provenance"].get("evidence_refs", []),
+            )
+            item.events.append(event)
+            report.counts["engagement_start_events"] += 1
+
+    def _utility_uses(
+        self, view: TimelineView, by_second: Mapping[int, Observation], item: RoundPromotion,
+        agent: str | None, report: SecondFeatureReport, stats: dict[str, Any],
+    ) -> None:
+        """``utility_used`` when an ability slot of the recorder's own HUD goes from
+        available to spent inside the confirmed Round's combat.
+
+        The #155 charge readings of a slot must read clearly available
+        (``utility_available_charge``; the ultimate also ``ultimate_ready_charge``)
+        on two own-HUD seconds and then clearly spent (``utility_spent_charge``) for
+        ``utility_spent_hold_sec``. Every second of that span is traced in
+        ``hold_trace`` (``_hold_trace``): at least four spent readings, the view the
+        recorder's own throughout, at most one missing reading in a row, all inside
+        the Round. An icon that comes back within the hold
+        (a highlight, a dimmed HUD, a misread) is not a use; a second charge of a
+        two-charge ability is missed rather than guessed. Buying and selling happen
+        before the Round starts, so only spending is seen here. Each use also
+        records, as an ``ability_state``, whether the ultimate was ready just before
+        it (``ultimate_available``).
+        """
+        assert item.start is not None and item.end is not None
+        if agent is None:
+            return
+        start, end = item.start.time_sec, item.end.time_sec
+        reads = [
+            (second, obs.charges) for second in range(start, end + 1)
+            if self._own_live(view.row(second))
+            and self._own_hud(obs := by_second.get(second), agent)
+            and obs is not None
+        ]
+        known = self.knowledge.agent(agent)
+        uses = 0
+        hold = self.policy.utility_spent_hold_sec
+        spent_limit = self.policy.utility_spent_charge
+        for slot, key in enumerate(("C", "Q", "E", "X")):
+            ready = max(self.policy.utility_available_charge, self.policy.ultimate_ready_charge) \
+                if key == "X" else self.policy.utility_available_charge
+            seconds = [second for second, _ in reads]
+            values = [charges[slot] for _, charges in reads]
+            for i in range(2, len(reads)):
+                a1, a2, b1 = seconds[i - 2], seconds[i - 1], seconds[i]
+                if not (values[i - 2] >= ready and values[i - 1] >= ready
+                        and values[i] <= spent_limit):
+                    continue
+                trace, why = self._hold_trace(
+                    view, by_second, agent, slot, a1, b1, b1 + hold, end, ready
+                )
+                if why is not None:
+                    # Every second from the last available readings to the end of the
+                    # hold must be the recorder's own HUD, read spent; a view change,
+                    # another HUD or more than one missing reading in a row leaves
+                    # the use unproven.
+                    report.rejected[why] += 1
+                    continue
+                ability = None if known is None else known.abilities.get(key)
+                ultimate_before = reads[i - 1][1][3] >= self.policy.ultimate_ready_charge
+                ultimate_stable = (
+                    reads[i - 2][1][3] >= self.policy.ultimate_ready_charge
+                ) == ultimate_before
+                refs = tuple(dict.fromkeys(r["evidence_ref"] for r in trace if r["evidence_ref"]))
+                event = TimelinePromoter._event(
+                    "utility_used", item.round_no, b1, actor="player",
+                    confidence=self.policy.utility_used_confidence,
+                    attributes={
+                        "slot": slot, "keybind_role": key,
+                        "semantic_role": "ultimate" if key == "X" else "ability",
+                        "ability": None if ability is None else ability.name,
+                        "agent": agent,
+                        "reading_interval_sec": [a2, b1],
+                        "hold_sec": [b1, b1 + hold],
+                        "hold_trace": trace,
+                        "missing_seconds": [r["sec"] for r in trace if r["state"] == "missing"],
+                        "producer": PRODUCER,
+                        "promotion_rule": "own_hud_ability_slot_spent",
+                        "evidence_provenance": {"charge_source": "second_features_charges"},
+                    },
+                    evidence_refs=refs,
+                )
+                event["event_id"] = f"{event['event_id']}-{key}"
+                item.events.append(event)
+                uses += 1
+                report.counts[f"utility_used_{'ultimate' if key == 'X' else 'ability'}"] += 1
+                if ultimate_stable:
+                    state = TimelinePromoter._event(
+                        "ability_state", item.round_no, a2, actor="player",
+                        confidence=self.policy.utility_used_confidence,
+                        attributes={
+                            "slot": 3, "keybind_role": "X", "semantic_role": "ultimate",
+                            "available": ultimate_before,
+                            "producer": PRODUCER,
+                            "promotion_rule": "own_hud_ultimate_charge_before_use",
+                            "evidence_provenance": {"charge_source": "second_features_charges"},
+                        },
+                        evidence_refs=tuple(r for r in (self._refs.get(a2),) if r),
+                    )
+                    state["event_id"] = f"{state['event_id']}-X-before-{key}"
+                    item.events.append(state)
+                    report.counts["ability_state_events"] += 1
+        stats["utility_used"] = uses
+
+    def _hold_trace(
+        self, view: TimelineView, by_second: Mapping[int, Observation], agent: str,
+        slot: int, first: int, use: int, last: int, round_end: int, ready: float,
+    ) -> tuple[list[dict[str, Any]], str | None]:
+        """Per-second trace of a use from the last available readings to the end of
+        the hold, and why it fails (None when it holds).
+
+        Each second is ``available`` / ``spent`` (an own-HUD reading), or
+        ``missing`` (no reading, or the view itself not observed) - never inferred.
+        A second observed to leave the recorder's own live view (another camera, not
+        alive), a HUD of another agent, a reading that is neither
+        clearly spent after the use nor clearly available before it, a run of more
+        than one missing second, or a hold running past the Round's end fails.
+        """
+        trace: list[dict[str, Any]] = []
+        if last > round_end:
+            return trace, "utility_hold_past_round_end"
+        missing_run = 0
+        for second in range(first, last + 1):
+            obs = by_second.get(second)
+            entry: dict[str, Any] = {"sec": second, "evidence_ref": self._refs.get(second)}
+            row = view.row(second)
+            if not self._own_live(row):
+                if self._left_own_view(row):
+                    return trace, "utility_hold_view_interrupted"
+                # The view is not observed this second (no evidence either way): the
+                # second is missing, whatever reading it has, and is never filled.
+                missing_run += 1
+                if missing_run > 1:
+                    return trace, "utility_hold_missing_readings"
+                entry.update(state="missing", charge=None, view="unobserved")
+                trace.append(entry)
+                continue
+            if obs is None or not obs.hud_present:
+                missing_run += 1
+                if missing_run > 1:
+                    return trace, "utility_hold_missing_readings"
+                entry.update(state="missing", charge=None)
+                trace.append(entry)
+                continue
+            if not self._own_hud(obs, agent):
+                return trace, "utility_hold_hud_not_recorder"
+            missing_run = 0
+            value = float(obs.charges[slot])
+            before_use = second < use
+            spent_limit = self.policy.utility_spent_charge
+            if (before_use and value < ready) or (not before_use and value > spent_limit):
+                return trace, "utility_use_not_held"
+            entry.update(state="available" if before_use else "spent", charge=round(value, 3))
+            trace.append(entry)
+        spent = [e for e in trace if e["state"] == "spent"]
+        if len(spent) < 4:
+            return trace, "utility_hold_too_few_readings"
+        return trace, None
 
     def _weapon_or_reserve_changed(
         self, view: TimelineView, records: Sequence[SecondRecord], start: int,

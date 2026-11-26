@@ -146,6 +146,21 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 
 検算は2つです。`shot_vs_feature_ammo` は、タイムラインの読み取りだけで作った射撃について、特徴量の弾数も減っているかを見ます。タイムラインの秒は1秒の中のどこかで読まれるため、前後1秒を含む区間で減っていれば一致とします。区間の中で減っていない場合は、射撃より確実に前（開始の秒以前）と確実に後（終了の秒の1秒後以降）の読み取りを比べ、同じ値なら不一致、増えていれば（リロードや持ち替えを挟むため）判定しません。特徴量で補った射撃は同じ読み取りどうしになるため `feature_sourced` として数えません。`recorder_kill_has_shot` は、キルフィードが本人のキルとした撃破の区間に射撃があるかを見ます。
 
+### 交戦開始とスキル使用
+
+- `engagement_start`：昇格した射撃のうち初弾（Round最初、または3秒以上空いた後）ごとに1件作ります。時刻は初弾の秒で、60fpsフレームで特定できた時刻を `start_sec` に記録します。分かるのは「本人が撃ち始めた」ことだけです。属性 `observed` は `recorder_started_firing` で、`not_inferred` に敵の視認、ピーク、プリエイム、交戦終了、相手を挙げます。敵の人数や味方のトレード距離の属性は持たないため、FactBuilder は `tradeable_ally_nearby` や `preaim_lead_sec` を作りません。
+- `utility_used`：確定Roundの交戦中、本人視点・本人のHUDの秒で、スキル枠（C・Q・E・X）の #155 の充填の読み取りが変わったときに作ります。条件は次のとおりです。
+  - 直前の2回の読み取りがはっきり使用可能（0.6以上、Xはさらに `ultimate_ready_charge` 以上）。
+  - その後 `utility_spent_hold_sec`（8秒）のすべての読み取り（4回以上）がはっきり使用済み（0.1以下）。
+  - 使用可能の最初の読み取りから保持の終わりまで、すべての秒を `hold_trace` に記録します。各秒は秒、状態（available・spent・missing）、充填値、根拠フレームを持ちます。
+  - 読み取りのない秒と、共通タイムラインで視点が観測されていない秒は `missing` として記録し、`missing_seconds` に並べます。視点が観測されていない秒は `view: unobserved` を付け、読み取りがあっても使いません。値は補いません。2秒続けて欠けたら証明できないとして見送ります（`utility_hold_missing_readings`）。
+  - 途中で本人視点を離れたと観測された秒（別のカメラ、生存していない）があれば見送ります（`utility_hold_view_interrupted`）。本人以外のHUD（`utility_hold_hud_not_recorder`）、Round終了をまたぐ保持（`utility_hold_past_round_end`）、使用済みの読み取りが4回未満（`utility_hold_too_few_readings`）も同じです。
+  - Event の根拠参照は、`hold_trace` のすべての根拠フレームです。
+  - 8秒以内に戻るアイコン（強調表示、HUDの減光、誤読）は使用にしません（`utility_use_not_held`）。2回使えるスキルの2回目のように中間の値になるものは、推測せず見送ります。
+  - 購入フェーズはRound開始より前なので、購入や売却は使用に数えません。
+- スキル使用ごとに、直前のアルティメットの状態を `ability_state`（スロット3）として記録し、FactBuilder が `ultimate_available` を作ります。
+- Event Source Contract の `engagement_start` と `utility_used` を、上記のHUD由来でも作れるように `hud_or_visual_analyzer` に変えました。敵・味方のスキルとその効果範囲は対象外です。
+
 ### 本人死亡の見落とし補完
 
 観戦への切り替えで判定できない本人死亡を、次の条件をすべて満たす場合に限って昇格する。そうした死亡は2つの場面で起きる。本人が最後の生存者でRoundがすぐ終わる場面と、観戦表示が数秒遅れる場面である。

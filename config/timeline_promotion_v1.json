@@ -65,6 +65,11 @@
     "enemy_eco_confidence": 0.8,
     "ammo_min_confidence": 0.9,
     "shot_confidence": 0.8,
-    "shot_pause_sec": 3.0
+    "shot_pause_sec": 3.0,
+    "utility_used_confidence": 0.8,
+    "ultimate_ready_charge": 0.6,
+    "utility_available_charge": 0.6,
+    "utility_spent_charge": 0.1,
+    "utility_spent_hold_sec": 8
   }
 }

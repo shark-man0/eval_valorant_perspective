@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Callable
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -644,3 +645,115 @@ def test_a_switch_read_with_the_reserve_missing_at_one_end_is_not_a_shot():
     result, report = augment(named, records(140, lambda s: (5, 5)))
     assert _shots(result) == []
     assert report.rejected["shot_weapon_changed"] == 1
+
+
+# ----------------------------------------------------------------- utility and engagement
+
+
+def _utility_records(c_values: dict[int, float], x: float = 1.0) -> list[SecondRecord]:
+    out = records(140, lambda s: (5, 5), charges=(1.0, 1.0, 0.0, x))
+    for second, value in c_values.items():
+        out[second] = observation(second, charges=(value, 1.0, 0.0, x))
+    return out
+
+
+def _uses(result, round_no: int = 2) -> list[dict[str, Any]]:
+    item = next(r for r in result.rounds if r.round_no == round_no)
+    return [e for e in item.events if e["type"] == "utility_used"]
+
+
+def test_a_held_spent_slot_in_own_combat_is_a_utility_use_with_ultimate_state():
+    # R2 combat 86-126: Sova's C slot is spent from 100 on and stays spent.
+    spent = _utility_records({s: 0.0 for s in range(100, 140)})
+    result, report = augment(_ammo_bundle({}), spent)
+    uses = _uses(result)
+    assert [(u["time_sec"], u["attributes"]["keybind_role"]) for u in uses] == [(100.0, "C")]
+    assert uses[0]["attributes"]["ability"] == "Owl Drone"
+    assert uses[0]["actor"] == "player" and uses[0]["event_id"].endswith("-C")
+    facts = facts_of(result, 2)
+    assert facts["ultimate_available"] == [True]
+    assert report.counts["utility_used_ability"] == 1
+
+
+def test_a_slot_that_comes_back_within_the_hold_is_not_a_use():
+    flicker = {s: 0.0 for s in range(100, 104)}  # back at 104, inside the 8 s hold
+    result, report = augment(_ammo_bundle({}), _utility_records(flicker))
+    assert _uses(result) == []
+    assert report.rejected["utility_use_not_held"] >= 1
+
+
+def test_no_utility_use_in_the_buy_phase_or_in_another_agents_hud():
+    # Spent from 70 (buy phase of R2, before the Round starts at 86): no use.
+    early = _utility_records({s: 0.0 for s in range(70, 140)})
+    result, _ = augment(_ammo_bundle({}), early)
+    assert _uses(result) == []
+    out = _utility_records({s: 0.0 for s in range(100, 140)})
+    for second in range(98, 112):
+        out[second] = observation(second, agent="Jett", charges=(0.0, 1.0, 0.0, 1.0))
+    result, _ = augment(_ammo_bundle({}), out)
+    assert _uses(result) == []
+
+
+def test_each_first_shot_starts_an_engagement():
+    result, report = augment(_ammo_bundle(_AMMO), records(140, lambda s: (5, 5)))
+    item = next(r for r in result.rounds if r.round_no == 2)
+    starts = [e for e in item.events if e["type"] == "engagement_start"]
+    firsts = [s for s in _shots(result) if s["attributes"]["first_shot"]]
+    assert [e["attributes"]["first_shot_event_id"] for e in starts] == [
+        s["event_id"] for s in firsts
+    ]
+    assert all(e["actor"] == "player" for e in starts)
+    assert report.counts["engagement_start_events"] == len(firsts) == 2
+    # Nothing about the enemy or a peek is carried or derived from it.
+    for start in starts:
+        attributes = start["attributes"]
+        assert attributes["observed"] == "recorder_started_firing"
+        assert not {"visible_enemy_count", "allies_in_trade_range", "exposed_directions",
+                    "enemy_spotted"} & set(attributes)
+    keys = set(facts_of(result, 2))
+    assert not {"preaim_lead_sec", "tradeable_ally_nearby", "exposed_directions_count",
+                "enemy_spotted_count"} & keys
+
+
+
+def test_a_utility_hold_is_traced_and_gaps_or_view_changes_reject_it():
+    spent = _utility_records({s: 0.0 for s in range(100, 140)})
+    result, _ = augment(_ammo_bundle({}), spent)
+    use = _uses(result)[0]
+    trace = use["attributes"]["hold_trace"]
+    assert [e["sec"] for e in trace] == list(range(98, 109))
+    assert {e["state"] for e in trace} == {"available", "spent"}
+    assert use["attributes"]["missing_seconds"] == []
+    assert len(use["attributes"]["evidence_provenance"]["evidence_refs"]) == 0  # no frame refs
+
+    # Two missing readings in a row inside the hold: unproven.
+    gappy = _utility_records({s: 0.0 for s in range(100, 140)})
+    for second in (103, 104):
+        gappy[second] = observation(second, bar=None, charges=(0.0, 1.0, 0.0, 1.0))
+        gappy[second] = SecondRecord(
+            replace(gappy[second].observation, hud_present=False), None, None, 0
+        )
+    result, report = augment(_ammo_bundle({}), gappy)
+    assert _uses(result) == [] and report.rejected["utility_hold_missing_readings"] == 1
+
+    # One missing reading is recorded, not filled.
+    single = _utility_records({s: 0.0 for s in range(100, 140)})
+    single[104] = SecondRecord(replace(single[104].observation, hud_present=False), None, None, 0)
+    result, _ = augment(_ammo_bundle({}), single)
+    assert _uses(result)[0]["attributes"]["missing_seconds"] == [104]
+
+    # A second whose view is not observed is missing (never filled), not interrupted.
+    bundle = _ammo_bundle({})
+    bundle["seconds"][105]["camera_state"] = {"value": "UNKNOWN", "status": "UNKNOWN"}
+    result, _ = augment(bundle, _utility_records({s: 0.0 for s in range(100, 140)}))
+    use = _uses(result)[0]
+    assert use["attributes"]["missing_seconds"] == [105]
+    traced = {e["sec"]: e for e in use["attributes"]["hold_trace"]}
+    assert traced[105]["view"] == "unobserved" and traced[105]["charge"] is None
+
+    # The recorder's view interrupted (drone, spectator) inside the hold: unproven.
+    bundle = _ammo_bundle({})
+    Timeline_seconds = bundle["seconds"]
+    Timeline_seconds[105]["camera_state"] = {"value": "REMOTE", "status": "OBSERVED"}
+    result, report = augment(bundle, _utility_records({s: 0.0 for s in range(100, 140)}))
+    assert _uses(result) == [] and report.rejected["utility_hold_view_interrupted"] == 1
