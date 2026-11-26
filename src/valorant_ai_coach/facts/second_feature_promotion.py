@@ -53,6 +53,7 @@ from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rules.development_readiness import FEED_REPEAT_SEC, FeedKill, Observation
 from valorant_ai_coach.rules.engagement_motion import MotionFrame, first_shot_frame
 from valorant_ai_coach.rules.second_series import (
+    MAX_READ_GAP_SEC,
     SecondRecord,
     WeaponLimits,
     ammo_events,
@@ -175,6 +176,11 @@ class SecondFeaturePolicy:
     ammo_min_confidence: float
     shot_confidence: float
     shot_pause_sec: float
+    utility_used_confidence: float
+    ultimate_ready_charge: float
+    utility_available_charge: float
+    utility_spent_charge: float
+    utility_spent_hold_sec: int
 
     @classmethod
     def load(cls, path: Path | None = None) -> SecondFeaturePolicy:
@@ -204,10 +210,15 @@ class SecondFeaturePolicy:
             ammo_min_confidence=float(raw["ammo_min_confidence"]),
             shot_confidence=float(raw["shot_confidence"]),
             shot_pause_sec=float(raw["shot_pause_sec"]),
+            utility_used_confidence=float(raw["utility_used_confidence"]),
+            ultimate_ready_charge=float(raw["ultimate_ready_charge"]),
+            utility_available_charge=float(raw["utility_available_charge"]),
+            utility_spent_charge=float(raw["utility_spent_charge"]),
+            utility_spent_hold_sec=int(raw["utility_spent_hold_sec"]),
         )
         for name in (
             "alive_confidence", "utility_confidence", "kill_confidence", "enemy_eco_confidence",
-            "shot_confidence",
+            "shot_confidence", "utility_used_confidence",
         ):
             if not 0.0 < getattr(policy, name) <= 1.0:
                 raise PromotionError(f"second_features.{name} は (0, 1] で指定してください")
@@ -388,9 +399,14 @@ class SecondFeaturePromoter:
             self._eliminations(view, by_second, feed_new, item, report, stats)
             self._revives_and_downed(view, by_second, item, report, stats)
             self._shots(view, by_second, item, agent, report, stats)
+            self._engagements(item, report)
+            self._utility_uses(view, by_second, item, agent, report, stats)
             item.events.sort(key=_event_order)
             for event in item.events:
-                if event["type"] in {"kill", "state_snapshot", "shot"}:
+                if event["type"] in {
+                    "kill", "state_snapshot", "shot", "engagement_start", "utility_used",
+                    "ability_state",
+                }:
                     self.contract.validate_event(
                         event, "derived_event_builder" if event["type"] == "state_snapshot"
                         else "hud_analyzer"
@@ -1176,6 +1192,128 @@ class SecondFeaturePromoter:
             report.counts["shot_events"] += 1
             report.counts["first_shots"] += int(first)
         stats["shot_events"] = shots
+
+    def _engagements(self, item: RoundPromotion, report: SecondFeatureReport) -> None:
+        """An ``engagement_start`` at each promoted first shot (the first shot of the
+        Round or after a pause), placed at the 60 fps frame when it was located.
+
+        It carries only what the first shot shows: the recorder started firing.
+        Peeks, pre-aim and who was seen are not known from the HUD."""
+        for shot in [e for e in item.events if e["type"] == "shot"]:
+            attributes = shot["attributes"]
+            if not attributes.get("first_shot"):
+                continue
+            when = float(attributes.get("first_shot_frame_sec", shot["time_sec"]))
+            event = TimelinePromoter._event(
+                "engagement_start", item.round_no, int(shot["time_sec"]), actor="player",
+                confidence=float(shot["confidence"]),
+                attributes={
+                    "basis": "recorder_first_shot",
+                    "first_shot_event_id": shot["event_id"],
+                    "start_sec": when,
+                    "producer": PRODUCER,
+                    "promotion_rule": "first_shot_in_own_live_view",
+                    "evidence_provenance": {"derived_from": [shot["event_id"]]},
+                },
+                evidence_refs=attributes["evidence_provenance"].get("evidence_refs", []),
+            )
+            item.events.append(event)
+            report.counts["engagement_start_events"] += 1
+
+    def _utility_uses(
+        self, view: TimelineView, by_second: Mapping[int, Observation], item: RoundPromotion,
+        agent: str | None, report: SecondFeatureReport, stats: dict[str, Any],
+    ) -> None:
+        """``utility_used`` when an ability slot of the recorder's own HUD goes from
+        available to spent inside the confirmed Round's combat.
+
+        The #155 charge readings of a slot must read clearly available
+        (``utility_available_charge``; the ultimate also ``ultimate_ready_charge``)
+        on two own-HUD seconds and then clearly spent (``utility_spent_charge``) on
+        every reading for ``utility_spent_hold_sec``, at least four readings, each
+        step within ``MAX_READ_GAP_SEC``. An icon that comes back within the hold
+        (a highlight, a dimmed HUD, a misread) is not a use; a second charge of a
+        two-charge ability is missed rather than guessed. Buying and selling happen
+        before the Round starts, so only spending is seen here. Each use also
+        records, as an ``ability_state``, whether the ultimate was ready just before
+        it (``ultimate_available``).
+        """
+        assert item.start is not None and item.end is not None
+        if agent is None:
+            return
+        reads = [
+            (second, obs.charges) for second in range(item.start.time_sec, item.end.time_sec + 1)
+            if self._own_live(view.row(second))
+            and self._own_hud(obs := by_second.get(second), agent)
+            and obs is not None
+        ]
+        known = self.knowledge.agent(agent)
+        uses = 0
+        hold = self.policy.utility_spent_hold_sec
+        for slot, key in enumerate(("C", "Q", "E", "X")):
+            ready = max(self.policy.utility_available_charge, self.policy.ultimate_ready_charge) \
+                if key == "X" else self.policy.utility_available_charge
+            seconds = [second for second, _ in reads]
+            values = [charges[slot] for _, charges in reads]
+            for i in range(2, len(reads)):
+                a2, b1 = seconds[i - 1], seconds[i]
+                if not (values[i - 2] >= ready and values[i - 1] >= ready
+                        and values[i] <= self.policy.utility_spent_charge):
+                    continue
+                after = [k for k in range(i, len(reads)) if seconds[k] <= b1 + hold]
+                steps = [seconds[k] for k in [i - 2, i - 1, *after]]
+                if (
+                    seconds[after[-1]] < b1 + hold - MAX_READ_GAP_SEC or len(after) < 4
+                    or any(values[k] > self.policy.utility_spent_charge for k in after)
+                    or max(b - a for a, b in zip(steps, steps[1:], strict=False))
+                    > MAX_READ_GAP_SEC
+                ):
+                    # Spent must hold: an icon that comes back within the hold was a
+                    # highlight, a dimmed HUD or a misread, not a use.
+                    report.rejected["utility_use_not_held"] += 1
+                    continue
+                ability = None if known is None else known.abilities.get(key)
+                ultimate_before = reads[i - 1][1][3] >= self.policy.ultimate_ready_charge
+                ultimate_stable = (
+                    reads[i - 2][1][3] >= self.policy.ultimate_ready_charge
+                ) == ultimate_before
+                refs = tuple(r for r in (self._refs.get(a2), self._refs.get(b1)) if r)
+                event = TimelinePromoter._event(
+                    "utility_used", item.round_no, b1, actor="player",
+                    confidence=self.policy.utility_used_confidence,
+                    attributes={
+                        "slot": slot, "keybind_role": key,
+                        "semantic_role": "ultimate" if key == "X" else "ability",
+                        "ability": None if ability is None else ability.name,
+                        "agent": agent,
+                        "reading_interval_sec": [a2, b1],
+                        "producer": PRODUCER,
+                        "promotion_rule": "own_hud_ability_slot_spent",
+                        "evidence_provenance": {"charge_source": "second_features_charges"},
+                    },
+                    evidence_refs=refs,
+                )
+                event["event_id"] = f"{event['event_id']}-{key}"
+                item.events.append(event)
+                uses += 1
+                report.counts[f"utility_used_{'ultimate' if key == 'X' else 'ability'}"] += 1
+                if ultimate_stable:
+                    state = TimelinePromoter._event(
+                        "ability_state", item.round_no, a2, actor="player",
+                        confidence=self.policy.utility_used_confidence,
+                        attributes={
+                            "slot": 3, "keybind_role": "X", "semantic_role": "ultimate",
+                            "available": ultimate_before,
+                            "producer": PRODUCER,
+                            "promotion_rule": "own_hud_ultimate_charge_before_use",
+                            "evidence_provenance": {"charge_source": "second_features_charges"},
+                        },
+                        evidence_refs=tuple(r for r in (self._refs.get(a2),) if r),
+                    )
+                    state["event_id"] = f"{state['event_id']}-X-before-{key}"
+                    item.events.append(state)
+                    report.counts["ability_state_events"] += 1
+        stats["utility_used"] = uses
 
     def _weapon_or_reserve_changed(
         self, view: TimelineView, records: Sequence[SecondRecord], start: int,

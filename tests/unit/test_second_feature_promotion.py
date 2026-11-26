@@ -644,3 +644,62 @@ def test_a_switch_read_with_the_reserve_missing_at_one_end_is_not_a_shot():
     result, report = augment(named, records(140, lambda s: (5, 5)))
     assert _shots(result) == []
     assert report.rejected["shot_weapon_changed"] == 1
+
+
+# ----------------------------------------------------------------- utility and engagement
+
+
+def _utility_records(c_values: dict[int, float], x: float = 1.0) -> list[SecondRecord]:
+    out = records(140, lambda s: (5, 5), charges=(1.0, 1.0, 0.0, x))
+    for second, value in c_values.items():
+        out[second] = observation(second, charges=(value, 1.0, 0.0, x))
+    return out
+
+
+def _uses(result, round_no: int = 2) -> list[dict[str, Any]]:
+    item = next(r for r in result.rounds if r.round_no == round_no)
+    return [e for e in item.events if e["type"] == "utility_used"]
+
+
+def test_a_held_spent_slot_in_own_combat_is_a_utility_use_with_ultimate_state():
+    # R2 combat 86-126: Sova's C slot is spent from 100 on and stays spent.
+    spent = _utility_records({s: 0.0 for s in range(100, 140)})
+    result, report = augment(_ammo_bundle({}), spent)
+    uses = _uses(result)
+    assert [(u["time_sec"], u["attributes"]["keybind_role"]) for u in uses] == [(100.0, "C")]
+    assert uses[0]["attributes"]["ability"] == "Owl Drone"
+    assert uses[0]["actor"] == "player" and uses[0]["event_id"].endswith("-C")
+    facts = facts_of(result, 2)
+    assert facts["ultimate_available"] == [True]
+    assert report.counts["utility_used_ability"] == 1
+
+
+def test_a_slot_that_comes_back_within_the_hold_is_not_a_use():
+    flicker = {s: 0.0 for s in range(100, 104)}  # back at 104, inside the 8 s hold
+    result, report = augment(_ammo_bundle({}), _utility_records(flicker))
+    assert _uses(result) == []
+    assert report.rejected["utility_use_not_held"] >= 1
+
+
+def test_no_utility_use_in_the_buy_phase_or_in_another_agents_hud():
+    # Spent from 70 (buy phase of R2, before the Round starts at 86): no use.
+    early = _utility_records({s: 0.0 for s in range(70, 140)})
+    result, _ = augment(_ammo_bundle({}), early)
+    assert _uses(result) == []
+    out = _utility_records({s: 0.0 for s in range(100, 140)})
+    for second in range(98, 112):
+        out[second] = observation(second, agent="Jett", charges=(0.0, 1.0, 0.0, 1.0))
+    result, _ = augment(_ammo_bundle({}), out)
+    assert _uses(result) == []
+
+
+def test_each_first_shot_starts_an_engagement():
+    result, report = augment(_ammo_bundle(_AMMO), records(140, lambda s: (5, 5)))
+    item = next(r for r in result.rounds if r.round_no == 2)
+    starts = [e for e in item.events if e["type"] == "engagement_start"]
+    firsts = [s for s in _shots(result) if s["attributes"]["first_shot"]]
+    assert [e["attributes"]["first_shot_event_id"] for e in starts] == [
+        s["event_id"] for s in firsts
+    ]
+    assert all(e["actor"] == "player" for e in starts)
+    assert report.counts["engagement_start_events"] == len(firsts) == 2
