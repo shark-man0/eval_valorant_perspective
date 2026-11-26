@@ -38,6 +38,7 @@ from PySide6.QtWidgets import (
 )
 
 from valorant_ai_coach.observability.sanitize import sanitize_text
+from valorant_ai_coach.rules.selector import DEFAULT_DISPLAY_LIMIT
 
 from .non_video_dialog import NonVideoDialog
 from .settings_dialog import SettingsDialog
@@ -45,6 +46,7 @@ from .view_model import (
     clip_status,
     filter_evaluations,
     format_match_summary,
+    limit_per_round,
     time_range_text,
 )
 from .workers import AnalysisWorker, VideoProbeWorker
@@ -733,16 +735,34 @@ class MainWindow(QMainWindow):
         category = self.category_filter.currentData()
         round_no = self.round_filter.currentData()
         displayed = 0
-        for evaluation in filter_evaluations(
-            self.current_evaluations,
-            label=label_filter,
-            category=category,
-            round_no=round_no,
-        ):
+        # Every evaluation is stored and exported; the view shows the first ones per Round.
+        backend = getattr(self, "backend", None)
+        limit = int(getattr(backend, "display_rules_per_round", DEFAULT_DISPLAY_LIMIT))
+        shown, hidden = limit_per_round(
+            filter_evaluations(
+                self.current_evaluations,
+                label=label_filter,
+                category=category,
+                round_no=round_no,
+            ),
+            limit,
+        )
+        for evaluation in shown:
             self.cards_layout.insertWidget(
                 self.cards_layout.count() - 1, self._evaluation_card(evaluation)
             )
             displayed += 1
+        if hidden:
+            rest = "、".join(
+                f"Round {number} は {count} 件" for number, count in sorted(hidden.items())
+            )
+            note = QLabel(
+                f"Roundごとに{limit}件まで表示しています。ほかに{rest}あります"
+                "（保存済みで、JSON出力に含まれます）。"
+            )
+            note.setObjectName("muted")
+            note.setWordWrap(True)
+            self.cards_layout.insertWidget(self.cards_layout.count() - 1, note)
         if displayed == 0:
             empty = QLabel("この条件に一致する評価はありません。")
             empty.setObjectName("muted")

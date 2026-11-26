@@ -1,8 +1,11 @@
 {
   "version": "2.0",
   "purpose": "イベント＋正規化Factで候補ルールを決定的に絞る。候補化は評価結論ではない。",
+  "display": {
+    "max_rules_per_round": 12,
+    "note": "GUIでRoundごとに最初に表示する件数。候補の生成・判定・保存は件数で切らない。表示しない分も保存とJSON出力に残る。"
+  },
   "fallback": {
-    "max_candidate_rules": 12,
     "if_no_trigger_match": "temporal/category fallbackを最大6ルールまで選ぶ。全44ルール投入は禁止。"
   },
   "dedup_groups": {

@@ -8,6 +8,7 @@ from typing import Any
 from valorant_ai_coach.models import RuleCandidate
 
 PRIORITY_ORDER = {"mvp_required": 0, "important": 1, "additional": 2}
+DEFAULT_DISPLAY_LIMIT = 12
 
 
 class RuleSelector:
@@ -17,14 +18,20 @@ class RuleSelector:
             if isinstance(registry, Path)
             else registry
         )
-        self.max_candidates = int(self.registry.get("fallback", {}).get("max_candidate_rules", 12))
+        # Candidate generation, judgement and storage are not capped: every rule whose
+        # trigger matched and whose gates were not contradicted is a candidate. The
+        # limit only says how many results per Round the GUI shows first.
+        display = self.registry.get("display", {})
+        self.display_limit = int(
+            display.get("max_rules_per_round", DEFAULT_DISPLAY_LIMIT)
+        )
 
     def select(self, round_package: dict[str, Any]) -> list[RuleCandidate]:
         event_types = {str(event["type"]) for event in round_package.get("events", [])}
         facts: dict[str, list[Any]] = defaultdict(list)
         for fact in round_package.get("deterministic_facts", []):
             facts[str(fact["key"])].append(fact.get("value"))
-        ranked: list[tuple[tuple[int, int, int, str], RuleCandidate]] = []
+        ranked: list[tuple[tuple[int, int, int, int, str], RuleCandidate]] = []
         for rule_id, config in self.registry["rules"].items():
             triggers = set(config.get("trigger_event_types", []))
             matched = tuple(sorted(event_types & triggers))
@@ -60,9 +67,12 @@ class RuleSelector:
                 matched_event_types=matched,
                 supporting_fact_keys=supporting,
             )
-            # Explicitly satisfied gates outrank broad event-only matches. Missing allow_unscored
-            # candidates remain eligible as required by registry v2 semantics.
+            # Evaluable candidates (no missing fact) come first, so a candidate that can
+            # only be stored as UNSCORED never ranks above one that can be judged.
+            # Then priority; explicitly satisfied gates outrank broad event-only
+            # matches. Missing allow_unscored candidates stay candidates (registry v2).
             score = (
+                1 if candidate.missing_fact_keys else 0,
                 PRIORITY_ORDER.get(candidate.priority, 9),
                 -satisfied,
                 len(candidate.missing_fact_keys),
@@ -70,7 +80,7 @@ class RuleSelector:
             )
             ranked.append((score, candidate))
         ranked.sort(key=lambda item: item[0])
-        return [candidate for _, candidate in ranked[: self.max_candidates]]
+        return [candidate for _, candidate in ranked]
 
     def select_ids(self, round_package: dict[str, Any]) -> list[str]:
         return [candidate.rule_id for candidate in self.select(round_package)]

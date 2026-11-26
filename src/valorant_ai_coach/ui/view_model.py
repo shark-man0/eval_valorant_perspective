@@ -52,6 +52,33 @@ def filter_evaluations(
     return selected
 
 
+def limit_per_round(
+    evaluations: Sequence[EvaluationView], limit: int
+) -> tuple[list[EvaluationView], dict[int, int]]:
+    """The first ``limit`` evaluations of each Round, for display only.
+
+    Scored evaluations (GOOD/IMPROVE) come before UNSCORED ones; otherwise the stored
+    order is kept. Match-level evaluations (no Round) are not limited. Returns the
+    evaluations to show and, per Round, how many stored ones are not shown.
+    """
+    by_round: dict[int, list[EvaluationView]] = {}
+    shown: list[EvaluationView] = []
+    for evaluation in evaluations:
+        if evaluation.round_no is None:
+            shown.append(evaluation)
+        else:
+            by_round.setdefault(evaluation.round_no, []).append(evaluation)
+    hidden: dict[int, int] = {}
+    for round_no, items in by_round.items():
+        ordered = sorted(items, key=lambda item: item.label not in SCORED_LABELS)
+        kept = ordered[: max(limit, 0)]
+        shown.extend(kept)
+        if len(items) > len(kept):
+            hidden[round_no] = len(items) - len(kept)
+    keep = {id(item) for item in shown}
+    return [item for item in evaluations if id(item) in keep], hidden
+
+
 def format_match_summary(
     value: Mapping[str, Any] | None, error: str | None = None
 ) -> str:
@@ -150,6 +177,7 @@ __all__ = [
     "SCORED_LABELS",
     "clip_status",
     "filter_evaluations",
+    "limit_per_round",
     "format_match_summary",
     "format_clock",
     "label_counts",

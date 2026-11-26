@@ -41,9 +41,9 @@
       "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
     },
     "engagement_start": {
-      "primary_producer": "visual_analyzer",
-      "mvp_status": "separate_module_required",
-      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "mvp_hud_with_cross_check",
+      "notes": "HUD: the recorder's first shot (of the Round or after a pause) in the own observed live view starts an engagement (#169). Peeks, pre-aim and who was seen still require world-view temporal vision analysis."
     },
     "engagement_end": {
       "primary_producer": "visual_analyzer",
@@ -121,9 +121,9 @@
       "notes": "Generate only when direct evidence exists; otherwise omit, never infer."
     },
     "utility_used": {
-      "primary_producer": "visual_analyzer",
-      "mvp_status": "separate_module_required",
-      "notes": "Not produced by HUD Analyzer. Requires world-view/minimap temporal vision analysis."
+      "primary_producer": "hud_or_visual_analyzer",
+      "mvp_status": "mvp_hud_with_cross_check",
+      "notes": "HUD: an ability slot of the recorder's own HUD read available on two seconds and then spent on the next two, within the confirmed Round's combat (#155 charges). Enemy or teammate utility and its effect area still require world-view temporal vision analysis."
     },
     "ability_state": {
       "primary_producer": "hud_analyzer",
