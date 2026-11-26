@@ -187,6 +187,9 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 - RuleSelector は、トリガーが一致し、条件に反しないルールをすべて候補にします。件数の上限はありません。候補の判定（決定論エンジンとAIコーチ）と保存も、すべての候補に対して行います。
 - 並び順は、まず不足Factのない候補、次に優先度（`mvp_required`・`important`・`additional`）、満たした条件の数、不足Factの数、ルールIDです。不足Factのある候補が、判定できる候補より前に来ることはありません。
 - AIコーチへは1回12件までです。候補が12件を超えるRoundは、この順で12件ずつ分けて送り、評価を1つのRound出力にまとめます。各回には、その回のルールの決定論判定と分析範囲だけを渡します。
+  - どれかの回が失敗またはキャンセルされたら、そのRound全体を失敗とし、途中までの評価は返しません。Roundは保存されず、まとめて再実行されます（成功した回はAIコーチのキャッシュに残ります）。
+  - 評価が、その回の候補でないルールを主ルールや関連ルールに含む場合と、同じルールが複数の回で主ルールになった場合は、契約違反として扱います。
+  - どの評価にも現れなかった候補は補わず、回ごとに `uncovered_rule_ids` として記録します（`RoundAnalysis.ai_calls`）。
 - 12件の制限はGUIの表示だけに使います（`rule_trigger_registry_v2.json` の `display.max_rules_per_round`）。RoundごとにGOOD・IMPROVEを先にして12件を表示し、表示しない件数をRoundごとに示します。表示しない評価も保存とJSON出力に残ります。
 
 ### Map成果の開発用接続（#186）
@@ -195,7 +198,8 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 - `application/map_projection.py` は、元動画の時刻で接続します。条件は次のとおりです。
   - レシート、Mapレポート、共通タイムラインの元動画SHA-256が一致し、レポートがレシートのファイル（SHA-256）であること。レポートは未資格（`qualified: false`、`formal_outputs: 0`、補間0）で、レシートのタイムラインに結び付いていること。
   - 各観測の標本が、その元動画の正しい標本で、表示時刻が並べられた秒に入ること。どれかが崩れていれば、そのパッケージ全体を拒否します。
-  - 本人の視点かどうかは共通タイムラインで決めます。共通タイムラインでカメラが `SELF`、生存が `ALIVE`（どちらも `OBSERVED`）の秒だけを残し、それ以外の秒は数えて落とします。
+  - 本人の視点かどうかは共通タイムラインで決めます。共通タイムラインの秒 s の標本は時刻 s にあるので、秒 s の観測は標本 s と s+1 の間にあります。両方の標本でカメラが `SELF`、生存が `ALIVE`（どちらも `OBSERVED`）のときだけ残します。秒の途中の死亡、観戦への切り替え、復帰は、どちらかの標本を変えるか未観測にするので、その秒の観測は数えて落とします（`dropped_view_boundary_unbracketed`）。
+  - 接続結果には、レシートとそれが指す全成果物、Mapレポート、Map側タイムライン、接続先の共通タイムライン（スリム版では元のJSON）のSHA-256を残します。観測ごとに、Mapの標本（標本・取得フレーム・画素のSHA-256）と、前後の共通タイムライン標本の参照を残します。
 - 接続した観測は `qualified: false`、`position_authority: false` のままで、FactもEventも作りません。昇格は、Map担当が資格の条件（確信度・証拠参照・本人所有）を決めた後に行います。
 - `scripts/measure_map_projection.py` は、1録画1パッケージで、確定Round内の本人視点の秒のうち、Map観測が入った秒を数えます。
 
