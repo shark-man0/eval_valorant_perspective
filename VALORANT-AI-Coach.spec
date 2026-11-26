@@ -50,11 +50,13 @@ add_file("config/map_zone_v3/assets/summit_minimap_reference.png")
 # The development Map worker uses the Python environment selected in the GUI.
 # Ship its project sources, without bundling private weights or reference caches.
 for directory in ("src/valorant_ai_coach", "scripts/map_learning", "scripts/diagnostics",
-                  "scripts/temporal_gt"):
+                  "scripts/temporal_gt", "scripts/e2e"):
     for source in sorted((project / directory).rglob("*.py")):
         relative = source.relative_to(project)
         add_file(relative.as_posix(), (Path("map_worker") / relative.parent).as_posix())
 
+# The worker's shared timeline imports this adapter transitively.
+add_file("tests/e2e/trace_adapter.py", "map_worker/tests/e2e")
 add_file("tests/fixtures/map_desktop_worker.py", "smoke")
 
 # The packaged application needs exactly one built-in Mock HUD demonstration case.

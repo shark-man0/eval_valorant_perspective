@@ -17,31 +17,43 @@ from PySide6.QtWidgets import QApplication
 from valorant_ai_coach.application.map_library import open_map_package
 from valorant_ai_coach.recordings.catalog import RecordingCatalog
 from valorant_ai_coach.resources import resource_root
-from valorant_ai_coach.ui.map_analysis_dialog import MapAnalysisDialog, map_worker_root
+from valorant_ai_coach.ui.map_analysis_dialog import (
+    MapAnalysisDialog,
+    map_external_program,
+    map_worker_environment,
+    map_worker_root,
+)
 
 
 def run_map_desktop_smoke(app: QApplication) -> None:
     python = os.environ["VALORANT_MAP_SMOKE_PYTHON"]
     root = resource_root()
     worker_root = map_worker_root()
-    subprocess.run(
-        [python, str(worker_root / "scripts/map_learning/workflow.py"), "--help"],
-        cwd=root,
-        env={**os.environ, "PYTHONPATH": os.pathsep.join((str(worker_root),
-                                                        str(worker_root / "src")))},
-        check=True, capture_output=True, timeout=30,
-    )
+    environment = map_worker_environment(worker_root)
+
+    def run_external(command: list[str]) -> None:
+        with map_external_program(), subprocess.Popen(command, cwd=root, env=environment,
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE) as child:
+            try:
+                _, errors = child.communicate(timeout=30)
+            except subprocess.TimeoutExpired:
+                child.kill()
+                child.communicate()
+                raise
+            if child.returncode:
+                diagnostic = errors.decode("utf-8", errors="replace").strip()
+                raise RuntimeError(f"Map smoke external process failed: {diagnostic}")
+
+    run_external([python, str(worker_root / "scripts/map_learning/workflow.py"), "--help"])
     fixture = root / "smoke/map_desktop_worker.py"
     if not fixture.is_file():
         fixture = root / "tests/fixtures/map_desktop_worker.py"
     with TemporaryDirectory(prefix="valorant-map-smoke-") as temporary:
         path = Path(temporary)
         video = path / "synthetic.mp4"
-        subprocess.run(
-            ["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
-             "color=c=blue:s=320x240:r=10", "-t", "2", "-pix_fmt", "yuv420p", str(video)],
-            check=True, capture_output=True, timeout=30,
-        )
+        run_external(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+                      "color=c=blue:s=320x240:r=10", "-t", "2", "-pix_fmt", "yuv420p",
+                      str(video)])
         catalog = RecordingCatalog.create(path / "catalog")
         baseline, candidate = (path / f"{label}.json" for label in ("baseline", "candidate"))
         for setup in (baseline, candidate):

@@ -7,6 +7,8 @@ import os
 import re
 import shutil
 import sys
+from collections.abc import Iterator
+from contextlib import contextmanager
 from functools import partial
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -59,6 +61,49 @@ def map_worker_root() -> Path:
     root = resource_root()
     bundled = root / "map_worker"
     return bundled if bundled.is_dir() else root
+
+
+def map_worker_environment(root: Path) -> dict[str, str]:
+    env = dict(os.environ)
+    env.pop("PYTHONHOME", None)
+    paths = [str(root), str(root / "src")]
+    if inherited := env.get("PYTHONPATH"):
+        paths.append(inherited)
+    env["PYTHONPATH"] = os.pathsep.join(paths)
+    env["PYTHONIOENCODING"] = "utf-8"
+    if bundle := getattr(sys, "_MEIPASS", None):
+        directory = Path(bundle).resolve()
+        for variable in ("PATH", "DYLD_LIBRARY_PATH"):
+            if variable in env:
+                env[variable] = os.pathsep.join(
+                    item for item in env[variable].split(os.pathsep)
+                    if item and not Path(item.strip('"')).resolve().is_relative_to(directory)
+                )
+        if "LD_LIBRARY_PATH" in env:
+            previous = env.pop("LD_LIBRARY_PATH_ORIG", None)
+            if previous is None:
+                env.pop("LD_LIBRARY_PATH")
+            else:
+                env["LD_LIBRARY_PATH"] = previous
+    return env
+
+
+@contextmanager
+def map_external_program() -> Iterator[None]:
+    if sys.platform == "win32" and (bundle := getattr(sys, "_MEIPASS", None)):
+        import ctypes
+
+        # PyInstaller's Windows loader settings are inherited by child processes.
+        set_directory = ctypes.WinDLL("kernel32", use_last_error=True).SetDllDirectoryW
+        set_directory.argtypes = [ctypes.c_wchar_p]
+        if not set_directory(None):
+            raise ctypes.WinError(ctypes.get_last_error())
+        try:
+            yield
+        finally:
+            set_directory(str(bundle))
+    else:
+        yield
 
 
 class MapAnalysisDialog(QDialog):
@@ -255,14 +300,9 @@ class MapAnalysisDialog(QDialog):
                    for item in (f"--{key}", job[key])]
         selection = (["--recording-id", job["recording_id"]] if "recording_id" in job
                      else ["--video", job["video"], "--confirm-distinct"])
-        environment = QProcessEnvironment.systemEnvironment()
-        environment.remove("PYTHONHOME")
-        inherited = environment.value("PYTHONPATH")
-        paths = [str(root), str(root / "src")]
-        if inherited:
-            paths.append(inherited)
-        environment.insert("PYTHONPATH", os.pathsep.join(paths))
-        environment.insert("PYTHONIOENCODING", "utf-8")
+        environment = QProcessEnvironment()
+        for key, value in map_worker_environment(root).items():
+            environment.insert(key, value)
         self.process.setProcessEnvironment(environment)
         self.process.setWorkingDirectory(str(resource_root()))
         self._buffer = ""
@@ -271,10 +311,18 @@ class MapAnalysisDialog(QDialog):
         self._running(True)
         if run := job.get("run_fingerprint"):
             options.extend(("--expected-run", run))
-        self.process.start(
-            job["python"], ["-u", str(program), *selection, *options,
-                            "--pause-file", str(pause_file)],
-        )
+        try:
+            with map_external_program():
+                self.process.start(
+                    job["python"], ["-u", str(program), *selection, *options,
+                                    "--pause-file", str(pause_file)],
+                )
+                if sys.platform == "win32" and getattr(sys, "frozen", False):
+                    self.process.waitForStarted(3000)
+        except OSError:
+            self._cleanup()
+            self._running(False)
+            raise
 
     def pause_job(self) -> None:
         if self._pause_dir is not None:
