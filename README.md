@@ -89,11 +89,13 @@ pytest、Validation Pack、E2E runner、HUD校正実験を実行する必要は�
 ```text
 録画 -> ffprobeメタデータ -> HUD/Event Analyzer
      -> Round Package Schema v2 -> Deterministic Fact Builder
-     -> Rule Selector（最大12候補） -> Rule Engine
+     -> Rule Selector（全候補。GUIはRoundごとに12件を先に表示） -> Rule Engine
      -> sparseラウンド文脈 + dense候補フレーム -> AI Coach
      -> Output Schema v3検証 -> 重複集約 -> FFmpegクリップ
      -> SQLite + analysis.json -> PySide6 GUI
 ```
+
+候補ルールは件数で切らずにすべて判定し、保存します。AI Coachへは1回あたり12件までなので、候補が12件を超えるRoundは12件ずつ分けて送ります。GUIはRoundごとに採点済みを先にして12件を表示し、残りの件数を示します。
 
 元動画全体はOpenAI APIへ送りません。実APIモードで送るのは、候補判定に必要な
 Round Package、選択済みルール、決定論的Fact、最大32枚の抽出フレームです。APIへの

@@ -580,6 +580,31 @@ def test_first_shot_frame_from_engagement_motion():
     assert first["attributes"]["first_shot_frame_sec"] == round(91.0 + 30 / 60, 4)
 
 
+def test_a_first_shot_frame_is_not_placed_past_the_last_own_live_sample():
+    from valorant_ai_coach.rules.engagement_motion import MotionFrame
+
+    # The magazine drops at 92.4, after the sample of second 92 that read it.
+    frames = [MotionFrame(91.0 + k / 60, 100, 80, 0.1, 0.1, 0.0, 0.0,
+                          25 if k < 84 else 24) for k in range(120)]
+
+    def first_shot(bundle):
+        result = promote(bundle)
+        SecondFeaturePromoter().augment(bundle, result, records(140, lambda s: (5, 5)),
+                                        records_sha256=SHA, motion_frames=frames)
+        return _shots(result)[0]["attributes"], result
+
+    # The next sample (93) is still the recorder's own live view: placed at 92.4.
+    attributes, _ = first_shot(_ammo_bundle(_AMMO))
+    assert attributes["first_shot_frame_sec"] == round(91.0 + 84 / 60, 4)
+    # The view switches to spectating at 93: the frame could be after the switch,
+    # so it is not placed and the engagement starts at the shot's own second.
+    attributes, result = first_shot(_ammo_bundle(_AMMO, spectating=(93, 94)))
+    assert "first_shot_frame_sec" not in attributes
+    start = next(e for e in next(r for r in result.rounds if r.round_no == 2).events
+                 if e["type"] == "engagement_start")
+    assert start["attributes"]["start_sec"] == 92.0
+
+
 def test_keyframe_ammo_fills_unread_timeline_seconds_in_the_recorders_hud_only():
     feature_records = records(140, lambda s: (5, 5))
     feature_records[91] = SecondRecord(feature_records[91].observation, 21, 50, 0)

@@ -1174,7 +1174,16 @@ class SecondFeaturePromoter:
             if weapon is not None:
                 attributes["weapon"] = weapon
             if first and self._motion:
-                frame = first_shot_frame(self._motion, before, change.sec + 1.0)
+                # A keyframe reading may lie anywhere in its second, so the frame is
+                # looked for up to the next canonical sample - only when that sample
+                # still observed the recorder's own live view. Otherwise a death or
+                # a switch to spectating may fall inside the second, and the frame
+                # is placed no later than the last own-live sample.
+                upper = change.sec + 1.0
+                if not self._own_live(view.row(second + 1)):
+                    upper = change.sec
+                    report.counts["first_shot_frame_window_cut_at_view_boundary"] += 1
+                frame = first_shot_frame(self._motion, before, upper)
                 if frame is not None:
                     attributes["first_shot_frame_sec"] = round(frame, 4)
                     report.counts["first_shots_frame_located"] += 1
