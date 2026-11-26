@@ -320,6 +320,31 @@ without replacing its registered polygons. The timeline and evaluation reports c
 selected observations with a unique Named Zone separately from support-only
 observations and conflicting Zone candidates. All remain development evidence.
 
+### Track multiple markers before recorder attribution
+
+`replay_marker_tracks.py --help` compares a candidate recovered report with
+the original development run. It reads the existing timeline, native frame
+manifest, two portrait replay reports, recovered baseline, and pinned public
+assets. The physical match and learning split come from the recording catalog.
+Use `--exclude-covered` with a previous exact replay to freeze the remaining
+portrait gap cohort. This excludes covered seconds from the requested search.
+
+The detector saves its complete candidate pool with native centers and annular
+support before any Agent scores are computed. The tracker associates warm, cyan,
+and red observations by displacement and local appearance. It works within
+the observed self-view episode and ends contested associations. Identity is
+assigned later using the existing HUD-bound Agent, public portrait evidence,
+and direct incumbent matches. A short occlusion can preserve association when
+a new measurement reappears. An unobserved frame produces no point or edge.
+
+The private proposal receipt also contains anonymous trajectories. The
+recovered report records owner witnesses and seconds with detected, tracked,
+attributed, and projected candidates. These are stage survival counts. Recall
+and identity accuracy require separately reviewed expected markers. Only
+current measured points are registered against the recording's pinned public
+Map. The exact Map report is compatible with the standard development reader,
+and `compare_runs.py` checks the identical native inputs and non-regression.
+
 ## Desktop Map library
 
 Run the workflow from a checkout with the Map replay dependencies and a private
