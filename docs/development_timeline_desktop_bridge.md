@@ -10,6 +10,9 @@ The existing desktop app provides these development-only menu actions:
   original video, the common timeline, the standard and recovered Map views,
   and the matching evaluation. The application checks package digests before
   opening the viewer.
+- **開発用: Map解析を実行** registers a distinct recording as DEVELOPMENT,
+  runs Map analysis, shows progress, and saves a local versioned result. It can
+  create a private recording catalog or use an existing one.
 
 The selected input is validated by the corresponding localhost viewer factory
 before a browser opens. The viewer serves only on `127.0.0.1`, uses its tokenized
@@ -19,9 +22,8 @@ opened. Keep the desktop app open while reviewing the original recording.
 Generate the single-match application bundle as described in
 [`development_timeline_application.md`](development_timeline_application.md).
 The comparison manifest is produced by the development comparison workflow;
-it is a local private artifact. Neither menu action performs acquisition, changes
-the recognizer configuration, or moves candidates into formal Fact/Event or
-coaching scores. The original recording and policy must remain available for
+it is a local private artifact. The Map analysis dialog performs acquisition
+and all four actions keep candidates outside formal Fact, Event and coaching scores. The original recording and policy must remain available for
 video seek and source verification.
 
 The GUI is an entry point to the existing local viewers. Timeline calculations
@@ -30,3 +32,32 @@ application/comparison projections. The Map library accepts only catalog-admitte
 DEVELOPMENT recordings and its evaluations run with formal promotion disabled.
 See the [Map workflow](../scripts/map_learning/README.md) for registration,
 import, resuming and publishing packages to this menu.
+
+
+## Run Map analysis from the desktop
+
+Prepare a Python 3.12 environment with the application dependencies and PyTorch
+if the selected setup uses learned models. Install FFmpeg and FFprobe on the
+system path. Select that Python executable and the private Map setup JSON in the
+dialog. The Windows package includes the analysis worker source. Model weights,
+reference assets and setup paths remain in the operator's local data directory.
+
+Select a recording, a private recording catalog, a working directory and a result
+library. Confirm that a new recording represents a distinct physical match.
+Select **登録して解析**. The dialog shows the current stage and reports measured
+frame counts where available. **中断** stops at a safe checkpoint. **前回の解析を再開**
+uses the saved recording and setup, retains completed checkpoints and reacquires
+any incomplete native decode. A newer setup should start a separate run.
+
+Different model and recognition options produce separate immutable results.
+Use the same recording and timeline inputs for both configurations, point the
+new setup to the model receipt directory, then launch it from the same dialog.
+Select a baseline and a candidate to compare selected one-second rows and measured
+trajectory links. Standard results and missing-observation recovery each have
+their own comparison. Select either version to open the registered original video,
+Map candidates, trajectory, Named Zones and its development evaluation.
+
+Updates to Named Zones may be applied without decoding video. The published
+callout atlas supplies landmark anchors. The development generator retains small
+interiors where the reference geometry supports them and preserves any existing
+Zone. These areas cover only part of each callout.

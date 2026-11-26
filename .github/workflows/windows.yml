@@ -88,6 +88,21 @@ jobs:
             }
             throw "Packaged application smoke test failed with exit code $ExitCode."
           }
+      - name: Smoke-test packaged Map operations
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM = "offscreen"
+          $env:LOCALAPPDATA = Join-Path $env:RUNNER_TEMP "valorant-ai-coach-map-smoke"
+          $env:VALORANT_MAP_SMOKE_PYTHON = (Get-Command python.exe).Source
+          New-Item -ItemType Directory -Force -Path $env:LOCALAPPDATA | Out-Null
+          $Process = Start-Process -FilePath "dist\VALORANT-AI-Coach\VALORANT-AI-Coach.exe" -ArgumentList "--map-smoke-test" -Wait -PassThru
+          if ($Process.ExitCode -ne 0) {
+            $LogPath = Join-Path $env:LOCALAPPDATA "ValorantAICoach\logs\valorant-ai-coach.log"
+            if (Test-Path $LogPath) {
+              Get-Content -Raw -Encoding UTF8 $LogPath
+            }
+            throw "Packaged Map smoke test failed with exit code $($Process.ExitCode)."
+          }
       - uses: actions/upload-artifact@v4
         with:
           name: VALORANT-AI-Coach-windows-onedir

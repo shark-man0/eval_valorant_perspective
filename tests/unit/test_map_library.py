@@ -3,6 +3,7 @@ from fractions import Fraction
 import pytest
 
 from valorant_ai_coach.application.map_library import (
+    compare_map_packages,
     list_map_packages,
     open_map_package,
     publish_map_package,
@@ -16,10 +17,10 @@ from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 from valorant_ai_coach.temporal.replay import file_sha, write_private
 
 
-def make_package(tmp_path, *, split="DEVELOPMENT"):
+def make_package(tmp_path, *, split="DEVELOPMENT", media_bytes=b"registered bytes"):
     catalog = RecordingCatalog.create(tmp_path / "catalog")
     media = tmp_path / "recording.mp4"
-    media.write_bytes(b"registered bytes")
+    media.write_bytes(media_bytes)
     rid = catalog.register(media, split=split, confirm_distinct=True).recording_id
     record = catalog.state.recordings[rid]
     source = {
@@ -112,3 +113,44 @@ def test_map_library_refuses_protected_recordings(tmp_path):
     with pytest.raises(LeakageError):
         publish_map_package(tmp_path / "library", label="Protected test", **package)
     assert not (tmp_path / "library").exists()
+
+
+def test_map_library_keeps_immutable_variants_and_checks_comparison_input(tmp_path):
+    library = tmp_path / "library"
+    source = tmp_path / "source"
+    source.mkdir()
+    package = make_package(source)
+    first = publish_map_package(library, label="Run", variant="old", **package)
+    second = publish_map_package(library, label="Run", variant="new", **package)
+    assert first != second
+    assert len(list_map_packages(library)) == 1
+    assert {row.variant for row in list_map_packages(library, all_versions=True)} == {"old", "new"}
+    assert all(not any(mode.values()) for mode in compare_map_packages(first, second).values())
+
+    another = tmp_path / "another"
+    another.mkdir()
+    different = publish_map_package(
+        library, label="New source", **make_package(another, media_bytes=b"another recording"),
+    )
+    with pytest.raises(ValueError, match="同一録画"):
+        compare_map_packages(first, different)
+
+
+def test_landmark_interior_keeps_clear_of_map_and_existing_zone(monkeypatch):
+    from pathlib import Path
+
+    import numpy as np
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts/map_learning"))
+    from extend_callout_zones import _aligned_revision, landmark_interiors
+
+    atlas = np.zeros((180, 180, 4), np.uint8)
+    atlas[40:160, 15:165, :] = 255
+    existing = {"Plant": [(25, 50), (55, 50), (55, 90), (25, 90)]}
+    anchors = [("A Main", (105/180, 100/180)), ("Outside", (.05, .05)),
+               ("Occupied", (40/180, 70/180)), ("B Site", (.8, .7))]
+    additions = landmark_interiors(atlas, anchors, existing)
+    assert list(additions) == ["A Main"]
+    assert min(p[0] for p in additions["A Main"]) > 55
+    shifted = np.roll(atlas, 12, axis=0)
+    assert _aligned_revision(shifted, atlas) is None

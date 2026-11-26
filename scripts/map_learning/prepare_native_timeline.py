@@ -11,6 +11,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 from acquire_native import development_source
+from job_control import check_pause
 
 from valorant_ai_coach.rules.development_timeline import review_timeline
 from valorant_ai_coach.temporal.application import build_application_timeline, write_timeline_csv
@@ -61,6 +62,8 @@ def prepare(
     frame_paths = {}
     previous_bin = -1
     for index, (tick, path) in enumerate(receipt["frames"]):
+        if index % 32 == 0:
+            check_pause()
         if index and index % 2500 == 0:
             print(f"Measured {index} of {len(receipt['frames'])} native frames", flush=True)
         elapsed = (tick - receipt["origin"]) * base

@@ -6,17 +6,19 @@ import argparse
 import os
 import re
 import shutil
+import subprocess
 from contextlib import contextmanager
 from pathlib import Path
 
 from acquire_native import acquire
 from checkpoints import pin
+from job_control import PAUSE_ENV, PAUSE_EXIT, MapPaused, phase
 from run_batch import _FLAGS, _PATH_OPTIONS, _REQUIRED, _SHARED, record_map_exposure
 from run_recording import _run
 
 from valorant_ai_coach.application.map_library import publish_map_package
 from valorant_ai_coach.recordings.admission import resolve_catalog
-from valorant_ai_coach.recordings.catalog import _lock_exclusive, _unlock
+from valorant_ai_coach.recordings.catalog import LeakageError, _lock_exclusive, _unlock
 from valorant_ai_coach.temporal.evidence import digest
 from valorant_ai_coach.temporal.replay import file_sha, read_json
 
@@ -187,12 +189,15 @@ def execute(catalog, workspace, library, setup, recording_id, *, release_cache=F
             if not cache.is_dir() and shutil.disk_usage(home).free <= minimum_free:
                 raise ValueError("Insufficient disk capacity for development acquisition")
             record_map_exposure(catalog, recording_id)
+            phase("acquisition")
             receipt = _acquisition(cache, policy, source, decode, minimum_free)
             _run("run_recording.py", {
                 **options, "source-sha256": source, "policy-path": policy,
                 "output": run, "acquisition": receipt,
                 "timeline-cache": home / "timelines" / _timeline_key(options, receipt),
-            }, ("--resume", *(f"--{flag}" for flag in flags if flag != "lossless-webp")))
+            }, ("--resume", *(f"--{flag}" for flag in flags if flag != "lossless-webp")),
+                cooperative_child=True)
+        phase("publication")
         complete = read_json(target)
         exact_outputs = all(file_sha(run / name) == checksum
                             for name, checksum in complete["output_sha256s"].items())
@@ -207,10 +212,21 @@ def execute(catalog, workspace, library, setup, recording_id, *, release_cache=F
             library, label=title, bundle=run / "timeline/timeline_PRIVATE.json",
             policy=policy, standard=run / "map_standard_PRIVATE.json", recovered=recovered,
             evaluation=run / "analysis_recovered/match_evaluation_PRIVATE.json",
+            variant=f"{setup.stem} · {key[:8]}",
         )
         if release_cache and cache.is_dir():
             _clear_owned_cache(cache)
         return published
+
+
+def _refuse_protected_path(catalog, path):
+    source = path.resolve()
+    for record in catalog.state.recordings.values():
+        if record.split != "DEVELOPMENT" and any(
+            catalog.local_path(location["path"]).resolve() == source
+            for location in record.locations.values()
+        ):
+            raise LeakageError("A protected recording cannot be registered as DEVELOPMENT")
 
 
 def main():
@@ -227,6 +243,7 @@ def main():
     parser.add_argument("--confirm-distinct", action="store_true")
     parser.add_argument("--release-cache", action="store_true")
     parser.add_argument("--minimum-free-gib", type=int, default=12)
+    parser.add_argument("--pause-file", type=Path)
     args = parser.parse_args()
     if args.import_index:
         print("Map packages available:", import_packages(args.import_index.resolve(), args.library))
@@ -237,15 +254,27 @@ def main():
     if catalog is None:
         parser.error("A recording catalog is required")
     recording_id = args.recording_id
+    if args.pause_file:
+        os.environ[PAUSE_ENV] = str(args.pause_file.resolve())
+    phase("registration")
     if args.video is not None:
         if not args.confirm_distinct:
             parser.error("Register a new physical match with --confirm-distinct")
+        _refuse_protected_path(catalog, args.video)
         registration = catalog.register(args.video, split="DEVELOPMENT", confirm_distinct=True)
         recording_id = registration.recording_id
+    print(f"Map registered recording: {recording_id}", flush=True)
     execute(catalog, args.workspace, args.library, args.setup.resolve(), recording_id,
             release_cache=args.release_cache, minimum_free=args.minimum_free_gib * 2**30)
     print("Development Map package available")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except MapPaused:
+        raise SystemExit(PAUSE_EXIT) from None
+    except subprocess.CalledProcessError as exc:
+        if exc.returncode == PAUSE_EXIT:
+            raise SystemExit(PAUSE_EXIT) from None
+        raise

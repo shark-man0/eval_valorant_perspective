@@ -1,0 +1,121 @@
+"""Exercise the desktop Map workflow using a synthetic public fixture."""
+
+from __future__ import annotations
+
+import os
+import subprocess
+import time
+from collections.abc import Callable
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from threading import Thread
+from urllib.request import urlopen
+
+from PySide6.QtCore import QProcess
+from PySide6.QtWidgets import QApplication
+
+from valorant_ai_coach.application.map_library import open_map_package
+from valorant_ai_coach.recordings.catalog import RecordingCatalog
+from valorant_ai_coach.resources import resource_root
+from valorant_ai_coach.ui.map_analysis_dialog import MapAnalysisDialog, map_worker_root
+
+
+def run_map_desktop_smoke(app: QApplication) -> None:
+    python = os.environ["VALORANT_MAP_SMOKE_PYTHON"]
+    root = resource_root()
+    worker_root = map_worker_root()
+    subprocess.run(
+        [python, str(worker_root / "scripts/map_learning/workflow.py"), "--help"],
+        cwd=root,
+        env={**os.environ, "PYTHONPATH": os.pathsep.join((str(worker_root),
+                                                        str(worker_root / "src")))},
+        check=True, capture_output=True, timeout=30,
+    )
+    fixture = root / "smoke/map_desktop_worker.py"
+    if not fixture.is_file():
+        fixture = root / "tests/fixtures/map_desktop_worker.py"
+    with TemporaryDirectory(prefix="valorant-map-smoke-") as temporary:
+        path = Path(temporary)
+        video = path / "synthetic.mp4"
+        subprocess.run(
+            ["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+             "color=c=blue:s=320x240:r=10", "-t", "2", "-pix_fmt", "yuv420p", str(video)],
+            check=True, capture_output=True, timeout=30,
+        )
+        catalog = RecordingCatalog.create(path / "catalog")
+        baseline, candidate = (path / f"{label}.json" for label in ("baseline", "candidate"))
+        for setup in (baseline, candidate):
+            setup.write_text("{}", encoding="utf-8")
+        dialog = MapAnalysisDialog(path / "desktop", worker=fixture)
+        dialog.show()
+
+        def wait(condition: Callable[[], bool]) -> None:
+            deadline = time.monotonic() + 30
+            while time.monotonic() < deadline:
+                app.processEvents()
+                if condition():
+                    return
+                time.sleep(.02)
+            raise RuntimeError(f"Map GUI smoke timed out: {dialog.status.text()}")
+
+        def stopped() -> bool:
+            return (dialog.process.state() == QProcess.ProcessState.NotRunning
+                    and dialog.start_button.isEnabled())
+
+        def complete() -> None:
+            wait(stopped)
+            if "ローカルに保存" not in dialog.status.text():
+                raise RuntimeError(dialog.comparison.toPlainText() or dialog.status.text())
+
+        try:
+            for key, value in {
+                "video": video, "catalog": catalog.root, "setup": baseline, "python": python,
+                "workspace": path / "work", "library": path / "library",
+            }.items():
+                dialog.fields[key].setText(str(value))
+            dialog.distinct.setChecked(True)
+            dialog.start_button.click()
+            wait(lambda: "観測フレーム" in dialog.status.text() or stopped())
+            dialog.pause_button.click()
+            wait(stopped)
+            if "中断しました" not in dialog.status.text():
+                raise RuntimeError(dialog.comparison.toPlainText() or dialog.status.text())
+            # Reopen the dialog to check the persistent resume state independently.
+            dialog.close()
+            dialog = MapAnalysisDialog(path / "desktop", worker=fixture)
+            dialog.show()
+            dialog.resume_button.click()
+            complete()
+            dialog.fields["setup"].setText(str(candidate))
+            dialog.distinct.setChecked(True)
+            dialog.start_button.click()
+            complete()
+            if dialog.recordings.count() != 1 or dialog.after.count() != 2:
+                raise RuntimeError("Both immutable recognition variants must remain available")
+            dialog.compare_results()
+            if "欠測回復後" not in dialog.comparison.toPlainText():
+                raise RuntimeError(dialog.comparison.toPlainText())
+            for idx in range(dialog.after.count()):
+                dialog.after.setCurrentIndex(idx)
+                dialog.open_result()
+                receipt = dialog.selected_receipt
+                if receipt is None:
+                    raise RuntimeError("The selected variant did not open")
+                server = open_map_package(receipt)
+                thread = Thread(target=server.serve_forever, daemon=True)
+                thread.start()
+                try:
+                    url = server.viewer_url  # type: ignore[attr-defined]
+                    with urlopen(url, timeout=5) as response:
+                        if response.status != 200:
+                            raise RuntimeError("The Map viewer did not return its homepage")
+                finally:
+                    server.shutdown()
+                    server.server_close()
+                    thread.join()
+        finally:
+            if not stopped():
+                dialog.pause_job()
+                wait(stopped)
+            dialog.close()
+            app.processEvents()

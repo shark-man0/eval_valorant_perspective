@@ -10,6 +10,7 @@ from tempfile import TemporaryDirectory
 from typing import Any
 
 from valorant_ai_coach.temporal.evidence import digest, is_sha
+from valorant_ai_coach.temporal.map_recorder_path import measured_native_edges
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 from valorant_ai_coach.temporal.replay import SourcePolicy, file_sha, read_json, write_private
 
@@ -23,6 +24,7 @@ class MapLibraryEntry:
     receipt: Path
     recording_id: str
     label: str
+    variant: str = ""
 
 
 def _bind(path: Path) -> dict[str, str]:
@@ -65,7 +67,7 @@ def _validate(paths: dict[str, Path]) -> tuple[str, str]:
 
 def publish_map_package(
     library: Path, *, label: str, bundle: Path, policy: Path, standard: Path,
-    recovered: Path, evaluation: Path,
+    recovered: Path, evaluation: Path, variant: str = "",
 ) -> Path:
     """Publish once; a later compatible recognizer result creates another entry."""
     library = library.resolve()
@@ -80,6 +82,7 @@ def publish_map_package(
     data = {
         "schema": SCHEMA, "recording_id": recording, "source_sha256": source_sha,
         "label": label, "formal_outputs": 0, "artifacts": {k: _bind(v) for k, v in paths.items()},
+        **({"variant": variant} if variant else {}),
     }
     library.mkdir(parents=True, mode=0o700, exist_ok=True)
     destination = library / f"{digest(data)}_PRIVATE.json"
@@ -104,15 +107,20 @@ def _receipt(path: Path) -> dict[str, Any]:
     return data
 
 
-def list_map_packages(library: Path) -> list[MapLibraryEntry]:
-    """List the most recently published package for each registered recording."""
-    entries: dict[str, MapLibraryEntry] = {}
-    receipts = sorted(library.glob("*_PRIVATE.json"), key=lambda p: p.stat().st_mtime_ns)
+def list_map_packages(library: Path, *, all_versions: bool = False) -> list[MapLibraryEntry]:
+    """List the latest or all immutable packages for each registered recording."""
+    entries: list[MapLibraryEntry] = []
+    seen = set()
+    receipts = sorted(
+        library.glob("*_PRIVATE.json"), key=lambda p: (p.stat().st_mtime_ns, p.name), reverse=True,
+    )
     for path in receipts:
         data = _receipt(path)
         recording = data["recording_id"]
-        entries[recording] = MapLibraryEntry(path, recording, data["label"])
-    return sorted(entries.values(), key=lambda row: (row.label, row.recording_id))
+        if all_versions or recording not in seen:
+            entries.append(MapLibraryEntry(path, recording, data["label"], data.get("variant", "")))
+        seen.add(recording)
+    return sorted(entries, key=lambda row: (row.label, row.recording_id))
 
 
 def verified_map_package(receipt: Path) -> dict[str, Path]:
@@ -126,6 +134,31 @@ def verified_map_package(receipt: Path) -> dict[str, Path]:
             or _validate(paths) != (data["recording_id"], data["source_sha256"])):
         raise ValueError("Map library receipt points to a different recording")
     return paths
+
+
+def compare_map_packages(before: Path, after: Path) -> dict[str, dict[str, int]]:
+    """Compare two model versions only against the same source and exact timeline."""
+    old, new = verified_map_package(before), verified_map_package(after)
+    if file_sha(old["bundle"]) != file_sha(new["bundle"]):
+        raise ValueError("モデル比較には同一録画・同一の共通タイムラインが必要です")
+
+    def positions(report: dict[str, Any]) -> set[int]:
+        return {
+            row["timestamp"] for row in report["second_rows"]
+            if any(point["kind"] == "selected" for point in row["recorder_map_observations"])
+        }
+
+    result = {}
+    for mode in ("standard", "recovered"):
+        a, b = read_json(old[mode]), read_json(new[mode])
+        first, second = positions(a), positions(b)
+        left, right = measured_native_edges(a), measured_native_edges(b)
+        result[mode] = {
+            "before_seconds": len(first), "after_seconds": len(second),
+            "added_seconds": len(second - first), "lost_seconds": len(first - second),
+            "added_edges": len(right - left), "lost_edges": len(left - right),
+        }
+    return result
 
 
 def open_map_package(receipt: Path) -> ThreadingHTTPServer:

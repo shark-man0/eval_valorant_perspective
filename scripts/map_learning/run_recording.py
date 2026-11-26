@@ -17,6 +17,7 @@ import cv2
 from acquire_native import acquire
 from checkpoints import pin, run_stage, seal
 from compose_paths import compose_paths
+from job_control import PAUSE_EXIT, MapPaused, phase, run_interruptible
 from prepare_native_timeline import prepare
 
 from valorant_ai_coach.application.timeline_evaluation import run as evaluate
@@ -27,7 +28,7 @@ from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 _SCRIPT_DIR = Path(__file__).resolve().parent
 
 
-def _run(script, options, flags=()):
+def _run(script, options, flags=(), *, cooperative_child=False):
     env = {**os.environ, "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
            "VECLIB_MAXIMUM_THREADS": "1"}
     args = [item for name, value in options.items() for item in (f"--{name}", str(value))]
@@ -37,10 +38,12 @@ def _run(script, options, flags=()):
         "sys.path.insert(0, os.path.dirname(sys.argv[1])); "
         "sys.argv=sys.argv[1:]; runpy.run_path(sys.argv[0], run_name='__main__')"
     )
-    subprocess.run(
-        [sys.executable, "-c", bootstrap, str(_SCRIPT_DIR / script), *args, *flags],
-        env=env, check=True,
-    )
+    command = [sys.executable, "-c", bootstrap, str(_SCRIPT_DIR / script), *args, *flags]
+    if cooperative_child:
+        # The recording runner owns its own children and must reap them on pause.
+        subprocess.run(command, env=env, check=True)
+    else:
+        run_interruptible(command, env=env)
 
 
 def _compose(reference, learned, timeline, output, *, companion=False):
@@ -107,6 +110,7 @@ def run(args):
             return
 
     def stage(name, paths, build, *, directory=None):
+        phase(name)
         if resume:
             run_stage(output, name, tuple(str(p.relative_to(output)) for p in paths), build,
                       replace_directory=directory)
@@ -311,7 +315,10 @@ def main() -> None:
     ):
         parser.error("--timeline-cache requires a resumable run and private output")
     os.umask(0o077)
-    run(args)
+    try:
+        run(args)
+    except MapPaused:
+        raise SystemExit(PAUSE_EXIT) from None
 
 
 if __name__ == "__main__":
