@@ -17,9 +17,12 @@ def test_display_uses_only_observed_public_atlas_and_detects_changed_bytes(tmp_p
         "maps": [{"id": "map", "name": "Named Map", "reference": source.name}],
     }), encoding="utf-8")
     polygon = [[1, 1], [3, 1], [3, 4]]
+    extension = [[7, 1], [9, 1], [9, 4]]
+    polygons = {"A": polygon, "A extension": extension}
     zones = tmp_path / "zones.json"
     zones.write_text(json.dumps({
-        "maps": [{"map_id": "map", "reference_sha256": sha, "polygons": {"A": polygon}}],
+        "maps": [{"map_id": "map", "reference_sha256": sha, "polygons": polygons,
+                  "plant_interior_aliases": {"A extension": "A"}}],
     }), encoding="utf-8")
     point = {"map_id": "map", "reference_sha256": sha, "map_reference_px": [2, 2]}
     result = tmp_path / "map_result.json"
@@ -31,10 +34,18 @@ def test_display_uses_only_observed_public_atlas_and_detects_changed_bytes(tmp_p
     rows = [{"recorder_map_observations": [point]}]
     records, atlases = load_map_display(manifest, result, rows)
     assert records[0]["size"] == [24, 12]
-    assert records[0]["zones"] == {"A": polygon}
+    assert records[0]["zones"] == polygons
+    assert records[0]["zone_aliases"] == {"A extension": "A"}
     assert atlases == {sha: source.read_bytes()}
     with pytest.raises(ValueError, match="Unobserved"):
         load_map_display(manifest, result, [])
+    original_manifest = manifest.read_text(encoding="utf-8")
+    bad_alias = json.loads(original_manifest)
+    bad_alias["atlases"][0]["zone_aliases"]["A extension"] = "missing"
+    manifest.write_text(json.dumps(bad_alias), encoding="utf-8")
+    with pytest.raises(ValueError, match="registered parent"):
+        load_map_display(manifest, result, rows)
+    manifest.write_text(original_manifest, encoding="utf-8")
     (tmp_path / "map_atlases" / f"{sha}.png").write_bytes(b"wrong")
     with pytest.raises(ValueError, match="hash mismatch"):
         load_map_display(manifest, result, rows)

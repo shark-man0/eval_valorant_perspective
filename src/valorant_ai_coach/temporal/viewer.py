@@ -166,7 +166,7 @@ reference.textContent=atlas?'照合済み参照マップ。線は取得済み観
 if(atlas){
 g.drawImage(atlas,...toCanvas([0,0]),w*scale,h*scale);
 for(const [name,ring] of Object.entries(asset.zones)){
-const active=activeZones.has(name);
+const active=activeZones.has(asset.zone_aliases?.[name]??name);
 g.beginPath();g.moveTo(...toCanvas(ring[0]));
 for(const p of ring.slice(1))g.lineTo(...toCanvas(p));
 g.closePath();g.lineWidth=active?2:1;
@@ -417,7 +417,7 @@ def recording_view_metadata(bundle: dict[str, Any]) -> dict[str, Any]:
 
 def make_server(
     bundle_path: Path, policy_path: Path, *, port: int = 0, map_report_path: Path | None = None,
-    standard_map_report_path: Path | None = None,
+    standard_map_report_path: Path | None = None, evaluation_path: Path | None = None,
 ) -> ThreadingHTTPServer:
     bundle = read_json(bundle_path)
     if bundle.get("version") != VERSION or bundle.get("formal_outputs") != 0:
@@ -441,6 +441,14 @@ def make_server(
                 != file_sha(standard_map_report_path)):
             raise ValueError("Standard Map report must be the recovery report's exact input")
         map_modes["standard"] = load_map_timeline(standard_map_report_path, bundle_path, bundle)
+    evaluation = None
+    if evaluation_path is not None:
+        evaluation = read_json(evaluation_path)
+        if (recorder_map is None or evaluation.get("formal_outputs") != 0
+                or evaluation["formal_promotion"] is not None
+                or evaluation["development_map"]["summary"] != recorder_map["summary"]
+                or evaluation["source"]["source_id"] != bundle["source"]["source_id"]):
+            raise ValueError("Explicit assessment does not match the development Map report")
     map_assets: dict[str, bytes] = {}
     map_atlases: list[dict[str, Any]] = []
     if recorder_map is not None and map_report_path is not None:
@@ -530,7 +538,9 @@ def make_server(
                     elif route == "/api/event":
                         data = bundle["events"][query["id"][0]]
                     elif route == "/api/evaluation":
-                        data = read_json(bundle_path.parent / "evaluation_PRIVATE.json")
+                        data = evaluation if evaluation is not None else read_json(
+                            bundle_path.parent / "evaluation_PRIVATE.json"
+                        )
                     elif route == "/api/recorder-map" and recorder_map is not None:
                         second = int(query["n"][0])
                         if not 0 <= second < len(seconds):
