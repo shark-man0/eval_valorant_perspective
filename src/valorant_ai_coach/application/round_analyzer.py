@@ -81,6 +81,10 @@ ADMISSION_PROVISIONAL_WITHHELD = "provisional_withheld"
 ADMISSION_PROVISIONAL_PARTIAL = "provisional_partial"
 
 
+# The coach contract (ai/coach.py): at most this many candidate rules per call.
+COACH_RULES_PER_CALL = 12
+
+
 class RoundAnalyzer:
     """Canonical Fact Builder -> selector -> Rule Engine -> coach flow."""
 
@@ -185,7 +189,7 @@ class RoundAnalyzer:
         )
         all_frame_paths = [Path(frame["path"]) for frame in enriched["frames"]]
         frame_paths = [all_frame_paths[index] for index in kept_frames]
-        output = self.coach.evaluate(
+        output = self._evaluate_in_batches(
             scoped_package,
             candidate_ids,
             frame_paths=frame_paths,
@@ -227,6 +231,53 @@ class RoundAnalyzer:
             timeline_gate=gate_records,
             clip_adjustments=clip_adjustments,
         )
+
+    def _evaluate_in_batches(
+        self,
+        package: dict[str, Any],
+        candidate_ids: list[str],
+        *,
+        frame_paths: list[Path],
+        deterministic_decisions: dict[str, dict[str, Any]],
+        analysis_scopes: dict[str, dict[str, Any]],
+        cancel_event: Event | None,
+    ) -> dict[str, Any]:
+        """Every candidate is judged: the coach takes at most 12 rules per call.
+
+        Candidates keep their ranked order; each call gets its own decisions and
+        scopes, and the evaluations are joined into one Round output.
+        """
+        batches = [
+            candidate_ids[index : index + COACH_RULES_PER_CALL]
+            for index in range(0, len(candidate_ids), COACH_RULES_PER_CALL)
+        ] or [[]]
+        output: dict[str, Any] | None = None
+        for batch in batches:
+            part = self.coach.evaluate(
+                package,
+                batch,
+                frame_paths=frame_paths,
+                deterministic_decisions={
+                    rule_id: deterministic_decisions[rule_id]
+                    for rule_id in batch
+                    if rule_id in deterministic_decisions
+                },
+                analysis_scopes={
+                    rule_id: analysis_scopes[rule_id]
+                    for rule_id in batch
+                    if rule_id in analysis_scopes
+                },
+                cancel_event=cancel_event,
+            )
+            if output is None:
+                output = part
+            else:
+                output["evaluations"] = [
+                    *output.get("evaluations", []),
+                    *part.get("evaluations", []),
+                ]
+        assert output is not None
+        return output
 
     def _admit_provisional_candidates(
         self, candidates: list[RuleCandidate], package: dict[str, Any]

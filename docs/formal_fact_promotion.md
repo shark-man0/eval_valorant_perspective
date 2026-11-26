@@ -182,6 +182,23 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 - レポートの `scorability` で、確定Roundの候補ルールごとに次の4区分を数える。`deterministic_decided`（決定論エンジンが判定済み）、`ready_for_api`（必要Factがすべて0.55以上でそろい、AIコーチの判定を待つ）、`low_confidence`、`missing_facts`。`ready_for_api` はラベルではない。
 - AIコーチ（API）を使わない経路では、決定論エンジンが同じラベルを出したもの以外の GOOD/IMPROVE をすべて UNSCORED（`other`、「AIコーチ（API）を実行していないため採点していません」）に変える。モックの判定を正式な採点として保存しない。
 
+### 候補ルールの件数と表示
+
+- RuleSelector は、トリガーが一致し、条件に反しないルールをすべて候補にします。件数の上限はありません。候補の判定（決定論エンジンとAIコーチ）と保存も、すべての候補に対して行います。
+- 並び順は、まず不足Factのない候補、次に優先度（`mvp_required`・`important`・`additional`）、満たした条件の数、不足Factの数、ルールIDです。不足Factのある候補が、判定できる候補より前に来ることはありません。
+- AIコーチへは1回12件までです。候補が12件を超えるRoundは、この順で12件ずつ分けて送り、評価を1つのRound出力にまとめます。各回には、その回のルールの決定論判定と分析範囲だけを渡します。
+- 12件の制限はGUIの表示だけに使います（`rule_trigger_registry_v2.json` の `display.max_rules_per_round`）。RoundごとにGOOD・IMPROVEを先にして12件を表示し、表示しない件数をRoundごとに示します。表示しない評価も保存とJSON出力に残ります。
+
+### Map成果の開発用接続（#186）
+
+- Mapライブラリのパッケージは、Map側が計測したタイムラインに結び付いています。このタイムラインは同じ録画を別に取り込んだもので、ネイティブフレームの標本ハッシュが共通タイムラインと一致しません。厳密な結び付け（`load_map_timeline`）では接続は0件です。
+- `application/map_projection.py` は、元動画の時刻で接続します。条件は次のとおりです。
+  - レシート、Mapレポート、共通タイムラインの元動画SHA-256が一致し、レポートがレシートのファイル（SHA-256）であること。レポートは未資格（`qualified: false`、`formal_outputs: 0`、補間0）で、レシートのタイムラインに結び付いていること。
+  - 各観測の標本が、その元動画の正しい標本で、表示時刻が並べられた秒に入ること。どれかが崩れていれば、そのパッケージ全体を拒否します。
+  - 本人の視点かどうかは共通タイムラインで決めます。共通タイムラインでカメラが `SELF`、生存が `ALIVE`（どちらも `OBSERVED`）の秒だけを残し、それ以外の秒は数えて落とします。
+- 接続した観測は `qualified: false`、`position_authority: false` のままで、FactもEventも作りません。昇格は、Map担当が資格の条件（確信度・証拠参照・本人所有）を決めた後に行います。
+- `scripts/measure_map_projection.py` は、1録画1パッケージで、確定Round内の本人視点の秒のうち、Map観測が入った秒を数えます。
+
 ### 読み取り器どうしの検算
 
 人手の正解ではなく、別の読み取り器との整合で検算する（`cross_reader_checks`）。
