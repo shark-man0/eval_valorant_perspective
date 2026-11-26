@@ -51,6 +51,14 @@ def _validate_polygons(polygons: Any, size: tuple[int, int]) -> None:
                 raise ValueError("Named Zone must use the public atlas coordinate space")
 
 
+def _validate_zone_aliases(aliases: Any, polygons: dict[str, Any]) -> None:
+    if not isinstance(aliases, dict) or any(
+        alias not in polygons or not isinstance(parent, str) or parent not in polygons
+        or parent in aliases for alias, parent in aliases.items()
+    ):
+        raise ValueError("Each additional Zone polygon must name its registered parent")
+
+
 def prepare_map_display(report_path: Path, catalog_path: Path, zones_path: Path) -> Path:
     """Copy only content-matching public atlases, and bind their metadata to the Map report."""
     report = read_json(report_path)
@@ -61,7 +69,7 @@ def prepare_map_display(report_path: Path, catalog_path: Path, zones_path: Path)
     references = {(p["map_id"], p["reference_sha256"])
                   for segment in report["segments"] for p in segment}
     maps = {m["id"]: m for m in read_json(catalog_path)["maps"]}
-    zones = {(z["map_id"], z["reference_sha256"]): z["polygons"]
+    zones = {(z["map_id"], z["reference_sha256"]): z
              for z in read_json(zones_path)["maps"]}
     root = catalog_path.resolve().parent
     output = report_path.parent / "map_atlases"
@@ -77,8 +85,10 @@ def prepare_map_display(report_path: Path, catalog_path: Path, zones_path: Path)
         if not atlas.is_relative_to(root) or not is_sha(sha):
             raise ValueError("Public atlas must be in the reference catalog")
         image, size = _atlas(atlas, sha)
-        polygons = zones.get((map_id, sha), {})
+        row = zones.get((map_id, sha), {})
+        polygons, aliases = row.get("polygons", {}), row.get("plant_interior_aliases", {})
         _validate_polygons(polygons, size)
+        _validate_zone_aliases(aliases, polygons)
         cached = output / f"{sha}.png"
         if cached.is_file():
             _atlas(cached, sha)
@@ -87,7 +97,8 @@ def prepare_map_display(report_path: Path, catalog_path: Path, zones_path: Path)
             with os.fdopen(fd, "wb") as file:
                 file.write(image)
         records.append({"map_id": map_id, "map_name": entry["name"], "reference_sha256": sha,
-                        "size": list(size), "zones": polygons})
+                        "size": list(size), "zones": polygons,
+                        **({"zone_aliases": aliases} if aliases else {})})
     path = report_path.with_suffix(".display.json")
     write_private(path, {"schema": _SCHEMA, "report_sha256": file_sha(report_path),
                          "atlases": records, "formal_outputs": 0})
@@ -121,6 +132,7 @@ def load_map_display(
         if record["size"] != list(size):
             raise ValueError("Map display dimensions do not match the PNG")
         _validate_polygons(record["zones"], size)
+        _validate_zone_aliases(record.get("zone_aliases", {}), record["zones"])
         assets[sha] = image
         records.append(record)
     return records, assets

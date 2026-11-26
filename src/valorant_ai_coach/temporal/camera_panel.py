@@ -31,8 +31,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
+import subprocess
+import tempfile
 from collections.abc import Iterator
 from dataclasses import dataclass
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -40,8 +44,11 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+from ..video.native import decoded_source_ticks
+from ..video.service import _subprocess_environment
 from .evidence import digest, freeze_native_sample
 from .game import observation
+from .match import _native_audit_batches, _pts_expression, png_frames
 
 VERSION = "development_camera_panel_v1"
 REFERENCE_SIZE = (1920, 1080)
@@ -472,11 +479,36 @@ def camera_rows(
             "formal_outputs": 0}
 
 
+NATIVE_TIME_BASE = Fraction(1, 15360)
+
+
+def native_decode_command(ffmpeg: str, batch: list[int]) -> list[str]:
+    """The acquisition's native decode, restricted to the listed source PTS.
+
+    Same binary, seek, filters, pixel transport and PNG encoding as the native
+    audit decode in ``match``, so the pixels are those the samples were bound to.
+    """
+    lower, upper = batch[0] * NATIVE_TIME_BASE, batch[-1] * NATIVE_TIME_BASE
+    command = [ffmpeg, "-hide_banner", "-loglevel", "info", "-threads", "1"]
+    if lower > 0:
+        command += ["-noaccurate_seek", "-seek_timestamp", "1", "-ss", str(float(lower))]
+    return command + [
+        "-copyts", "-i", "{video}", "-an", "-sn", "-dn", "-map", "0:v:0",
+        "-t", str(float(upper + 1)),
+        "-vf", f"trim=end_pts={batch[-1] + 1},select={_pts_expression(batch)},showinfo",
+        "-fps_mode", "passthrough", "-threads", "1",
+        "-c:v", "png", "-compression_level", "1", "-pred", "up",
+        "-f", "image2pipe", "pipe:1",
+    ]
+
+
 def decode_samples(
     video: Path, samples: list[dict[str, Any]], missing: list[dict[str, Any]]
 ) -> Iterator[tuple[dict[str, Any], NDArray[np.uint8]]]:
     """Yield samples decoded by native timestamp whose pixels are identical.
 
+    Frames are decoded with the same native FFmpeg decode the acquisition used
+    (not OpenCV's own decoder, whose pixels can differ by platform and build).
     Samples that are not found or differ in pixels are appended to ``missing``.
     """
     wanted: dict[int, list[dict[str, Any]]] = {}
@@ -484,28 +516,43 @@ def decode_samples(
         if sample["native_time_base"] != "1/15360":
             raise ValueError("Native 1/15360 time base required")
         wanted.setdefault(int(sample["native_pts_tick"]), []).append(sample)
-    capture = cv2.VideoCapture(str(video))
-    if not capture.isOpened():
-        raise ValueError("Recording cannot be opened")
-    last = max(wanted, default=-1)
-    try:
-        while wanted and capture.grab():
-            tick = round(capture.get(cv2.CAP_PROP_POS_MSEC) * 15.36)
-            if tick > last:
-                break
+    if not wanted:
+        return
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        raise ValueError("FFmpeg required for the native decode")
+    for batch in _native_audit_batches(sorted(wanted), NATIVE_TIME_BASE):
+        command = [str(video) if part == "{video}" else part
+                   for part in native_decode_command(ffmpeg, batch)]
+        with tempfile.TemporaryFile() as log:
+            child = subprocess.Popen(
+                command, stdout=subprocess.PIPE, stderr=log, env=_subprocess_environment()
+            )
+            assert child.stdout is not None
+            try:
+                frames = list(png_frames(child.stdout))
+            finally:
+                child.stdout.close()
+                code = child.wait()
+            if code != 0:
+                raise ValueError(f"Native decode failed ({code})")
+            log.seek(0)
+            ticks = decoded_source_ticks(log.read().decode("utf-8", "replace"),
+                                         NATIVE_TIME_BASE)
+        if len(ticks) != len(frames):
+            raise ValueError("Native decode frame and PTS counts differ")
+        for tick, encoded in zip(ticks, frames, strict=True):
             if tick not in wanted:
                 continue
-            ok, image = capture.retrieve()
-            if not ok:
-                break
+            image = cv2.imdecode(np.frombuffer(encoded, dtype=np.uint8), cv2.IMREAD_COLOR)
+            if image is None:
+                raise ValueError("Native PNG frame cannot be decoded")
             pixel = hashlib.sha256(image.tobytes()).hexdigest()
             for sample in wanted.pop(tick):
                 if sample["native_pixel_sha256"] == pixel:
                     yield sample, np.asarray(image, dtype=np.uint8)
                 else:
                     missing.append(sample)
-    finally:
-        capture.release()
     missing.extend(s for group in wanted.values() for s in group)
 
 

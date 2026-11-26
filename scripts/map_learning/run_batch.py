@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import errno
 import os
+import time
 from pathlib import Path
 from subprocess import CalledProcessError
 
@@ -12,6 +14,7 @@ from run_recording import _run
 from sample_review import sample_review
 
 from valorant_ai_coach.recordings.admission import resolve_catalog
+from valorant_ai_coach.recordings.catalog import CatalogError, RecordingCatalog
 from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 
 _PATH_OPTIONS = {
@@ -40,6 +43,25 @@ def _path(value: str, root: Path) -> Path:
     if not isinstance(value, str) or not value:
         raise ValueError("A path in the Map batch plan is missing")
     return (root / value).resolve()
+
+
+def record_map_exposure(catalog: RecordingCatalog, recording_id: str) -> None:
+    """Wait briefly for an occupied catalog lock before opening development media."""
+    for delay in (0.16, 0.32, 0.64, 1.0, 2.0):
+        try:
+            catalog.record_exposure(recording_id, "development_use", "Map analysis batch")
+        except CatalogError as error:
+            cause = error.__cause__
+            if (
+                str(error) != "カタログは別の処理が使用中です"
+                or not isinstance(cause, OSError)
+                or cause.errno not in {errno.EACCES, errno.EAGAIN, errno.EWOULDBLOCK}
+            ):
+                raise
+            time.sleep(delay)
+        else:
+            return
+    catalog.record_exposure(recording_id, "development_use", "Map analysis batch")
 
 
 def run_batch(plan_path: Path, output: Path) -> bool:
@@ -116,7 +138,9 @@ def run_batch(plan_path: Path, output: Path) -> bool:
                 if name in row
             }
             training = row.get("prepare_weak_crops", False)
-            catalog.record_exposure(rec.recording_id, "development_use", "Map analysis batch")
+            stage = "exposure"
+            record_map_exposure(catalog, rec.recording_id)
+            stage = "analysis"
             run_flags = tuple(f"--{name}" for name in flags)
             if training:
                 run_flags += ("--training-candidates",)

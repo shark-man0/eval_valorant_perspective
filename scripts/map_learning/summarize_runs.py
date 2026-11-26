@@ -29,6 +29,42 @@ def _stage(path, name, expected_sha, timeline_sha):
     return report
 
 
+def _position_gap_seconds(seconds, reference, adaptive, standard, recovered):
+    reference_evidence = reference["comparison_evidence"]
+    adaptive_evidence = adaptive["comparison_evidence"]
+    operable = set(reference_evidence["operable_sample_refs"])
+    if operable != set(adaptive_evidence["operable_sample_refs"]):
+        raise ValueError("Position gap analysis requires identical operability evidence")
+    shared_rejections = (
+        set(reference_evidence["unresolved_portrait_sample_refs"])
+        & set(adaptive_evidence["unresolved_portrait_sample_refs"])
+    )
+    counts = Counter()
+    for domain, before, after in zip(
+        seconds, standard["second_rows"], recovered["second_rows"], strict=True,
+    ):
+        if domain["timestamp"] != before["timestamp"] or domain["timestamp"] != after["timestamp"]:
+            raise ValueError("Position gap analysis requires identical second clocks")
+        refs = set(domain["sample_refs"])
+        if not refs or not refs <= operable:
+            continue
+        had_position = bool(before["recorder_map_observations"])
+        has_position = bool(after["recorder_map_observations"])
+        counts["added_in_recovery"] += has_position and not had_position
+        counts["lost_in_recovery"] += had_position and not has_position
+        if not has_position:
+            counts["remaining"] += 1
+            counts["both_portrait_stages_rejected_all"] += refs <= shared_rejections
+    before, after = standard["operable_coverage"], recovered["operable_coverage"]
+    if (
+        counts["remaining"] != after[_OPERABLE] - after[_POSITION]
+        or counts["added_in_recovery"] - counts["lost_in_recovery"]
+        != after[_POSITION] - before[_POSITION]
+    ):
+        raise ValueError("Position gaps disagree with measured operable coverage")
+    return dict(counts)
+
+
 def summarize_recording(
     timeline_path, standard_path, recovered_path, reference_path, adaptive_path,
 ):
@@ -72,6 +108,9 @@ def summarize_recording(
         "timeline_seconds": len(timeline["seconds"]),
         "native_frames": len(timeline["native_frames"]),
         "coverage": metrics,
+        "operable_position_gap_seconds": _position_gap_seconds(
+            timeline["seconds"], reference, stages["adaptive"], standard, recovered,
+        ),
         "replay_stages": {name: {field: stage.get(field, {}) for field in _STAGE_FIELDS}
                           for name, stage in stages.items()},
         "gap_recovery": {"status": recovered.get("recovery_status", "completed"),
@@ -117,17 +156,19 @@ def _aggregate(rows):
         }
     stages = {name: {field: Counter() for field in _STAGE_FIELDS}
               for name in ("reference", "adaptive")}
-    gap_counts, gap_status = Counter(), Counter()
+    gap_counts, gap_status, position_gaps = Counter(), Counter(), Counter()
     for row in rows:
         for name, fields in row["replay_stages"].items():
             for field, counts in fields.items():
                 stages[name][field].update(counts)
         gap_counts.update(row["gap_recovery"]["counts"])
         gap_status[row["gap_recovery"]["status"]] += 1
+        position_gaps.update(row.get("operable_position_gap_seconds", {}))
     return {
         "recordings": len(rows), "native_frames": sum(row["native_frames"] for row in rows),
         "timeline_seconds": sum(row["timeline_seconds"] for row in rows),
         "coverage": coverage, "replay_stages": stages,
+        "operable_position_gap_seconds": dict(position_gaps),
         "gap_recovery": {"by_status": gap_status, "counts": gap_counts},
     }
 
