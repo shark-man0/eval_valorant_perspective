@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Callable
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -703,3 +704,47 @@ def test_each_first_shot_starts_an_engagement():
     ]
     assert all(e["actor"] == "player" for e in starts)
     assert report.counts["engagement_start_events"] == len(firsts) == 2
+    # Nothing about the enemy or a peek is carried or derived from it.
+    for start in starts:
+        attributes = start["attributes"]
+        assert attributes["observed"] == "recorder_started_firing"
+        assert not {"visible_enemy_count", "allies_in_trade_range", "exposed_directions",
+                    "enemy_spotted"} & set(attributes)
+    keys = set(facts_of(result, 2))
+    assert not {"preaim_lead_sec", "tradeable_ally_nearby", "exposed_directions_count",
+                "enemy_spotted_count"} & keys
+
+
+
+def test_a_utility_hold_is_traced_and_gaps_or_view_changes_reject_it():
+    spent = _utility_records({s: 0.0 for s in range(100, 140)})
+    result, _ = augment(_ammo_bundle({}), spent)
+    use = _uses(result)[0]
+    trace = use["attributes"]["hold_trace"]
+    assert [e["sec"] for e in trace] == list(range(98, 109))
+    assert {e["state"] for e in trace} == {"available", "spent"}
+    assert use["attributes"]["missing_seconds"] == []
+    assert len(use["attributes"]["evidence_provenance"]["evidence_refs"]) == 0  # no frame refs
+
+    # Two missing readings in a row inside the hold: unproven.
+    gappy = _utility_records({s: 0.0 for s in range(100, 140)})
+    for second in (103, 104):
+        gappy[second] = observation(second, bar=None, charges=(0.0, 1.0, 0.0, 1.0))
+        gappy[second] = SecondRecord(
+            replace(gappy[second].observation, hud_present=False), None, None, 0
+        )
+    result, report = augment(_ammo_bundle({}), gappy)
+    assert _uses(result) == [] and report.rejected["utility_hold_missing_readings"] == 1
+
+    # One missing reading is recorded, not filled.
+    single = _utility_records({s: 0.0 for s in range(100, 140)})
+    single[104] = SecondRecord(replace(single[104].observation, hud_present=False), None, None, 0)
+    result, _ = augment(_ammo_bundle({}), single)
+    assert _uses(result)[0]["attributes"]["missing_seconds"] == [104]
+
+    # The recorder's view interrupted (drone, spectator) inside the hold: unproven.
+    bundle = _ammo_bundle({})
+    Timeline_seconds = bundle["seconds"]
+    Timeline_seconds[105]["camera_state"] = {"value": "REMOTE", "status": "OBSERVED"}
+    result, report = augment(bundle, _utility_records({s: 0.0 for s in range(100, 140)}))
+    assert _uses(result) == [] and report.rejected["utility_hold_view_interrupted"] == 1

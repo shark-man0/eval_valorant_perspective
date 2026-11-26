@@ -53,7 +53,6 @@ from valorant_ai_coach.resources import resource_path
 from valorant_ai_coach.rules.development_readiness import FEED_REPEAT_SEC, FeedKill, Observation
 from valorant_ai_coach.rules.engagement_motion import MotionFrame, first_shot_frame
 from valorant_ai_coach.rules.second_series import (
-    MAX_READ_GAP_SEC,
     SecondRecord,
     WeaponLimits,
     ammo_events,
@@ -1209,6 +1208,11 @@ class SecondFeaturePromoter:
                 confidence=float(shot["confidence"]),
                 attributes={
                     "basis": "recorder_first_shot",
+                    # Only that the recorder started firing; nothing about the enemy.
+                    "observed": "recorder_started_firing",
+                    "not_inferred": [
+                        "enemy_visible", "peek", "preaim", "engagement_end", "opponent",
+                    ],
                     "first_shot_event_id": shot["event_id"],
                     "start_sec": when,
                     "producer": PRODUCER,
@@ -1229,9 +1233,11 @@ class SecondFeaturePromoter:
 
         The #155 charge readings of a slot must read clearly available
         (``utility_available_charge``; the ultimate also ``ultimate_ready_charge``)
-        on two own-HUD seconds and then clearly spent (``utility_spent_charge``) on
-        every reading for ``utility_spent_hold_sec``, at least four readings, each
-        step within ``MAX_READ_GAP_SEC``. An icon that comes back within the hold
+        on two own-HUD seconds and then clearly spent (``utility_spent_charge``) for
+        ``utility_spent_hold_sec``. Every second of that span is traced in
+        ``hold_trace`` (``_hold_trace``): at least four spent readings, the view the
+        recorder's own throughout, at most one missing reading in a row, all inside
+        the Round. An icon that comes back within the hold
         (a highlight, a dimmed HUD, a misread) is not a use; a second charge of a
         two-charge ability is missed rather than guessed. Buying and selling happen
         before the Round starts, so only spending is seen here. Each use also
@@ -1241,8 +1247,9 @@ class SecondFeaturePromoter:
         assert item.start is not None and item.end is not None
         if agent is None:
             return
+        start, end = item.start.time_sec, item.end.time_sec
         reads = [
-            (second, obs.charges) for second in range(item.start.time_sec, item.end.time_sec + 1)
+            (second, obs.charges) for second in range(start, end + 1)
             if self._own_live(view.row(second))
             and self._own_hud(obs := by_second.get(second), agent)
             and obs is not None
@@ -1250,34 +1257,33 @@ class SecondFeaturePromoter:
         known = self.knowledge.agent(agent)
         uses = 0
         hold = self.policy.utility_spent_hold_sec
+        spent_limit = self.policy.utility_spent_charge
         for slot, key in enumerate(("C", "Q", "E", "X")):
             ready = max(self.policy.utility_available_charge, self.policy.ultimate_ready_charge) \
                 if key == "X" else self.policy.utility_available_charge
             seconds = [second for second, _ in reads]
             values = [charges[slot] for _, charges in reads]
             for i in range(2, len(reads)):
-                a2, b1 = seconds[i - 1], seconds[i]
+                a1, a2, b1 = seconds[i - 2], seconds[i - 1], seconds[i]
                 if not (values[i - 2] >= ready and values[i - 1] >= ready
-                        and values[i] <= self.policy.utility_spent_charge):
+                        and values[i] <= spent_limit):
                     continue
-                after = [k for k in range(i, len(reads)) if seconds[k] <= b1 + hold]
-                steps = [seconds[k] for k in [i - 2, i - 1, *after]]
-                if (
-                    seconds[after[-1]] < b1 + hold - MAX_READ_GAP_SEC or len(after) < 4
-                    or any(values[k] > self.policy.utility_spent_charge for k in after)
-                    or max(b - a for a, b in zip(steps, steps[1:], strict=False))
-                    > MAX_READ_GAP_SEC
-                ):
-                    # Spent must hold: an icon that comes back within the hold was a
-                    # highlight, a dimmed HUD or a misread, not a use.
-                    report.rejected["utility_use_not_held"] += 1
+                trace, why = self._hold_trace(
+                    view, by_second, agent, slot, a1, b1, b1 + hold, end, ready
+                )
+                if why is not None:
+                    # Every second from the last available readings to the end of the
+                    # hold must be the recorder's own HUD, read spent; a view change,
+                    # another HUD or more than one missing reading in a row leaves
+                    # the use unproven.
+                    report.rejected[why] += 1
                     continue
                 ability = None if known is None else known.abilities.get(key)
                 ultimate_before = reads[i - 1][1][3] >= self.policy.ultimate_ready_charge
                 ultimate_stable = (
                     reads[i - 2][1][3] >= self.policy.ultimate_ready_charge
                 ) == ultimate_before
-                refs = tuple(r for r in (self._refs.get(a2), self._refs.get(b1)) if r)
+                refs = tuple(dict.fromkeys(r["evidence_ref"] for r in trace if r["evidence_ref"]))
                 event = TimelinePromoter._event(
                     "utility_used", item.round_no, b1, actor="player",
                     confidence=self.policy.utility_used_confidence,
@@ -1287,6 +1293,9 @@ class SecondFeaturePromoter:
                         "ability": None if ability is None else ability.name,
                         "agent": agent,
                         "reading_interval_sec": [a2, b1],
+                        "hold_sec": [b1, b1 + hold],
+                        "hold_trace": trace,
+                        "missing_seconds": [r["sec"] for r in trace if r["state"] == "missing"],
                         "producer": PRODUCER,
                         "promotion_rule": "own_hud_ability_slot_spent",
                         "evidence_provenance": {"charge_source": "second_features_charges"},
@@ -1314,6 +1323,50 @@ class SecondFeaturePromoter:
                     item.events.append(state)
                     report.counts["ability_state_events"] += 1
         stats["utility_used"] = uses
+
+    def _hold_trace(
+        self, view: TimelineView, by_second: Mapping[int, Observation], agent: str,
+        slot: int, first: int, use: int, last: int, round_end: int, ready: float,
+    ) -> tuple[list[dict[str, Any]], str | None]:
+        """Per-second trace of a use from the last available readings to the end of
+        the hold, and why it fails (None when it holds).
+
+        Each second is ``available`` / ``spent`` (an own-HUD reading), or
+        ``missing`` (no reading at all) - never inferred. A second that is not the
+        recorder's own live view, a HUD of another agent, a reading that is neither
+        clearly spent after the use nor clearly available before it, a run of more
+        than one missing second, or a hold running past the Round's end fails.
+        """
+        trace: list[dict[str, Any]] = []
+        if last > round_end:
+            return trace, "utility_hold_past_round_end"
+        missing_run = 0
+        for second in range(first, last + 1):
+            obs = by_second.get(second)
+            entry: dict[str, Any] = {"sec": second, "evidence_ref": self._refs.get(second)}
+            if not self._own_live(view.row(second)):
+                return trace, "utility_hold_view_interrupted"
+            if obs is None or not obs.hud_present:
+                missing_run += 1
+                if missing_run > 1:
+                    return trace, "utility_hold_missing_readings"
+                entry.update(state="missing", charge=None)
+                trace.append(entry)
+                continue
+            if not self._own_hud(obs, agent):
+                return trace, "utility_hold_hud_not_recorder"
+            missing_run = 0
+            value = float(obs.charges[slot])
+            before_use = second < use
+            spent_limit = self.policy.utility_spent_charge
+            if (before_use and value < ready) or (not before_use and value > spent_limit):
+                return trace, "utility_use_not_held"
+            entry.update(state="available" if before_use else "spent", charge=round(value, 3))
+            trace.append(entry)
+        spent = [e for e in trace if e["state"] == "spent"]
+        if len(spent) < 4:
+            return trace, "utility_hold_too_few_readings"
+        return trace, None
 
     def _weapon_or_reserve_changed(
         self, view: TimelineView, records: Sequence[SecondRecord], start: int,
