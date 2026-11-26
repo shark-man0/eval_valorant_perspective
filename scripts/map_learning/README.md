@@ -379,6 +379,59 @@ and apply the exact-input gate in `compare_runs.py`. Position and native-edge
 coverage are measured separately from correctness. This research command
 produces development Map candidates and emits zero formal Facts or Events.
 
+### Learn temporal portrait association from an expanded handoff
+
+Use `portrait_cohort.py --handoff ... --output ...` to reproduce the
+all-portrait-rejected seconds from the exact reference, adaptive, and
+recovered reports. It audits the existing native clock and measures access
+to saved pixels and to direct observations in the same lifecycle episode.
+
+`temporal_portrait_model.py --help` fits a small association model from v2
+crop lineage. Temporal positives come from different, adjacent observations
+in the same recording. Within-frame rivals and portraits of other Agents
+provide contrast. The hard TRAIN index is checked against each existing
+crop hash, its sample ID, and its weak role label. Fit weights by physical
+recording, choose the decision cutoff on separate calibration recordings,
+and compare 2/4/8 recording runs and the hard-crop ablation on disjoint
+controls. `--leave-one-recording-out` produces evaluation receipts for
+training recordings using folds. Weak crop controls provide a screening
+metric. Use exact video observations and independent visual review to
+measure recorder role and location.
+
+`replay_temporal_portraits.py --help` applies an association receipt to a
+specific development report. It refuses recordings used for fitting or
+calibration. An existing exact fit directory may be passed with
+`--alignment-cache`; this command reads its files and verifies the native
+ROI hash. The optional `--pixel-overrides` directory follows the exact
+decoded-pixel contract above. A time-spread gallery supplies appearance
+evidence. Current SELF/ALIVE, HUD and public Agent evidence, the warm rim,
+direct atlas fitting, and at least three consecutive unambiguous native
+measurements support a new path. A cut or lifecycle boundary splits tracks.
+The command writes the same recovered Map report format consumed by
+`load_map_timeline`, with model and native-observation receipts per addition.
+Use the original standard run, the prior recovered report and unchanged
+native inputs with `compare_runs.py`. Coordinate and identity reviews use
+`evaluate_review.py` on that same report. Formal outputs are zero.
+
+`compare_portrait_portfolio.py --plan ... --output ...` evaluates the full
+frozen cohort and reports operable-second coverage overall, by learning split,
+and for a fixed comparison subset. Use a private plan with schema
+`development_map_portrait_comparison_plan_v1`, `formal_outputs` set to `0`,
+the frozen `cohort` receipt, and a `recordings` list. Each entry contains the
+cohort `index` and `baseline` and `candidate` run receipts, all in the same
+format accepted by `compare_runs.py`. Bind each file with `path` and `sha256`.
+Optional `fixed_indices` select the fixed subset. The comparison fails if a
+recording is missing, input pixels differ, or an existing selection regresses.
+
+`--public-in-track` permits weaker public scores only inside short,
+consecutively measured spans bracketed by two strong current portraits
+with the same Agent. Current morphology and calibrated association scores
+remain required. `--phase-models` optionally explores adjacent pixel
+centers using the identical incumbent CNN receipt. It keeps the original
+CNN confidence criterion and requires a separately fitted enclosing
+outline to agree with the candidate center. Use these as paired replay
+experiments and inspect their role and coordinate error before adopting.
+
 ## Desktop Map library
 
 Run the workflow from a checkout with the Map replay dependencies and a private
