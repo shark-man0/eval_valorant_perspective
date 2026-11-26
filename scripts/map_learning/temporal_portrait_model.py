@@ -326,9 +326,9 @@ def main():
         }, len(negatives)
 
     curve = {}
-    for size, with_hard in [(n, True) for n in (2, 4, 8) if n <= len(train)] + [
-        (len(train), False)
-    ]:
+    sizes = sorted({n for n in (2, 4, 8, len(train)) if 2 <= n <= len(train)})
+    with_contrast = [n for n in sizes if len({g["agent"] for g in train[:n]}) >= 2]
+    for size, with_hard in [(n, True) for n in with_contrast] + [(len(train), False)]:
         name = f"{size}_with_hard" if with_hard else f"{size}_without_hard"
         model, negatives = calibrated(fit(train[:size], use_hard=with_hard), cal_examples)
         cutoff = model["threshold"]
