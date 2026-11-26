@@ -742,6 +742,15 @@ def test_a_utility_hold_is_traced_and_gaps_or_view_changes_reject_it():
     result, _ = augment(_ammo_bundle({}), single)
     assert _uses(result)[0]["attributes"]["missing_seconds"] == [104]
 
+    # A second whose view is not observed is missing (never filled), not interrupted.
+    bundle = _ammo_bundle({})
+    bundle["seconds"][105]["camera_state"] = {"value": "UNKNOWN", "status": "UNKNOWN"}
+    result, _ = augment(bundle, _utility_records({s: 0.0 for s in range(100, 140)}))
+    use = _uses(result)[0]
+    assert use["attributes"]["missing_seconds"] == [105]
+    traced = {e["sec"]: e for e in use["attributes"]["hold_trace"]}
+    assert traced[105]["view"] == "unobserved" and traced[105]["charge"] is None
+
     # The recorder's view interrupted (drone, spectator) inside the hold: unproven.
     bundle = _ammo_bundle({})
     Timeline_seconds = bundle["seconds"]

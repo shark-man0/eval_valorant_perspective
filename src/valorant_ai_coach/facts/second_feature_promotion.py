@@ -518,6 +518,14 @@ class SecondFeaturePromoter:
             "SELF", _OBSERVED
         ) and (row.life_value, row.life_status) == ("ALIVE", _OBSERVED)
 
+    @staticmethod
+    def _left_own_view(row: SecondView | None) -> bool:
+        """Observed to be another camera or not alive (not merely unobserved)."""
+        return row is not None and (
+            (row.camera_status == _OBSERVED and row.camera_value != "SELF")
+            or (row.life_status == _OBSERVED and row.life_value != "ALIVE")
+        )
+
     def _recorder_agent(
         self, view: TimelineView, by_second: Mapping[int, Observation],
         report: SecondFeatureReport,
@@ -1332,8 +1340,9 @@ class SecondFeaturePromoter:
         the hold, and why it fails (None when it holds).
 
         Each second is ``available`` / ``spent`` (an own-HUD reading), or
-        ``missing`` (no reading at all) - never inferred. A second that is not the
-        recorder's own live view, a HUD of another agent, a reading that is neither
+        ``missing`` (no reading, or the view itself not observed) - never inferred.
+        A second observed to leave the recorder's own live view (another camera, not
+        alive), a HUD of another agent, a reading that is neither
         clearly spent after the use nor clearly available before it, a run of more
         than one missing second, or a hold running past the Round's end fails.
         """
@@ -1344,8 +1353,18 @@ class SecondFeaturePromoter:
         for second in range(first, last + 1):
             obs = by_second.get(second)
             entry: dict[str, Any] = {"sec": second, "evidence_ref": self._refs.get(second)}
-            if not self._own_live(view.row(second)):
-                return trace, "utility_hold_view_interrupted"
+            row = view.row(second)
+            if not self._own_live(row):
+                if self._left_own_view(row):
+                    return trace, "utility_hold_view_interrupted"
+                # The view is not observed this second (no evidence either way): the
+                # second is missing, whatever reading it has, and is never filled.
+                missing_run += 1
+                if missing_run > 1:
+                    return trace, "utility_hold_missing_readings"
+                entry.update(state="missing", charge=None, view="unobserved")
+                trace.append(entry)
+                continue
             if obs is None or not obs.hud_present:
                 missing_run += 1
                 if missing_run > 1:
