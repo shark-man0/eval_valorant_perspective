@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import logging
 import os
 import subprocess
 import time
@@ -14,15 +16,23 @@ from urllib.request import urlopen
 from PySide6.QtCore import QProcess
 from PySide6.QtWidgets import QApplication
 
-from valorant_ai_coach.application.map_library import open_map_package
+from valorant_ai_coach.application.map_library import (
+    attach_map_tracker,
+    open_map_package,
+    verified_map_package,
+)
 from valorant_ai_coach.recordings.catalog import RecordingCatalog
 from valorant_ai_coach.resources import resource_root
+from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
+from valorant_ai_coach.ui.lifecycle import release_qobject_tree
 from valorant_ai_coach.ui.map_analysis_dialog import (
     MapAnalysisDialog,
     map_external_program,
     map_worker_environment,
     map_worker_root,
 )
+
+LOGGER = logging.getLogger(__name__)
 
 
 def run_map_desktop_smoke(app: QApplication) -> None:
@@ -45,6 +55,7 @@ def run_map_desktop_smoke(app: QApplication) -> None:
                 raise RuntimeError(f"Map smoke external process failed: {diagnostic}")
 
     run_external([python, str(worker_root / "scripts/map_learning/workflow.py"), "--help"])
+    LOGGER.info("Packaged Map worker startup passed")
     fixture = root / "smoke/map_desktop_worker.py"
     if not fixture.is_file():
         fixture = root / "tests/fixtures/map_desktop_worker.py"
@@ -94,6 +105,8 @@ def run_map_desktop_smoke(app: QApplication) -> None:
                 raise RuntimeError(dialog.comparison.toPlainText() or dialog.status.text())
             # Reopen the dialog to check the persistent resume state independently.
             dialog.close()
+            release_qobject_tree(dialog)
+            LOGGER.info("Packaged Map registration and pause passed")
             dialog = MapAnalysisDialog(path / "desktop", worker=fixture)
             dialog.show()
             dialog.resume_button.click()
@@ -102,10 +115,29 @@ def run_map_desktop_smoke(app: QApplication) -> None:
             dialog.distinct.setChecked(True)
             dialog.start_button.click()
             complete()
+            LOGGER.info("Packaged Map persisted resume and alternate execution passed")
             if dialog.recordings.count() != 1 or dialog.after.count() != 2:
                 raise RuntimeError("Both immutable recognition variants must remain available")
             dialog.compare_results()
             if "欠測回復後" not in dialog.comparison.toPlainText():
+                raise RuntimeError(dialog.comparison.toPlainText())
+            baseline_receipt = Path(dialog.after.currentData())
+            base = verified_map_package(baseline_receipt)
+            tracked = path / "tracked_PRIVATE.json"
+            write_private(tracked, {
+                **read_json(base["recovered"]),
+                "multi_marker_replay": {
+                    "method": "development_map_multi_marker_track_v1", "formal_outputs": 0,
+                    "input_sha256s": {"bundle": file_sha(base["bundle"]),
+                                      "incumbent": file_sha(base["recovered"])},
+                },
+            })
+            imported = attach_map_tracker(path / "library", baseline_receipt, tracked)
+            dialog.refresh_results()
+            dialog.before.setCurrentIndex(dialog.before.findData(str(baseline_receipt)))
+            dialog.after.setCurrentIndex(dialog.after.findData(str(imported)))
+            dialog.compare_results()
+            if "複数マーカー追跡" not in dialog.comparison.toPlainText():
                 raise RuntimeError(dialog.comparison.toPlainText())
             for idx in range(dialog.after.count()):
                 dialog.after.setCurrentIndex(idx)
@@ -121,6 +153,13 @@ def run_map_desktop_smoke(app: QApplication) -> None:
                     with urlopen(url, timeout=5) as response:
                         if response.status != 200:
                             raise RuntimeError("The Map viewer did not return its homepage")
+                    with urlopen(url + "api/overview", timeout=5) as response:
+                        modes = json.load(response)["recorder_map_presence"]
+                        expected = {"standard", "recovered"}
+                        if receipt == imported:
+                            expected.add("tracked")
+                        if modes.keys() != expected:
+                            raise RuntimeError("The Map viewer exposed the wrong result modes")
                 finally:
                     server.shutdown()
                     server.server_close()
@@ -130,4 +169,5 @@ def run_map_desktop_smoke(app: QApplication) -> None:
                 dialog.pause_job()
                 wait(stopped)
             dialog.close()
-            app.processEvents()
+            release_qobject_tree(dialog)
+        LOGGER.info("Packaged Map result comparison and viewer passed")

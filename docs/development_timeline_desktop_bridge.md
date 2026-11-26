@@ -61,3 +61,25 @@ Updates to Named Zones may be applied without decoding video. The published
 callout atlas supplies landmark anchors. The development generator retains small
 interiors where the reference geometry supports them and preserves any existing
 Zone. These areas cover only part of each callout.
+
+
+## Compare a multi-marker replay
+
+Select the original result in the Map dialog, then use **追跡結果を取り込む** to
+attach a multi-marker report. The app checks the original timeline and incumbent
+hashes, the source and native frame lineage, and retention of the original
+observed points and edges. The original library entry remains available.
+The attached entry has a third viewer mode. Compare it with the original
+entry to see added or lost positions and measured links for each mode.
+The development evaluation panel continues to describe the recovery result.
+
+`scripts/map_learning/import_marker_tracks.py --portfolio <private JSON>
+--library <private directory>` can attach a portfolio in one pass. If the exact
+incumbent is missing, import its original standard/recovery pair first.
+`run_marker_tracks.py --help` prepares a plan using the frozen native manifest.
+It verifies retained frames and existing pixel overrides before considering
+restoration. Use `--whole-episode` for the complete evidenced self-view episodes
+that contain a target, `--exclude-covered` to skip previously covered targets,
+and `--replay-script` to run the externally supplied tracker. Restoration is
+optional and keeps the disk reserve. The launcher reuses sealed results bound
+to the exact input, coverage, assets, and tracker source.

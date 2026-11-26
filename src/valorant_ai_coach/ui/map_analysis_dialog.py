@@ -32,6 +32,7 @@ from PySide6.QtWidgets import (
 
 from valorant_ai_coach.application.map_library import (
     MapLibraryEntry,
+    attach_map_tracker,
     compare_map_packages,
     list_map_packages,
 )
@@ -192,6 +193,7 @@ class MapAnalysisDialog(QDialog):
         layout.addLayout(result_actions)
         for title, handler in (("一覧を更新", self.refresh_results),
                                ("選択結果を開く", self.open_result),
+                               ("追跡結果を取り込む", self.import_tracker),
                                ("基準と比較", self.compare_results)):
             button = QPushButton(title)
             button.clicked.connect(handler)
@@ -416,6 +418,27 @@ class MapAnalysisDialog(QDialog):
             self.selected_receipt = Path(path)
             self.accept()
 
+    def import_tracker(self) -> None:
+        base = self.after.currentData()
+        library = self.fields["library"].text().strip()
+        if (self.process.state() != QProcess.ProcessState.NotRunning
+                or not library or not isinstance(base, str)):
+            self.comparison.setPlainText("元の解析結果を選択してください。")
+            return
+        filename, _ = QFileDialog.getOpenFileName(
+            self, "複数マーカー追跡の開発用結果", "", "Map JSON (*.json)",
+        )
+        if not filename:
+            return
+        try:
+            result = attach_map_tracker(Path(library), Path(base), Path(filename))
+            self.refresh_results()
+            self.after.setCurrentIndex(self.after.findData(str(result)))
+            self.before.setCurrentIndex(self.before.findData(base))
+            self.compare_results()
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            self.comparison.setPlainText(sanitize_text(str(exc)))
+
     def compare_results(self) -> None:
         a, b = self.before.currentData(), self.after.currentData()
         if not isinstance(a, str) or not isinstance(b, str) or a == b:
@@ -425,7 +448,8 @@ class MapAnalysisDialog(QDialog):
             result = compare_map_packages(Path(a), Path(b))
             lines = []
             for mode, report in result.items():
-                label = "標準" if mode == "standard" else "欠測回復後"
+                label = {"standard": "標準", "recovered": "欠測回復後",
+                         "tracked": "複数マーカー追跡"}[mode]
                 lines.append(
                     f"{label}  位置 {report['before_seconds']} → {report['after_seconds']} 秒"
                     f"（追加 {report['added_seconds']}、消失 {report['lost_seconds']}）\n"

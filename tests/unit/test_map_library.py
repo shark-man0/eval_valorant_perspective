@@ -3,6 +3,7 @@ from fractions import Fraction
 import pytest
 
 from valorant_ai_coach.application.map_library import (
+    attach_map_tracker,
     compare_map_packages,
     list_map_packages,
     open_map_package,
@@ -14,7 +15,7 @@ from valorant_ai_coach.temporal.application import build_application_timeline
 from valorant_ai_coach.temporal.game import DevelopmentGameTimeline
 from valorant_ai_coach.temporal.map_recorder_path import VERSION, join_recorder_seconds
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
-from valorant_ai_coach.temporal.replay import file_sha, write_private
+from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 
 
 def make_package(tmp_path, *, split="DEVELOPMENT", media_bytes=b"registered bytes"):
@@ -154,3 +155,74 @@ def test_landmark_interior_keeps_clear_of_map_and_existing_zone(monkeypatch):
     assert min(p[0] for p in additions["A Main"]) > 55
     shifted = np.roll(atlas, 12, axis=0)
     assert _aligned_revision(shifted, atlas) is None
+
+
+
+def test_attached_tracking_keeps_the_original_pair_immutable(tmp_path, monkeypatch):
+    data = make_package(tmp_path)
+    library = tmp_path / "library"
+    base = publish_map_package(library, label="Development match", **data)
+    report = read_json(data["recovered"])
+    replay = {"method": "development_map_multi_marker_track_v1", "formal_outputs": 0,
+              "input_sha256s": {"bundle": file_sha(data["bundle"]),
+                                "incumbent": file_sha(data["recovered"])}}
+    candidate = tmp_path / "tracked_PRIVATE.json"
+    write_private(candidate, {**report, "multi_marker_replay": replay})
+    tracked = attach_map_tracker(library, base, candidate)
+
+    assert [row.receipt for row in list_map_packages(library)] == [base]
+    assert {row.receipt for row in list_map_packages(library, all_versions=True)} == {base, tracked}
+    for old, new in ((base, tracked), (tracked, base)):
+        result = compare_map_packages(old, new)
+        assert set(result) == {"standard", "recovered", "tracked"}
+        assert not any(result["tracked"].values())
+    monkeypatch.setattr(viewer, "make_server", lambda *args, **kwargs: kwargs)
+    assert open_map_package(tracked)["tracked_map_report_path"] == candidate
+
+    replay["input_sha256s"]["incumbent"] = "4" * 64
+    wrong = tmp_path / "wrong.json"
+    write_private(wrong, {**report, "multi_marker_replay": replay})
+    with pytest.raises(ValueError, match="一致しません"):
+        attach_map_tracker(library, base, wrong)
+    candidate.write_bytes(b"{}")
+    with pytest.raises(ValueError, match="changed"):
+        open_map_package(tracked)
+
+
+def test_exact_landmark_clearance_uses_the_whole_polygon(monkeypatch):
+    from pathlib import Path
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts/map_learning"))
+    from extend_callout_zones import _clear_of_callout_bisectors
+
+    assert _clear_of_callout_bisectors((-4, 0), (0, 0), [(20, 0)], 9)
+    assert not _clear_of_callout_bisectors((0, 0), (0, 0), [(20, 0)], 9)
+
+
+
+def test_marker_replay_expands_only_the_requested_self_episode(monkeypatch):
+    from pathlib import Path
+    from types import SimpleNamespace
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts/map_learning"))
+    import run_marker_tracks
+
+    local = tuple(f"own-{i}" for i in range(9))
+    other = ("separate-1", "separate-2")
+    episodes = [SimpleNamespace(current_samples=refs) for refs in (local, other)]
+    monkeypatch.setattr(run_marker_tracks, "map_view_episodes", lambda _: episodes)
+    timeline = {"seconds": [{"timestamp": 0, "sample_refs": [local[4]]}]}
+    selected = {"comparison_evidence": {"operable_sample_refs": [local[4]],
+                                        "unresolved_portrait_sample_refs": [local[4]]}}
+    base = {"second_rows": [{"timestamp": 0, "recorder_map_observations": []}]}
+    files = dict.fromkeys((*local, *other))
+
+    window = run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
+                                              whole_episode=False)
+    full = run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
+                                            whole_episode=True)
+    assert window == ({local[4]}, set(local[2:7]))
+    assert full == ({local[4]}, set(local))
+    base["second_rows"][0]["recorder_map_observations"] = [{"kind": "selected"}]
+    assert run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
+                                            whole_episode=True) == (set(), set())

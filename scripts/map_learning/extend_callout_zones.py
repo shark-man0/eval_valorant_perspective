@@ -1,6 +1,7 @@
 """Add conservative development landmark interiors around published callout anchors."""
 
 import argparse
+import math
 from collections import Counter
 from pathlib import Path
 
@@ -34,6 +35,22 @@ def _aligned_revision(current, published):
     return checks
 
 
+def _clear_of_callout_bisectors(center, anchor, rivals, radius):
+    x, y = center
+    ax, ay = anchor
+    for bx, by in rivals:
+        distance = math.hypot(bx - ax, by - ay)
+        if distance == 0:
+            return False
+        closest_x = x + math.copysign(radius, bx - ax)
+        closest_y = y + math.copysign(radius, by - ay)
+        margin = (math.dist((closest_x, closest_y), (bx, by)) ** 2
+                  - math.dist((closest_x, closest_y), (ax, ay)) ** 2) / (2 * distance)
+        if margin < 4:
+            return False
+    return True
+
+
 def landmark_interiors(atlas, anchors, existing, *, published=None):
     height, width = atlas.shape[:2]
     filled = _filled(atlas)
@@ -53,8 +70,8 @@ def landmark_interiors(atlas, anchors, existing, *, published=None):
         if (names[label] != 1 or label in existing or label.endswith(" Site")
                 or not 0 <= x < width or not 0 <= y < height):
             continue
-        other_distance = min((max(abs(x - xx), abs(y - yy))
-                              for i, (_, (xx, yy)) in enumerate(pixels) if i != idx),
+        rivals = [point for i, (_, point) in enumerate(pixels) if i != idx]
+        other_distance = min((max(abs(x - xx), abs(y - yy)) for xx, yy in rivals),
                              default=width)
         for radius in range(min(30, (other_distance - 10) // 2), 13, -2):
             left, top, right, bottom = x - radius, y - radius, x + radius, y + radius
@@ -65,7 +82,7 @@ def landmark_interiors(atlas, anchors, existing, *, published=None):
                 added[label] = [[left, top], [right, top], [right, bottom], [left, bottom]]
                 occupied[top:bottom + 1, left:right + 1] = 1
                 break
-        if label in added or not components[y, x] or other_distance < 44:
+        if label in added or not components[y, x]:
             continue
         # Some atlas revisions have thin transparent texture gaps near valid anchors.
         # Accept a smaller pocket only in the anchor's visible component.
@@ -76,6 +93,10 @@ def landmark_interiors(atlas, anchors, existing, *, published=None):
                 if (distance > 12**2 or clearance[cy, cx] < 14
                         or components[cy, cx] != components[y, x]
                         or occupied[cy - 13:cy + 14, cx - 13:cx + 14].any()):
+                    continue
+                if other_distance < 44 and not _clear_of_callout_bisectors(
+                    (cx, cy), (x, y), rivals, 9,
+                ):
                     continue
                 option = (distance, -clearance[cy, cx], cx, cy)
                 if best is None or option < best:
