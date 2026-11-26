@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import math
+from bisect import bisect_right
 from collections import Counter, defaultdict
 from copy import copy
 from fractions import Fraction
@@ -24,6 +25,8 @@ from valorant_ai_coach.temporal.map_recorder_path import (
     measured_native_edges,
     project_recorder_witness,
 )
+from valorant_ai_coach.temporal.map_recording_alignment import NativeMapFlowAlignment
+from valorant_ai_coach.temporal.map_recording_anchors import RecordingMapAnchors
 from valorant_ai_coach.temporal.map_reference_support import (
     atlas_distances_for,
     clearly_outside_atlas,
@@ -35,8 +38,12 @@ from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 from valorant_ai_coach.temporal.visual_state import selected_agent
 
 if __package__:
+    from .acquire_marker_context import SCHEMA as CONTEXT_SCHEMA
+    from .long_marker_ownership import extension, read_match_profile
     from .marker_tracks import Track, associate, observe, representatives
 else:
+    from acquire_marker_context import SCHEMA as CONTEXT_SCHEMA
+    from long_marker_ownership import extension, read_match_profile
     from marker_tracks import Track, associate, observe, representatives
 
 METHOD = "development_map_multi_marker_track_v1"
@@ -101,7 +108,51 @@ def _read(sample, path, overrides):
         return image
 
 
-def current_fit(image, sample, projector, map_id, cache):
+class ContextPixels:
+    def __init__(self, path, bundle, source_sha, layout):
+        self.path = path
+        self.frames = {}
+        if path is None:
+            return
+        receipt = read_json(path)
+        if (
+            receipt.get("schema") != CONTEXT_SCHEMA
+            or receipt.get("formal_outputs") != 0
+            or receipt.get("layout_sha256") != file_sha(layout)
+            or receipt.get("timeline_sha256") != file_sha(bundle)
+            or receipt.get("source_sha256") != source_sha
+        ):
+            raise ValueError("Native ROI receipt does not match this replay")
+        self.bounds, self.frames = receipt["bounds"], receipt["frames"]
+
+    def read(self, sample, path, overrides, layout):
+        row = self.frames.get(sample["sample_sha256"])
+        if row is None:
+            return _read(sample, path, overrides)
+        width, height = sample["frame_size_px"]
+        expected = layout.normalized_roi("minimap_normal").pixel_bounds(width, height)
+        crop_path = (self.path.parent / row["file"]).resolve()
+        if crop_path.parent != self.path.resolve().parent:
+            raise ValueError("Context crop must be stored with its acquisition receipt")
+        data = crop_path.read_bytes()
+        if (
+            tuple(self.bounds) != tuple(expected)
+            or row["native_pixel_sha256"] != sample["native_pixel_sha256"]
+            or hashlib.sha256(data).hexdigest() != row["crop_sha256"]
+        ):
+            raise ValueError("Context ROI differs from the exact acquired pixels")
+        crop = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+        left, top, right, bottom = expected
+        if crop is None or crop.shape != (bottom - top, right - left, 3):
+            raise ValueError("Context ROI dimensions differ from its acquisition")
+        # The padding is never used as evidence and is not passed into the
+        # projection contract, which separately verifies a complete native frame.
+        view = np.zeros((height, width, 3), np.uint8)
+        view[top:bottom, left:right] = crop
+        return view
+
+
+def raw_fit(image, sample, projector, cache):
     raw = None
     if cache is not None:
         key = digest(["exact_atlas_fit_v1", projector.fingerprint, sample["sample_sha256"]])
@@ -119,14 +170,50 @@ def current_fit(image, sample, projector, map_id, cache):
                 raise ValueError("Exact Map fit cache differs from the native input")
     if raw is None:
         raw = projector.inspect_exact(image)["raw"]
+    return raw
+
+
+def acceptable_fit(raw, map_id):
     fits = raw["map_name_candidates"]
-    if (
+    return (
         len(fits) == 1
         and fits[0]["map_id"] == map_id
         and 0 <= fits[0]["fit_residual_p95_reference_px"] <= 8
-    ):
+    )
+
+
+def current_fit(image, sample, projector, map_id, cache, *, contrast_center=None):
+    raw = raw_fit(image, sample, projector, cache)
+    if contrast_center is not None and not raw["map_name_candidates"]:
+        raw = projector.recover_contrast(image, raw, map_id, contrast_center)
+    return raw if acceptable_fit(raw, map_id) else None
+
+
+def recover_fit(image, sample, center, projector, map_id, cache, episode, history):
+    raw = raw_fit(image, sample, projector, cache)
+    if acceptable_fit(raw, map_id):
         return raw
-    return None
+    failed = {**raw, "map_name_candidates": []}
+    contrast = projector.recover_contrast(image, failed, map_id, center)
+    if acceptable_fit(contrast, map_id):
+        return contrast
+    bank = RecordingMapAnchors()
+    now = native_time(sample)
+    for previous, pixels in history:
+        fit = current_fit(pixels, previous, projector, map_id, cache)
+        if fit is None:
+            continue
+        elapsed = now - native_time(previous)
+        if elapsed <= Fraction(1, 4):
+            flow = NativeMapFlowAlignment()
+            flow.remember(pixels, previous, episode, fit)
+            candidate = flow.recover(image, sample, episode, failed, center, map_id, carry=True)
+            if acceptable_fit(candidate, map_id):
+                return candidate
+        elif elapsed >= 10:
+            bank.observe(pixels, previous, fit, map_id, center, recover=False)
+    candidate = bank.observe(image, sample, failed, map_id, center)
+    return candidate if acceptable_fit(candidate, map_id) else None
 
 
 def freeze_targets(timeline, reference, adaptive, incumbent, prior):
@@ -217,14 +304,42 @@ def episode_ordinals(scope, targets, whole_episode):
     return sorted(required)
 
 
-def observations_for_episode(scope, targets, timeline, paths, projector, args, counts, pools):
+def alignment_history(index, scope, clock, frames, paths, args, context, layout):
+    now = clock[index]
+    for age in (60, 45, 30, 15):
+        candidate = bisect_right(clock, now - age, hi=index) - 1
+        if candidate >= 0:
+            key = scope[candidate]
+            sample = frames[key]["sample"]
+            pixels = context.read(sample, paths[key], args.pixel_overrides, layout)
+            if pixels is not None:
+                yield sample, pixels
+    if index > 0 and now - clock[index - 1] <= Fraction(1, 4):
+        key = scope[index - 1]
+        sample = frames[key]["sample"]
+        pixels = context.read(sample, paths[key], args.pixel_overrides, layout)
+        if pixels is not None:
+            yield sample, pixels
+
+
+def observations_for_episode(
+    scope,
+    targets,
+    timeline,
+    paths,
+    projector,
+    args,
+    counts,
+    pools,
+    context,
+):
     frames = timeline["native_frames"]
-    layers, warm_counts = [], {}
+    layers, warm_counts, conflicts = [], {}, set()
     scale = None
     for ordinal in episode_ordinals(scope, targets, args.whole_episode):
         key = scope[ordinal]
         sample = frames[key]["sample"]
-        image = _read(sample, paths[key], args.pixel_overrides)
+        image = context.read(sample, paths[key], args.pixel_overrides, projector.layout)
         if image is None:
             if key in targets:
                 counts["pixels_missing"] += 1
@@ -254,8 +369,8 @@ def observations_for_episode(scope, targets, timeline, paths, projector, args, c
             m.palette == "WARM" and m.sectors >= 14 for m in representatives(pool, scale)
         )
         layers.append(pool)
-    tracks = associate(layers, scale) if scale is not None else []
-    return tracks, scale, warm_counts
+    tracks = associate(layers, scale, conflicts) if scale is not None else []
+    return tracks, scale, warm_counts, conflicts
 
 
 def attributed_tracks(
@@ -271,6 +386,7 @@ def attributed_tracks(
     args,
     scale,
     warm_counts,
+    context,
 ):
     relevant = [
         t
@@ -285,7 +401,7 @@ def attributed_tracks(
     evidence = {}
     for key, points in warm_points.items():
         frame = frames[key]
-        image = _read(frame["sample"], paths[key], args.pixel_overrides)
+        image = context.read(frame["sample"], paths[key], args.pixel_overrides, projector.layout)
         if image is None:
             raise ValueError("Observed native pixels disappeared during the replay")
         existing = incumbents.get(key)
@@ -315,18 +431,25 @@ def attributed_tracks(
         current = []
         for marker in track.measurements:
             if marker.palette == "WARM" and evidence[marker.sample_ref, marker.center][3]:
-                attach_owner(current, evidence, warm_counts, owned)
+                attach_owner(
+                    Track(current, track.link_margins),
+                    evidence,
+                    warm_counts,
+                    owned,
+                    args.long_ownership,
+                )
                 current = []
             else:
                 current.append(marker)
-        attach_owner(current, evidence, warm_counts, owned)
+        attach_owner(
+            Track(current, track.link_margins), evidence, warm_counts, owned, args.long_ownership
+        )
     return relevant, owned, evidence
 
 
-def attach_owner(measurements, evidence, warm_counts, owned):
-    track = Track(measurements)
+def attach_owner(track, evidence, warm_counts, owned, allow_round):
     witnesses = classify_track(track, evidence, warm_counts)
-    if witnesses:
+    if witnesses or (allow_round and len(track.measurements) >= 3):
         owned.append((track, witnesses))
 
 
@@ -355,6 +478,8 @@ def _selection(marker, pool, identity, track_id, sequence):
 
 def replay(args):
     rec, timeline, reference, adaptive, incumbent, prior, paths = load_inputs(args)
+    context = ContextPixels(args.context_pixels, args.bundle, rec.source_sha256, args.layout)
+    profile = read_match_profile(args.match_profile, rec.physical_match_id)
     operable, seconds = freeze_targets(timeline, reference, adaptive, incumbent, prior)
     targets = {key for refs in seconds.values() for key in refs}
     if not operable <= paths.keys():
@@ -391,6 +516,7 @@ def replay(args):
     counts = Counter()
     pools, traces, track_evidence, anonymous_tracks = {}, {}, {}, {}
     tracking, ownership = set(), set()
+    reasons = {}
     segments = []
     incumbents = {
         point["sample"]["sample_sha256"]: point
@@ -408,7 +534,9 @@ def replay(args):
             continue
         counts["episodes_examined"] += 1
         counts["episode_target_frames"] += len(targets.intersection(scope))
-        tracks, scale, warm_counts = observations_for_episode(
+        counts["episode_context_expected"] += len(scope)
+        clock = [native_time(frames[key]["sample"]) for key in scope]
+        tracks, scale, warm_counts, conflicts = observations_for_episode(
             scope,
             targets,
             timeline,
@@ -417,18 +545,22 @@ def replay(args):
             args,
             counts,
             pools,
+            context,
         )
         anonymous_tracks[episode.episode_ref] = [
             [marker_ref(marker) for marker in track.measurements]
             for track in tracks
             if len(track.measurements) >= 2
         ]
+        anchors = incumbents
+        if args.long_ownership and args.whole_episode:
+            anchors = {key: incumbents[key] for key in scope[::5] if key in incumbents}
         relevant, owned, evidence = attributed_tracks(
             tracks,
             targets,
             frames,
             paths,
-            incumbents,
+            anchors,
             knowledge,
             projector,
             target,
@@ -436,11 +568,66 @@ def replay(args):
             args,
             scale,
             warm_counts,
+            context,
         )
         for track in relevant:
             tracking.update(m.sample_ref for m in track.measurements if m.sample_ref in targets)
-        required = Counter(m.sample_ref for track, _ in owned for m in track.measurements)
+        opening = native_time(frames[episode.boundary_sample_ref or scope[0]]["sample"])
+        pending = []
+        required = Counter()
         for track, witnesses in owned:
+            extra = (
+                extension(
+                    track,
+                    witnesses,
+                    evidence,
+                    warm_counts,
+                    episode.opening_boundary,
+                    opening,
+                    conflicts,
+                    profile,
+                )
+                if args.long_ownership
+                else {}
+            )
+            local = (
+                (min(w.ordinal for w in witnesses) - 4, max(w.ordinal for w in witnesses) + 4)
+                if witnesses
+                else None
+            )
+            if not local and not extra:
+                continue
+            pending.append((track, witnesses, local, extra))
+            required.update(
+                m.sample_ref
+                for m in track.measurements
+                if not args.long_ownership
+                or (local and local[0] <= m.ordinal <= local[1])
+                or m.sample_ref in extra
+            )
+        by_sample = defaultdict(list)
+        for (sample_ref, _), value in evidence.items():
+            by_sample[sample_ref].append(value)
+        ambiguous = {ref for ref, center in conflicts if (ref, center) in evidence}
+        counts["marker_association_conflicts"] += len(ambiguous & targets)
+        for key in targets.intersection(scope):
+            per_frame = by_sample[key]
+            if required[key] > 1:
+                counts["owner_claim_conflicts"] += 1
+                reasons[key] = "competing_owner_tracks"
+            elif required[key] == 1:
+                reasons[key] = "eligible_track_without_current_selection"
+            elif key in ambiguous:
+                reasons[key] = "ambiguous_track_link"
+            elif not per_frame:
+                reasons[key] = "no_tracked_warm_marker"
+            elif all(row[3] for row in per_frame):
+                reasons[key] = "identity_contradiction"
+            elif any(row[0] or (row[1] >= 0.75 and row[2] >= 0.08) for row in per_frame):
+                reasons[key] = "isolated_owner_witness"
+            else:
+                reasons[key] = "insufficient_owner_anchor_or_continuity"
+        for track, witnesses, local, extra in pending:
             points = []
             track_id = digest([METHOD, episode.episode_ref, marker_ref(track.measurements[0])])
             track_evidence[track_id] = {
@@ -448,24 +635,46 @@ def replay(args):
                 "measurements": [marker_ref(m) for m in track.measurements],
                 "owner_witnesses": [marker_ref(m) for m in witnesses],
             }
-            first = min(w.ordinal for w in witnesses)
-            last = max(w.ordinal for w in witnesses)
             for i, marker in enumerate(track.measurements):
                 key = marker.sample_ref
+                near = local is not None and local[0] <= marker.ordinal <= local[1]
                 if (
                     key not in targets
                     or required[key] != 1
                     or marker.palette != "WARM"
                     or evidence[key, marker.center][3]
-                    or not first - 4 <= marker.ordinal <= last + 4
+                    or not (near or key in extra)
                 ):
                     continue
                 ownership.add(key)
+                reasons[key] = "direct_atlas_fit_unavailable"
                 sample = frames[key]["sample"]
                 image = _read(sample, paths[key], args.pixel_overrides)
                 if image is None:
                     raise ValueError("Observed native pixels disappeared before projection")
-                fit = current_fit(image, sample, projector, map_id, args.alignment_cache)
+                if args.contrast_registration:
+                    history = alignment_history(
+                        marker.ordinal,
+                        scope,
+                        clock,
+                        frames,
+                        paths,
+                        args,
+                        context,
+                        projector.layout,
+                    )
+                    fit = recover_fit(
+                        image,
+                        sample,
+                        marker.center,
+                        projector,
+                        map_id,
+                        args.alignment_cache,
+                        episode.episode_ref,
+                        history,
+                    )
+                else:
+                    fit = current_fit(image, sample, projector, map_id, args.alignment_cache)
                 if fit is None:
                     continue
                 pool = pools[key]
@@ -473,8 +682,18 @@ def replay(args):
                 point = project_recorder_witness(
                     image, sample, pool, selection, fit, reference_sha256s=assets
                 )
-                if point is None or clearly_outside_atlas(atlas, point["map_reference_px"]):
+                if point is None:
+                    reasons[key] = "projection_contract_abstention"
                     continue
+                if clearly_outside_atlas(atlas, point["map_reference_px"]):
+                    reasons[key] = "outside_atlas"
+                    continue
+                if fit.get("alignment_recovery"):
+                    counts["recovered_current_registrations"] += 1
+                if not near and key in extra:
+                    counts["extended_positions"] += 1
+                    counts["round_seed_positions"] += extra[key]["round_start_seed"]
+                reasons[key] = "projected"
                 if points:
                     old = points[-1]
                     elapsed = native_time(sample) - native_time(old["sample"])
@@ -491,6 +710,7 @@ def replay(args):
                     "track": track_id,
                     "proposal": marker_ref(marker),
                     "observed_point_sha256": digest(point),
+                    **({"extended_owner": extra[key]} if not near and key in extra else {}),
                 }
             if points:
                 segments.append(points)
@@ -542,10 +762,13 @@ def replay(args):
                 "adaptive",
                 "incumbent",
                 "exclude_covered",
+                "context_pixels",
             )
             if getattr(args, name) is not None
         },
         "counts": dict(counts),
+        "target_reasons": reasons,
+        "match_profile_sha256": file_sha(args.match_profile) if args.match_profile else None,
         "track_evidence": track_evidence,
         "added_evidence": traces,
         "formal_outputs": 0,
@@ -588,7 +811,14 @@ def main():
         action="store_true",
         help="Use all available native pixels in each matching self-view episode",
     )
+    parser.add_argument("--context-pixels", type=Path)
+    parser.add_argument("--match-profile", type=Path)
+    parser.add_argument("--long-ownership", action="store_true")
+    parser.add_argument("--contrast-registration", action="store_true")
     args = parser.parse_args()
+    if args.match_profile and not args.long_ownership:
+        parser.error("A temporal matcher requires long ownership attribution")
+
     for destination in (args.output, args.proposals):
         if destination.exists() or any(
             (p / ".git").exists() for p in destination.resolve().parents

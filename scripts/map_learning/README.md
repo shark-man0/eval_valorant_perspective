@@ -349,6 +349,32 @@ current measured points are registered against the recording's pinned public
 Map. The exact Map report is compatible with the standard development reader,
 and `compare_runs.py` checks the identical native inputs and non-regression.
 
+#### Recover episode context and test longer ownership links
+
+`acquire_marker_context.py` accepts a private target list with
+`timeline_sha256`, `sample_refs`, and `formal_outputs: 0`. It uses the
+original recording catalog and the timeline's native clock. The context
+receipt lists lossless minimap crops only for frames whose full BGR hash
+matches the native observation. Replay accepts that receipt with
+`--context-pixels`; final coordinate projection still requires the
+original full frame. An unmatched native digest supplies no context.
+
+`--long-ownership` extends attribution only over measured links with
+separation from alternative tracks, compatible appearance, and consistent
+current view and Agent evidence. An existing direct position near a
+measured round opening can furnish the first witness. Competitors and
+identity contradictions stop propagation. Use `--contrast-registration`
+to test current-frame registration with contrast, adjacent flow, and
+earlier independently registered landmarks.
+
+`train_marker_matcher.py` learns appearance weights from adjacent TRAIN
+tracks and separated same-frame candidate controls in a bound private
+portfolio. Each physical recording used to fit or calibrate a profile is
+excluded when that profile is applied. Compare `--match-profile` with the
+same long-ownership replay with geometric and cosine link evidence.
+Track membership is a weak label, so use independent video and retention
+checks when evaluating attribution.
+
 ## Desktop Map library
 
 Run the workflow from a checkout with the Map replay dependencies and a private
