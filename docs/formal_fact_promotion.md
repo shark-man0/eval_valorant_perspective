@@ -139,12 +139,27 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 - 隣り合う読み取りの変化を #169 の `classify_ammo_change` で分けます。弾数が減って予備弾数が変わらなければ射撃です。予備弾数が減って弾数が増えればリロード、それ以外に予備弾数が変われば持ち替えです。リロードと持ち替えは射撃にしません。発射速度の上限より速い減少は誤読とします。
 - 読み取りの間隔が3.5秒を超える場合や、本人視点が途切れた場合は比べません。
 - 予備弾数が片方の端で読めていないと、別の武器の弾倉への持ち替えが射撃に見えることがあります。両端（または1秒外側）の武器名が違う場合と、両端から3秒以内で最も近い予備弾数の読み取りが違う場合は、射撃にしません（`shot_weapon_changed`、`shot_reserve_changed`）。
-- Round最初の射撃と、3秒以上空いた後の射撃を `first_shot` とします。#169 の60fps交戦区間フレームがある場合は、初弾をフレーム単位で特定して `first_shot_frame_sec` に記録します。
+- Round最初の射撃と、3秒以上空いた後の射撃を `first_shot` とします。#169 の60fps交戦区間フレームがある場合は、初弾をフレーム単位で特定して `first_shot_frame_sec` に記録します。探す範囲は、射撃を読んだ秒の次の共通タイムライン標本までです。その標本が本人視点（カメラ `SELF`・生存 `ALIVE` を観測）でないときは、秒の途中で死亡や観戦に切り替わった可能性があるため、射撃を読んだ秒の標本までに限ります。
 - 武器名は、同じ秒のタイムラインの武器読み取りが1つに決まり、知識基盤の武器名に対応する場合だけ付けます。
 - `shot` Event（actor は本人、信頼度0.8）から、FactBuilder が `first_shot_detected` と `weapon` を作ります。移動の判定は #169 の目視確認を通っていないため、`shot_while_moving` と `first_shot_stationary` は作りません。
 - Event Source Contract の `shot` は、HUDの弾数の減少を認めるように `hud_or_visual_analyzer` に変えました。
 
 検算は2つです。`shot_vs_feature_ammo` は、タイムラインの読み取りだけで作った射撃について、特徴量の弾数も減っているかを見ます。タイムラインの秒は1秒の中のどこかで読まれるため、前後1秒を含む区間で減っていれば一致とします。区間の中で減っていない場合は、射撃より確実に前（開始の秒以前）と確実に後（終了の秒の1秒後以降）の読み取りを比べ、同じ値なら不一致、増えていれば（リロードや持ち替えを挟むため）判定しません。特徴量で補った射撃は同じ読み取りどうしになるため `feature_sourced` として数えません。`recorder_kill_has_shot` は、キルフィードが本人のキルとした撃破の区間に射撃があるかを見ます。
+
+### 交戦開始とスキル使用
+
+- `engagement_start`：昇格した射撃のうち初弾（Round最初、または3秒以上空いた後）ごとに1件作ります。時刻は初弾の秒で、60fpsフレームで特定できた時刻を `start_sec` に記録します。分かるのは「本人が撃ち始めた」ことだけです。属性 `observed` は `recorder_started_firing` で、`not_inferred` に敵の視認、ピーク、プリエイム、交戦終了、相手を挙げます。敵の人数や味方のトレード距離の属性は持たないため、FactBuilder は `tradeable_ally_nearby` や `preaim_lead_sec` を作りません。
+- `utility_used`：確定Roundの交戦中、本人視点・本人のHUDの秒で、スキル枠（C・Q・E・X）の #155 の充填の読み取りが変わったときに作ります。条件は次のとおりです。
+  - 直前の2回の読み取りがはっきり使用可能（0.6以上、Xはさらに `ultimate_ready_charge` 以上）。
+  - その後 `utility_spent_hold_sec`（8秒）のすべての読み取り（4回以上）がはっきり使用済み（0.1以下）。
+  - 使用可能の最初の読み取りから保持の終わりまで、すべての秒を `hold_trace` に記録します。各秒は秒、状態（available・spent・missing）、充填値、根拠フレームを持ちます。
+  - 読み取りのない秒と、共通タイムラインで視点が観測されていない秒は `missing` として記録し、`missing_seconds` に並べます。視点が観測されていない秒は `view: unobserved` を付け、読み取りがあっても使いません。値は補いません。2秒続けて欠けたら証明できないとして見送ります（`utility_hold_missing_readings`）。
+  - 途中で本人視点を離れたと観測された秒（別のカメラ、生存していない）があれば見送ります（`utility_hold_view_interrupted`）。本人以外のHUD（`utility_hold_hud_not_recorder`）、Round終了をまたぐ保持（`utility_hold_past_round_end`）、使用済みの読み取りが4回未満（`utility_hold_too_few_readings`）も同じです。
+  - Event の根拠参照は、`hold_trace` のすべての根拠フレームです。
+  - 8秒以内に戻るアイコン（強調表示、HUDの減光、誤読）は使用にしません（`utility_use_not_held`）。2回使えるスキルの2回目のように中間の値になるものは、推測せず見送ります。
+  - 購入フェーズはRound開始より前なので、購入や売却は使用に数えません。
+- スキル使用ごとに、直前のアルティメットの状態を `ability_state`（スロット3）として記録し、FactBuilder が `ultimate_available` を作ります。
+- Event Source Contract の `engagement_start` と `utility_used` を、上記のHUD由来でも作れるように `hud_or_visual_analyzer` に変えました。敵・味方のスキルとその効果範囲は対象外です。
 
 ### 本人死亡の見落とし補完
 
@@ -166,6 +181,27 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 
 - レポートの `scorability` で、確定Roundの候補ルールごとに次の4区分を数える。`deterministic_decided`（決定論エンジンが判定済み）、`ready_for_api`（必要Factがすべて0.55以上でそろい、AIコーチの判定を待つ）、`low_confidence`、`missing_facts`。`ready_for_api` はラベルではない。
 - AIコーチ（API）を使わない経路では、決定論エンジンが同じラベルを出したもの以外の GOOD/IMPROVE をすべて UNSCORED（`other`、「AIコーチ（API）を実行していないため採点していません」）に変える。モックの判定を正式な採点として保存しない。
+
+### 候補ルールの件数と表示
+
+- RuleSelector は、トリガーが一致し、条件に反しないルールをすべて候補にします。件数の上限はありません。候補の判定（決定論エンジンとAIコーチ）と保存も、すべての候補に対して行います。
+- 並び順は、まず不足Factのない候補、次に優先度（`mvp_required`・`important`・`additional`）、満たした条件の数、不足Factの数、ルールIDです。不足Factのある候補が、判定できる候補より前に来ることはありません。
+- AIコーチへは1回12件までです。候補が12件を超えるRoundは、この順で12件ずつ分けて送り、評価を1つのRound出力にまとめます。各回には、その回のルールの決定論判定と分析範囲だけを渡します。
+  - どれかの回が失敗またはキャンセルされたら、そのRound全体を失敗とし、途中までの評価は返しません。Roundは保存されず、まとめて再実行されます（成功した回はAIコーチのキャッシュに残ります）。
+  - 評価が、その回の候補でないルールを主ルールや関連ルールに含む場合と、同じルールが複数の回で主ルールになった場合は、契約違反として扱います。
+  - どの評価にも現れなかった候補は補わず、回ごとに `uncovered_rule_ids` として記録します（`RoundAnalysis.ai_calls`）。
+- 12件の制限はGUIの表示だけに使います（`rule_trigger_registry_v2.json` の `display.max_rules_per_round`）。RoundごとにGOOD・IMPROVEを先にして12件を表示し、表示しない件数をRoundごとに示します。表示しない評価も保存とJSON出力に残ります。
+
+### Map成果の開発用接続（#186）
+
+- Mapライブラリのパッケージは、Map側が計測したタイムラインに結び付いています。このタイムラインは同じ録画を別に取り込んだもので、ネイティブフレームの標本ハッシュが共通タイムラインと一致しません。厳密な結び付け（`load_map_timeline`）では接続は0件です。
+- `application/map_projection.py` は、元動画の時刻で接続します。条件は次のとおりです。
+  - レシート、Mapレポート、共通タイムラインの元動画SHA-256が一致し、レポートがレシートのファイル（SHA-256）であること。レポートは未資格（`qualified: false`、`formal_outputs: 0`、補間0）で、レシートのタイムラインに結び付いていること。
+  - 各観測の標本が、その元動画の正しい標本で、表示時刻が並べられた秒に入ること。どれかが崩れていれば、そのパッケージ全体を拒否します。
+  - 本人の視点かどうかは共通タイムラインで決めます。共通タイムラインの秒 s の標本は時刻 s にあるので、秒 s の観測は標本 s と s+1 の間にあります。両方の標本でカメラが `SELF`、生存が `ALIVE`（どちらも `OBSERVED`）のときだけ残します。秒の途中の死亡、観戦への切り替え、復帰は、どちらかの標本を変えるか未観測にするので、その秒の観測は数えて落とします（`dropped_view_boundary_unbracketed`）。
+  - 接続結果には、レシートとそれが指す全成果物、Mapレポート、Map側タイムライン、接続先の共通タイムライン（スリム版では元のJSON）のSHA-256を残します。観測ごとに、Mapの標本（標本・取得フレーム・画素のSHA-256）と、前後の共通タイムライン標本の参照を残します。
+- 接続した観測は `qualified: false`、`position_authority: false` のままで、FactもEventも作りません。昇格は、Map担当が資格の条件（確信度・証拠参照・本人所有）を決めた後に行います。
+- `scripts/measure_map_projection.py` は、1録画1パッケージで、確定Round内の本人視点の秒のうち、Map観測が入った秒を数えます。
 
 ### 読み取り器どうしの検算
 

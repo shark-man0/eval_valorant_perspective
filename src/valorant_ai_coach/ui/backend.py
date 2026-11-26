@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 from collections.abc import Callable
 from pathlib import Path
@@ -11,6 +12,8 @@ from valorant_ai_coach.bootstrap import build_services
 from valorant_ai_coach.logging_setup import configure_logging
 from valorant_ai_coach.non_video.features import NonVideoFeatures
 from valorant_ai_coach.non_video.profiles import ProfileStore
+from valorant_ai_coach.resources import resource_path
+from valorant_ai_coach.rules.selector import DEFAULT_DISPLAY_LIMIT
 from valorant_ai_coach.settings import AppSettings, SettingsStore, default_data_dir
 
 from .contracts import (
@@ -44,6 +47,18 @@ class BackendFacade:
         self.non_video = NonVideoFeatures(self.services.repository)
         self.profiles = ProfileStore(self.settings_store)
         self._refresh_rule_metadata()
+
+    @property
+    def display_rules_per_round(self) -> int:
+        """How many evaluations per Round the result view shows first (display only)."""
+        try:
+            registry = json.loads(
+                resource_path("config/rule_trigger_registry_v2.json").read_text(encoding="utf-8")
+            )
+            display = registry.get("display", {})
+            return int(display.get("max_rules_per_round", DEFAULT_DISPLAY_LIMIT))
+        except (OSError, ValueError, TypeError):
+            return DEFAULT_DISPLAY_LIMIT
 
     def _refresh_rule_metadata(self) -> None:
         self._rule_category = {

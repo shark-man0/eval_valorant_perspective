@@ -178,3 +178,18 @@ def test_provisional_partition_is_visible_and_does_not_fill_missing_hp() -> None
     assert parent.child(0).text(1) == '1:39'
     assert parent.child(0).text(2) == '—'
     window.container.close()
+
+
+def test_a_round_shows_twelve_cards_and_says_how_many_stored_ones_are_not_shown(
+    window: Harness,
+) -> None:
+    window.current_evaluations = tuple(
+        evaluation("good", f"g{n}", round_no=2) for n in range(15)
+    ) + (evaluation("improve", "other-round", round_no=3),)
+    select_label(window, "scored")
+    assert len(card_texts(window)) == 13  # 12 from Round 2, 1 from Round 3
+    notes = [
+        label.text() for label in window.container.findChildren(QLabel)
+        if "Roundごとに12件まで表示" in label.text()
+    ]
+    assert len(notes) == 1 and "Round 2 は 3 件" in notes[0]
