@@ -74,6 +74,8 @@ class RoundAnalysis:
     admission: str = "confirmed"
     timeline_gate: tuple[GateRecord, ...] = ()
     clip_adjustments: tuple[dict[str, Any], ...] = ()
+    # One entry per coach call: its rules, evaluation count and uncovered rules.
+    ai_calls: tuple[dict[str, Any], ...] = ()
 
 
 ADMISSION_CONFIRMED = "confirmed"
@@ -189,7 +191,7 @@ class RoundAnalyzer:
         )
         all_frame_paths = [Path(frame["path"]) for frame in enriched["frames"]]
         frame_paths = [all_frame_paths[index] for index in kept_frames]
-        output = self._evaluate_in_batches(
+        output, ai_calls = self._evaluate_in_batches(
             scoped_package,
             candidate_ids,
             frame_paths=frame_paths,
@@ -230,6 +232,7 @@ class RoundAnalyzer:
             admission=admission,
             timeline_gate=gate_records,
             clip_adjustments=clip_adjustments,
+            ai_calls=ai_calls,
         )
 
     def _evaluate_in_batches(
@@ -241,18 +244,30 @@ class RoundAnalyzer:
         deterministic_decisions: dict[str, dict[str, Any]],
         analysis_scopes: dict[str, dict[str, Any]],
         cancel_event: Event | None,
-    ) -> dict[str, Any]:
+    ) -> tuple[dict[str, Any], tuple[dict[str, Any], ...]]:
         """Every candidate is judged: the coach takes at most 12 rules per call.
 
-        Candidates keep their ranked order; each call gets its own decisions and
-        scopes, and the evaluations are joined into one Round output.
+        Candidates keep their ranked order; each call gets only its own rules'
+        decisions and scopes, and the evaluations are joined into one Round output.
+
+        * A failed or cancelled call fails the whole Round: no partial output is
+          returned, so nothing of the Round is saved and it is retried as a whole
+          (the coach cache keeps calls that already succeeded).
+        * An evaluation may only name rules of its own call, and a rule is the primary
+          rule of at most one call's evaluations; anything else is a contract error.
+        * A candidate no evaluation names is not filled in: it is reported per call
+          as ``uncovered_rule_ids``.
         """
         batches = [
             candidate_ids[index : index + COACH_RULES_PER_CALL]
             for index in range(0, len(candidate_ids), COACH_RULES_PER_CALL)
         ] or [[]]
         output: dict[str, Any] | None = None
-        for batch in batches:
+        primary_batch: dict[str, int] = {}
+        report: list[dict[str, Any]] = []
+        for number, batch in enumerate(batches):
+            if cancel_event is not None and cancel_event.is_set():
+                raise InterruptedError("AI評価がキャンセルされました")
             part = self.coach.evaluate(
                 package,
                 batch,
@@ -269,15 +284,34 @@ class RoundAnalyzer:
                 },
                 cancel_event=cancel_event,
             )
+            allowed = set(batch)
+            named: set[str] = set()
+            evaluations = list(part.get("evaluations", []))
+            for evaluation in evaluations:
+                primary = str(evaluation.get("primary_rule_id"))
+                related = {str(rule_id) for rule_id in evaluation.get("related_rule_ids", [])}
+                if primary not in allowed or not related <= allowed:
+                    raise ContractValidationError(
+                        f"AI評価の{number + 1}回目に、その回の候補でないルールがあります: "
+                        f"{sorted(({primary} | related) - allowed)}"
+                    )
+                if primary_batch.setdefault(primary, number) != number:
+                    raise ContractValidationError(f"同じルールが複数回の評価に出ました: {primary}")
+                named |= {primary} | related
+            report.append(
+                {
+                    "call": number + 1,
+                    "rule_ids": list(batch),
+                    "evaluations": len(evaluations),
+                    "uncovered_rule_ids": [rule_id for rule_id in batch if rule_id not in named],
+                }
+            )
             if output is None:
                 output = part
             else:
-                output["evaluations"] = [
-                    *output.get("evaluations", []),
-                    *part.get("evaluations", []),
-                ]
+                output["evaluations"] = [*output.get("evaluations", []), *evaluations]
         assert output is not None
-        return output
+        return output, tuple(report)
 
     def _admit_provisional_candidates(
         self, candidates: list[RuleCandidate], package: dict[str, Any]

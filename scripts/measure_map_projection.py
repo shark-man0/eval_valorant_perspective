@@ -14,6 +14,7 @@ many of them received a projected Map observation. Nothing is promoted.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from collections import Counter
@@ -39,10 +40,23 @@ def _own_live(row: dict[str, Any]) -> bool:
     return observed(row.get("camera_state"), "SELF") and observed(row.get("life_state"), "ALIVE")
 
 
+def _file_sha(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def measure(timeline_path: Path, receipt_path: Path, report_path: Path) -> dict[str, Any]:
     bundle = load_bundle(timeline_path, None)
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-    projection = project_map_package(receipt, report_path, bundle)
+    file_sha = _file_sha(timeline_path)
+    # A slim bundle names the canonical timeline JSON it was cut from.
+    timeline_sha = str(bundle.get("slim", {}).get("timeline_json_sha256") or file_sha)
+    projection = project_map_package(
+        receipt_path, report_path, bundle, timeline_sha256=timeline_sha
+    )
     rounds, _ = segment_rounds(bundle)
     promoted = TimelinePromoter().promote(
         bundle, [(r.round_no, r.start_sec, r.end_sec) for r in rounds]
@@ -66,6 +80,11 @@ def measure(timeline_path: Path, receipt_path: Path, report_path: Path) -> dict[
         "recording_id": projection.recording_id,
         "source_sha256": projection.source_sha256,
         "report_sha256": projection.report_sha256,
+        "receipt_sha256": projection.receipt_sha256,
+        "map_artifact_sha256": projection.map_artifact_sha256,
+        "map_timeline_sha256": projection.map_timeline_sha256,
+        "timeline_sha256": projection.timeline_sha256,
+        "timeline_file_sha256": file_sha,
         "label": receipt.get("label"),
         "confirmed_rounds": len(confirmed),
         "counts": dict(sorted(counts.items())),

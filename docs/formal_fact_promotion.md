@@ -139,7 +139,7 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
 - 隣り合う読み取りの変化を #169 の `classify_ammo_change` で分けます。弾数が減って予備弾数が変わらなければ射撃です。予備弾数が減って弾数が増えればリロード、それ以外に予備弾数が変われば持ち替えです。リロードと持ち替えは射撃にしません。発射速度の上限より速い減少は誤読とします。
 - 読み取りの間隔が3.5秒を超える場合や、本人視点が途切れた場合は比べません。
 - 予備弾数が片方の端で読めていないと、別の武器の弾倉への持ち替えが射撃に見えることがあります。両端（または1秒外側）の武器名が違う場合と、両端から3秒以内で最も近い予備弾数の読み取りが違う場合は、射撃にしません（`shot_weapon_changed`、`shot_reserve_changed`）。
-- Round最初の射撃と、3秒以上空いた後の射撃を `first_shot` とします。#169 の60fps交戦区間フレームがある場合は、初弾をフレーム単位で特定して `first_shot_frame_sec` に記録します。
+- Round最初の射撃と、3秒以上空いた後の射撃を `first_shot` とします。#169 の60fps交戦区間フレームがある場合は、初弾をフレーム単位で特定して `first_shot_frame_sec` に記録します。探す範囲は、射撃を読んだ秒の次の共通タイムライン標本までです。その標本が本人視点（カメラ `SELF`・生存 `ALIVE` を観測）でないときは、秒の途中で死亡や観戦に切り替わった可能性があるため、射撃を読んだ秒の標本までに限ります。
 - 武器名は、同じ秒のタイムラインの武器読み取りが1つに決まり、知識基盤の武器名に対応する場合だけ付けます。
 - `shot` Event（actor は本人、信頼度0.8）から、FactBuilder が `first_shot_detected` と `weapon` を作ります。移動の判定は #169 の目視確認を通っていないため、`shot_while_moving` と `first_shot_stationary` は作りません。
 - Event Source Contract の `shot` は、HUDの弾数の減少を認めるように `hud_or_visual_analyzer` に変えました。
