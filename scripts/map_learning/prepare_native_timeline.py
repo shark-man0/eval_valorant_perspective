@@ -11,8 +11,8 @@ from pathlib import Path
 import cv2
 import numpy as np
 from acquire_native import development_source
-from job_control import check_pause
 
+from valorant_ai_coach.application.map_job_control import check_pause
 from valorant_ai_coach.rules.development_timeline import review_timeline
 from valorant_ai_coach.temporal.application import build_application_timeline, write_timeline_csv
 from valorant_ai_coach.temporal.camera_panel import (

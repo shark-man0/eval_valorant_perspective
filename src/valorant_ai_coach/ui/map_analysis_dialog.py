@@ -269,6 +269,8 @@ class MapAnalysisDialog(QDialog):
         self.progress.setRange(0, 0)
         self.status.setText("解析を起動中")
         self._running(True)
+        if run := job.get("run_fingerprint"):
+            options.extend(("--expected-run", run))
         self.process.start(
             job["python"], ["-u", str(program), *selection, *options,
                             "--pause-file", str(pause_file)],
@@ -289,6 +291,9 @@ class MapAnalysisDialog(QDialog):
             line = line.strip()
             if line.startswith("Map registered recording: "):
                 self.last_job["recording_id"] = line.removeprefix("Map registered recording: ")
+                self._save()
+            elif match := re.fullmatch(r"Map workflow run: ([0-9a-f]{64})", line):
+                self.last_job["run_fingerprint"] = match[1]
                 self._save()
             elif self.pause_button.isEnabled():
                 stage = _PHASES.get(line.removeprefix("Map workflow phase: "))

@@ -1,6 +1,7 @@
 """Public fixture worker for a packaged GUI test without private recognition assets."""
 
 import argparse
+import hashlib
 import time
 from fractions import Fraction
 from pathlib import Path
@@ -20,6 +21,7 @@ def main():
     source.add_argument("--video", type=Path)
     source.add_argument("--recording-id")
     parser.add_argument("--confirm-distinct", action="store_true")
+    parser.add_argument("--expected-run")
     for key in ("catalog", "setup", "workspace", "library", "pause-file"):
         parser.add_argument(f"--{key}", type=Path, required=True)
     args = parser.parse_args()
@@ -31,6 +33,10 @@ def main():
             args.video, split="DEVELOPMENT", confirm_distinct=True,
         ).recording_id
     print(f"Map registered recording: {recording_id}", flush=True)
+    key = hashlib.sha256(args.setup.stem.encode("utf-8")).hexdigest()
+    if args.expected_run is not None and args.expected_run != key:
+        raise ValueError("Wrong fixture run fingerprint")
+    print(f"Map workflow run: {key}", flush=True)
     print("Map workflow phase: acquisition", flush=True)
 
     if args.setup.stem == "baseline" and args.video is not None:

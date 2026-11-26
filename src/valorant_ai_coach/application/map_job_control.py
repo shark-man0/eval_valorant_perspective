@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+from collections.abc import Mapping
 from pathlib import Path
 
 PAUSE_EXIT = 75
@@ -13,20 +14,20 @@ class MapPaused(InterruptedError):
     """The caller asked to keep completed files and stop this job."""
 
 
-def check_pause():
+def check_pause() -> None:
     signal = os.environ.get(PAUSE_ENV)
     if signal and Path(signal).is_file():
         raise MapPaused("Map analysis paused")
 
 
-def phase(name):
+def phase(name: str) -> None:
     check_pause()
     print(PHASE_PREFIX + name, flush=True)
 
 
-def run_interruptible(command, **kwargs):
+def run_interruptible(command: list[str], *, env: Mapping[str, str]) -> None:
     check_pause()
-    with subprocess.Popen(command, **kwargs) as child:
+    with subprocess.Popen(command, env=env) as child:
         try:
             while True:
                 try:

@@ -12,10 +12,10 @@ from pathlib import Path
 
 from acquire_native import acquire
 from checkpoints import pin
-from job_control import PAUSE_ENV, PAUSE_EXIT, MapPaused, phase
 from run_batch import _FLAGS, _PATH_OPTIONS, _REQUIRED, _SHARED, record_map_exposure
 from run_recording import _run
 
+from valorant_ai_coach.application.map_job_control import PAUSE_ENV, PAUSE_EXIT, MapPaused, phase
 from valorant_ai_coach.application.map_library import publish_map_package
 from valorant_ai_coach.recordings.admission import resolve_catalog
 from valorant_ai_coach.recordings.catalog import LeakageError, _lock_exclusive, _unlock
@@ -163,7 +163,7 @@ def _acquisition(folder, policy, source, decode, minimum_free):
 
 
 def execute(catalog, workspace, library, setup, recording_id, *, release_cache=False,
-            minimum_free=_MINIMUM_FREE):
+            minimum_free=_MINIMUM_FREE, expected_run=None):
     record = catalog.state.recordings[recording_id]
     if record.split != "DEVELOPMENT":
         raise ValueError("Map workflow accepts only DEVELOPMENT recordings")
@@ -171,6 +171,9 @@ def execute(catalog, workspace, library, setup, recording_id, *, release_cache=F
     source = record.source_sha256
     options, flags = _options(setup)
     key = _run_fingerprint(options, flags)
+    if expected_run is not None and expected_run != key:
+        raise ValueError("Map analysis inputs changed; start a new version instead of resuming")
+    print(f"Map workflow run: {key}", flush=True)
     home = _private(workspace) / source
     home.mkdir(mode=0o700, parents=True, exist_ok=True)
     with _source_lock(home / "workflow.lock"):
@@ -244,6 +247,7 @@ def main():
     parser.add_argument("--release-cache", action="store_true")
     parser.add_argument("--minimum-free-gib", type=int, default=12)
     parser.add_argument("--pause-file", type=Path)
+    parser.add_argument("--expected-run")
     args = parser.parse_args()
     if args.import_index:
         print("Map packages available:", import_packages(args.import_index.resolve(), args.library))
@@ -265,7 +269,8 @@ def main():
         recording_id = registration.recording_id
     print(f"Map registered recording: {recording_id}", flush=True)
     execute(catalog, args.workspace, args.library, args.setup.resolve(), recording_id,
-            release_cache=args.release_cache, minimum_free=args.minimum_free_gib * 2**30)
+            release_cache=args.release_cache, minimum_free=args.minimum_free_gib * 2**30,
+            expected_run=args.expected_run)
     print("Development Map package available")
 
 

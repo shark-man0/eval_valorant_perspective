@@ -17,9 +17,14 @@ import cv2
 from acquire_native import acquire
 from checkpoints import pin, run_stage, seal
 from compose_paths import compose_paths
-from job_control import PAUSE_EXIT, MapPaused, phase, run_interruptible
 from prepare_native_timeline import prepare
 
+from valorant_ai_coach.application.map_job_control import (
+    PAUSE_EXIT,
+    MapPaused,
+    phase,
+    run_interruptible,
+)
 from valorant_ai_coach.application.timeline_evaluation import run as evaluate
 from valorant_ai_coach.temporal.map_display import prepare_map_display
 from valorant_ai_coach.temporal.map_recorder_path import measured_native_edges

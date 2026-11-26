@@ -11,8 +11,7 @@ import time
 from fractions import Fraction
 from pathlib import Path
 
-from job_control import PAUSE_ENV, check_pause
-
+from valorant_ai_coach.application.map_job_control import PAUSE_ENV, check_pause
 from valorant_ai_coach.recordings.catalog import probe_metadata
 from valorant_ai_coach.temporal.replay import SourcePolicy, file_sha, read_json, write_private
 
