@@ -320,6 +320,65 @@ without replacing its registered polygons. The timeline and evaluation reports c
 selected observations with a unique Named Zone separately from support-only
 observations and conflicting Zone candidates. All remain development evidence.
 
+### Recheck weak portraits between measured points
+
+`bracket_portraits.py` is an opt-in comparison on an existing recovered path.
+It only examines exact native samples where the adaptive replay reported an
+unresolved portrait and the incumbent left the whole operable second empty.
+It requires directly registered incumbent selections on both sides, at most
+four seconds apart. Current SELF/ALIVE evidence, the camera supplier, source,
+round context and acquisition must agree throughout the bracket. Observed
+spectator, death, revival and round transitions, cuts and explicit HUD Agent
+conflicts break the bracket.
+
+Each candidate needs a current learned marker peak, warm-rim geometry at
+its refined center, the known Agent from the external portrait bank, and
+portrait similarity to images at both measured endpoints. Exact current atlas
+registration supplies new coordinates. Both new and existing points retain
+their native clocks. New links require consecutive independently measured
+centers with bounded motion. Neither bracket endpoint is used as an observed
+point or link in the new segment. `--neighbor-support` tests a second policy
+under which a less distinct current portrait can contribute when adjacent to
+a strong current portrait. It still needs its own marker, external Agent
+evidence and atlas fit. `--strong-isolated` compares a separate policy that
+accepts a single point when the rim and current Agent evidence are stronger,
+both anchor portraits agree, and the native atlas coordinate is near the
+two-point path within a two-second bracket. It never contributes a link.
+
+`--atlas-neighborhood` also addresses the learned portrait score rejection.
+When the regular recheck has no candidate, the motion between two measured
+points locates a small search region on the current, directly registered
+minimap. Two masked template matches must agree on a current center, and the
+current warm rim and public Agent scores must pass the stronger thresholds.
+The replay checks that the previously pinned portrait model still reports
+`learned_portrait_score` on that frame. The prediction only locates pixels to
+search. Coordinates and edges come from the current pixel measurements.
+
+Start with `bracket_portraits.py plan --help` and supply the same timeline,
+native frame manifest, reference replay, adaptive replay, and recovered
+incumbent. The plan lists the exact native samples needed. The replay uses
+the frames already in the manifest. With `--pixel-overrides`, a missing frame
+can be supplied as `<sample_sha256>.png`; its decoded pixels must match the
+native sample exactly. Use `replay` with the same inputs plus the original
+pinned model receipts, reference assets, layout and Zone index. Keep all
+plans, images and reports outside Git. The report includes sample-level
+recognition evidence and records unaccepted strong controls separately.
+
+By default, appearance is compared with cosine similarity over the same
+circular interior crop. `portrait_similarity.py --help` fits an experimental
+regional metric from an observation-bound v2 crop receipt. Adjacent weak
+positives provide same-marker pairs, while background crops and distinct Agent
+labels provide contrast. Each physical TRAIN match contributes equally to the
+regional weights. Fit on a frozen set of TRAIN recordings and explicitly
+exclude the evaluation recording IDs. Compare cosine and `--metric` on
+identical pixel inputs and keep the same candidate policy. The replay rejects
+a metric that lists its physical match in its training set.
+
+Use the original standard report alongside the alternative recovered report
+and apply the exact-input gate in `compare_runs.py`. Position and native-edge
+coverage are measured separately from correctness. This research command
+produces development Map candidates and emits zero formal Facts or Events.
+
 ## Desktop Map library
 
 Run the workflow from a checkout with the Map replay dependencies and a private
