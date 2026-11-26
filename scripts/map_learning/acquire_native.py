@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
 import subprocess
 import time
 from fractions import Fraction
@@ -67,6 +68,7 @@ def _decoded_frames(folder: Path, base: Fraction, expected: list[int], extension
 def acquire(
     policy_path: Path, source_sha: str, output: Path, *,
     hwaccel: str | None = None, lossless_webp: bool = False, png_compression: int = 1,
+    minimum_free_bytes: int = 0,
 ):
     if type(png_compression) is not int or not 0 <= png_compression <= 9:
         raise ValueError("PNG compression must be an integer from 0 to 9")
@@ -94,13 +96,36 @@ def acquire(
                 if lossless_webp else ["-pix_fmt", "rgb24", "-compression_level",
                                        str(png_compression)])
     with log_path.open("xb") as log:
-        subprocess.run([
+        command = [
             "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "info", "-threads", "3",
             *acceleration, "-copyts", "-i", str(video), "-an", "-sn", "-dn", "-map", "0:v:0",
             "-filter_threads", "1", "-vf", filt, "-fps_mode", "passthrough",
             "-frames:v", str(len(expected)), *encoding, "-threads", "3",
             str(folder / f"frame_%06d.{extension}"),
-        ], check=True, stdout=subprocess.DEVNULL, stderr=log, timeout=7200)
+        ]
+        if not minimum_free_bytes:
+            subprocess.run(
+                command, check=True, stdout=subprocess.DEVNULL, stderr=log, timeout=7200,
+            )
+        else:
+            if shutil.disk_usage(folder).free <= minimum_free_bytes:
+                raise ValueError("Map acquisition disk reserve reached")
+            with subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=log) as decoder:
+                try:
+                    while True:
+                        try:
+                            code = decoder.wait(timeout=3)
+                            break
+                        except subprocess.TimeoutExpired:
+                            if shutil.disk_usage(folder).free <= minimum_free_bytes:
+                                raise ValueError("Map acquisition disk reserve reached") from None
+                            if time.monotonic() - started >= 7200:
+                                raise subprocess.TimeoutExpired(command, 7200) from None
+                finally:
+                    if decoder.poll() is None:
+                        decoder.kill()
+                if code:
+                    raise subprocess.CalledProcessError(code, command)
     frames = _decoded_frames(folder, base, expected, extension)
     after = video.stat()
     if (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):

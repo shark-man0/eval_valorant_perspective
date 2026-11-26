@@ -421,3 +421,44 @@ centers using the identical incumbent CNN receipt. It keeps the original
 CNN confidence criterion and requires a separately fitted enclosing
 outline to agree with the candidate center. Use these as paired replay
 experiments and inspect their role and coordinate error before adopting.
+
+## Desktop Map library
+
+Run the workflow from a checkout with the Map replay dependencies and a private
+configuration containing the same `run_options` and `run_flags` as a batch plan.
+Put the checkout root and `src` on `PYTHONPATH` (use `;` as the path separator
+on Windows).
+
+```sh
+python scripts/map_learning/workflow.py --video private/match.mp4 --confirm-distinct \
+  --catalog private/catalog --setup private/map_options.json \
+  --workspace private/map_runs --library private/map_library
+```
+
+Use `--recording-id` instead of `--video` for a registered recording. The command
+admits a DEVELOPMENT recording before opening media. It publishes the selected
+run together with its timeline, standard and recovered Map reports, display
+receipt, and development assessment. In the desktop app, open
+**開発用: Map解析一覧** and choose `private/map_library`, or set
+`VALORANT_MAP_LIBRARY` to that directory.
+
+Repeat the same command after interruption. Sealed Map passes are checked and
+reused. Completed runs can be reopened even after `--release-cache` releases
+their workflow-owned frames. The decoder stops at the configured disk reserve
+(`--minimum-free-gib`, default 12 GiB). Keep the acquired frames to reuse them
+when trying another model. A setup or code change creates a separate run, and
+model-only changes can reuse verified native frames and the common timeline.
+Use the usual report comparison before adopting the model's outputs for a
+development baseline. The desktop library keeps earlier package receipts.
+
+The previous rollout viewer catalog can be imported with
+`workflow.py --import-index <index.json> --library <directory>`. This verifies
+and republishes saved outputs without decoding the videos.
+
+`extend_named_zones.py` transfers the existing Summit v3 major-place definitions
+to the replay atlas after checking both asset hashes and three geometry fits.
+The added polygons cover conservative interiors of spawns, links, approaches
+and mid. `refresh_named_zones.py` attaches the verified interiors to saved
+observations and rebuilds development assessments. It preserves incumbent Zones,
+positions and observed path connections. Both tools write separate private
+outputs. The transfer is advisory and does not establish location accuracy.

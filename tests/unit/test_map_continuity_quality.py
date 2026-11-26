@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from scripts.map_learning.export_sites import (
+    additional_plant_interiors,
     missing_plant_cores,
     nearby_plant_footprints,
     plant_footprints,
@@ -110,3 +111,24 @@ def test_seeded_plant_cores_stay_inside_paint_and_never_fill_holes():
     }
     with pytest.raises(ValueError, match="overlaps"):
         missing_plant_cores(image, {"another Zone": cores["A plant core"]}, {"A": (.15, .2)})
+
+
+def test_additional_plant_interior_preserves_registered_zones_and_obstacles():
+    hsv = np.zeros((240, 400, 3), np.uint8)
+    paint = (30, 100, 210)
+    hsv[20:190, 20:160] = paint
+    hsv[70:100, 100:130] = 0
+    hsv[40:180, 250:370] = paint
+    image = np.dstack([cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR), np.full(hsv.shape[:2], 255, np.uint8)])
+    registered = {
+        "test_a_plant": [[20, 20], [70, 20], [70, 189], [20, 189]],
+        "B plant core": [[250, 40], [369, 40], [369, 179], [250, 179]],
+    }
+    anchors = {"A": (.24, .46), "B": (.78, .47)}
+    additions = additional_plant_interiors(image, registered, anchors)
+    assert additions.keys() == {"test_a_plant"}
+    (left, top), _, (right, bottom), _ = additions["test_a_plant"]
+    assert left > 72 and np.all(hsv[top:bottom + 1, left:right + 1] == paint)
+    assert registered["test_a_plant"][1] == [70, 20]
+    swapped = {"A": anchors["B"], "B": anchors["A"]}
+    assert additional_plant_interiors(image, registered, swapped) == {}

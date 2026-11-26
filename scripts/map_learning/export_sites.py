@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import math
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -12,7 +13,7 @@ import numpy as np
 from valorant_ai_coach.knowledge import load_game_knowledge
 from valorant_ai_coach.knowledge.assets import ReferenceAssets
 from valorant_ai_coach.temporal.evidence import is_sha
-from valorant_ai_coach.temporal.replay import read_json, write_private
+from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 
 
 def _paint_components(image):
@@ -121,33 +122,89 @@ def seeded_plant_cores(image, seeds):
         if identity not in retained or identity in used:
             return {}
         used.add(identity)
-        mask = labels == identity
-        row_limits = {}
-        for direction in (-1, 1):
-            for row in range(py, -1 if direction < 0 else height, direction):
-                if not mask[row, px]:
-                    break
-                west = np.flatnonzero(~mask[row, :px])
-                east = np.flatnonzero(~mask[row, px+1:])
-                row_limits[row] = (
-                    int(west[-1]) + 1 if len(west) else 0,
-                    px + int(east[0]) if len(east) else width - 1,
-                )
-        best = (0, px, py, px, py)
-        top_left, top_right = 0, width - 1
-        for top in range(py, min(row_limits) - 1, -1):
-            lo, hi = row_limits[top]
-            top_left, top_right = max(top_left, lo), min(top_right, hi)
-            left, right = top_left, top_right
-            for bottom in range(py, max(row_limits) + 1):
-                lo, hi = row_limits[bottom]
-                left, right = max(left, lo), min(right, hi)
-                candidate = ((right - left) * (bottom - top), left, top, right, bottom)
-                best = max(best, candidate)
-        area, left, top, right, bottom = best
+        area, left, top, right, bottom = _seeded_rectangle(labels == identity, px, py)
         if area < .15 * retained[identity] or min(right-left, bottom-top) < 12:
             return {}
         result[f"{site} plant core"] = [[left, top], [right, top], [right, bottom], [left, bottom]]
+    return result
+
+
+def _seeded_rectangle(mask, px, py):
+    height, width = mask.shape
+    row_limits = {}
+    for direction in (-1, 1):
+        for row in range(py, -1 if direction < 0 else height, direction):
+            if not mask[row, px]:
+                break
+            west = np.flatnonzero(~mask[row, :px])
+            east = np.flatnonzero(~mask[row, px+1:])
+            row_limits[row] = (
+                int(west[-1]) + 1 if len(west) else 0,
+                px + int(east[0]) if len(east) else width - 1,
+            )
+    best = (0, px, py, px, py)
+    top_left, top_right = 0, width - 1
+    for top in range(py, min(row_limits) - 1, -1):
+        lo, hi = row_limits[top]
+        top_left, top_right = max(top_left, lo), min(top_right, hi)
+        left, right = top_left, top_right
+        for bottom in range(py, max(row_limits) + 1):
+            lo, hi = row_limits[bottom]
+            left, right = max(left, lo), min(right, hi)
+            candidate = ((right - left) * (bottom - top), left, top, right, bottom)
+            best = max(best, candidate)
+    return best
+
+
+def additional_plant_interiors(image, polygons, anchors):
+    """Find disjoint interiors on paint already identified by a registered site."""
+    if image.ndim != 3 or image.shape[2] != 4 or len(anchors) < 2:
+        return {}
+    height, width = image.shape[:2]
+    if not all(0 <= x < 1 and 0 <= y < 1 for x, y in anchors.values()):
+        raise ValueError("Static site anchors must lie on the reference atlas")
+    labels, retained = _paint_components(image)
+    occupied = np.zeros((height, width), np.uint8)
+    for polygon in polygons.values():
+        cv2.fillPoly(occupied, [np.asarray(polygon).round().astype(np.int32)], 1)
+    kernel = np.ones((5, 5), np.uint8)
+    reserved = cv2.dilate(occupied, kernel) > 0
+    result = {}
+    for name, polygon in sorted(polygons.items()):
+        match = re.search(r"(?:^|_)([abc])[ _]plant(?:$|[ _])", name, re.IGNORECASE)
+        if match is None or (site := match[1].upper()) not in anchors:
+            continue
+        prior = np.zeros_like(occupied)
+        cv2.fillPoly(prior, [np.asarray(polygon).round().astype(np.int32)], 1)
+        pixels = labels[prior != 0]
+        votes = Counter(int(label) for label in pixels if label in retained)
+        ranked = votes.most_common(2)
+        if not ranked:
+            continue
+        component, votes_for_site = ranked[0]
+        if (
+            votes_for_site < .8 * len(pixels)
+            or (len(ranked) > 1 and ranked[1][1] > .05 * len(pixels))
+        ):
+            continue
+        paint = np.uint8((labels == component) & (image[:, :, 3] >= 252))
+        available = (cv2.erode(paint, kernel) > 0) & ~reserved
+        distance = cv2.distanceTransform(available.astype(np.uint8), cv2.DIST_L2, 5)
+        _, depth, _, (px, py) = cv2.minMaxLoc(distance)
+        if depth < 12:
+            continue
+        distances = sorted((math.dist((px, py), (x * width, y * height)), label)
+                           for label, (x, y) in anchors.items())
+        if distances[0][1] != site or distances[1][0] - distances[0][0] < 48:
+            continue
+        area, left, top, right, bottom = _seeded_rectangle(available, px, py)
+        if area < 600 or min(right - left, bottom - top) < 20:
+            continue
+        core = available[top:bottom + 1, left:right + 1]
+        if not core.all():
+            raise ValueError("A plant interior crossed its verified paint mask")
+        result[name] = [[left, top], [right, top], [right, bottom], [left, bottom]]
+        reserved[max(0, top - 2):bottom + 3, max(0, left - 2):right + 3] = True
     return result
 
 
@@ -177,12 +234,18 @@ def main():
         parser.add_argument(f"--{option}", required=True, type=Path)
     parser.add_argument("--existing", type=Path)
     parser.add_argument("--plant-core-seeds", type=Path)
+    parser.add_argument("--add-plant-interiors", action="store_true")
     args = parser.parse_args()
+    if args.add_plant_interiors and args.existing is None:
+        parser.error("--add-plant-interiors requires an existing development Zone registry")
     assets = ReferenceAssets.load(args.asset_cache)
     index = read_json(args.map_catalog)
     root = args.map_catalog.parent.resolve()
     by_map = {row["id"]: row for row in index["maps"]}
-    records = read_json(args.existing)["maps"] if args.existing else []
+    existing = read_json(args.existing) if args.existing else {"maps": [], "formal_outputs": 0}
+    if args.add_plant_interiors and existing.get("formal_outputs") != 0:
+        raise ValueError("Plant interiors may extend only a development Zone registry")
+    records = existing["maps"]
     seeds = {}
     if args.plant_core_seeds is not None:
         source = read_json(args.plant_core_seeds)
@@ -196,7 +259,9 @@ def main():
     for game_map in load_game_knowledge().maps:
         prior = retained.get(game_map.uuid)
         seed = seeds.get(game_map.uuid)
-        if game_map.uuid not in by_map or (prior is not None and seed is None):
+        if game_map.uuid not in by_map or (
+            prior is not None and seed is None and not args.add_plant_interiors
+        ):
             continue
         key = f"map:{game_map.uuid}:displayicon"
         if not assets.has(key):
@@ -222,10 +287,21 @@ def main():
         if prior is not None:
             if prior["reference_sha256"] != asset.sha256:
                 raise ValueError("Cannot extend Zones registered against a different atlas")
-            cores = missing_plant_cores(image, prior["polygons"], seed["site_seeds_norm"])
-            if cores:
-                prior["polygons"].update(cores)
-                prior["plant_core_extension"] = "pinned_atlas_site_paint_interior"
+            if seed is not None:
+                cores = missing_plant_cores(image, prior["polygons"], seed["site_seeds_norm"])
+                if cores:
+                    prior["polygons"].update(cores)
+                    prior["plant_core_extension"] = "pinned_atlas_site_paint_interior"
+            if args.add_plant_interiors:
+                if prior.get("plant_interior_aliases"):
+                    raise ValueError("Complementary interiors require the original Zone registry")
+                interiors = additional_plant_interiors(image, prior["polygons"], anchors)
+                if interiors:
+                    aliases = {f"{name} (paint extension)": name for name in interiors}
+                    if aliases.keys() & prior["polygons"].keys():
+                        raise ValueError("Complementary interior labels must be new")
+                    prior["polygons"].update({k: interiors[v] for k, v in aliases.items()})
+                    prior["plant_interior_aliases"] = aliases
             continue
         polygons = plant_footprints(image, anchors)
         method = "pinned_atlas_site_shading"
@@ -241,7 +317,12 @@ def main():
         if polygons:
             records.append({"map_id": game_map.uuid, "reference_sha256": asset.sha256,
                             "polygons": polygons, "evidence": method})
-    write_private(args.output, {"maps": records, "formal_outputs": 0})
+    write_private(args.output, {
+        "maps": records,
+        "formal_outputs": 0,
+        **({"interior_base_registry_sha256": file_sha(args.existing)}
+           if args.add_plant_interiors else {}),
+    })
 
 
 if __name__ == "__main__":
