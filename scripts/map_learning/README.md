@@ -413,6 +413,16 @@ Use the original standard run, the prior recovered report and unchanged
 native inputs with `compare_runs.py`. Coordinate and identity reviews use
 `evaluate_review.py` on that same report. Formal outputs are zero.
 
+`compare_portrait_portfolio.py --plan ... --output ...` evaluates the full
+frozen cohort and reports operable-second coverage overall, by learning split,
+and for a fixed comparison subset. Use a private plan with schema
+`development_map_portrait_comparison_plan_v1`, `formal_outputs` set to `0`,
+the frozen `cohort` receipt, and a `recordings` list. Each entry contains the
+cohort `index` and `baseline` and `candidate` run receipts, all in the same
+format accepted by `compare_runs.py`. Bind each file with `path` and `sha256`.
+Optional `fixed_indices` select the fixed subset. The comparison fails if a
+recording is missing, input pixels differ, or an existing selection regresses.
+
 `--public-in-track` permits weaker public scores only inside short,
 consecutively measured spans bracketed by two strong current portraits
 with the same Agent. Current morphology and calibrated association scores
