@@ -328,6 +328,10 @@ manifest, two portrait replay reports, recovered baseline, and pinned public
 assets. The physical match and learning split come from the recording catalog.
 Use `--exclude-covered` with a previous exact replay to freeze the remaining
 portrait gap cohort. This excludes covered seconds from the requested search.
+By default the replay reads the target frames and two neighboring native
+samples on either side. Use `--whole-episode` to use all available native
+pixels in the matching self-view episodes for association and attribution.
+The set of target seconds stays fixed for either input scope.
 
 The detector saves its complete candidate pool with native centers and annular
 support before any Agent scores are computed. The tracker associates warm, cyan,

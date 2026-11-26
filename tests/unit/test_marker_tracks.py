@@ -4,7 +4,11 @@ import cv2
 import numpy as np
 
 from scripts.map_learning.marker_tracks import Marker, Track, associate, observe
-from scripts.map_learning.replay_marker_tracks import classify_track, freeze_targets
+from scripts.map_learning.replay_marker_tracks import (
+    classify_track,
+    episode_ordinals,
+    freeze_targets,
+)
 
 
 def marker(i, x, palette="WARM"):
@@ -87,3 +91,9 @@ def test_frozen_cohort_excludes_previously_recovered_seconds():
     }
     _, cohort = freeze_targets(timeline, reject, reject, incumbent, prior)
     assert cohort == {0: ("0",)}
+
+
+def test_whole_episode_can_use_witnesses_outside_the_target_neighborhood():
+    scope = tuple(str(i) for i in range(10))
+    assert list(episode_ordinals(scope, {"5"}, False)) == [3, 4, 5, 6, 7]
+    assert list(episode_ordinals(scope, {"5"}, True)) == list(range(len(scope)))

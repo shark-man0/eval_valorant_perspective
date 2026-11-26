@@ -207,15 +207,21 @@ def direct_anchor(incumbent, fit, pool, scale):
     return None
 
 
-def observations_for_episode(scope, targets, timeline, paths, projector, args, counts, pools):
-    frames = timeline["native_frames"]
+def episode_ordinals(scope, targets, whole_episode):
+    if whole_episode:
+        return range(len(scope))
     required = set()
     for ordinal, key in enumerate(scope):
         if key in targets:
             required.update(range(max(0, ordinal - 2), min(len(scope), ordinal + 3)))
+    return sorted(required)
+
+
+def observations_for_episode(scope, targets, timeline, paths, projector, args, counts, pools):
+    frames = timeline["native_frames"]
     layers, warm_counts = [], {}
     scale = None
-    for ordinal in sorted(required):
+    for ordinal in episode_ordinals(scope, targets, args.whole_episode):
         key = scope[ordinal]
         sample = frames[key]["sample"]
         image = _read(sample, paths[key], args.pixel_overrides)
@@ -242,6 +248,8 @@ def observations_for_episode(scope, targets, timeline, paths, projector, args, c
         if key in targets:
             counts["pixels_read"] += 1
             counts["proposals"] += len(pool)
+        else:
+            counts["context_frames_read"] += 1
         warm_counts[key] = sum(
             m.palette == "WARM" and m.sectors >= 14 for m in representatives(pool, scale)
         )
@@ -520,6 +528,7 @@ def replay(args):
     result["multi_marker_replay"] = {
         "method": METHOD,
         "split": args.split,
+        "context": "all_observed_episode_frames" if args.whole_episode else "target_with_neighbors",
         "implementation_sha256s": {
             name: file_sha(Path(__file__).with_name(name))
             for name in ("marker_tracks.py", "replay_marker_tracks.py")
@@ -574,6 +583,11 @@ def main():
         parser.add_argument(f"--{name}", type=Path)
     parser.add_argument("--recording-id", required=True)
     parser.add_argument("--split", required=True, choices=("TRAIN", "DEV_COMPARISON", "VALIDATION"))
+    parser.add_argument(
+        "--whole-episode",
+        action="store_true",
+        help="Use all available native pixels in each matching self-view episode",
+    )
     args = parser.parse_args()
     for destination in (args.output, args.proposals):
         if destination.exists() or any(
