@@ -153,8 +153,8 @@ python scripts/measure_formal_promotion.py --timeline NAME=PATH --replay NAME=PA
   - 直前の2回の読み取りがはっきり使用可能（0.6以上、Xはさらに `ultimate_ready_charge` 以上）。
   - その後 `utility_spent_hold_sec`（8秒）のすべての読み取り（4回以上）がはっきり使用済み（0.1以下）。
   - 使用可能の最初の読み取りから保持の終わりまで、すべての秒を `hold_trace` に記録します。各秒は秒、状態（available・spent・missing）、充填値、根拠フレームを持ちます。
-  - 読み取りのない秒は `missing` として記録し、`missing_seconds` に並べます。値は補いません。2秒続けて欠けたら証明できないとして見送ります（`utility_hold_missing_readings`）。
-  - 途中で本人視点でなくなった秒（ドローン、観戦など）があれば見送ります（`utility_hold_view_interrupted`）。本人以外のHUD（`utility_hold_hud_not_recorder`）、Round終了をまたぐ保持（`utility_hold_past_round_end`）、使用済みの読み取りが4回未満（`utility_hold_too_few_readings`）も同じです。
+  - 読み取りのない秒と、共通タイムラインで視点が観測されていない秒は `missing` として記録し、`missing_seconds` に並べます。視点が観測されていない秒は `view: unobserved` を付け、読み取りがあっても使いません。値は補いません。2秒続けて欠けたら証明できないとして見送ります（`utility_hold_missing_readings`）。
+  - 途中で本人視点を離れたと観測された秒（別のカメラ、生存していない）があれば見送ります（`utility_hold_view_interrupted`）。本人以外のHUD（`utility_hold_hud_not_recorder`）、Round終了をまたぐ保持（`utility_hold_past_round_end`）、使用済みの読み取りが4回未満（`utility_hold_too_few_readings`）も同じです。
   - Event の根拠参照は、`hold_trace` のすべての根拠フレームです。
   - 8秒以内に戻るアイコン（強調表示、HUDの減光、誤読）は使用にしません（`utility_use_not_held`）。2回使えるスキルの2回目のように中間の値になるものは、推測せず見送ります。
   - 購入フェーズはRound開始より前なので、購入や売却は使用に数えません。
