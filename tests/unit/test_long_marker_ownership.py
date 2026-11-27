@@ -1,3 +1,4 @@
+import math
 from fractions import Fraction
 
 import numpy as np
@@ -75,3 +76,17 @@ def test_context_filter_respects_unrequested_sample_between_ranges():
     ranges = _ranges({2, 3, 7}, [2, 3, 5, 7, 8])
     assert ranges == [(2, 3), (7, 7)]
     assert _selection_expression(ranges) == "if(lt(pts,7),between(pts,2,3),between(pts,7,7))"
+
+
+def test_current_outline_rejects_a_flat_patch_after_track_drift():
+    import cv2
+
+    from scripts.map_learning.marker_quality import enclosing_outline
+
+    image = np.full((160, 1920, 3), 80, dtype=np.uint8)
+    assert enclosing_outline(image, (70, 70)) is None
+    cv2.circle(image, (70, 70), 8, (160, 220, 240), 2)
+    cv2.rectangle(image, (67, 65), (71, 74), (20, 30, 100), -1)
+    outline = enclosing_outline(image, (70, 70))
+    assert outline is not None
+    assert math.dist(outline["center_frame_px"], (70, 70)) <= 3

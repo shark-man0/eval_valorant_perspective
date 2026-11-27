@@ -40,10 +40,12 @@ from valorant_ai_coach.temporal.visual_state import selected_agent
 if __package__:
     from .acquire_marker_context import SCHEMA as CONTEXT_SCHEMA
     from .long_marker_ownership import extension, read_match_profile
+    from .marker_quality import enclosing_outline
     from .marker_tracks import Track, associate, observe, representatives
 else:
     from acquire_marker_context import SCHEMA as CONTEXT_SCHEMA
     from long_marker_ownership import extension, read_match_profile
+    from marker_quality import enclosing_outline
     from marker_tracks import Track, associate, observe, representatives
 
 METHOD = "development_map_multi_marker_track_v1"
@@ -652,6 +654,11 @@ def replay(args):
                 image = _read(sample, paths[key], args.pixel_overrides)
                 if image is None:
                     raise ValueError("Observed native pixels disappeared before projection")
+                outline = enclosing_outline(image, marker.center)
+                if outline is None:
+                    reasons[key] = "current_enclosing_outline_unconfirmed"
+                    counts["current_outline_rejected"] += 1
+                    continue
                 if args.contrast_registration:
                     history = alignment_history(
                         marker.ordinal,
@@ -710,6 +717,7 @@ def replay(args):
                     "track": track_id,
                     "proposal": marker_ref(marker),
                     "observed_point_sha256": digest(point),
+                    "current_enclosing_outline": outline,
                     **({"extended_owner": extra[key]} if not near and key in extra else {}),
                 }
             if points:

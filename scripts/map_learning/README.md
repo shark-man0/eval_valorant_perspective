@@ -415,3 +415,11 @@ and mid. `refresh_named_zones.py` attaches the verified interiors to saved
 observations and rebuilds development assessments. It preserves incumbent Zones,
 positions and observed path connections. Both tools write separate private
 outputs. The transfer is advisory and does not establish location accuracy.
+
+
+Current recorder positions also require an independently fitted warm outline
+whose center agrees with the measured proposal. The replay records this
+measurement per point and abstains if the current outline fails. This checks
+the currently visible marker after temporal attribution. Directional sector
+measurements in `marker_quality.py` are experimental observations for comparing
+view fans with competing markers in the same frame.
