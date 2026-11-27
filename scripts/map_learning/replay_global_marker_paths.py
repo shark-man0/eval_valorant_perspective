@@ -116,6 +116,7 @@ def replay(args):
 
     frames = source["frames"]
     added, segments = {}, []
+    frame_requests = set()
     counts = Counter()
     for ep in map_view_episodes(timeline):
         scope = ep.current_samples
@@ -224,6 +225,7 @@ def replay(args):
                 actual = _read(native[key]["sample"], paths[key], args.pixels)
                 if actual is None:
                     counts["missing_full_frame"] += 1
+                    frame_requests.add(key)
                     continue
                 values = knowledge._portrait_scores(actual, marker.center)
                 if (
@@ -281,6 +283,7 @@ def replay(args):
         "formal_outputs": 0,
         "counts": dict(counts),
         "added_evidence": added,
+        "required_full_frames": sorted(frame_requests),
         "baseline_sha256": args.baseline["sha256"],
         "split": rec.learning["split"],
         "code_sha256s": {
