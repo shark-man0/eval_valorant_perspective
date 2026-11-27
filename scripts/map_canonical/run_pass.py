@@ -94,12 +94,42 @@ def frame_fit(projector: PublicMapPixels, roi: np.ndarray) -> np.ndarray | None:
     return np.asarray(candidates[0]["reference_to_roi_homography_candidate"], dtype=float)
 
 
+def identify_map(
+    catalog: list[dict[str, str]], own: dict[str, int], crops: dict[str, dict[str, Any]],
+    decode: Path, *, frames: int = 120,
+) -> tuple[str, Path, dict[str, Any]]:
+    """The recording's Map: the reference that clearly most spread-out own frames register to."""
+    keys = sorted((k for k in own if crops.get(k, {}).get("pixel_identical")), key=own.get)
+    chosen = keys[:: max(1, len(keys) // frames)][:frames]
+    votes: dict[str, int] = defaultdict(int)
+    projectors = [(entry, *single_atlas_projector(Path(entry["path"]), entry["map_id"]))
+                  for entry in catalog]
+    for key in chosen:
+        roi = cv2.imread(str(decode / "crops" / f"{key}.png"), cv2.IMREAD_COLOR)
+        for entry, projector, _ in projectors:
+            if frame_fit(projector, roi) is not None:
+                votes[entry["map_id"]] += 1
+    for _, _, holder in projectors:
+        holder.cleanup()
+    ranked = sorted(votes.items(), key=lambda item: -item[1])
+    if not ranked or ranked[0][1] < 10 or (len(ranked) > 1 and ranked[1][1] * 5 > ranked[0][1]):
+        raise SystemExit(f"The recording's Map could not be identified: {ranked}")
+    entry = next(e for e in catalog if e["map_id"] == ranked[0][0])
+    return entry["map_id"], Path(entry["path"]), {"frames_tried": len(chosen),
+                                                    "votes": dict(ranked)}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--index", type=Path, required=True)
     parser.add_argument("--decode", type=Path, required=True)
-    parser.add_argument("--map-report", type=Path, required=True)
-    parser.add_argument("--atlas", type=Path, required=True)
+    parser.add_argument("--map-report", type=Path,
+                        help="Map library report of the same source (omit if there is none)")
+    parser.add_argument("--atlas", type=Path,
+                        help="Reference image of the library report's coordinates")
+    parser.add_argument("--atlas-catalog", type=Path,
+                        help="Without a library report: JSON list of {map_id, path} references; "
+                             "the recording's Map is the one most canonical frames register to")
     parser.add_argument("--zones", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--no-library", action="store_true",
@@ -113,19 +143,29 @@ def main(argv: list[str] | None = None) -> int:
                 "seconds": index["seconds"], "native_frames": index["native_frames"]}
     source = timeline["source"]["source_sha256"]
     crops, receipt_sha = load_crops(args.decode)
-    report = json.loads(args.map_report.read_text(encoding="utf-8"))
-    points = library_points(report)
-    map_ids = {(p["map_id"], p["reference_sha256"]) for rows in points.values() for p in rows}
-    if len(map_ids) != 1:
-        raise SystemExit(f"One Map reference expected in the library report, found {map_ids}")
-    map_id, reference_sha = next(iter(map_ids))
-    if _sha(args.atlas) != reference_sha:
-        raise SystemExit("The atlas is not the library report's reference image")
-    projector, holder = single_atlas_projector(args.atlas, map_id)
-    atlas = cv2.imread(str(args.atlas), cv2.IMREAD_UNCHANGED)
+    own = own_live_samples(timeline)
+    if args.map_report is not None:
+        report = json.loads(args.map_report.read_text(encoding="utf-8"))
+        points = library_points(report)
+        map_ids = {(p["map_id"], p["reference_sha256"]) for rows in points.values() for p in rows}
+        if len(map_ids) != 1 or args.atlas is None:
+            raise SystemExit(f"One Map reference and its atlas required, found {map_ids}")
+        map_id, reference_sha = next(iter(map_ids))
+        atlas_path = args.atlas
+        if _sha(atlas_path) != reference_sha:
+            raise SystemExit("The atlas is not the library report's reference image")
+        identification = None
+    else:
+        if args.atlas_catalog is None or not args.no_library:
+            raise SystemExit("Without a library report give --atlas-catalog and --no-library")
+        points = {}
+        map_id, atlas_path, identification = identify_map(
+            json.loads(args.atlas_catalog.read_text(encoding="utf-8")), own, crops, args.decode)
+        reference_sha = _sha(atlas_path)
+    projector, holder = single_atlas_projector(atlas_path, map_id)
+    atlas = cv2.imread(str(atlas_path), cv2.IMREAD_UNCHANGED)
     reference_size = (int(atlas.shape[1]), int(atlas.shape[0]))
 
-    own = own_live_samples(timeline)
     inputs: dict[str, FrameInput] = {}
     fits: dict[str, np.ndarray] = {}
     missing_pixels = 0
@@ -159,7 +199,8 @@ def main(argv: list[str] | None = None) -> int:
         provenance={
             "recording_id": timeline["source"].get("source_id"),
             "source_sha256": source,
-            "map_library_report_sha256": _sha(args.map_report),
+            "map_library_report_sha256": _sha(args.map_report) if args.map_report else None,
+            "map_identification": identification,
             "map_library_points_used": not args.no_library,
             "atlas_sha256": reference_sha,
             "zone_catalog_sha256": _sha(args.zones) if args.zones else None,
