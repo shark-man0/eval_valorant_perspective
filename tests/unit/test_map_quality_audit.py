@@ -52,3 +52,38 @@ def test_identity_center_and_map_error_have_separate_provenance_and_denominators
     reviews[1]["reference_sha256"] = "1" * 64
     with pytest.raises(ValueError, match="geometry"):
         review_metrics(reviews, {1: (report, "f" * 64)})
+
+
+
+def test_withdrawn_observation_is_reviewable_without_becoming_a_current_prediction():
+    row = point(0, [10, 10])
+    key = row["sample"]["sample_sha256"]
+    current = {"segments": []}
+    old = {"segments": [[row]], "multi_marker_replay": {
+        "added_evidence": {key: {"proposal": [key, 2, 3, "WARM"]}},
+    }}
+    review = {"index": 1, "sample_ref": key, "report_sha256": "f" * 64,
+              "reviewer": "AI_VISUAL", "role": "NON_SELF"}
+    result = review_metrics([review], {1: (current, "f" * 64)}, {1: old})
+    assert set(result) == {"AI_VISUAL_WITHDRAWN"}
+    assert result["AI_VISUAL_WITHDRAWN"]["old_selection_wrong_fraction_on_known_reviews"] == 1
+    assert "wrong_selection_fraction_on_known_reviews" not in result["AI_VISUAL_WITHDRAWN"]
+
+
+def test_canonical_comparison_uses_the_same_instant_and_retains_pixel_uncertainty():
+    from scripts.map_learning.compare_canonical_quality import compare
+
+    first = point(0, [10, 10])
+    second = point(0, [12, 10])
+    # A different acquisition epoch may retain the same source clock and pixels.
+    second["sample"] = {**second["sample"], "sample_sha256": "9" * 64}
+    sample = second["sample"]
+    counts, cases = compare({"segments": [[first]]}, {"segments": [[second]]},
+                           {"sample": {"sample": sample}})
+    assert counts["coordinate_agreement_8px"] == 1
+    assert cases[0]["distance_reference_px"] == 2
+    assert cases[0]["identical_full_pixels"]
+    sample["native_pixel_sha256"] = "8" * 64
+    counts, _ = compare({"segments": [[first]]}, {"segments": [[second]]},
+                        {"sample": {"sample": sample}})
+    assert counts["pixel_identity_unverified"] == 1

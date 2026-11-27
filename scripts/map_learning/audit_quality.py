@@ -92,7 +92,7 @@ def measurement_agreement(report):
             "independent_owner_accuracy": None, "absolute_map_error": None}
 
 
-def review_metrics(reviews, reports):
+def review_metrics(reviews, reports, withdrawn=None):
     """Human and AI results retain distinct, explicit reviewed denominators."""
     totals = {}
     seen = set()
@@ -109,12 +109,19 @@ def review_metrics(reviews, reports):
         if review["report_sha256"] != checksum:
             raise ValueError("The review describes another recognition generation")
         point = points(report).get(key)
+        status = "selected"
+        prediction_report = report
+        if point is None and withdrawn is not None and index in withdrawn:
+            prediction_report = withdrawn[index]
+            point = points(prediction_report).get(key)
+            status = "abstained"
         if point is None or point.get("kind") != "selected":
-            raise ValueError("Review is outside the frozen selected candidate observations")
+            raise ValueError("Review is outside the frozen selected or withdrawn observations")
         role = review["role"]
         if role not in {"SELF", "NON_SELF", "UNKNOWN"}:
             raise ValueError("Unknown reviewer role label")
-        row = totals.setdefault(origin, {"reviewed": 0, "self": 0, "non_self": 0, "unknown": 0,
+        stratum = origin if status == "selected" else origin + "_WITHDRAWN"
+        row = totals.setdefault(stratum, {"reviewed": 0, "self": 0, "non_self": 0, "unknown": 0,
                                           "center_errors_px": [], "map_errors_reference_px": []})
         row["reviewed"] += 1
         row[role.lower()] += 1
@@ -126,7 +133,7 @@ def review_metrics(reviews, reports):
                     or any(type(v) not in (int, float) or not math.isfinite(v) for v in expected)):
                 raise ValueError("Reviewed coordinates must be finite")
             if field == "center_frame_px":
-                predicted = screen_center(report, key)
+                predicted = screen_center(prediction_report, key)
                 if predicted is not None:
                     row["center_errors_px"].append(math.dist(predicted, expected))
             else:
@@ -139,6 +146,11 @@ def review_metrics(reviews, reports):
         row["wrong_selection_fraction_on_known_reviews"] = (
             row["non_self"] / known if known else None
         )
+    for origin, row in totals.items():
+        if origin.endswith("_WITHDRAWN"):
+            row["old_selection_wrong_fraction_on_known_reviews"] = row.pop(
+                "wrong_selection_fraction_on_known_reviews"
+            )
     return totals
 
 
@@ -152,7 +164,7 @@ def audit(before_path, after_path, reviews=()):
         raise ValueError("The cohort contains duplicate recording indices")
     if before.keys() != after.keys():
         raise ValueError("Regression requires the identical recording cohort")
-    cases, rows, bound_reports = [], [], {}
+    cases, rows, bound_reports, withdrawn = [], [], {}, {}
     reasons = Counter()
     for index in sorted(before):
         a, b = before[index], after[index]
@@ -164,6 +176,7 @@ def audit(before_path, after_path, reviews=()):
         left, right = points(first), points(second)
         bound_reports[index] = second, b["candidate"]["sha256"]
         missing = sorted(left.keys() - right.keys())
+        withdrawn[index] = {**first, "segments": [[left[key]] for key in missing]}
         diagnostics = second.get("quality_replay", {}).get("diagnostics", {})
         for key in missing:
             diagnostic = diagnostics.get(key)
@@ -204,7 +217,7 @@ def audit(before_path, after_path, reviews=()):
         "schema": "development_map_independent_quality_audit_v1", "formal_outputs": 0,
         "inputs": {"before_sha256": file_sha(before_path), "after_sha256": file_sha(after_path)},
         "recordings": rows, "abstention_reasons": dict(reasons), "cases": cases,
-        "reviews": review_metrics(reviews, bound_reports),
+        "reviews": review_metrics(reviews, bound_reports, withdrawn),
         "independent_owner_accuracy": None, "independent_id_switch_rate": None,
         "absolute_map_error_without_review": None,
         "limits": "Automatic flags and controls are development evidence. Controls are unreviewed.",
