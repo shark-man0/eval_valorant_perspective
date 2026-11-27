@@ -423,3 +423,43 @@ measurement per point and abstains if the current outline fails. This checks
 the currently visible marker after temporal attribution. Directional sector
 measurements in `marker_quality.py` are experimental observations for comparing
 view fans with competing markers in the same frame.
+
+### Complementary self-ring replay
+
+`measure_self_ring.py` reuses the unchanged #194 pale-gold ring reader on the
+original native Map samples, without an Agent classifier. It measures missing
+seconds, their immediate context, and deterministic existing-point controls. Inputs
+are the frozen A handoff, a `{path, sha256}` baseline receipt, exact context pixels,
+layout and public asset references. `--previous` can reuse the exact same readings
+after restoring missing crops; restored full frames must first match the original
+native pixel hash. The measurement cache stays private.
+
+`replay_self_ring.py` consumes that cache and appends corroborated measured runs to
+a separate development report. It requires current SELF/ALIVE evidence, a unique
+ring, current same-pixel map registration, floor support, at least three consecutive
+native observations, bounded measured displacement, and no contradictory baseline
+point in the run. It splits at every missing reading or lifecycle boundary. Existing
+points and native edges are retained. No image, coordinate, camera state, or life
+state is interpolated. The output uses the existing Map application report contract
+and remains unqualified, with zero formal outputs. Use `compare_runs.py` for the
+exact-input before/after comparison before publishing a separate development package.
+
+`gap_cadence.nested_ticks` compares actual missing-interval observations at 5, 10,
+20 Hz and native cadence. It retains the original acquisition's 5 Hz PTS, including
+its phase offset, and adds only observed native frames. Additional samples have no
+inherited SELF/ALIVE labels: detector visibility alone does not establish recorder
+ownership or justify adding points to the common timeline.
+
+The centered-player minimap setting is documented in [Riot patch 0.50](https://playvalorant.com/en-gb/news/game-updates/valorant-patch-notes-0-50/).
+[Patch 9.02](https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-902/)
+forces it above zoom 1.0 specifically on console.
+Its use must be established per recording. A fixed minimap screen center is
+not an owner label when the setting is off, when the viewport is clamped, or in a
+spectator/remote view. Screen-center dispersion of trusted native observations is a
+useful rejection diagnostic; a stationary icon alone is insufficient proof.
+
+Independent camera evidence remains necessary. In particular, A's native-frame
+review found an Omen placement interface in a legacy SELF/ALIVE sample. Ring
+geometry cannot distinguish that camera mode. The complementary report does not
+qualify the legacy camera labels or repair the shared timeline, and automatic
+adoption needs a separate camera/identity quality evaluation.
