@@ -30,6 +30,7 @@ class Marker:
 @dataclass
 class Track:
     measurements: list[Marker]
+    link_margins: dict[tuple[str, str], float] = field(default_factory=dict)
 
 
 def _masks(image):
@@ -180,7 +181,7 @@ def _cost(track, current, scale):
     return 0.72 * location + 0.28 * (1 - resemblance) + 0.2 * (last.palette != current.palette)
 
 
-def associate(layers, scale):
+def associate(layers, scale, conflicts=None):
     """Associate multiple anonymous marker tracks. Ambiguity forks new tracks."""
     tracks = []
     active = []
@@ -208,11 +209,21 @@ def associate(layers, scale):
             rivals = preferences[j]
             if rivals[0][1] != i or (len(rivals) > 1 and rivals[1][0] - score < 0.10):
                 continue
-            active[i].measurements.append(candidates[j])
+            track = active[i]
+            before, after = track.measurements[-1], candidates[j]
+            gap_next = options[1][0] - score if len(options) > 1 else 1.0
+            gap_rival = rivals[1][0] - score if len(rivals) > 1 else 1.0
+            track.link_margins[before.sample_ref, after.sample_ref] = min(gap_next, gap_rival)
+            track.measurements.append(after)
             matches.add(j)
             matched_tracks.add(i)
         # An unmatched track can survive a missed measurement. A contested
         # measurement ends the old trajectory rather than letting it swap later.
+        if conflicts is not None:
+            for i, options in enumerate(choices):
+                if options and i not in matched_tracks:
+                    contested = candidates[options[0][1]]
+                    conflicts.add((contested.sample_ref, contested.center))
         active = [track for i, track in enumerate(active) if i in matched_tracks or not choices[i]]
         for j, marker in enumerate(candidates):
             if j not in matches:
