@@ -72,6 +72,26 @@ def trajectory_flags(report):
     return flags
 
 
+def measurement_agreement(report):
+    """Agreement between two measurements is kept outside semantic accuracy."""
+    centers, residuals = [], []
+    selected = points(report)
+    for key, evidence in report.get("multi_marker_replay", {}).get("added_evidence", {}).items():
+        point = selected.get(key)
+        if point is None:
+            raise ValueError("Tracker evidence references an absent observation")
+        center = screen_center(report, key)
+        outline = evidence.get("current_enclosing_outline")
+        if center is not None and outline is not None:
+            centers.append(math.dist(center, outline["center_frame_px"]))
+        residual = point.get("fit_residual_p95_reference_px")
+        if type(residual) in (int, float) and math.isfinite(residual):
+            residuals.append(residual)
+    return {"native_center_agreement_px": centers,
+            "reported_registration_residual_reference_px": residuals,
+            "independent_owner_accuracy": None, "absolute_map_error": None}
+
+
 def review_metrics(reviews, reports):
     """Human and AI results retain distinct, explicit reviewed denominators."""
     totals = {}
@@ -174,6 +194,8 @@ def audit(before_path, after_path, reviews=()):
             "changed_observations": len(changed), "trajectory_flags": len(flags),
             "lost_native_edges": len(measured_native_edges(first) - measured_native_edges(second)),
             "report_sha256": b["candidate"]["sha256"],
+            "map_ids": sorted({p["map_id"] for p in right.values()}),
+            "measurement_agreement": measurement_agreement(second),
         })
     return {
         "schema": "development_map_independent_quality_audit_v1", "formal_outputs": 0,
