@@ -109,8 +109,8 @@ def review_metrics(reviews, reports):
         if review["report_sha256"] != checksum:
             raise ValueError("The review describes another recognition generation")
         point = points(report).get(key)
-        if point is None:
-            raise ValueError("Review is outside the frozen candidate observations")
+        if point is None or point.get("kind") != "selected":
+            raise ValueError("Review is outside the frozen selected candidate observations")
         role = review["role"]
         if role not in {"SELF", "NON_SELF", "UNKNOWN"}:
             raise ValueError("Unknown reviewer role label")
@@ -179,8 +179,11 @@ def audit(before_path, after_path, reviews=()):
         flags = trajectory_flags(second)
         suspects = {key for flag in flags for key in flag["samples"]}
         # Freeze controls from the complete cohort by hash, independently of review labels.
-        controls = sorted(right.keys() - suspects,
-                          key=lambda k: digest(["map_quality_controls_v1", index, k]))[:3]
+        controls = sorted(
+            (key for key, point in right.items() if key not in suspects
+             and point.get("kind") == "selected"),
+            key=lambda k: digest(["map_quality_controls_v1", index, k]),
+        )[:3]
         for key in controls:
             cases.append({"index": index, "sample_ref": key, "kind": "control",
                           "reason": "no_automatic_edge_flag"})
