@@ -13,7 +13,7 @@ def import_portfolio(library: Path, portfolio: Path) -> tuple[int, int]:
     data = read_json(portfolio)
     if (data.get("schema") not in {
             "development_map_multi_marker_portfolio_v1",
-            "development_map_long_ownership_portfolio_v1",
+            "development_map_long_ownership_portfolio_v1", "development_map_quality_portfolio_v1",
         }
             or data.get("formal_outputs") != 0):
         raise ValueError("A development-only multi-marker portfolio is required")
