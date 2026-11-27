@@ -116,9 +116,9 @@ def position_candidates(
 
     positions: dict[int, dict[str, Any]] = {}
     for second, point in sorted(observed.items()):
-        number = round_of.get(second)
+        round_no = round_of.get(second)
         state = (states.get(second, {}).get("round_state") or {}).get("value")
-        if number is None or state in NOT_PLAYABLE:
+        if round_no is None or state in NOT_PLAYABLE:
             continue
         methods = point.get("methods_agreeing") or [point.get("selection_method")]
         if len(set(methods)) >= 2:
@@ -127,7 +127,7 @@ def position_candidates(
             support = ISOLATED
             for other in (second - 1, second + 1):
                 near = observed.get(other)
-                if (near is not None and round_of.get(other) == number
+                if (near is not None and round_of.get(other) == round_no
                         and _distance_m(point["map_reference_px"], near["map_reference_px"],
                                         geometry) <= rules.max_step_m):
                     support = TEMPORAL
@@ -137,7 +137,7 @@ def position_candidates(
         eligible = (support != ISOLATED and confidence is not None
                     and confidence >= rules.min_confidence)
         positions[second] = {
-            "sec": second, "round_no": number, "map_id": geometry.map_id,
+            "sec": second, "round_no": round_no, "map_id": geometry.map_id,
             "map_slug": geometry.slug,
             "map_reference_px": [round(v, 2) for v in point["map_reference_px"]],
             "zone_id": _zone(point, geometry, alias), "support": support,
