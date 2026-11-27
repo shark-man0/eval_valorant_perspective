@@ -759,7 +759,7 @@ def replay(args):
         "context": "all_observed_episode_frames" if args.whole_episode else "target_with_neighbors",
         "implementation_sha256s": {
             name: file_sha(Path(__file__).with_name(name))
-            for name in ("marker_tracks.py", "replay_marker_tracks.py")
+            for name in ("marker_tracks.py", "replay_marker_tracks.py", "marker_quality.py")
         },
         "input_sha256s": {
             name: file_sha(getattr(args, name))
