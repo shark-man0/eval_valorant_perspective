@@ -41,9 +41,17 @@ def _report(points: dict[int, dict]) -> dict:
     }
 
 
-def _timeline(seconds: range, ended: set[int] = frozenset()) -> dict:
+def _timeline(seconds: range, ended: set[int] = frozenset(),
+              views: dict[int, tuple[str, str]] | None = None) -> dict:
+    views = views or {}
+
+    def state(value: str) -> dict:
+        return {"value": value, "status": "OBSERVED"}
+
     return {"seconds": [
-        {"timestamp": s, "round_state": {"value": "ENDED" if s in ended else "ACTIVE"}}
+        {"timestamp": s, "round_state": {"value": "ENDED" if s in ended else "ACTIVE"},
+         "camera_state": state(views.get(s, ("SELF", "ALIVE"))[0]),
+         "life_state": state(views.get(s, ("SELF", "ALIVE"))[1])}
         for s in seconds
     ]}
 
@@ -132,6 +140,80 @@ def test_gap_longer_than_allowed_splits_holds() -> None:
     holds = [(e["start_sec"], e["end_sec"]) for e in result["events"]
              if e["type"] == "position_hold"]
     assert holds == [(10, 12), (16, 18)]
+
+
+@pytest.mark.parametrize("view", [("SPECTATING", "DEAD"), ("SELF", "DEAD"),
+                                  ("REPLAY", "ALIVE")])
+def test_death_spectating_or_replay_inside_the_gap_splits_runs(view: tuple[str, str]) -> None:
+    points = {s: _point(s, (0, 0), BOTH) for s in (10, 11, 12, 15, 16, 17)}
+    settings = PromotionSettings(min_hold_seconds=2, max_gap_seconds=3)
+    joined = position_candidates(_report(points), _timeline(range(0, 20)), [(1, 0, 19)],
+                                 GEO, calibration=CAL, settings=settings)
+    assert [(e["start_sec"], e["end_sec"]) for e in joined["events"]] == [(10, 17)]
+    split = position_candidates(_report(points), _timeline(range(0, 20), views={14: view}),
+                                [(1, 0, 19)], GEO, calibration=CAL, settings=settings)
+    assert [(e["start_sec"], e["end_sec"]) for e in split["events"]] == [(10, 12), (15, 17)]
+    assert split["counts"]["runs_split_by_view_change"] == 1
+
+
+def test_change_does_not_join_positions_across_a_revive() -> None:
+    points = {10: _point(10, (0, 0), BOTH), 12: _point(12, (100, 0), BOTH)}
+    result = position_candidates(
+        _report(points), _timeline(range(0, 20), views={11: ("SELF", "DEAD")}),
+        [(1, 0, 19)], GEO, calibration=CAL)
+    assert not [e for e in result["events"] if e["type"] == "position_change"]
+
+
+def test_arrival_in_a_plant_zone_from_an_unknown_zone_is_not_a_site_entry() -> None:
+    points = {10: _point(10, (0, 0), BOTH), 11: _point(11, (20, 0), BOTH, "A Site (plant)"),
+              20: _point(20, (0, 0), BOTH, "A Main"),
+              21: _point(21, (20, 0), BOTH, "A Site (plant)")}
+    result = position_candidates(_report(points), _timeline(range(0, 30)), [(1, 0, 29)],
+                                 GEO, calibration=CAL)
+    entries = [e for e in result["events"] if e["type"] == "site_entry"]
+    assert [(e["before_sec"], e["from_zone_id"]) for e in entries] == [(20, "test_map_a_main")]
+    assert result["diagnostics"]["site_arrival_unconfirmed"] == {"from_report_unknown": 1}
+
+
+def test_zone_needs_the_metric_margin_from_every_boundary() -> None:
+    square = [[0, 0], [100, 0], [100, 100], [0, 100]]
+    zones = {"ref": {"A Main": square, "A Site (plant)": [[100, 0], [200, 0], [200, 100],
+                                                          [100, 100]]}}
+    points = {s: _point(s, xy, BOTH) for s, xy in
+              ((10, (50, 50)), (11, (95, 50)), (12, (150, 50)), (13, (300, 50)))}
+    for point in points.values():
+        point["reference_sha256"] = "ref"
+    result = position_candidates(_report(points), _timeline(range(0, 20)), [(1, 0, 19)],
+                                 GEO, calibration=CAL, zones=zones,
+                                 settings=PromotionSettings(coordinate_error_m=1.25))
+    status = {p["sec"]: (p["zone_status"], p["zone_id"]) for p in result["positions"]}
+    assert status == {10: ("inside", "test_map_a_main"), 11: ("boundary", None),
+                      12: ("inside", "test_map_a_site_plant"),
+                      13: ("outside_registered", None)}
+    # 10 -> 11 -> 12 crosses the boundary; the reading before the boundary decides.
+    entries = [e for e in result["events"] if e["type"] == "site_entry"]
+    assert [(e["before_sec"], e["after_sec"], e["from_zone_id"]) for e in entries] == [
+        (10, 12, "test_map_a_main")]
+    # From outside every registered Zone, through the boundary: not an entry.
+    points = {s: _point(s, xy, BOTH) for s, xy in
+              ((10, (50, 150)), (11, (150, 105)), (12, (150, 50)))}
+    for point in points.values():
+        point["reference_sha256"] = "ref"
+    result = position_candidates(_report(points), _timeline(range(0, 20)), [(1, 0, 19)],
+                                 GEO, calibration=CAL, zones=zones)
+    assert not [e for e in result["events"] if e["type"] == "site_entry"]
+    assert result["diagnostics"]["site_arrival_unconfirmed"] == {
+        "from_outside_registered": 1}
+
+
+def test_change_within_the_coordinate_error_of_the_threshold_is_dropped() -> None:
+    points = {10: _point(10, (0, 0), BOTH), 11: _point(11, (55, 0), BOTH),
+              20: _point(20, (0, 0), BOTH), 21: _point(21, (70, 0), BOTH)}
+    result = position_candidates(_report(points), _timeline(range(0, 30)), [(1, 0, 29)],
+                                 GEO, calibration=CAL)
+    changes = [e for e in result["events"] if e["type"] == "position_change"]
+    assert [(e["start_sec"], e["displacement_m"]) for e in changes] == [(20, 7.0)]
+    assert result["diagnostics"]["position_change_within_coordinate_error"] == 1
 
 
 def test_unbound_report_is_refused() -> None:
