@@ -12,6 +12,7 @@ Requires ``ijson`` (and ``zstandard`` for ``.zst``).
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import tarfile
@@ -33,7 +34,8 @@ def open_stream(path: Path) -> IO[bytes]:
 
         return zstandard.ZstdDecompressor().stream_reader(path.open("rb"))
     if path.suffix == ".tgz":
-        archive = tarfile.open(path, "r|gz")  # noqa: SIM115 - the stream outlives this call
+        # Members are read in archive order; the gzip stream is never rewound.
+        archive = tarfile.TarFile(fileobj=gzip.GzipFile(fileobj=path.open("rb")))
         for member in archive:
             if member.name == MEMBER:
                 stream = archive.extractfile(member)
