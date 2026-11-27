@@ -49,13 +49,17 @@ class RingParameters:
     halo_outer: float = 16.0
     min_sectors: int = 11
     min_opposite_pairs: int = 4
-    max_interior_warm: float = 0.30
+    max_interior_warm: float = 0.20
     max_halo_warm: float = 0.15
     min_separation: float = 6.0
-    max_candidates: int = 24
+    max_candidates: int = 48
+    # A vote peak can sit a pixel or two off the ring centre; promising peaks are
+    # re-measured in this neighbourhood and the best reading is kept.
+    refine_radius: int = 1
+    refine_min_sectors: int = 8
     # The highlight is a pale, bright ring around a textured portrait. Saturated
     # ability icons, flat warm backgrounds and warm text fail one of these.
-    max_ring_saturation: float = 100.0
+    max_ring_saturation: float = 90.0
     # Site plates are pale olive (median saturation about 31-39) and fill their surroundings.
     min_ring_saturation: float = 42.0
     min_ring_value: float = 205.0
@@ -191,7 +195,20 @@ def find_rings(
         if best < 0.12:
             break
         scored[max(0, y - reach):y + reach + 1, max(0, x - reach):x + reach + 1] = -1
-        results.append(_measure(mask, hsv, int(x), int(y), scale, p))
+        best_reading = _measure(mask, hsv, int(x), int(y), scale, p)
+        if not best_reading.accepted and best_reading.sectors >= p.refine_min_sectors:
+            height, width = mask.shape
+            for dy in range(-p.refine_radius, p.refine_radius + 1):
+                for dx in range(-p.refine_radius, p.refine_radius + 1):
+                    nx, ny = int(x) + dx, int(y) + dy
+                    if (dx or dy) and 0 <= nx < width and 0 <= ny < height:
+                        reading = _measure(mask, hsv, nx, ny, scale, p)
+                        if (reading.accepted, reading.sectors, reading.opposite_pairs) > (
+                            best_reading.accepted, best_reading.sectors,
+                            best_reading.opposite_pairs,
+                        ):
+                            best_reading = reading
+        results.append(best_reading)
     results.sort(key=lambda c: (not c.accepted, -c.sectors, -c.opposite_pairs, c.interior_warm))
     return results
 

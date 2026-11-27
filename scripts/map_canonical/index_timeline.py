@@ -23,6 +23,7 @@ import ijson
 from ijson.common import ObjectBuilder
 
 MEMBER = "timeline/timeline_PRIVATE.json"
+MINIMAP_BOUNDS = [20, 48, 475, 475]
 FRAME_FIELDS = ("sample", "camera", "life", "round", "continuity", "round_token")
 
 
@@ -71,6 +72,9 @@ def build_index(path: Path) -> dict[str, Any]:
     builder: ObjectBuilder | None = None
     section = None
     frame_key = None
+    # Minimap ROI hashes the timeline recorded per sample (public Map pixel observations).
+    roi: dict[str, str] = {}
+    current: dict[str, Any] = {}
     for prefix, event, value in ijson.parse(reader, use_float=True):
         if prefix == "" and event == "map_key":
             section, builder = value, None
@@ -98,6 +102,20 @@ def build_index(path: Path) -> dict[str, Any]:
                         "life_state": _state(row.get("life_state")),
                         "round_state": _state(row.get("round_state")),
                     })
+        elif section == "observations":
+            parts = prefix.split(".")
+            if len(parts) == 2 and event == "start_map":
+                current = {}
+            elif len(parts) >= 3 and parts[2:] == ["sample", "sample_sha256"]:
+                current["sample"] = value
+            elif len(parts) >= 3 and parts[2:] == ["raw", "roi_pixel_bounds", "item"]:
+                current.setdefault("bounds", []).append(value)
+            elif len(parts) >= 3 and parts[2:] == ["raw", "roi_pixel_sha256"]:
+                current["roi"] = value
+            if len(parts) == 2 and event == "end_map" and current.get("bounds") == MINIMAP_BOUNDS:
+                key, digest = current.get("sample"), current.get("roi")
+                if key and digest and roi.setdefault(key, digest) != digest:
+                    raise SystemExit(f"Two minimap ROI hashes for {key}")
         elif section == "native_frames":
             if prefix == "native_frames" and event == "map_key":
                 frame_key, builder = value, ObjectBuilder()
@@ -112,6 +130,7 @@ def build_index(path: Path) -> dict[str, Any]:
                     }
     while reader.read(1 << 20):
         pass
+    index["minimap_roi_pixel_sha256"] = roi
     index["input_sha256"] = reader.hash.hexdigest()
     index["input_bytes"] = reader.size
     index["elapsed_seconds"] = round(time.monotonic() - started, 1)
