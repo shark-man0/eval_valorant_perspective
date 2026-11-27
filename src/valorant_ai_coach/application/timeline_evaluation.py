@@ -33,6 +33,7 @@ Safety contract (unchanged by this connection)
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -1174,6 +1175,22 @@ def render_markdown(report: Mapping[str, Any]) -> str:
             f"本人選択候補のZone競合 {summary['seconds_with_conflicting_selected_zones']}秒。",
             "秒数は観測の存在を表します。Zone滞在時間と評価スコアは算出対象外です。",
         ])
+        if candidates := map_review.get("candidates"):
+            counts = candidates["counts"]
+            lines.extend([
+                "", "### 開発用Map候補（評価には使っていません）", "",
+                f"本人位置 {counts['eligible_positions']}秒、Zone付き "
+                f"{counts['eligible_with_zone']}秒、位置の保持 {counts['position_hold']}件、"
+                f"位置の変化 {counts['position_change']}件、サイト進入 {counts['site_entry']}件。",
+                "", "| Round | 本人位置（秒） | Zone付き（秒） | 保持 | 変化 | サイト進入 |",
+                "|---:|---:|---:|---:|---:|---:|",
+            ])
+            for row in candidates["rounds"]:
+                events = row["events"]
+                lines.append(
+                    f"| {row['round_no']} | {row['eligible_position_seconds']} | "
+                    f"{sum(row['zone_seconds'].values())} | {events.get('position_hold', 0)} | "
+                    f"{events.get('position_change', 0)} | {events.get('site_entry', 0)} |")
     return "\n".join(lines) + "\n"
 
 
@@ -1255,6 +1272,7 @@ def run(
     coach: RoundCoach | None = None,
     second_features_path: Path | None = None,
     development_map_path: Path | None = None,
+    development_map_candidates_path: Path | None = None,
     engagement_motion_path: Path | None = None,
     ammo_path: Path | None = None,
 ) -> dict[str, Any]:
@@ -1269,6 +1287,22 @@ def run(
         from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
 
         development_map = load_map_timeline(development_map_path, timeline_path, bundle)
+    map_candidates = None
+    if development_map_candidates_path is not None:
+        if development_map_path is None:
+            raise TimelineEvaluationError(
+                "開発用Map候補には、候補の元になった --development-map-report が必要です")
+        from valorant_ai_coach.facts.map_position_promotion import (
+            load_candidates_for_evaluation,
+        )
+
+        assert timeline_path is not None  # required above for the Map report
+        try:
+            map_candidates = load_candidates_for_evaluation(
+                development_map_candidates_path, development_map_path,
+                hashlib.sha256(timeline_path.read_bytes()).hexdigest())
+        except ValueError as error:
+            raise TimelineEvaluationError(f"開発用Map候補を読めません: {error}") from error
     source = dict(bundle.get("source") or {})
     recording = bundle.get("recording") or {}
     source_video = {
@@ -1343,6 +1377,27 @@ def run(
                 for round_ in evaluation.rounds
             ],
         }
+        if map_candidates is not None:
+            from valorant_ai_coach.facts.map_position_promotion import (
+                summarize_round_candidates,
+            )
+
+            report["development_map"]["candidates"] = {
+                "qualification": "development_candidate",
+                "formal_outputs": 0,
+                "used_by_rules": False,
+                "schema": map_candidates["schema"],
+                "provenance": map_candidates.get("provenance"),
+                "calibration": map_candidates["calibration"],
+                "counts": map_candidates["counts"],
+                "continuous_path_inferred": False,
+                "instantaneous_speed_inferred": False,
+                "rounds": [
+                    {"round_no": round_.round_no, "boundary_confirmed": round_.confirmed,
+                     **summarize_round_candidates(map_candidates, round_.round_no)}
+                    for round_ in evaluation.rounds
+                ],
+            }
     if evaluation.promotion is not None:
         report["independent_signal_checks"] = verify_promotion(bundle, evaluation.promotion)
     report["fact_provider"] = None if provider is None else {
@@ -1394,6 +1449,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                           help="#169 extract_engagement_motion.py の出力（初弾のフレーム特定）")
     evaluate.add_argument("--development-map-report", type=Path,
                           help="同じタイムラインから出力した開発用Map観測レポート")
+    evaluate.add_argument("--development-map-candidates", type=Path,
+                          help="--development-map-report から作った開発用Map位置候補（v2）")
     evaluate.add_argument("--coach", choices=("mock", "openai"), default="mock")
     evaluate.add_argument("--model", default="gpt-4o-mini", help="--coach openai のモデルID")
     sub.add_parser("admission-table", help="#25 境界非依存ルールの分類表を出力")
@@ -1415,6 +1472,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         coach=openai_coach(args.model) if args.coach == "openai" else None,
         second_features_path=args.second_features,
         development_map_path=args.development_map_report,
+        development_map_candidates_path=args.development_map_candidates,
         engagement_motion_path=args.engagement_motion,
         ammo_path=args.ammo,
     )

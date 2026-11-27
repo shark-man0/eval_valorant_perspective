@@ -41,6 +41,11 @@ def plant_aliases(registry: dict[str, Any]) -> dict[str, str]:
     return aliases
 
 
+def zone_polygons(registry: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Zone polygons keyed by the exact reference image they are drawn on."""
+    return {entry["reference_sha256"]: entry["polygons"] for entry in registry["maps"]}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, required=True)
@@ -59,6 +64,7 @@ def main() -> None:
     evaluation = _load(args.evaluation)
     if evaluation.get("source", {}).get("source_id") != index["source"]["source_id"]:
         raise SystemExit("confirmed Rounds come from another recording")
+    registry = _load(args.zones)
     calibration_bytes = args.calibration.read_bytes()
     calibration = json.loads(calibration_bytes.decode("utf-8"))
     maps = {row[0]: row for row in _load(args.knowledge)["maps"]}
@@ -67,7 +73,8 @@ def main() -> None:
     geometry = MapGeometry.from_knowledge(map_id, row[1], row[4])
     result = position_candidates(
         report, {"seconds": index["seconds"]}, confirmed_rounds(evaluation), geometry,
-        calibration=calibration["confidence"], aliases=plant_aliases(_load(args.zones)))
+        calibration=calibration["confidence"], aliases=plant_aliases(registry),
+        zones=zone_polygons(registry))
     result["provenance"] = {
         "report_sha256": hashlib.sha256(args.report.read_bytes()).hexdigest(),
         "evaluation_sha256": hashlib.sha256(args.evaluation.read_bytes()).hexdigest(),
