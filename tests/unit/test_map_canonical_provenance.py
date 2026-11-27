@@ -26,7 +26,7 @@ def _catalog(tmp_path: Path) -> tuple[Path, dict[str, tuple[str, str]]]:
     found = {}
     for name, split in (("dev", "DEVELOPMENT"), ("held", "FINAL_HOLDOUT")):
         video = tmp_path / f"{name}.mp4"
-        video.write_bytes(name.encode() * 64)
+        video.write_bytes(name.encode("utf-8") * 64)
         result = catalog.register(video, physical_match_id=f"match_{name}", split=split)
         found[name] = (result.recording_id, hashlib.sha256(video.read_bytes()).hexdigest())
     return catalog.root, found
