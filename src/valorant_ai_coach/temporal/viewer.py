@@ -67,6 +67,7 @@ padding:8px}
 </section><section><section id="recorderMap" hidden><h2>録画者の位置・軌跡候補</h2>
 <div id="mapControls" hidden><label>Map出力 <select id="mapMode">
 <option value="recovered">欠測回復後</option><option value="standard">標準出力</option>
+<option id="trackedMode" value="tracked" hidden disabled>複数マーカー追跡</option>
 </select></label><button id="nextRecovery">次の回復地点</button></div>
 <button id="nextMapUnknown">次のUNKNOWN</button>
 <p id="mapTrackStatus" aria-live="polite"></p><canvas id="mapTrack" width="640" height="560"
@@ -82,7 +83,8 @@ aria-label="実マップと直近10秒の観測点、観測エッジ、Named Zon
 <details open><summary>根拠を選択</summary><select id="evidence"></select>
 <pre id="raw"></pre></details>
 <details><summary>下流レビューと評価エンジンへの受け渡し</summary>
-<pre id="evaluation"></pre></details>
+<pre id="evaluation"></pre><h3>選択したMap方式の評価・取得率・根拠</h3>
+<pre id="mapAssessment"></pre></details>
 <p><a id="json">JSON出力</a> / <a id="csv">CSV出力</a></p>
 </section></main><script>
 const token=location.pathname.split('/')[1], base='/'+token;
@@ -280,6 +282,9 @@ r=>r.provisional_highlight_ambiguous).length+'（本人確定には使いませ�
 
 if(overview.recorder_map){
 const mode=el('mapMode').value;
+const assessment=await api('/api/map-analysis?mode='+mode);
+if(current!==request)return;
+el('mapAssessment').textContent=fmt(assessment);
 const windowRows=await api('/api/recorder-map?n='+second+'&mode='+mode);
 if(current!==request)return;
 el('recorderMap').hidden=false;
@@ -348,6 +353,7 @@ if(!v.seeking&&n!==selected)select(n,false)};
 
 (async()=>{overview=await api('/api/overview');
 el('mapControls').hidden=!overview.recorder_map_presence?.standard;
+el('trackedMode').hidden=el('trackedMode').disabled=!overview.recorder_map_presence?.tracked;
 el('summary').textContent=overview.seconds.length+
 '秒行 / 映像観測 '+overview.observed_seconds+'秒 / 元動画 '+
 overview.original_duration_float_seconds+'秒'+
@@ -418,6 +424,7 @@ def recording_view_metadata(bundle: dict[str, Any]) -> dict[str, Any]:
 def make_server(
     bundle_path: Path, policy_path: Path, *, port: int = 0, map_report_path: Path | None = None,
     standard_map_report_path: Path | None = None, evaluation_path: Path | None = None,
+    tracked_map_report_path: Path | None = None,
 ) -> ThreadingHTTPServer:
     bundle = read_json(bundle_path)
     if bundle.get("version") != VERSION or bundle.get("formal_outputs") != 0:
@@ -441,6 +448,24 @@ def make_server(
                 != file_sha(standard_map_report_path)):
             raise ValueError("Standard Map report must be the recovery report's exact input")
         map_modes["standard"] = load_map_timeline(standard_map_report_path, bundle_path, bundle)
+    if tracked_map_report_path is not None:
+        if recorder_map is None or standard_map_report_path is None:
+            raise ValueError("Tracking requires the original development Map pair")
+        map_modes["tracked"] = load_map_timeline(tracked_map_report_path, bundle_path, bundle)
+    mode_assessments = {}
+    for name, result in map_modes.items():
+        path = {"standard": standard_map_report_path, "recovered": map_report_path,
+                "tracked": tracked_map_report_path}[name]
+        if path is None or result is None:
+            continue
+        report = read_json(path)
+        mode_assessments[name] = {
+            "generation": file_sha(path), "formal_outputs": 0,
+            "evaluation": result["summary"],
+            "coverage": report.get("operable_coverage"),
+            "recognition_evidence": report.get("multi_marker_replay", {}).get("counts", {}),
+            "input_dependencies": report.get("multi_marker_replay", {}).get("input_sha256s", {}),
+        }
     evaluation = None
     if evaluation_path is not None:
         evaluation = read_json(evaluation_path)
@@ -537,6 +562,8 @@ def make_server(
                         data = bundle["observations"][query["id"][0]]
                     elif route == "/api/event":
                         data = bundle["events"][query["id"][0]]
+                    elif route == "/api/map-analysis":
+                        data = mode_assessments[query.get("mode", ["recovered"])[0]]
                     elif route == "/api/evaluation":
                         data = evaluation if evaluation is not None else read_json(
                             bundle_path.parent / "evaluation_PRIVATE.json"

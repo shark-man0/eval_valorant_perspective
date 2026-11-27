@@ -158,6 +158,9 @@ class MainWindow(QMainWindow):
         map_library_action = QAction("開発用: Map解析一覧", self)
         map_library_action.triggered.connect(self._open_map_library)
         self.menuBar().addAction(map_library_action)
+        map_analysis_action = QAction("開発用: Map解析を実行", self)
+        map_analysis_action.triggered.connect(self._open_map_analysis)
+        self.menuBar().addAction(map_analysis_action)
         map_timeline_action = QAction("開発用: Map軌跡", self)
         map_timeline_action.triggered.connect(
             lambda: self._open_development_timeline(with_map=True)
@@ -1289,6 +1292,23 @@ class MainWindow(QMainWindow):
             if not accepted:
                 return
             server = open_map_package(entries[choices.index(picked)].receipt)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            QMessageBox.warning(self, "Map解析を開けません", sanitize_text(str(exc)))
+            return
+        self._start_development_viewer(server)
+
+    def _open_map_analysis(self) -> None:
+        from valorant_ai_coach.application.map_library import open_map_package
+        from valorant_ai_coach.ui.map_analysis_dialog import MapAnalysisDialog
+
+        dialog = MapAnalysisDialog(Path(self.backend.get_settings().data_dir), self)
+        dialog.exec()
+        selected = dialog.selected_receipt
+        dialog.deleteLater()
+        if selected is None:
+            return
+        try:
+            server = open_map_package(selected)
         except (OSError, ValueError, KeyError, TypeError) as exc:
             QMessageBox.warning(self, "Map解析を開けません", sanitize_text(str(exc)))
             return

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import shutil
 import subprocess
@@ -10,6 +11,7 @@ import time
 from fractions import Fraction
 from pathlib import Path
 
+from valorant_ai_coach.application.map_job_control import PAUSE_ENV, check_pause
 from valorant_ai_coach.recordings.catalog import probe_metadata
 from valorant_ai_coach.temporal.replay import SourcePolicy, file_sha, read_json, write_private
 
@@ -75,6 +77,7 @@ def acquire(
     if lossless_webp and png_compression != 1:
         raise ValueError("PNG compression only applies to PNG acquisition")
     _, source = development_source(policy_path, source_sha)
+    check_pause()
     video = Path(source["managed_path"]).resolve(strict=True)
     before = video.stat()
     if file_sha(video) != source_sha:
@@ -103,12 +106,12 @@ def acquire(
             "-frames:v", str(len(expected)), *encoding, "-threads", "3",
             str(folder / f"frame_%06d.{extension}"),
         ]
-        if not minimum_free_bytes:
+        if not minimum_free_bytes and not os.environ.get(PAUSE_ENV):
             subprocess.run(
                 command, check=True, stdout=subprocess.DEVNULL, stderr=log, timeout=7200,
             )
         else:
-            if shutil.disk_usage(folder).free <= minimum_free_bytes:
+            if minimum_free_bytes and shutil.disk_usage(folder).free <= minimum_free_bytes:
                 raise ValueError("Map acquisition disk reserve reached")
             with subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=log) as decoder:
                 try:
@@ -117,7 +120,9 @@ def acquire(
                             code = decoder.wait(timeout=3)
                             break
                         except subprocess.TimeoutExpired:
-                            if shutil.disk_usage(folder).free <= minimum_free_bytes:
+                            check_pause()
+                            if (minimum_free_bytes
+                                    and shutil.disk_usage(folder).free <= minimum_free_bytes):
                                 raise ValueError("Map acquisition disk reserve reached") from None
                             if time.monotonic() - started >= 7200:
                                 raise subprocess.TimeoutExpired(command, 7200) from None
