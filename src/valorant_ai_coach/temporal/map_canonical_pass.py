@@ -139,23 +139,39 @@ class RegistrationModes:
     support: list[int] = field(default_factory=list)
 
     @staticmethod
-    def _signature(matrix: NDArray[np.float64]) -> tuple[int, int, int]:
-        angle = math.degrees(math.atan2(matrix[1, 0], matrix[0, 0]))
-        return round(angle / 5), round(matrix[0, 2] / 8), round(matrix[1, 2] / 8)
+    def _probes(matrix: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Where four fixed reference points land on the minimap under ``matrix``."""
+        points = np.array([[256.0, 256.0, 1.0], [768.0, 256.0, 1.0],
+                           [256.0, 768.0, 1.0], [768.0, 768.0, 1.0]]).T
+        placed = matrix @ points
+        return np.asarray((placed[:2] / placed[2]).T, dtype=np.float64)
 
     @classmethod
     def from_fits(
         cls, map_id: str, reference_sha256: str, atlas: NDArray[np.uint8],
         fits: Iterable[NDArray[np.float64]], *, min_support: int = 5,
+        tolerance_px: float = 4.0,
     ) -> RegistrationModes:
-        groups: dict[tuple[int, int, int], list[NDArray[np.float64]]] = {}
+        """Group fits whose probe points agree within ``tolerance_px``; keep the medians."""
+        groups: list[list[NDArray[np.float64]]] = []
         for matrix in fits:
-            groups.setdefault(cls._signature(matrix), []).append(matrix)
+            probes = cls._probes(matrix)
+            for members in groups:
+                anchor = cls._probes(np.median(np.stack(members), axis=0))
+                if float(np.linalg.norm(probes - anchor, axis=1).max()) <= tolerance_px:
+                    members.append(matrix)
+                    break
+            else:
+                groups.append([matrix])
         result = cls(map_id, reference_sha256, _atlas_mask(atlas))
-        for _, members in sorted(groups.items(), key=lambda item: -len(item[1])):
+        for members in sorted(groups, key=len, reverse=True):
             if len(members) < min_support:
                 continue
-            result.modes.append(np.median(np.stack(members), axis=0))
+            median = np.median(np.stack(members), axis=0)
+            if any(float(np.linalg.norm(cls._probes(median) - cls._probes(mode), axis=1).max())
+                   <= tolerance_px for mode in result.modes):
+                continue
+            result.modes.append(median)
             result.support.append(len(members))
         return result
 

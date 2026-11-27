@@ -50,12 +50,14 @@ class RingParameters:
     min_sectors: int = 11
     min_opposite_pairs: int = 4
     max_interior_warm: float = 0.30
-    max_halo_warm: float = 0.30
+    max_halo_warm: float = 0.15
     min_separation: float = 6.0
     max_candidates: int = 24
     # The highlight is a pale, bright ring around a textured portrait. Saturated
     # ability icons, flat warm backgrounds and warm text fail one of these.
     max_ring_saturation: float = 100.0
+    # Site plates are pale olive (median saturation about 31-39) and fill their surroundings.
+    min_ring_saturation: float = 42.0
     min_ring_value: float = 205.0
     min_interior_texture: float = 15.0
 
@@ -158,7 +160,7 @@ def _measure(
         and pairs >= p.min_opposite_pairs
         and interior <= p.max_interior_warm
         and halo <= p.max_halo_warm
-        and saturation <= p.max_ring_saturation
+        and p.min_ring_saturation <= saturation <= p.max_ring_saturation
         and value >= p.min_ring_value
         and texture >= p.min_interior_texture
     )
