@@ -67,10 +67,11 @@ def _validate(paths: dict[str, Path]) -> tuple[str, str]:
         for key in _ARTIFACTS:
             if parent["artifacts"][key] != _bind(paths[key]):
                 raise ValueError("A generation changed its original package dependencies")
-        if _bind(paths["incumbent"]) not in [
-            parent["artifacts"][key] for key in ("standard", "recovered", "tracked")
-            if key in parent["artifacts"]
-        ]:
+        if not any(
+            file_sha(paths["incumbent"]) == parent["artifacts"][key]["sha256"]
+            and paths["incumbent"].resolve() == Path(parent["artifacts"][key]["path"]).resolve()
+            for key in ("standard", "recovered", "tracked") if key in parent["artifacts"]
+        ):
             raise ValueError("The generation incumbent differs from its parent")
     if "tracked" in paths:
         tracker = read_json(paths["tracked"])
