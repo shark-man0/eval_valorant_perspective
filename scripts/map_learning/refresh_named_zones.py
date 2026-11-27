@@ -47,27 +47,38 @@ def refresh(library, catalog, zones, output):
     if any((p / ".git").exists() for p in (output, *output.parents)):
         raise ValueError("Updated Map packages must stay outside Git checkouts")
     doc = read_json(zones)
-    proof = doc["named_zone_transfer"]
-    uid, names = proof["map_id"], proof["registered_interiors"]
-    record, = [row for row in doc["maps"] if row["map_id"] == uid]
-    if doc["formal_outputs"] != 0 or record["reference_sha256"] != proof["reference_sha256"]:
-        raise ValueError("New named Zones must use their exact development atlas")
-    resolver = ReferenceZones(uid, record["reference_sha256"],
-                              {name: record["polygons"][name] for name in names})
+    definitions = (doc["named_landmark_interiors"]["maps"]
+                   if "named_landmark_interiors" in doc else [doc["named_zone_transfer"]])
+    if doc["formal_outputs"] != 0:
+        raise ValueError("New named Zones must use a development atlas")
+    resolvers = {}
+    for proof in definitions:
+        uid, names = proof["map_id"], proof["registered_interiors"]
+        record, = [row for row in doc["maps"] if row["map_id"] == uid]
+        reference = record["reference_sha256"]
+        if reference != proof["reference_sha256"]:
+            raise ValueError("New named Zones must use their exact development atlas")
+        resolvers[(uid, reference)] = ReferenceZones(
+            uid, reference, {name: record["polygons"][name] for name in names},
+        )
     checksum = file_sha(zones)
     count, found = 0, 0
     for entry in list_map_packages(library):
         paths = verified_map_package(entry.receipt)
         display = read_json(paths["display"])
-        if not any(row["map_id"] == uid and row["reference_sha256"] == proof["reference_sha256"]
-                   for row in display["atlases"]):
+        applicable = [resolvers[key] for row in display["atlases"]
+                      if (key := (row["map_id"], row["reference_sha256"])) in resolvers]
+        if not applicable:
             continue
         recovered = read_json(paths["recovered"])
         if recovered["zone_catalog_sha256"] == checksum:
             continue
         bundle = read_json(paths["bundle"])
-        after, additions = with_new_zones(recovered, bundle, resolver)
-        before, _ = with_new_zones(read_json(paths["standard"]), bundle, resolver)
+        after, before, additions = recovered, read_json(paths["standard"]), 0
+        for resolver in applicable:
+            after, assigned = with_new_zones(after, bundle, resolver)
+            before, _ = with_new_zones(before, bundle, resolver)
+            additions += assigned
         key = digest([file_sha(paths["recovered"]), file_sha(paths["standard"]), checksum])
         output.mkdir(mode=0o700, parents=True, exist_ok=True)
         root = output / key
@@ -92,6 +103,7 @@ def refresh(library, catalog, zones, output):
             library, label=entry.label, bundle=paths["bundle"], policy=paths["policy"],
             standard=root / "standard_PRIVATE.json", recovered=root / "recovered_PRIVATE.json",
             evaluation=root / "evaluation/match_evaluation_PRIVATE.json",
+            variant=f"{entry.variant or 'Baseline'} · Zones {checksum[:8]}",
         )
         count += 1
         found += additions

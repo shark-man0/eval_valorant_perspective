@@ -3,6 +3,8 @@ from fractions import Fraction
 import pytest
 
 from valorant_ai_coach.application.map_library import (
+    attach_map_tracker,
+    compare_map_packages,
     list_map_packages,
     open_map_package,
     publish_map_package,
@@ -13,13 +15,13 @@ from valorant_ai_coach.temporal.application import build_application_timeline
 from valorant_ai_coach.temporal.game import DevelopmentGameTimeline
 from valorant_ai_coach.temporal.map_recorder_path import VERSION, join_recorder_seconds
 from valorant_ai_coach.temporal.map_timeline_report import load_map_timeline
-from valorant_ai_coach.temporal.replay import file_sha, write_private
+from valorant_ai_coach.temporal.replay import file_sha, read_json, write_private
 
 
-def make_package(tmp_path, *, split="DEVELOPMENT"):
+def make_package(tmp_path, *, split="DEVELOPMENT", media_bytes=b"registered bytes"):
     catalog = RecordingCatalog.create(tmp_path / "catalog")
     media = tmp_path / "recording.mp4"
-    media.write_bytes(b"registered bytes")
+    media.write_bytes(media_bytes)
     rid = catalog.register(media, split=split, confirm_distinct=True).recording_id
     record = catalog.state.recordings[rid]
     source = {
@@ -112,3 +114,144 @@ def test_map_library_refuses_protected_recordings(tmp_path):
     with pytest.raises(LeakageError):
         publish_map_package(tmp_path / "library", label="Protected test", **package)
     assert not (tmp_path / "library").exists()
+
+
+def test_map_library_keeps_immutable_variants_and_checks_comparison_input(tmp_path):
+    library = tmp_path / "library"
+    source = tmp_path / "source"
+    source.mkdir()
+    package = make_package(source)
+    first = publish_map_package(library, label="Run", variant="old", **package)
+    second = publish_map_package(library, label="Run", variant="new", **package)
+    assert first != second
+    assert len(list_map_packages(library)) == 1
+    assert {row.variant for row in list_map_packages(library, all_versions=True)} == {"old", "new"}
+    assert all(not any(mode.values()) for mode in compare_map_packages(first, second).values())
+
+    another = tmp_path / "another"
+    another.mkdir()
+    different = publish_map_package(
+        library, label="New source", **make_package(another, media_bytes=b"another recording"),
+    )
+    with pytest.raises(ValueError, match="同一録画"):
+        compare_map_packages(first, different)
+
+
+def test_landmark_interior_keeps_clear_of_map_and_existing_zone(monkeypatch):
+    from pathlib import Path
+
+    import numpy as np
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts/map_learning"))
+    from extend_callout_zones import _aligned_revision, landmark_interiors
+
+    atlas = np.zeros((180, 180, 4), np.uint8)
+    atlas[40:160, 15:165, :] = 255
+    existing = {"Plant": [(25, 50), (55, 50), (55, 90), (25, 90)]}
+    anchors = [("A Main", (105/180, 100/180)), ("Outside", (.05, .05)),
+               ("Occupied", (40/180, 70/180)), ("B Site", (.8, .7))]
+    additions = landmark_interiors(atlas, anchors, existing)
+    assert list(additions) == ["A Main"]
+    assert min(p[0] for p in additions["A Main"]) > 55
+    shifted = np.roll(atlas, 12, axis=0)
+    assert _aligned_revision(shifted, atlas) is None
+
+
+
+def test_attached_tracking_keeps_the_original_pair_immutable(tmp_path, monkeypatch):
+    data = make_package(tmp_path)
+    library = tmp_path / "library"
+    base = publish_map_package(library, label="Development match", **data)
+    report = read_json(data["recovered"])
+    replay = {"method": "development_map_multi_marker_track_v1", "formal_outputs": 0,
+              "input_sha256s": {"bundle": file_sha(data["bundle"]),
+                                "incumbent": file_sha(data["recovered"])}}
+    candidate = tmp_path / "tracked_PRIVATE.json"
+    write_private(candidate, {**report, "multi_marker_replay": replay})
+    tracked = attach_map_tracker(library, base, candidate)
+
+    assert [row.receipt for row in list_map_packages(library)] == [base]
+    assert {row.receipt for row in list_map_packages(library, all_versions=True)} == {base, tracked}
+    for old, new in ((base, tracked), (tracked, base)):
+        result = compare_map_packages(old, new)
+        assert set(result) == {"standard", "recovered", "tracked"}
+        assert not any(result["tracked"].values())
+    monkeypatch.setattr(viewer, "make_server", lambda *args, **kwargs: kwargs)
+    assert open_map_package(tracked)["tracked_map_report_path"] == candidate
+
+    replay["input_sha256s"]["incumbent"] = "4" * 64
+    wrong = tmp_path / "wrong.json"
+    write_private(wrong, {**report, "multi_marker_replay": replay})
+    with pytest.raises(ValueError, match="一致しません"):
+        attach_map_tracker(library, base, wrong)
+    candidate.write_bytes(b"{}")
+    with pytest.raises(ValueError, match="changed"):
+        open_map_package(tracked)
+
+
+def test_exact_landmark_clearance_uses_the_whole_polygon(monkeypatch):
+    from pathlib import Path
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts/map_learning"))
+    from extend_callout_zones import _clear_of_callout_bisectors
+
+    assert _clear_of_callout_bisectors((-4, 0), (0, 0), [(20, 0)], 9)
+    assert not _clear_of_callout_bisectors((0, 0), (0, 0), [(20, 0)], 9)
+
+
+
+def test_marker_replay_expands_only_the_requested_self_episode(monkeypatch):
+    from pathlib import Path
+    from types import SimpleNamespace
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts/map_learning"))
+    import run_marker_tracks
+
+    local = tuple(f"own-{i}" for i in range(9))
+    other = ("separate-1", "separate-2")
+    episodes = [SimpleNamespace(current_samples=refs) for refs in (local, other)]
+    monkeypatch.setattr(run_marker_tracks, "map_view_episodes", lambda _: episodes)
+    timeline = {"seconds": [{"timestamp": 0, "sample_refs": [local[4]]}]}
+    selected = {"comparison_evidence": {"operable_sample_refs": [local[4]],
+                                        "unresolved_portrait_sample_refs": [local[4]]}}
+    base = {"second_rows": [{"timestamp": 0, "recorder_map_observations": []}]}
+    files = dict.fromkeys((*local, *other))
+
+    window = run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
+                                              whole_episode=False)
+    full = run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
+                                            whole_episode=True)
+    assert window == ({local[4]}, set(local[2:7]))
+    assert full == ({local[4]}, set(local))
+    base["second_rows"][0]["recorder_map_observations"] = [{"kind": "selected"}]
+    assert run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
+                                            whole_episode=True) == (set(), set())
+
+
+
+def test_generations_bind_the_parent_and_retain_each_previous_result(tmp_path):
+    files = make_package(tmp_path)
+    library = tmp_path / "library"
+    base = publish_map_package(library, label="Match", **files)
+    first = tmp_path / "first.json"
+    second = tmp_path / "second.json"
+
+    def candidate(destination, incumbent):
+        report = read_json(incumbent)
+        report["multi_marker_replay"] = {
+            "method": "development_map_multi_marker_track_v1", "formal_outputs": 0,
+            "input_sha256s": {"bundle": file_sha(files["bundle"]),
+                              "incumbent": file_sha(incumbent)},
+        }
+        write_private(destination, report)
+
+    candidate(first, files["recovered"])
+    one = attach_map_tracker(library, base, first)
+    candidate(second, first)
+    two = attach_map_tracker(library, one, second)
+    assert len(list_map_packages(library, all_versions=True)) == 3
+    assert read_json(one)["generation"] != read_json(two)["generation"]
+    assert compare_map_packages(one, two)["tracked"]["lost_seconds"] == 0
+    first.write_bytes(b"{}")
+    with pytest.raises(ValueError, match="changed"):
+        compare_map_packages(base, two)

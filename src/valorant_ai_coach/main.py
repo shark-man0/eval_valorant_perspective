@@ -16,7 +16,9 @@ LOGGER = logging.getLogger(__name__)
 
 def main() -> int:
     smoke_test = "--smoke-test" in sys.argv
-    qt_arguments = [argument for argument in sys.argv if argument != "--smoke-test"]
+    map_smoke_test = "--map-smoke-test" in sys.argv
+    qt_arguments = [argument for argument in sys.argv
+                    if argument not in {"--smoke-test", "--map-smoke-test"}]
     app = QApplication(qt_arguments)
     app.setApplicationName("VALORANT AI Coach")
     app.setOrganizationName("ValorantAICoach")
@@ -31,6 +33,13 @@ def main() -> int:
             )
             backend = BackendFacade(store)
             window = MainWindow(backend)
+            if map_smoke_test:
+                from valorant_ai_coach.ui.map_desktop_smoke import run_map_desktop_smoke
+
+                run_map_desktop_smoke(app)
+                window.close()
+                app.processEvents()
+                return 0
             if smoke_test:
                 from valorant_ai_coach.maps.registry import MapRegistry
 
@@ -46,7 +55,7 @@ def main() -> int:
             window.show()
         except Exception as exc:
             LOGGER.exception("Application startup failed")
-            if smoke_test:
+            if smoke_test or map_smoke_test:
                 return 1
             QMessageBox.critical(
                 None,
