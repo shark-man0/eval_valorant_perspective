@@ -226,3 +226,32 @@ def test_marker_replay_expands_only_the_requested_self_episode(monkeypatch):
     base["second_rows"][0]["recorder_map_observations"] = [{"kind": "selected"}]
     assert run_marker_tracks.episode_inputs(timeline, selected, selected, base, files,
                                             whole_episode=True) == (set(), set())
+
+
+
+def test_generations_bind_the_parent_and_retain_each_previous_result(tmp_path):
+    files = make_package(tmp_path)
+    library = tmp_path / "library"
+    base = publish_map_package(library, label="Match", **files)
+    first = tmp_path / "first.json"
+    second = tmp_path / "second.json"
+
+    def candidate(destination, incumbent):
+        report = read_json(incumbent)
+        report["multi_marker_replay"] = {
+            "method": "development_map_multi_marker_track_v1", "formal_outputs": 0,
+            "input_sha256s": {"bundle": file_sha(files["bundle"]),
+                              "incumbent": file_sha(incumbent)},
+        }
+        write_private(destination, report)
+
+    candidate(first, files["recovered"])
+    one = attach_map_tracker(library, base, first)
+    candidate(second, first)
+    two = attach_map_tracker(library, one, second)
+    assert len(list_map_packages(library, all_versions=True)) == 3
+    assert read_json(one)["generation"] != read_json(two)["generation"]
+    assert compare_map_packages(one, two)["tracked"]["lost_seconds"] == 0
+    first.write_bytes(b"{}")
+    with pytest.raises(ValueError, match="changed"):
+        compare_map_packages(base, two)

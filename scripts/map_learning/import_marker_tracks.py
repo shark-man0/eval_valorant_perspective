@@ -11,7 +11,10 @@ from valorant_ai_coach.temporal.replay import file_sha, read_json
 
 def import_portfolio(library: Path, portfolio: Path) -> tuple[int, int]:
     data = read_json(portfolio)
-    if (data.get("schema") != "development_map_multi_marker_portfolio_v1"
+    if (data.get("schema") not in {
+            "development_map_multi_marker_portfolio_v1",
+            "development_map_long_ownership_portfolio_v1",
+        }
             or data.get("formal_outputs") != 0):
         raise ValueError("A development-only multi-marker portfolio is required")
     parents, attached = {}, set()
@@ -20,9 +23,9 @@ def import_portfolio(library: Path, portfolio: Path) -> tuple[int, int]:
         bundle = artifacts["bundle"]["sha256"]
         if "tracked" in artifacts:
             attached.add((bundle, artifacts["tracked"]["sha256"]))
-        else:
-            for mode in ("recovered", "standard"):
-                parents[bundle, artifacts[mode]["sha256"]] = entry.receipt
+        for mode in ("recovered", "standard", "tracked"):
+            if mode in artifacts:
+                parents.setdefault((bundle, artifacts[mode]["sha256"]), entry.receipt)
     imported, missing = 0, 0
     for entry in data["recordings"]:
         artifact = entry["candidate"]

@@ -62,12 +62,22 @@ def _validate(paths: dict[str, Path]) -> tuple[str, str]:
             or development.get("formal_outputs") != 0
             or development["summary"] != result["summary"]):
         raise ValueError("The assessment must match the Map report with formal promotion disabled")
+    if "parent" in paths:
+        parent = _receipt(paths["parent"])
+        for key in _ARTIFACTS:
+            if parent["artifacts"][key] != _bind(paths[key]):
+                raise ValueError("A generation changed its original package dependencies")
+        if _bind(paths["incumbent"]) not in [
+            parent["artifacts"][key] for key in ("standard", "recovered", "tracked")
+            if key in parent["artifacts"]
+        ]:
+            raise ValueError("The generation incumbent differs from its parent")
     if "tracked" in paths:
         tracker = read_json(paths["tracked"])
         replay = tracker["multi_marker_replay"]
         hashes = replay["input_sha256s"]
         baseline = next(
-            (paths[key] for key in ("recovered", "standard")
+            (paths[key] for key in ("incumbent", "recovered", "standard") if key in paths
              if file_sha(paths[key]) == hashes.get("incumbent")), None,
         )
         if (replay.get("method") != "development_map_multi_marker_track_v1"
@@ -88,6 +98,7 @@ def _validate(paths: dict[str, Path]) -> tuple[str, str]:
 def publish_map_package(
     library: Path, *, label: str, bundle: Path, policy: Path, standard: Path,
     recovered: Path, evaluation: Path, variant: str = "", tracked: Path | None = None,
+    parent: Path | None = None, incumbent: Path | None = None,
 ) -> Path:
     """Publish once; a later compatible recognizer result creates another entry."""
     library = library.resolve()
@@ -103,12 +114,17 @@ def publish_map_package(
         if any((p / ".git").exists() for p in tracked.parents):
             raise ValueError("追跡結果をGit管理外のフォルダーに保存してください")
         paths["tracked"] = tracked
+    if parent is not None or incumbent is not None:
+        if parent is None or incumbent is None or tracked is None:
+            raise ValueError("A generation requires its parent and exact incumbent")
+        paths.update(parent=parent.resolve(), incumbent=incumbent.resolve())
     recording, source_sha = _validate(paths)
     data = {
         "schema": SCHEMA, "recording_id": recording, "source_sha256": source_sha,
         "label": label, "formal_outputs": 0, "artifacts": {k: _bind(v) for k, v in paths.items()},
         **({"variant": variant} if variant else {}),
     }
+    data["generation"] = digest(data["artifacts"])
     library.mkdir(parents=True, mode=0o700, exist_ok=True)
     destination = library / f"{digest(data)}_PRIVATE.json"
     with TemporaryDirectory(dir=library) as temporary:
@@ -127,7 +143,11 @@ def _receipt(path: Path) -> dict[str, Any]:
     valid_name = f"{digest(data)}_PRIVATE.json"
     if (path.is_symlink() or path.name != valid_name or data.get("schema") != SCHEMA
             or data.get("formal_outputs") != 0 or not is_sha(data.get("source_sha256"))
-            or set(data["artifacts"]) not in (set(_ARTIFACTS), {*_ARTIFACTS, "tracked"})):
+            or set(data["artifacts"]) not in (
+                set(_ARTIFACTS), {*_ARTIFACTS, "tracked"},
+                {*_ARTIFACTS, "tracked", "parent", "incumbent"},
+            )
+            or ("generation" in data and data["generation"] != digest(data["artifacts"]))):
         raise ValueError("Invalid development Map library receipt")
     return data
 
@@ -168,12 +188,16 @@ def attach_map_tracker(library: Path, receipt: Path, tracked: Path) -> Path:
     """Register a B result alongside its original immutable standard and recovery pair."""
     data = _receipt(receipt)
     paths = verified_map_package(receipt)
-    if "tracked" in paths:
-        raise ValueError("複数マーカー追跡の取り込み元として、元の解析結果を選んでください")
+    hashes = read_json(tracked)["multi_marker_replay"]["input_sha256s"]
+    baseline = next((paths[key] for key in ("tracked", "recovered", "standard")
+                     if key in paths and file_sha(paths[key]) == hashes.get("incumbent")), None)
+    if baseline is None:
+        raise ValueError("追跡結果の基準と選択した解析世代が一致しません")
     variant = data.get("variant") or "既存結果"
     return publish_map_package(
-        library, label=data["label"], variant=f"{variant} · 複数マーカー追跡",
-        tracked=tracked, **{key: paths[key] for key in _INPUTS},
+        library, label=data["label"], variant=f"{variant} · 追跡 {file_sha(tracked)[:8]}",
+        tracked=tracked, parent=receipt, incumbent=baseline,
+        **{key: paths[key] for key in _INPUTS},
     )
 
 

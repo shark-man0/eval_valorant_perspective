@@ -16,7 +16,7 @@ from checkpoints import pin
 from workflow import _source_lock
 
 from valorant_ai_coach.application.map_job_control import phase, run_interruptible
-from valorant_ai_coach.application.map_library import verified_map_package
+from valorant_ai_coach.application.map_library import attach_map_tracker, verified_map_package
 from valorant_ai_coach.recordings.catalog import RecordingCatalog
 from valorant_ai_coach.temporal.camera_panel import NATIVE_TIME_BASE, decode_samples
 from valorant_ai_coach.temporal.evidence import digest, freeze_native_sample
@@ -153,10 +153,32 @@ def replay(args):
     )
     overrides = (_private(args.overrides) if args.overrides else
                  workspace / "pixels" / digest([source["source_sha256"], manifest_sha]))
+    context = getattr(args, "context_pixels", None)
+    context_frames = {}
+    if context is not None:
+        context_doc = read_json(context)
+        if (context_doc.get("schema") != "development_map_marker_context_v1"
+                or context_doc.get("timeline_sha256") != bundle_sha
+                or context_doc.get("source_sha256") != source["source_sha256"]
+                or context_doc.get("formal_outputs") != 0
+                or args.layout is None
+                or context_doc.get("layout_sha256") != file_sha(args.layout)):
+            raise ValueError("The minimap context differs from the frozen timeline or layout")
+        for key, row in context_doc["frames"].items():
+            if key not in selected:
+                continue
+            frame = (context.parent / row["file"]).resolve()
+            if (not frame.is_relative_to(context.parent.resolve())
+                    or file_sha(frame) != row["crop_sha256"]
+                    or row["native_pixel_sha256"] != native[key]["sample"]["native_pixel_sha256"]):
+                raise ValueError("The minimap context pixels changed")
+            context_frames[key] = row
     available, missing = {}, {}
     for key in sorted(selected):
         sample = native[key]["sample"]
-        if files[key].is_file():
+        if key in context_frames:
+            available[key] = "verified_minimap_cache"
+        elif files[key].is_file():
             if file_sha(files[key]) != sample["acquired_frame_sha256"]:
                 raise ValueError("An original native frame file has changed")
             available[key] = "native"
@@ -193,6 +215,8 @@ def replay(args):
     plan_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
     pin(plan_dir / "targets_PRIVATE.json", plan)
     print(f"Tracking pixels: {len(available)} / {len(selected)} verified", flush=True)
+    if context is not None:
+        identity["context_pixels_sha256"] = file_sha(context)
     if args.replay_script is None:
         return plan_dir / "targets_PRIVATE.json"
 
@@ -205,6 +229,13 @@ def replay(args):
         "adaptive": args.adaptive, "incumbent": base_path, "asset-cache": args.asset_cache,
         "map-catalog": args.map_catalog, "layout": args.layout, "pixel-overrides": overrides,
     }
+    for option in ("context-pixels", "match-profile"):
+        file = getattr(args, option.replace("-", "_"), None)
+        if file is not None:
+            options[option] = file
+            identity[f"{option}_sha256"] = file_sha(file)
+    for flag in ("long-ownership", "contrast-registration"):
+        identity[flag] = bool(getattr(args, flag.replace("-", "_"), False))
     if args.alignment_cache:
         alignment = _private(args.alignment_cache)
         if not alignment.is_dir():
@@ -220,6 +251,8 @@ def replay(args):
         "association": runner.with_name("marker_tracks.py"),
     }.items():
         identity[f"{name}_sha256"] = file_sha(path)
+    for sibling in runner.parent.glob("*.py"):
+        identity[f"worker:{sibling.name}"] = file_sha(sibling)
     output = workspace / "runs" / digest(identity)
     output.mkdir(mode=0o700, parents=True, exist_ok=True)
     completion = output / "completion_PRIVATE.json"
@@ -240,6 +273,8 @@ def replay(args):
             )
             if args.whole_episode:
                 command.append("--whole-episode")
+            command.extend(f"--{flag}" for flag in ("long-ownership", "contrast-registration")
+                           if identity[flag])
             phase("tracking")
             env = {**os.environ, "OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1"}
             run_interruptible(command, env=env)
@@ -261,9 +296,12 @@ def main() -> None:
     for name in ("receipt", "manifest", "reference", "adaptive", "workspace"):
         parser.add_argument(f"--{name}", required=True, type=Path)
     for name in ("overrides", "replay-script", "asset-cache", "map-catalog", "layout",
-                 "exclude-covered", "alignment-cache"):
+                 "exclude-covered", "alignment-cache", "context-pixels", "match-profile",
+                 "library"):
         parser.add_argument(f"--{name}", type=Path)
     parser.add_argument("--whole-episode", action="store_true")
+    parser.add_argument("--long-ownership", action="store_true")
+    parser.add_argument("--contrast-registration", action="store_true")
     parser.add_argument("--restore-native", action="store_true")
     parser.add_argument("--reserve-gib", type=int, default=12)
     parser.add_argument("--max-new-frames", type=int, default=0,
@@ -276,6 +314,8 @@ def main() -> None:
     os.umask(0o077)
     cv2.setNumThreads(1)
     result = replay(args)
+    if args.library is not None and args.replay_script is not None:
+        attach_map_tracker(args.library, args.receipt, result)
     print("Tracking artifact prepared:", result.name)
 
 
