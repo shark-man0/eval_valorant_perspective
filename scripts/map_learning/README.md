@@ -423,3 +423,20 @@ measurement per point and abstains if the current outline fails. This checks
 the currently visible marker after temporal attribution. Directional sector
 measurements in `marker_quality.py` are experimental observations for comparing
 view fans with competing markers in the same frame.
+
+### Resolve measured marker paths across an interval
+
+`replay_global_marker_paths.py` compares a frozen development baseline with
+a forward/backward path optimization. Existing observed recorder evidence
+supplies the two endpoints. All intermediate measured candidate markers
+compete in the same graph. A point must beat every alternative complete
+path at its own frame, and adjacent unresolved hypotheses stop output.
+
+An incomplete current outline can contribute only when its measured
+fragments agree with bidirectional local optical flow from both neighboring
+observations. The final point still uses current native pixels and a
+current atlas registration. Missing observations create no point or edge.
+Use physical TRAIN matches to decide the policy, then freeze that policy
+for the development comparison and VALIDATION recordings. The command
+writes an explicit experimental development report with provenance for each
+added point. Compare it with the standard fixed-input regression command.
