@@ -75,15 +75,21 @@ def run(portfolio, canonical_dir, timelines, handoff):
         canonical = read_json(target)
         if any(r.get("formal_outputs") != 0 for r in (legacy, canonical)):
             raise ValueError("Development-only reports required")
-        with tarfile.open(timelines / rid / "timeline.tgz", mode="r:gz",
+        with tarfile.open(timelines / rid / "timeline.tgz", mode="r|gz",
                           encoding="utf-8") as archive:
-            member = archive.extractfile("timeline/timeline_PRIVATE.json")
-            if member is None:
+            archive_entry = next((member for member in archive
+                                  if member.name == "timeline/timeline_PRIVATE.json"), None)
+            if archive_entry is None:
                 raise ValueError("Canonical timeline missing")
+            member = archive.extractfile(archive_entry)
+            if member is None:
+                raise ValueError("Canonical timeline is not a readable file")
             raw = member.read()
             if hashlib.sha256(raw).hexdigest() != canonical["timeline_sha256"]:
                 raise ValueError("Canonical report uses another timeline")
-            timeline = json.loads(raw)
+            loaded = json.loads(raw)
+            timeline = {key: loaded[key] for key in ("native_frames", "seconds")}
+            del loaded, raw
         # Use the old full native manifest, including failed selections.
         artifact = source["artifacts"]["native_frame_manifest"]
         manifest_path = Path(artifact["path"])
@@ -107,6 +113,8 @@ def run(portfolio, canonical_dir, timelines, handoff):
                      "canonical_report_sha256": file_sha(target),
                      "legacy_report_sha256": file_sha(path)})
         cases.extend({**case, "index": entry["index"]} for case in found)
+        del timeline, native
+        print("Compared recording:", entry["index"], flush=True)
     return {"schema": "development_map_same_sample_comparison_v1", "formal_outputs": 0,
             "recordings": rows, "counts": dict(totals), "cases": cases,
             "agreement_threshold_reference_px": 8,
