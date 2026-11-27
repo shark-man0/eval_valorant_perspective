@@ -75,7 +75,8 @@ def run(portfolio, canonical_dir, timelines, handoff):
         canonical = read_json(target)
         if any(r.get("formal_outputs") != 0 for r in (legacy, canonical)):
             raise ValueError("Development-only reports required")
-        with tarfile.open(timelines / rid / "timeline.tgz") as archive:
+        with tarfile.open(timelines / rid / "timeline.tgz", mode="r:gz",
+                          encoding="utf-8") as archive:
             member = archive.extractfile("timeline/timeline_PRIVATE.json")
             if member is None:
                 raise ValueError("Canonical timeline missing")
