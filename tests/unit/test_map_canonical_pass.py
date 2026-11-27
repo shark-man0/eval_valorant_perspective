@@ -156,3 +156,24 @@ def test_disagreeing_methods_abstain_and_changed_pixels_are_rejected() -> None:
     tampered = FrameInput(item.sample, roi, item.roi_pixel_sha256, None, ())
     with pytest.raises(ValueError, match="changed"):
         measure_frame(tampered, modes)
+
+
+def test_a_ring_off_the_walkable_floor_is_not_read_as_the_recorder() -> None:
+    timeline = _timeline()
+    modes = _modes()
+    key, item = next(iter(_inputs(timeline, library=False).items()))
+    roi = np.full((427, 455, 3), (70, 30, 80), np.uint8)
+    floor = cv2.warpPerspective(_atlas()[:, :, 3], TURN, (455, 427), flags=cv2.INTER_NEAREST)
+    roi[floor > 0] = (150, 150, 150)
+    # (950, 950) on the reference lies well outside both floor rectangles.
+    point = TURN @ np.array([950.0, 950.0, 1.0])
+    center = (int(round(point[0])), int(round(point[1])))
+    cv2.circle(roi, center, 8, GOLD, 3)
+    rng = np.random.default_rng(3)
+    roi[center[1] - 3:center[1] + 4, center[0] - 3:center[0] + 4] = rng.integers(
+        40, 200, (7, 7, 3), dtype=np.uint8)
+    moved = FrameInput(item.sample, roi, hashlib.sha256(roi.tobytes()).hexdigest())
+    record = measure_frame(moved, modes)
+    assert record["ring"]["status"] == "UNIQUE" and record["ring"]["off_floor"] is True
+    assert record["chosen"] is None
+    assert record["verification"] == "native_frame_pixels"

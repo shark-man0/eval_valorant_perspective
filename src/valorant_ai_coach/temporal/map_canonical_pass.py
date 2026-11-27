@@ -58,6 +58,12 @@ from .map_self_ring import RingParameters, read_self_ring, warm_mask
 PASS_VERSION = "development_canonical_map_pass_v1"
 RIM_METHOD = "map_library_rim"
 RING_METHOD = "self_ring"
+# How the canonical minimap pixels were proven to be the timeline's own pixels.
+FRAME_PIXELS = "native_frame_pixels"  # the whole frame's native_pixel_sha256
+ROI_PIXELS = "timeline_minimap_roi_sha256"  # the minimap ROI hash the timeline recorded
+VERIFICATIONS = (FRAME_PIXELS, ROI_PIXELS)
+# A self ring must lie on (or within this many reference pixels of) the walkable floor.
+FLOOR_MARGIN_REFERENCE_PX = 16.0
 ROI_1080P = (20, 48, 475, 475)
 
 ColorImage = NDArray[np.uint8]
@@ -137,6 +143,19 @@ class RegistrationModes:
     atlas_mask: NDArray[np.uint8]
     modes: list[NDArray[np.float64]] = field(default_factory=list)
     support: list[int] = field(default_factory=list)
+    _floor_distance: NDArray[np.float32] | None = field(default=None, repr=False)
+
+    def distance_to_floor(self, point: Sequence[float]) -> float:
+        """Reference pixels from ``point`` to the nearest walkable floor of the atlas."""
+        if self._floor_distance is None:
+            outside = np.asarray(self.atlas_mask == 0, dtype=np.uint8)
+            self._floor_distance = np.asarray(
+                cv2.distanceTransform(outside, cv2.DIST_L2, 5), dtype=np.float32)
+        height, width = self._floor_distance.shape
+        x, y = int(round(point[0])), int(round(point[1]))
+        if not (0 <= x < width and 0 <= y < height):
+            return math.inf
+        return float(self._floor_distance[y, x])
 
     @staticmethod
     def _probes(matrix: NDArray[np.float64]) -> NDArray[np.float64]:
@@ -219,6 +238,7 @@ class FrameInput:
     roi_pixel_sha256: str
     frame_fit: NDArray[np.float64] | None = None
     library_points: tuple[dict[str, Any], ...] = ()
+    verification: str = FRAME_PIXELS
 
 
 def measure_frame(
@@ -229,8 +249,11 @@ def measure_frame(
     sample = freeze_native_sample(item.sample)
     if hashlib.sha256(item.roi.tobytes()).hexdigest() != item.roi_pixel_sha256:
         raise ValueError("Canonical minimap pixels changed after decoding")
+    if item.verification not in VERIFICATIONS:
+        raise ValueError("Known canonical pixel verification required")
     record: dict[str, Any] = {"sample_sha256": sample["sample_sha256"], "registration": None,
-                              "ring": None, "library": [], "chosen": None}
+                              "ring": None, "library": [], "chosen": None,
+                              "verification": item.verification}
     matrix: NDArray[np.float64] | None = None
     if item.frame_fit is not None:
         matrix = item.frame_fit
@@ -255,7 +278,10 @@ def measure_frame(
     candidates: list[dict[str, Any]] = []
     if ring_result["status"] == "UNIQUE":
         reference = to_reference(matrix, ring_result["center_roi_px"])
-        if inside(reference):
+        # Text or a bright background behind the minimap can form a ring off the map.
+        off_floor = modes.distance_to_floor(reference) > FLOOR_MARGIN_REFERENCE_PX
+        record["ring"]["off_floor"] = off_floor
+        if inside(reference) and not off_floor:
             candidates.append({"method": RING_METHOD, "map_reference_px": reference,
                                "roi_px": ring_result["center_roi_px"]})
     for point in item.library_points:
@@ -303,6 +329,7 @@ def observation(
         "track_anchor": digest([PASS_VERSION, chosen["method"], sample["sample_sha256"]]),
         "recorder_agent_uuid_candidate": None,
         "canonical_decode_receipt_sha256": receipt_sha256,
+        "canonical_pixel_verification": record["verification"],
         "qualified": False,
         "position_authority": False,
     }
@@ -333,6 +360,9 @@ def build_report(
         registration = record.get("registration")
         counts[f"registration_{registration['kind'] if registration else 'none'}"] += 1
         counts[f"ring_{record['ring']['status'].lower()}"] += 1
+        counts[f"verification_{record['verification']}"] += 1
+        if record["ring"].get("off_floor"):
+            counts["ring_off_floor_rejected"] += 1
         if record.get("conflict"):
             counts["method_conflict_abstained"] += 1
         if record.get("chosen"):

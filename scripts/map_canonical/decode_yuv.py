@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from provenance import admit, video_sha256
 
 from valorant_ai_coach.temporal.camera_panel import NATIVE_TIME_BASE, native_decode_command
 from valorant_ai_coach.temporal.match import _native_audit_batches
@@ -95,10 +96,24 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("job", type=Path)
     parser.add_argument("video", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--catalog", type=Path, required=True,
+                        help="Recording catalog root (development admission is checked)")
     parser.add_argument("--budget-seconds", type=float, default=150)
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args(argv)
     (args.output / "yuv").mkdir(parents=True, exist_ok=True)
+    job = json.loads(args.job.read_text(encoding="utf-8"))
+    admission = admit(args.catalog, job["source"]["source_id"], job["source"]["source_sha256"])
+    digest = video_sha256(args.video, args.output / "source_sha256_cache.json")
+    if digest != admission["source_sha256"]:
+        raise SystemExit("The video file is not the catalog's source")
+    source_file = args.output / "yuv" / "source.json"
+    source_record = {**admission, "timeline_sha256": job["input_sha256"], "video_sha256": digest}
+    fixed = ("recording_id", "source_sha256", "timeline_sha256")
+    old = json.loads(source_file.read_text(encoding="utf-8")) if source_file.exists() else None
+    if old is not None and any(old.get(k) != source_record[k] for k in fixed):
+        raise SystemExit(f"{args.output} holds a decode of another timeline or source")
+    source_file.write_text(json.dumps(source_record), encoding="utf-8")
     deadline = time.time() + args.budget_seconds
     processes = [Process(target=worker, args=(args.job, args.video, args.output, deadline, p,
                                               args.workers)) for p in range(args.workers)]

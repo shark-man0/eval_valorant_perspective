@@ -28,6 +28,7 @@ from typing import Any
 
 import cv2
 import numpy as np
+from provenance import admit, read_receipt
 
 from valorant_ai_coach.temporal.evidence import freeze_native_sample
 from valorant_ai_coach.temporal.map_canonical_pass import (
@@ -122,6 +123,9 @@ def identify_map(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--index", type=Path, required=True)
+    parser.add_argument("--catalog", type=Path, required=True,
+                        help="Recording catalog root; the recording must be admitted for "
+                             "development analysis")
     parser.add_argument("--decode", type=Path, required=True)
     parser.add_argument("--map-report", type=Path,
                         help="Map library report of the same source (omit if there is none)")
@@ -142,11 +146,22 @@ def main(argv: list[str] | None = None) -> int:
                 "formal_outputs": index["formal_outputs"], "source": index["source"],
                 "seconds": index["seconds"], "native_frames": index["native_frames"]}
     source = timeline["source"]["source_sha256"]
+    recording_id = timeline["source"]["source_id"]
+    admission = admit(args.catalog, recording_id, source)
+    decode_receipt, decode_receipt_sha = read_receipt(
+        args.decode, recording_id=recording_id, source_sha256=source,
+        timeline_sha256=index["input_sha256"])
     crops, receipt_sha = load_crops(args.decode)
+    stale = [key for key in crops if key not in timeline["native_frames"]]
+    if stale:
+        raise SystemExit(f"{len(stale)} decoded rows belong to another timeline")
     own = own_live_samples(timeline)
     if args.map_report is not None:
         report = json.loads(args.map_report.read_text(encoding="utf-8"))
         points = library_points(report)
+        foreign = {p["sample"]["source_sha256"] for rows in points.values() for p in rows}
+        if foreign - {source}:
+            raise SystemExit("The Map library report observes another source")
         map_ids = {(p["map_id"], p["reference_sha256"]) for rows in points.values() for p in rows}
         if len(map_ids) != 1 or args.atlas is None:
             raise SystemExit(f"One Map reference and its atlas required, found {map_ids}")
@@ -184,7 +199,8 @@ def main(argv: list[str] | None = None) -> int:
         if fit is not None:
             fits[key] = fit
         library = () if args.no_library else tuple(points.get(sample["native_pts_tick"], ()))
-        inputs[key] = FrameInput(sample, roi, row["roi_pixel_sha256"], fit, library)
+        inputs[key] = FrameInput(sample, roi, row["roi_pixel_sha256"], fit, library,
+                                 verification=decode_receipt["verification"])
     modes = RegistrationModes.from_fits(map_id, reference_sha, atlas, fits.values())
     records = {key: measure_frame(item, modes, reference_size=reference_size)
                for key, item in inputs.items()}
@@ -197,7 +213,10 @@ def main(argv: list[str] | None = None) -> int:
         timeline, index["input_sha256"], records, modes, zones=zones,
         receipt_sha256=receipt_sha,
         provenance={
-            "recording_id": timeline["source"].get("source_id"),
+            "recording_id": recording_id,
+            "catalog_admission": admission,
+            "decode_receipt_file_sha256": decode_receipt_sha,
+            "canonical_pixel_verification": decode_receipt["verification"],
             "source_sha256": source,
             "map_library_report_sha256": _sha(args.map_report) if args.map_report else None,
             "map_identification": identification,

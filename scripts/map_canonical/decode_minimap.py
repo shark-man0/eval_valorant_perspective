@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Any
 
 import cv2
+from provenance import FRAME_PIXELS, admit, video_sha256, write_receipt
 
 from valorant_ai_coach.temporal.camera_panel import NATIVE_TIME_BASE, decode_samples
 from valorant_ai_coach.temporal.match import _native_audit_batches
@@ -77,11 +78,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("job", type=Path)
     parser.add_argument("video", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--catalog", type=Path, required=True,
+                        help="Recording catalog root (development admission is checked)")
     parser.add_argument("--budget-seconds", type=float, default=150)
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args(argv)
     (args.output / "done").mkdir(parents=True, exist_ok=True)
     (args.output / "crops").mkdir(exist_ok=True)
+    job = json.loads(args.job.read_text(encoding="utf-8"))
+    admission = admit(args.catalog, job["source"]["source_id"], job["source"]["source_sha256"])
+    digest = video_sha256(args.video, args.output / "source_sha256_cache.json")
+    write_receipt(args.output, admission=admission, timeline_sha256=job["input_sha256"],
+                  video_sha256_value=digest, verification=FRAME_PIXELS,
+                  decoder="ffmpeg native decode (camera_panel)")
     deadline = time.time() + args.budget_seconds
     processes = [Process(target=worker, args=(args.job, args.video, args.output, deadline, p,
                                               args.workers)) for p in range(args.workers)]
