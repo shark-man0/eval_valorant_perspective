@@ -103,12 +103,14 @@ class RealVisualAnalyzer:
             if key.endswith("_template") and isinstance(value, str) and value
         ]
         paths += list(self.profile.get("remote_templates", {}).values())
+        marker = self.profile.get("minimap_self_marker", {})
+        paths += marker.get("positive_templates", []) + marker.get("negative_templates", [])
         for filename in sorted(paths):
             path = Path(filename)
             digest.update(filename.encode())
             digest.update(path.read_bytes() if path.is_file() else b"missing")
         return {
-            "implementation": 6,
+            "implementation": 7,
             "profile": self.profile,
             "contracts": digest.hexdigest(),
             "semantic_enabled": self.semantic is not None,
@@ -391,6 +393,16 @@ def load_visual_profile(path: str) -> dict[str, Any]:
             value[key] = str((profile_path.parent / entry).resolve())
     for key, entry in value.get("remote_templates", {}).items():
         value["remote_templates"][key] = str((profile_path.parent / entry).resolve())
+    marker = value.get("minimap_self_marker", {})
+    if not isinstance(marker, dict):
+        raise ValueError("minimap_self_marker must be an object")
+    for key in ("positive_templates", "negative_templates"):
+        if key in marker:
+            if not isinstance(marker[key], list) or any(
+                not isinstance(entry, str) or not entry for entry in marker[key]
+            ):
+                raise ValueError(f"minimap_self_marker.{key} must be a list of paths")
+            marker[key] = [str((profile_path.parent / entry).resolve()) for entry in marker[key]]
     if {"map_registry", "peek_registry"} & value.keys():
         raise ValueError("旧Map/Zone形式は廃止されました。map_zone.registry_rootを指定してください")
     if value.get("map_zone", {}).get("registry_root"):
